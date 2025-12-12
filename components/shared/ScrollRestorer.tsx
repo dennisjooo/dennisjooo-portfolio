@@ -17,6 +17,32 @@ const ScrollRestorer = () => {
         }
 
         const restoreScroll = () => {
+            // Check for hash link first - deep linking takes priority
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+
+                // Try to find and scroll to element with retries
+                const scrollToElement = (retries = 0) => {
+                    const element = document.getElementById(hash);
+                    if (element) {
+                        isRestoring.current = true;
+                        element.scrollIntoView({ behavior: 'instant' });
+                        setTimeout(() => {
+                            isRestoring.current = false;
+                        }, 100);
+                    } else if (retries < 10) {
+                        // Retry if element not found yet (content might be rendering)
+                        setTimeout(() => scrollToElement(retries + 1), 50);
+                    }
+                };
+
+                // Small delay to ensure content has rendered
+                requestAnimationFrame(() => {
+                    scrollToElement();
+                });
+                return; // Skip saved position restoration when hash is present
+            }
+
             const key = `scroll-pos-${pathname}`;
             const savedPos = sessionStorage.getItem(key);
 
