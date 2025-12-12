@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar/Navbar";
 import { CommandPalette } from "@/components/command-palette/CommandPalette";
+import { EasterEggs } from "@/components/fun/EasterEggs";
 import Footer from "@/components/shared/Footer";
 import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <Providers>
                     <Navbar />
                     <CommandPalette />
+                    <EasterEggs />
                     <main>{children}</main>
                     <Footer />
                 </Providers>
