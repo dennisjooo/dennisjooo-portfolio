@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { BurgerButton } from "@/components/navbar/BurgerButton";
 import { DesktopMenu } from "@/components/navbar/DesktopMenu";
+import { CommandMenuTrigger } from "@/components/navbar/CommandMenuTrigger";
 import { MobileMenu } from "@/components/navbar/MobileMenu";
 import { ThemeToggle } from "@/components/theme";
 import { navItems } from "@/data/navbarContent";
@@ -50,11 +51,12 @@ const Navbar = () => {
                         textColorClass={textColorClass}
                     />
                     <DesktopMenu
-                        navItems={navItems}
+                        navItems={navItems.filter(item => ['home', 'about', 'projects', 'blogs'].includes(item.id))}
                         scrolled={scrolled}
                         onNavigate={handleNavigation}
                         textColorClass={textColorClass}
                     />
+                    <CommandMenuTrigger textColorClass={textColorClass} scrolled={scrolled} />
                     <div className="ml-2">
                         <ThemeToggle textColorClass={textColorClass} scrolled={scrolled} />
                     </div>

@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar/Navbar";
+import { CommandPalette } from "@/components/command-palette/CommandPalette";
 import Footer from "@/components/shared/Footer";
 import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable}`} suppressHydrationWarning>
                 <Providers>
                     <Navbar />
+                    <CommandPalette />
                     <main>{children}</main>
                     <Footer />
                 </Providers>
