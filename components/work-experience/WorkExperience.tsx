@@ -20,7 +20,7 @@ const WorkExperience: React.FC = () => {
             ref={ref}
             id="work"
             aria-labelledby="work-heading"
-            className="py-24 flex items-center justify-center min-h-screen px-8 bg-white dark:bg-black text-gray-900 dark:text-white"
+            className="py-24 flex items-center justify-center min-h-screen px-8 text-gray-900 dark:text-white"
         >
             <div className="w-full max-w-3xl">
                 <motion.h2

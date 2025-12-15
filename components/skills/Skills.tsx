@@ -18,7 +18,7 @@ const Skills: React.FC = () => {
     const { ref, mainControls } = useAnimateOnScroll();
 
     return (
-        <section ref={ref} id="skills" className="py-24 bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen flex items-center justify-center">
+        <section ref={ref} id="skills" className="py-24 text-gray-900 dark:text-white min-h-screen flex items-center justify-center">
             <div className="container mx-auto px-8 flex flex-col items-center justify-center">
                 <motion.h2
                     className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white"

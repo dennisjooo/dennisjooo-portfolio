@@ -35,7 +35,7 @@ export default function ProjectPageClient({ project }: { project: Blog }) {
             <PhotoProvider maskOpacity={PHOTO_VIEWER_CONFIG.maskOpacity} speed={() => PHOTO_VIEWER_CONFIG.speed}>
                 <section
                     id='projects'
-                    className='flex flex-col items-center justify-start min-h-screen py-24 px-8 bg-white dark:bg-black text-gray-900 dark:text-white'
+                    className='flex flex-col items-center justify-start min-h-screen py-24 px-8 text-gray-900 dark:text-white'
                 >
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

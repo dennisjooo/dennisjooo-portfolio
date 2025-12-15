@@ -9,7 +9,7 @@ import { contactLinks } from '@/data/contactContent';
 
 const Contacts: React.FC = () => {
     return (
-        <section id="contact" className="flex flex-col items-center py-24 bg-white dark:bg-black text-gray-900 dark:text-white px-8">
+        <section id="contact" className="flex flex-col items-center py-24 text-gray-900 dark:text-white px-8">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

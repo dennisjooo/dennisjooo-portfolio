@@ -118,7 +118,7 @@ export default function NotFound() {
     }, [shuffledMessages.length]);
 
     return (
-        <main className="relative min-h-screen flex flex-col items-center justify-center bg-white dark:bg-black overflow-hidden">
+        <main className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
             <MatrixRainBackground />
 
             <motion.div

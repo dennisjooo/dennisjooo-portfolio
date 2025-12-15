@@ -18,7 +18,7 @@ const Footer = () => {
     }), []);
 
     return (
-        <footer ref={ref} className="relative w-full overflow-hidden bg-white dark:bg-black">
+        <footer ref={ref} className="relative w-full overflow-hidden">
             {/* Wrapper handles centering so Framer can animate scale without overriding transforms */}
             <div className="pointer-events-none absolute left-1/2 top-full h-[103%] w-[130%] -translate-x-1/2 -translate-y-[60%] sm:w-[140%]">
                 <motion.div

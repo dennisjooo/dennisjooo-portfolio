@@ -18,7 +18,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ projects }) => {
     );
 
     return (
-        <section id="projects" className="py-24 flex items-center justify-center min-h-screen px-8 bg-white dark:bg-black">
+        <section id="projects" className="py-24 flex items-center justify-center min-h-screen px-8">
             <div className="container max-w-7xl mx-auto flex-1 flex flex-col">
                 <FeaturedProjectsHeader />
                 <FeaturedProjectsGrid projects={featuredProjects} />
