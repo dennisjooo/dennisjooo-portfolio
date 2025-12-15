@@ -42,7 +42,13 @@ function MatrixRainBackground() {
     }, []);
 
     return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-30">
+        <div
+            className="fixed inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-30"
+            style={{
+                maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)'
+            }}
+        >
             {columns.map((col, i) => (
                 <motion.div
                     key={i}
