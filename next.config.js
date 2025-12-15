@@ -42,6 +42,19 @@ const securityHeaders = [
 const createConfig = (phase) => {
   const isExportPhase = phase === PHASE_EXPORT;
 
+  // Section redirects - cleaner than dynamic routes with output: export
+  const sectionRedirects = [
+    { source: '/about', destination: '/#about' },
+    { source: '/work', destination: '/#work' },
+    { source: '/experience', destination: '/#work' },
+    { source: '/projects', destination: '/#projects' },
+    { source: '/project', destination: '/#projects' },
+    { source: '/skills', destination: '/#skills' },
+    { source: '/skill', destination: '/#skills' },
+    { source: '/contact', destination: '/#contact' },
+    { source: '/contacts', destination: '/#contact' },
+  ].map(r => ({ ...r, permanent: true }));
+
   return {
     distDir: 'out',
     output: 'export',
@@ -51,6 +64,9 @@ const createConfig = (phase) => {
     },
     experimental: {
       optimizePackageImports: ['framer-motion']
+    },
+    async redirects() {
+      return sectionRedirects;
     },
     async headers() {
       if (isExportPhase) {
