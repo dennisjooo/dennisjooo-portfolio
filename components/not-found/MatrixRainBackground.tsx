@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MATRIX_CHARS } from '@/lib/constants/notFound';
+import { MATRIX_CHARS, MATRIX_RAIN_CONFIG } from '@/lib/constants/notFound';
+import { MOBILE_BREAKPOINT } from '@/lib/constants/performance';
 
 interface MatrixColumn {
     chars: string[];
@@ -10,13 +11,6 @@ interface MatrixColumn {
     delay: number;
     duration: number;
 }
-
-// Performance-optimized settings based on device
-const MOBILE_BREAKPOINT = 768;
-const DESKTOP_COLUMNS = 20;
-const MOBILE_COLUMNS = 8;
-const DESKTOP_CHARS = 15;
-const MOBILE_CHARS = 8;
 
 export function MatrixRainBackground() {
     const [columns, setColumns] = useState<MatrixColumn[]>([]);
@@ -35,20 +29,19 @@ export function MatrixRainBackground() {
     // Generate columns based on screen size
     useEffect(() => {
         const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-        const columnCount = isMobile ? MOBILE_COLUMNS : DESKTOP_COLUMNS;
-        const charCount = isMobile ? MOBILE_CHARS : DESKTOP_CHARS;
+        const config = isMobile ? MATRIX_RAIN_CONFIG.mobile : MATRIX_RAIN_CONFIG.desktop;
 
         const generateColumn = (x: number): MatrixColumn => ({
-            chars: Array.from({ length: charCount }, () =>
+            chars: Array.from({ length: config.charsPerColumn }, () =>
                 MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)]
             ),
             x,
             delay: Math.random() * 5,
-            duration: isMobile ? 5 + Math.random() * 3 : 3 + Math.random() * 4,
+            duration: config.minDuration + Math.random() * (config.maxDuration - config.minDuration),
         });
 
-        const cols = Array.from({ length: columnCount }, (_, i) =>
-            generateColumn((i / columnCount) * 100)
+        const cols = Array.from({ length: config.columns }, (_, i) =>
+            generateColumn((i / config.columns) * 100)
         );
         setColumns(cols);
     }, []);
