@@ -3,111 +3,12 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
-
-const ERROR_MESSAGES = [
-    'git checkout sanity',
-    'undefined is not a function',
-    '404: Brain not found',
-    'SEGFAULT: Reality not loaded',
-    'npm ERR! page not found',
-    'TypeError: this.page is null',
-    'Connection to reality refused',
-    'sudo find / -name "page"',
-    'Error: Cannot read property "path"',
-    'Exception: Lost in the void',
-];
-
-function GlitchText({ children }: { children: string }) {
-    return (
-        <span className="glitch-text relative inline-block" data-text={children}>
-            {children}
-        </span>
-    );
-}
-
-function MatrixRainBackground() {
-    const [columns, setColumns] = useState<{ chars: string[]; x: number; delay: number; duration: number }[]>([]);
-
-    useEffect(() => {
-        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ</>{}[];'.split('');
-        const generateColumn = (x: number) => ({
-            chars: Array.from({ length: 20 }, () => chars[Math.floor(Math.random() * chars.length)]),
-            x,
-            delay: Math.random() * 5,
-            duration: 3 + Math.random() * 4,
-        });
-
-        const cols = Array.from({ length: 30 }, (_, i) => generateColumn((i / 30) * 100));
-        setColumns(cols);
-    }, []);
-
-    return (
-        <div
-            className="fixed inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-30"
-            style={{
-                maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)'
-            }}
-        >
-            {columns.map((col, i) => (
-                <motion.div
-                    key={i}
-                    className="absolute top-0 text-[10px] font-mono leading-tight matrix-column"
-                    style={{
-                        left: `${col.x}%`,
-                        color: 'hsl(var(--accent))',
-                    }}
-                    initial={{ y: '-100%' }}
-                    animate={{ y: '100vh' }}
-                    transition={{
-                        duration: col.duration,
-                        repeat: Infinity,
-                        delay: col.delay,
-                        ease: 'linear',
-                    }}
-                >
-                    {col.chars.map((char, j) => (
-                        <div key={j} className="opacity-70">{char}</div>
-                    ))}
-                </motion.div>
-            ))}
-        </div>
-    );
-}
-
-function TerminalPrompt({ message }: { message: string }) {
-    const [displayText, setDisplayText] = useState('');
-    const [showCursor, setShowCursor] = useState(true);
-
-    useEffect(() => {
-        setDisplayText('');
-        let i = 0;
-        const interval = setInterval(() => {
-            if (i < message.length) {
-                setDisplayText(message.slice(0, i + 1));
-                i++;
-            } else {
-                clearInterval(interval);
-            }
-        }, 50);
-        return () => clearInterval(interval);
-    }, [message]);
-
-    useEffect(() => {
-        const cursorInterval = setInterval(() => {
-            setShowCursor((prev) => !prev);
-        }, 530);
-        return () => clearInterval(cursorInterval);
-    }, []);
-
-    return (
-        <div className="font-mono text-sm md:text-base bg-black/80 dark:bg-black/90 rounded-lg px-4 py-3 border border-[hsl(var(--accent))]/30 shadow-lg">
-            <span className="text-green-400">$</span>
-            <span className="text-gray-300 ml-2">{displayText}</span>
-            <span className={`ml-0.5 ${showCursor ? 'opacity-100' : 'opacity-0'} text-[hsl(var(--accent))]`}>▌</span>
-        </div>
-    );
-}
+import {
+    GlitchText,
+    MatrixRainBackground,
+    TerminalPrompt,
+} from '@/components/not-found';
+import { ERROR_MESSAGES } from '@/lib/constants/notFound';
 
 export default function NotFound() {
     const [messageIndex, setMessageIndex] = useState(0);
