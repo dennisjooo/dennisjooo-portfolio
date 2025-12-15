@@ -178,6 +178,7 @@ html {
     0 0 2px hsl(var(--foreground)),
     0 0 10px hsl(var(--accent) / 0.5);
   animation: glitch-skew 4s infinite linear alternate-reverse;
+  will-change: transform;
 }
 
 /* RGB Channel Split - Cyan layer */
@@ -193,6 +194,7 @@ html {
   animation: glitch-cyan 2s infinite steps(2, end);
   clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
   text-shadow: -2px 0 #0ff;
+  will-change: transform, clip-path;
 }
 
 /* RGB Channel Split - Magenta layer */
@@ -208,6 +210,41 @@ html {
   animation: glitch-magenta 3s infinite steps(2, end);
   clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
   text-shadow: 2px 0 #f0f;
+  will-change: transform, clip-path;
+}
+
+/* Mobile optimization: disable continuous animations, only show on active/hover */
+@media (max-width: 768px) {
+  .glitch-text {
+    animation: none;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none;
+  }
+
+  /* Re-enable on active touch */
+  .glitch-wrapper:active .glitch-text {
+    animation: glitch-skew 4s infinite linear alternate-reverse;
+  }
+
+  .glitch-wrapper:active .glitch-text::before {
+    animation: glitch-cyan 2s infinite steps(2, end);
+  }
+
+  .glitch-wrapper:active .glitch-text::after {
+    animation: glitch-magenta 3s infinite steps(2, end);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text,
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none !important;
+  }
 }
 
 /* Hover intensifies the glitch */
