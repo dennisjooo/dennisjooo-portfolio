@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import GradientUnderline from '@/components/shared/GradientUnderline';
+import { BlinkingCursor } from '@/components/shared/BlinkingCursor';
 
 interface HeroContentProps {
     description: string;
@@ -37,7 +38,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({ description, isInView 
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 1.2 }}
         >
-            {description}<span className="animate-pulse">|</span>
+            {description}<BlinkingCursor cursor="|" />
         </motion.h2>
     </div>
 );

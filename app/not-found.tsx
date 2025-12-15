@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState, useEffect, useMemo } from 'react';
 import {
     GlitchText,
     MatrixRainBackground,
@@ -11,19 +10,6 @@ import {
 import { ERROR_MESSAGES } from '@/lib/constants/notFound';
 
 export default function NotFound() {
-    const [messageIndex, setMessageIndex] = useState(0);
-
-    const shuffledMessages = useMemo(() => {
-        return [...ERROR_MESSAGES].sort(() => Math.random() - 0.5);
-    }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setMessageIndex((prev) => (prev + 1) % shuffledMessages.length);
-        }, 4000);
-        return () => clearInterval(interval);
-    }, [shuffledMessages.length]);
-
     return (
         <main className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
             <MatrixRainBackground />
@@ -61,7 +47,7 @@ export default function NotFound() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
                 >
-                    <TerminalPrompt message={shuffledMessages[messageIndex]} />
+                    <TerminalPrompt messages={ERROR_MESSAGES} />
                 </motion.div>
 
                 {/* Go Home Button */}
