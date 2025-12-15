@@ -12,7 +12,7 @@ import ProjectDescription from '@/components/projects/ProjectDescription';
 import { BsArrowLeft } from "react-icons/bs";
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
 import { extractHeadings } from '@/lib/utils/markdownHelpers';
-import { GradientUnderline } from '@/components/shared';
+import { GradientUnderline, ReadingProgress } from '@/components/shared';
 import TableOfContents from '@/components/projects/TableOfContents';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
 
@@ -30,6 +30,7 @@ export default function ProjectPageClient({ project }: { project: Blog }) {
 
     return (
         <>
+            <ReadingProgress />
             <TableOfContents headings={headings} />
             <PhotoProvider maskOpacity={PHOTO_VIEWER_CONFIG.maskOpacity} speed={() => PHOTO_VIEWER_CONFIG.speed}>
                 <section
