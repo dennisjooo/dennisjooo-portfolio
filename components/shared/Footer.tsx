@@ -1,11 +1,19 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useMemo, useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useMemo, useRef, useState, useEffect } from 'react';
+
+const MOBILE_BREAKPOINT = 768;
 
 const Footer = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.2 });
+    const prefersReducedMotion = useReducedMotion();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    }, []);
 
     const gradientVariants = useMemo(() => ({
         hidden: { opacity: 0, scaleY: 0.15 },
@@ -17,6 +25,22 @@ const Footer = () => {
         visible: { opacity: 1, y: 0 }
     }), []);
 
+    // Simplified gradient for mobile (no expensive SVG noise filter)
+    const mobileGradient = `radial-gradient(ellipse at center,
+        var(--gradient-accent-from) 0%,
+        var(--gradient-accent-via) 40%,
+        var(--gradient-accent-to) 70%,
+        transparent 90%)`;
+
+    // Full gradient with noise texture for desktop
+    const desktopGradient = `radial-gradient(ellipse at center,
+        var(--gradient-accent-from) 0%,
+        var(--gradient-accent-from) 15%,
+        var(--gradient-accent-via) 40%,
+        var(--gradient-accent-to) 60%,
+        transparent 80%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E")`;
+
     return (
         <footer ref={ref} className="relative w-full overflow-hidden">
             {/* Wrapper handles centering so Framer can animate scale without overriding transforms */}
@@ -24,25 +48,13 @@ const Footer = () => {
                 <motion.div
                     className="h-full w-full rounded-full"
                     variants={gradientVariants}
-                    initial="hidden"
+                    initial={prefersReducedMotion ? "visible" : "hidden"}
                     animate={isInView ? "visible" : "hidden"}
-                    transition={{ duration: 1.6, ease: [0.4, 0, 0.2, 1] }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.6, ease: [0.4, 0, 0.2, 1] }}
                     style={{
                         transformOrigin: 'center bottom',
-                        background: `radial-gradient(ellipse at center,
-                            var(--gradient-accent-from) 0%,
-                            var(--gradient-accent-from) 15%,
-                            var(--gradient-accent-via) 40%,
-                            var(--gradient-accent-to) 60%,
-                            transparent 80%)`,
-                        filter: 'blur(30px)',
-                        backgroundImage: `radial-gradient(ellipse at center,
-                            var(--gradient-accent-from) 0%,
-                            var(--gradient-accent-from) 15%,
-                            var(--gradient-accent-via) 40%,
-                            var(--gradient-accent-to) 60%,
-                            transparent 80%),
-                            url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E")`
+                        backgroundImage: isMobile ? mobileGradient : desktopGradient,
+                        filter: isMobile ? 'blur(15px)' : 'blur(30px)',
                     }}
                 />
             </div>
@@ -50,9 +62,9 @@ const Footer = () => {
                 <motion.p
                     className="relative z-10 text-sm text-gray-700 dark:text-gray-300"
                     variants={textVariants}
-                    initial="hidden"
+                    initial={prefersReducedMotion ? "visible" : "hidden"}
                     animate={isInView ? "visible" : "hidden"}
-                    transition={{ duration: 0.8, delay: 0.3 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.3 }}
                 >
                     © Dennis Jonathan {new Date().getFullYear()}
                 </motion.p>
