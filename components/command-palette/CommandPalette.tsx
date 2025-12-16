@@ -1,121 +1,100 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import {
-    Home,
-    User,
-    Briefcase,
-    FolderGit2,
-    Cpu,
-    Mail,
-    Globe,
-    Laptop,
-    Moon,
-    Sun,
-    FileText
-} from "lucide-react"
-import { useTheme } from "next-themes"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import {
     CommandDialog,
-    CommandEmpty,
-    CommandGroup,
     CommandInput,
-    CommandItem,
     CommandList,
-    CommandSeparator,
-} from "@/components/ui/command"
-import { navItems } from "@/data/navbarContent"
+} from "@/components/ui/command";
+import { useCommandPalette } from "@/lib/hooks/useCommandPalette";
+
+import { NavigationGroup } from "./groups/NavigationGroup";
+import { ProjectsGroup } from "./groups/ProjectsGroup";
+import { WorkExperienceGroup } from "./groups/WorkExperienceGroup";
+import { SocialsGroup } from "./groups/SocialsGroup";
+import { UtilitiesGroup } from "./groups/UtilitiesGroup";
+import { ThemeGroup } from "./groups/ThemeGroup";
+import { SecretGroup } from "./groups/SecretGroup";
+import { SearchOptionsBar } from "./groups/SearchOptionsBar";
 
 export function CommandPalette() {
-    const [open, setOpen] = React.useState(false)
-    const router = useRouter()
-    const { setTheme } = useTheme()
+    const {
+        open,
+        setOpen,
+        search,
+        setSearch,
+        copied,
+        exactMatch,
+        setExactMatch,
+        caseSensitive,
+        setCaseSensitive,
+        searchScope,
+        setSearchScope,
+        showSecretCommand,
+        filteredProjects,
+        filteredWorkExperience,
+        runCommand,
+        copyUrl,
+        router,
+    } = useCommandPalette();
 
-    React.useEffect(() => {
-        const down = (e: KeyboardEvent) => {
-            if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-                e.preventDefault()
-                setOpen((open) => !open)
-            }
-        }
-
-        const openPalette = () => setOpen(true)
-
-        document.addEventListener("keydown", down)
-        document.addEventListener("openCommandPalette", openPalette)
-        return () => {
-            document.removeEventListener("keydown", down)
-            document.removeEventListener("openCommandPalette", openPalette)
-        }
-    }, [])
-
-    const runCommand = React.useCallback((command: () => unknown) => {
-        setOpen(false)
-        command()
-    }, [])
+    const hasSearchResults = filteredProjects.length > 0 || filteredWorkExperience.length > 0;
 
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
-            <CommandInput placeholder="Type a command or search..." />
-            <CommandList className="max-h-[300px] overflow-hidden">
-                <ScrollArea className="h-[300px]">
-                    <CommandEmpty>No results found.</CommandEmpty>
+            <CommandInput
+                placeholder="Type a command or search..."
+                value={search}
+                onValueChange={setSearch}
+            />
 
-                    <CommandGroup heading="Navigation">
-                        {navItems.map((item) => {
-                            const Icon = getIconForId(item.id)
-                            return (
-                                <CommandItem
-                                    key={item.id}
-                                    value={item.label}
-                                    onSelect={() => runCommand(() => {
-                                        if (item.href) {
-                                            router.push(item.href)
-                                        } else {
-                                            router.push(`/#${item.id}`)
-                                        }
-                                    })}
-                                >
-                                    <Icon className="mr-2 h-4 w-4" />
-                                    <span>{item.label}</span>
-                                </CommandItem>
-                            )
-                        })}
-                    </CommandGroup>
+            <SearchOptionsBar
+                show={Boolean(search.trim())}
+                exactMatch={exactMatch}
+                onToggleExactMatch={() => setExactMatch(!exactMatch)}
+                caseSensitive={caseSensitive}
+                onToggleCaseSensitive={() => setCaseSensitive(!caseSensitive)}
+                searchScope={searchScope}
+                onChangeScope={setSearchScope}
+            />
 
-                    <CommandSeparator />
+            <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border hover:scrollbar-thumb-muted-foreground/50">
+                {/* No results message */}
+                {search.trim() && !hasSearchResults && (
+                    <div className="py-6 text-center text-sm text-muted-foreground">
+                        No results found.
+                    </div>
+                )}
 
-                    <CommandGroup heading="Theme">
-                        <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
-                            <Sun className="mr-2 h-4 w-4" />
-                            <span>Light</span>
-                        </CommandItem>
-                        <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
-                            <Moon className="mr-2 h-4 w-4" />
-                            <span>Dark</span>
-                        </CommandItem>
-                        <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
-                            <Laptop className="mr-2 h-4 w-4" />
-                            <span>System</span>
-                        </CommandItem>
-                    </CommandGroup>
-                </ScrollArea>
+                <NavigationGroup
+                    onSelect={runCommand}
+                    onNavigate={(path) => router.push(path)}
+                />
+
+                {search.trim() && (
+                    <>
+                        <ProjectsGroup
+                            projects={filteredProjects}
+                            searchTerm={search.trim()}
+                            onSelect={runCommand}
+                            onNavigate={(path) => router.push(path)}
+                        />
+                        <WorkExperienceGroup
+                            workExperience={filteredWorkExperience}
+                            searchTerm={search.trim()}
+                            onSelect={runCommand}
+                            onNavigate={(path) => router.push(path)}
+                        />
+                    </>
+                )}
+
+                <SocialsGroup onSelect={runCommand} />
+
+                <UtilitiesGroup copied={copied} onCopyUrl={copyUrl} />
+
+                <ThemeGroup onSelect={runCommand} />
+
+                <SecretGroup show={showSecretCommand} onSelect={runCommand} />
             </CommandList>
         </CommandDialog>
-    )
-}
-
-function getIconForId(id: string) {
-    switch (id) {
-        case 'home': return Home
-        case 'about': return User
-        case 'work': return Briefcase
-        case 'projects': return FolderGit2
-        case 'skills': return Cpu
-        case 'contact': return Mail
-        case 'blogs': return FileText
-        default: return Globe
-    }
+    );
 }
