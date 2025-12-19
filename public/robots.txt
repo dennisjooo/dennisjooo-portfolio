@@ -2,3 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://dennisjooo.github.io/sitemap.xml
+
+# LLM-friendly content
+# See https://llmstxt.org for specification
+# AI agents can find structured portfolio info at /llms.txt
