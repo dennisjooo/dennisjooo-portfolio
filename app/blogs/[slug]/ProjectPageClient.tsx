@@ -1,20 +1,20 @@
 'use client';
 
+import ProjectDescription from '@/components/projects/ProjectDescription';
+import ProjectLinks from '@/components/projects/ProjectLinks';
+import TableOfContents from '@/components/projects/TableOfContents';
+import { GradientUnderline, ReadingProgress } from '@/components/shared';
+import { Blog } from '@/data/blogs';
+import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
+import { extractHeadings } from '@/lib/utils/markdownHelpers';
+import { formatProjectDate } from '@/lib/utils/projectFormatting';
+import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-import { useMemo, useState, useEffect, useLayoutEffect } from 'react';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { Blog } from '@/data/blogs';
-import ProjectLinks from '@/components/projects/ProjectLinks';
-import ProjectDescription from '@/components/projects/ProjectDescription';
+import { useEffect, useMemo, useState } from 'react';
 import { BsArrowLeft } from "react-icons/bs";
-import { formatProjectDate } from '@/lib/utils/projectFormatting';
-import { extractHeadings } from '@/lib/utils/markdownHelpers';
-import { GradientUnderline, ReadingProgress } from '@/components/shared';
-import TableOfContents from '@/components/projects/TableOfContents';
-import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 const ProjectContent = dynamic(() => import('@/components/projects/ProjectContent'), {
     loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 h-96 rounded-lg" />

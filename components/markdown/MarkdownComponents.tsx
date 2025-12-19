@@ -102,6 +102,7 @@ export const markdownComponents: Components = {
         return (
             <span className="block my-8">
                 <PhotoView src={src}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={src}
                         alt={alt ?? ''}

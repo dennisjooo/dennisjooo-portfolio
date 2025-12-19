@@ -81,7 +81,7 @@ const ScrollRestorer = () => {
 
             timeoutId = setTimeout(() => {
                 handleScroll();
-                // @ts-ignore
+                // @ts-expect-error - resetting timeout to null for throttle pattern
                 timeoutId = null;
             }, 100);
         };

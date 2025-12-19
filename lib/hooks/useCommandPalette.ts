@@ -6,7 +6,6 @@ import {
     processedProjects,
     processedWorkExperience,
     getContextSnippet,
-    hasExactWord,
     type ProcessedProject,
     type ProcessedWorkExperience,
 } from "@/components/command-palette/commandPaletteUtils";

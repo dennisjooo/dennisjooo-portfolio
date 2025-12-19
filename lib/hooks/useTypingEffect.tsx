@@ -32,7 +32,6 @@ export const useTypingEffect = (descriptions: string[]) => {
     const [loopNum, setLoopNum] = useState(0);
     const [typingSpeed, setTypingSpeed] = useState(100);
     const [rollbackPhase, setRollbackPhase] = useState<RollbackPhase | null>(null);
-    const [rollbackConfig, setRollbackConfig] = useState<RollbackConfig | null>(null);
 
     const handleTyping = useCallback(() => {
         const i = loopNum % shuffledDescriptions.length;
@@ -53,7 +52,6 @@ export const useTypingEffect = (descriptions: string[]) => {
                 } else {
                     // Finished typing the old text, pause before deleting
                     setRollbackPhase('pausing');
-                    setRollbackConfig(parsedRollback);
                     setTypingSpeed(800);
                 }
             } else if (rollbackPhase === 'pausing') {
@@ -84,7 +82,6 @@ export const useTypingEffect = (descriptions: string[]) => {
                 setTimeout(() => {
                     setIsDeleting(true);
                     setRollbackPhase(null);
-                    setRollbackConfig(null);
                 }, 500);
             }
         } else if (parsedRollback && isDeleting) {
@@ -99,7 +96,6 @@ export const useTypingEffect = (descriptions: string[]) => {
                 setIsDeleting(false);
                 setLoopNum(loopNum + 1);
                 setRollbackPhase(null);
-                setRollbackConfig(null);
             }
         } else {
             // Handle normal descriptions (without rollback)
@@ -116,10 +112,9 @@ export const useTypingEffect = (descriptions: string[]) => {
                 setIsDeleting(false);
                 setLoopNum(loopNum + 1);
                 setRollbackPhase(null);
-                setRollbackConfig(null);
             }
         }
-    }, [description, isDeleting, loopNum, shuffledDescriptions, rollbackPhase, rollbackConfig]);
+    }, [description, isDeleting, loopNum, shuffledDescriptions, rollbackPhase]);
 
     useEffect(() => {
         const timer = setTimeout(handleTyping, typingSpeed);

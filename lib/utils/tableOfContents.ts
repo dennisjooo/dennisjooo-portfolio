@@ -1,6 +1,5 @@
 import { Heading } from '@/lib/utils/markdownHelpers';
 import { scrollToCentered } from '@/lib/utils/scrollHelpers';
-import { SCROLL_ANIMATION_DURATION } from '@/lib/constants/scrolling';
 
 /**
  * Get the display active ID based on hover state and heading hierarchy.
