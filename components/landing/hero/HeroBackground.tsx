@@ -12,6 +12,11 @@ const Iridescence = dynamic(() => import('./Iridescence/Iridescence').then(mod =
 /**
  * Hero background with WebGL iridescence effect
  * Deferred loading to not block LCP
+ * 
+ * Transition flow:
+ * 1. Hero shows static bg-gradient-primary
+ * 2. After LCP, Iridescence loads (no fallback gradient - transparent)
+ * 3. WebGL canvas fades in smoothly over the static gradient
  */
 export function HeroBackground() {
     const { theme, systemTheme } = useTheme();
@@ -52,6 +57,7 @@ export function HeroBackground() {
                 mouseReact={false}
                 amplitude={0.5}
                 speed={0.5}
+                showFallbackGradient={false}
             />
         </div>
     );

@@ -49,6 +49,8 @@ interface IridescenceProps {
   speed?: number;
   amplitude?: number;
   mouseReact?: boolean;
+  onReady?: () => void;
+  showFallbackGradient?: boolean;
 }
 
 export default function Iridescence({
@@ -56,6 +58,8 @@ export default function Iridescence({
   speed = 1.0,
   amplitude = 0.1,
   mouseReact = true,
+  onReady,
+  showFallbackGradient = true,
   ...rest
 }: IridescenceProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
@@ -135,15 +139,28 @@ export default function Iridescence({
 
     const mesh = new Mesh(gl, { geometry, program });
     let animateId: number;
+    let hasCalledReady = false;
 
     function update(t: number) {
       animateId = requestAnimationFrame(update);
       program.uniforms.uTime.value = t * 0.001;
       renderer.render({ scene: mesh });
+      
+      // Call onReady after first successful render
+      if (!hasCalledReady) {
+        hasCalledReady = true;
+        onReady?.();
+      }
     }
     animateId = requestAnimationFrame(update);
-    gl.canvas.className = 'block w-full h-full animate-[fadeIn_0.6s_ease-in]';
+    // Start with opacity 0, will be transitioned via parent or CSS
+    gl.canvas.style.cssText = 'display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 2s ease-out;';
     ctn.appendChild(gl.canvas);
+    
+    // Trigger the fade-in after a frame to ensure the canvas is rendered
+    requestAnimationFrame(() => {
+      gl.canvas.style.opacity = '1';
+    });
 
     function handleMouseMove(e: MouseEvent) {
       const rect = ctn.getBoundingClientRect();
@@ -166,7 +183,7 @@ export default function Iridescence({
       ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, speed, amplitude, mouseReact]);
+  }, [color, speed, amplitude, mouseReact, onReady]);
 
-  return <div ref={ctnDom} className="w-full h-full backface-hidden transform-gpu" style={gradientStyle} {...rest} />;
+  return <div ref={ctnDom} className="w-full h-full backface-hidden transform-gpu" style={showFallbackGradient ? gradientStyle : undefined} {...rest} />;
 }
