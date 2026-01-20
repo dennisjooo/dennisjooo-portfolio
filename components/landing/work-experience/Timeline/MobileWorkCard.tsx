@@ -51,7 +51,7 @@ export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
                     {/* Top Row: Index Number and Chevron */}
                     <div className="flex items-center justify-between">
                         {/* Index Number - Editorial Style */}
-                        <span className="font-mono text-xs text-muted-foreground/50 uppercase tracking-widest">
+                        <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
                             0{index + 1}.
                         </span>
 
@@ -81,13 +81,13 @@ export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
                             {group.companyName}
                         </h3>
                         <div className="flex items-center gap-3">
-                            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground/60">
+                            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                                 {dateRange}
                             </span>
                             {!isExpanded && (
                                 <>
                                     <span className="text-muted-foreground/30">|</span>
-                                    <span className="font-mono text-xs text-muted-foreground/40">
+                                    <span className="font-mono text-xs text-muted-foreground">
                                         {group.roles.length} {group.roles.length === 1 ? 'role' : 'roles'}
                                     </span>
                                 </>
@@ -99,7 +99,7 @@ export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
                     {!isExpanded && (
                         <div className="flex items-center gap-2 pt-1">
                             <div className="h-px flex-1 bg-gradient-to-r from-foreground/10 to-transparent" />
-                            <span className="font-mono text-[10px] text-muted-foreground/40 uppercase tracking-widest">
+                            <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
                                 Tap to explore
                             </span>
                             <div className="h-px flex-1 bg-gradient-to-l from-foreground/10 to-transparent" />

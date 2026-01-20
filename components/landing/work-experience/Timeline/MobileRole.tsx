@@ -22,7 +22,7 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
                 <h4 className="text-xl font-urbanist font-bold uppercase tracking-tight text-foreground">
                     {role.title}
                 </h4>
-                <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground/60 bg-foreground/5 px-2 py-1 rounded inline-block">
+                <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground bg-foreground/5 px-2 py-1 rounded inline-block">
                     {role.date}
                 </span>
             </div>
