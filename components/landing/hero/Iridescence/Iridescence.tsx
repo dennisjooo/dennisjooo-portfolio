@@ -153,14 +153,9 @@ export default function Iridescence({
       }
     }
     animateId = requestAnimationFrame(update);
-    // Start with opacity 0, will be transitioned via parent or CSS
-    gl.canvas.style.cssText = 'display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 2s ease-out;';
+    // Canvas renders at full opacity - parent wrapper handles the fade-in transition
+    gl.canvas.style.cssText = 'display: block; width: 100%; height: 100%;';
     ctn.appendChild(gl.canvas);
-    
-    // Trigger the fade-in after a frame to ensure the canvas is rendered
-    requestAnimationFrame(() => {
-      gl.canvas.style.opacity = '1';
-    });
 
     function handleMouseMove(e: MouseEvent) {
       const rect = ctn.getBoundingClientRect();
