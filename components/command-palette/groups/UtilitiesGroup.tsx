@@ -14,11 +14,11 @@ export function UtilitiesGroup({ copied, onCopyUrl }: UtilitiesGroupProps) {
             <CommandGroup heading="Utilities">
                 <CommandItem onSelect={onCopyUrl} value="Copy URL">
                     {copied ? (
-                        <Check className="mr-2 h-4 w-4" />
+                        <Check className="h-4 w-4 text-accent" />
                     ) : (
-                        <Copy className="mr-2 h-4 w-4" />
+                        <Copy className="h-4 w-4" />
                     )}
-                    <span>Copy Current URL</span>
+                    <span className="font-medium">{copied ? "Copied!" : "Copy Current URL"}</span>
                 </CommandItem>
             </CommandGroup>
             <CommandSeparator />

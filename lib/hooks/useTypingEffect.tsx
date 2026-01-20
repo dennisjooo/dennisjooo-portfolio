@@ -25,15 +25,23 @@ const parseRollback = (text: string): RollbackConfig | null => {
     return null;
 };
 
-export const useTypingEffect = (descriptions: string[]) => {
+export const useTypingEffect = (descriptions: string[], initialDelay: number = 500) => {
     const shuffledDescriptions = useMemo(() => shuffleArray(descriptions), [descriptions]);
     const [description, setDescription] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopNum, setLoopNum] = useState(0);
     const [typingSpeed, setTypingSpeed] = useState(100);
     const [rollbackPhase, setRollbackPhase] = useState<RollbackPhase | null>(null);
+    const [isReady, setIsReady] = useState(false);
+
+    // Delay start of typing to allow LCP to complete
+    useEffect(() => {
+        const timer = setTimeout(() => setIsReady(true), initialDelay);
+        return () => clearTimeout(timer);
+    }, [initialDelay]);
 
     const handleTyping = useCallback(() => {
+        if (!isReady) return;
         const i = loopNum % shuffledDescriptions.length;
         const fullDescription = shuffledDescriptions[i];
         const parsedRollback = parseRollback(fullDescription);
@@ -114,12 +122,13 @@ export const useTypingEffect = (descriptions: string[]) => {
                 setRollbackPhase(null);
             }
         }
-    }, [description, isDeleting, loopNum, shuffledDescriptions, rollbackPhase]);
+    }, [description, isDeleting, loopNum, shuffledDescriptions, rollbackPhase, isReady]);
 
     useEffect(() => {
+        if (!isReady) return;
         const timer = setTimeout(handleTyping, typingSpeed);
         return () => clearTimeout(timer);
-    }, [handleTyping, typingSpeed]);
+    }, [handleTyping, typingSpeed, isReady]);
 
     return description;
 };

@@ -2,6 +2,7 @@
 
 import { CaseSensitive, WholeWord, FolderSearch, Briefcase, FolderGit2 } from "lucide-react";
 import type { SearchScope } from "@/lib/hooks/useCommandPalette";
+import { cn } from "@/lib/utils";
 
 interface SearchOptionsBarProps {
     show: boolean;
@@ -31,10 +32,12 @@ function OptionButton({
             type="button"
             onClick={onClick}
             title={title}
-            className={`flex items-center gap-1 px-2 py-0.5 rounded transition-colors ${active
-                ? 'bg-accent text-accent-foreground'
-                : 'hover:bg-muted'
-                }`}
+            className={cn(
+                "flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-all duration-200",
+                active
+                    ? "bg-accent/20 text-accent ring-1 ring-accent/30"
+                    : "hover:bg-muted/60 text-muted-foreground hover:text-foreground"
+            )}
         >
             <Icon className="h-3 w-3" />
             <span>{label}</span>
@@ -60,10 +63,12 @@ function ScopeButton({
             type="button"
             onClick={onClick}
             title={title}
-            className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${active
-                ? 'bg-primary text-primary-foreground'
-                : 'hover:bg-muted'
-                }`}
+            className={cn(
+                "flex items-center gap-1.5 px-2 py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-all duration-200",
+                active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "hover:bg-muted/60 text-muted-foreground hover:text-foreground"
+            )}
         >
             <Icon className="h-3 w-3" />
             <span>{label}</span>
@@ -83,10 +88,10 @@ export function SearchOptionsBar({
     if (!show) return null;
 
     return (
-        <div className="flex flex-col border-b">
-            <div className="flex items-center gap-2 px-3 py-1.5 text-xs text-muted-foreground flex-wrap">
+        <div className="flex flex-col border-b border-border/50 bg-muted/20">
+            <div className="flex items-center gap-3 px-4 py-2 text-xs text-muted-foreground flex-wrap">
                 {/* Match options */}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5">
                     <OptionButton
                         active={caseSensitive}
                         onClick={onToggleCaseSensitive}
@@ -103,11 +108,11 @@ export function SearchOptionsBar({
                     />
                 </div>
 
-                <span className="text-muted-foreground/50">|</span>
+                <div className="h-4 w-px bg-border/50" />
 
                 {/* Scope filter */}
-                <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground/70 mr-1">In:</span>
+                <div className="flex items-center gap-1.5">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60 mr-1">Scope:</span>
                     <ScopeButton
                         active={searchScope === "all"}
                         onClick={() => onChangeScope("all")}

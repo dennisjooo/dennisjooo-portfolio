@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
-import { ScrollRestorer } from '@/components/shared';
+import { ScrollRestorer, SmoothScroll } from '@/components/shared';
 
 type ProvidersProps = {
     children: ReactNode;
@@ -12,7 +12,9 @@ export function Providers({ children }: ProvidersProps) {
     return (
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <ScrollRestorer />
-            {children}
+            <SmoothScroll>
+                {children}
+            </SmoothScroll>
         </ThemeProvider>
     );
 }

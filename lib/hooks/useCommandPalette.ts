@@ -9,6 +9,7 @@ import {
     type ProcessedProject,
     type ProcessedWorkExperience,
 } from "@/components/command-palette/commandPaletteUtils";
+import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
 
 // ============================================================================
 // Types
@@ -85,11 +86,11 @@ function createSearchMatcher(
 export function useCommandPalette(): UseCommandPaletteReturn {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
-    const [copied, setCopied] = React.useState(false);
     const [exactMatch, setExactMatch] = React.useState(false);
     const [caseSensitive, setCaseSensitive] = React.useState(false);
     const [searchScope, setSearchScope] = React.useState<SearchScope>("all");
     const router = useRouter();
+    const { copied, copyToClipboard } = useCopyToClipboard();
 
     // Keyboard shortcut (Ctrl/Cmd + K) and custom event listener
     React.useEffect(() => {
@@ -127,12 +128,10 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     // Copy current URL to clipboard
     const copyUrl = React.useCallback(() => {
         if (typeof window !== "undefined") {
-            navigator.clipboard.writeText(window.location.href);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            copyToClipboard(window.location.href);
             runCommand(() => { });
         }
-    }, [runCommand]);
+    }, [copyToClipboard, runCommand]);
 
     // Create matcher based on search options
     const matcher = React.useMemo(() => {

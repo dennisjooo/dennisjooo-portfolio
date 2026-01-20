@@ -28,17 +28,17 @@ export function ProjectsGroup({ projects, searchTerm, onSelect, onNavigate }: Pr
                         forceMount
                         onSelect={() => onSelect(() => onNavigate(project.path))}
                     >
-                        <FileText className="mr-2 h-4 w-4 shrink-0" />
+                        <FileText className="h-4 w-4 shrink-0" />
                         <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
                             <div className="flex items-center gap-2">
                                 <span className="font-medium truncate">{project.title}</span>
-                                <span className="text-[10px] text-muted-foreground opacity-50 shrink-0">
+                                <span className="font-mono text-[9px] text-muted-foreground/50 uppercase tracking-wider shrink-0 px-1.5 py-0.5 bg-muted/50 rounded">
                                     {project.type}
                                 </span>
                             </div>
                             {project.context && (
                                 <span
-                                    className="text-xs text-muted-foreground truncate max-w-full block"
+                                    className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
                                     dangerouslySetInnerHTML={{
                                         __html: highlightSearchTerm(project.context, searchTerm)
                                     }}

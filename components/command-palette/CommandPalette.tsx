@@ -1,5 +1,6 @@
 "use client";
 
+import { SearchX } from "lucide-react";
 import {
     CommandDialog,
     CommandInput,
@@ -42,7 +43,7 @@ export function CommandPalette() {
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
             <CommandInput
-                placeholder="Type a command or search..."
+                placeholder="Search commands, projects, or work..."
                 value={search}
                 onValueChange={setSearch}
             />
@@ -57,11 +58,15 @@ export function CommandPalette() {
                 onChangeScope={setSearchScope}
             />
 
-            <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border hover:scrollbar-thumb-muted-foreground/50">
+            <CommandList className="max-h-[340px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/50 hover:scrollbar-thumb-muted-foreground/30 pb-2">
                 {/* No results message */}
                 {search.trim() && !hasSearchResults && (
-                    <div className="py-6 text-center text-sm text-muted-foreground">
-                        No results found.
+                    <div className="py-10 text-center">
+                        <SearchX className="mx-auto h-8 w-8 text-muted-foreground/40 mb-3" />
+                        <p className="text-sm font-medium text-muted-foreground">No results found</p>
+                        <p className="text-xs text-muted-foreground/60 mt-1 font-mono">
+                            Try adjusting your search or filters
+                        </p>
                     </div>
                 )}
 

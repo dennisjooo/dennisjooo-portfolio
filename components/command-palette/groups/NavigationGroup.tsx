@@ -28,10 +28,10 @@ export function NavigationGroup({ onSelect, onNavigate }: NavigationGroupProps) 
                                 }
                             })}
                         >
-                            <Icon className="mr-2 h-4 w-4" />
-                            <span>{item.label}</span>
+                            <Icon className="h-4 w-4" />
+                            <span className="font-medium">{item.label}</span>
                             {item.href && (
-                                <span className="ml-auto text-xs text-muted-foreground opacity-50">
+                                <span className="ml-auto font-mono text-[10px] text-muted-foreground/50 uppercase tracking-wider">
                                     {item.href}
                                 </span>
                             )}

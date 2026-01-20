@@ -117,7 +117,7 @@ export function hasExactWord(text: string, searchTerm: string): boolean {
 export function highlightSearchTerm(text: string, searchTerm: string): string {
     return text.replace(
         new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
-        '<mark class="bg-yellow-300 dark:bg-yellow-600 text-foreground rounded px-0.5">$1</mark>'
+        '<mark class="bg-accent/30 text-foreground font-medium rounded px-0.5 py-px">$1</mark>'
     );
 }
 

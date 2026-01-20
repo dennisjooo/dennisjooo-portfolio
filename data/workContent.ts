@@ -11,8 +11,8 @@ export const workExperienceData: TimelineItemData[] = [
     {
         id: "sinarmas-staff",
         date: "February 2024 - Now",
-        title: "AI/ML Engineer (Analytics, AI, & ML Staff)",
-        company: "Sinarmas Land",
+        title: "AI/ML Engineer",
+        company: "Sinar Mas Land",
         imageSrc: "/images/work/sinarmas.svg",
         responsibilities: [
             "Spearheaded optimization of OCR pipelines and developed self-service AI platform, achieving high-accuracy document processing for 2,000+ daily requests.",
@@ -25,8 +25,8 @@ export const workExperienceData: TimelineItemData[] = [
     {
         id: "sinarmas-intern",
         date: "November 2023 - January 2024",
-        title: "ML/AI Developer and Tester Intern",
-        company: "Sinarmas Land",
+        title: "AI/ML Developer Intern",
+        company: "Sinar Mas Land",
         imageSrc: "/images/work/sinarmas.svg",
         responsibilities: [
             "Actively contributed to the maintenance and advancement of the company's proprietary machine learning pipelines, with a primary focus on OCR systems for document information detection and extraction.",
@@ -36,7 +36,7 @@ export const workExperienceData: TimelineItemData[] = [
     {
         id: "vidio-intern",
         date: "August - December 2022",
-        title: "Business Intelligence Analyst Intern",
+        title: "Business Intelligence Intern",
         company: "Vidio.com",
         imageSrc: "/images/work/vidio.svg",
         responsibilities: [

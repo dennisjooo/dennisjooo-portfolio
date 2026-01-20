@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail, Globe } from "lucide-react";
+import { Github, Linkedin, Mail, Globe, ExternalLink } from "lucide-react";
 import { CommandGroup, CommandItem, CommandSeparator } from "@/components/ui/command";
 import { contactLinks } from "@/data/contactContent";
 
@@ -24,8 +24,9 @@ export function SocialsGroup({ onSelect }: SocialsGroupProps) {
                             value={link.ariaLabel}
                             onSelect={() => onSelect(() => window.open(link.href, '_blank'))}
                         >
-                            <Icon className="mr-2 h-4 w-4" />
-                            <span>{link.ariaLabel}</span>
+                            <Icon className="h-4 w-4" />
+                            <span className="font-medium">{link.ariaLabel}</span>
+                            <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/40" />
                         </CommandItem>
                     );
                 })}

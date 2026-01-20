@@ -6,15 +6,24 @@ const config: Config = {
 		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./app/**/*.{js,ts,jsx,tsx,mdx}",
+		"./lib/**/*.{js,ts,jsx,tsx,mdx}",
 	],
 	theme: {
 		extend: {
 			fontFamily: {
 				sans: [
-					'var(--font-sans)'
+					'var(--font-urbanist)',
+					'ui-sans-serif',
+					'system-ui',
+					'sans-serif'
 				],
 				mono: [
-					'var(--font-mono)'
+					'var(--font-roboto-mono)',
+					'monospace'
+				],
+				playfair: [
+					'var(--font-playfair)',
+					'serif'
 				]
 			},
 			keyframes: {
@@ -55,20 +64,9 @@ const config: Config = {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
-				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
-				chart: {
-					'1': 'hsl(var(--chart-1))',
-					'2': 'hsl(var(--chart-2))',
-					'3': 'hsl(var(--chart-3))',
-					'4': 'hsl(var(--chart-4))',
-					'5': 'hsl(var(--chart-5))'
-				}
+				ring: 'hsl(var(--ring))'
 			}
 		}
 	},

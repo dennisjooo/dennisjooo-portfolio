@@ -1,10 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsSun, BsMoon } from 'react-icons/bs';
-import { flushSync } from 'react-dom';
 import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
+import { useThemeTransition } from '@/lib/hooks/useThemeTransition';
 
 interface ThemeToggleProps extends React.ComponentPropsWithoutRef<'button'> {
     duration?: number;
@@ -15,65 +13,15 @@ interface ThemeToggleProps extends React.ComponentPropsWithoutRef<'button'> {
 export const ThemeToggle = ({
     className,
     duration = 400,
-    textColorClass = 'text-gray-900 dark:text-white',
+    textColorClass = 'text-foreground',
     scrolled = false,
     ...props
 }: ThemeToggleProps) => {
-    const { theme, setTheme, systemTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const currentTheme = theme === 'system' ? systemTheme : theme;
-    const isDark = mounted ? currentTheme === 'dark' : false;
+    const { mounted, isDark, buttonRef, toggleTheme } = useThemeTransition({ duration });
 
     const hoverClass = scrolled
-        ? "hover:bg-gray-200 dark:hover:bg-gray-700"
-        : "hover:bg-gray-900 hover:bg-opacity-20 dark:hover:bg-white dark:hover:bg-opacity-20";
-
-    const toggleTheme = useCallback(async () => {
-        if (!buttonRef.current) return;
-
-        const newTheme = isDark ? 'light' : 'dark';
-
-        // Check if View Transition API is supported
-        if (!document.startViewTransition) {
-            // Fallback for browsers that don't support View Transition API
-            setTheme(newTheme);
-            return;
-        }
-
-        await document.startViewTransition(() => {
-            flushSync(() => {
-                setTheme(newTheme);
-            });
-        }).ready;
-
-        const { top, left, width, height } = buttonRef.current.getBoundingClientRect();
-        const x = left + width / 2;
-        const y = top + height / 2;
-        const maxRadius = Math.hypot(
-            Math.max(left, window.innerWidth - left),
-            Math.max(top, window.innerHeight - top)
-        );
-
-        document.documentElement.animate(
-            {
-                clipPath: [
-                    `circle(0px at ${x}px ${y}px)`,
-                    `circle(${maxRadius}px at ${x}px ${y}px)`,
-                ],
-            },
-            {
-                duration,
-                easing: 'ease-in-out',
-                pseudoElement: '::view-transition-new(root)',
-            }
-        );
-    }, [isDark, duration, setTheme]);
+        ? "hover:bg-black/5 dark:hover:bg-white/10"
+        : "hover:bg-black/10 dark:hover:bg-white/10";
 
     if (!mounted) {
         return (
@@ -109,4 +57,3 @@ export const ThemeToggle = ({
         </button>
     );
 };
-

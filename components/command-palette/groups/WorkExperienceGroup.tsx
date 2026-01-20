@@ -28,17 +28,17 @@ export function WorkExperienceGroup({ workExperience, searchTerm, onSelect, onNa
                         forceMount
                         onSelect={() => onSelect(() => onNavigate('/#work'))}
                     >
-                        <Briefcase className="mr-2 h-4 w-4 shrink-0" />
+                        <Briefcase className="h-4 w-4 shrink-0" />
                         <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
                             <div className="flex items-center gap-2">
                                 <span className="font-medium truncate">{work.title}</span>
                             </div>
-                            <span className="text-[10px] text-muted-foreground opacity-70 truncate">
-                                {work.company} • {work.date}
+                            <span className="font-mono text-[10px] text-muted-foreground/60 uppercase tracking-wider truncate">
+                                {work.company} / {work.date}
                             </span>
                             {work.context && (
                                 <span
-                                    className="text-xs text-muted-foreground truncate max-w-full block"
+                                    className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
                                     dangerouslySetInnerHTML={{
                                         __html: highlightSearchTerm(work.context, searchTerm)
                                     }}
