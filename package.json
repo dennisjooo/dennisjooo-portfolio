@@ -1,12 +1,11 @@
 {
   "name": "profile-page",
   "version": "0.1.0",
-  "homepage": "https://dennisjooo.github.io",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx serve out",
+    "start": "next start",
     "lint": "eslint .",
     "analyze": "ANALYZE=true next build"
   },
@@ -40,6 +39,7 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "sharp": "^0.34.5",
     "simple-icons": "^14.14.0",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",

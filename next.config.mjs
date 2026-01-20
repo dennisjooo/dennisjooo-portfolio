@@ -1,4 +1,3 @@
-import { PHASE_EXPORT } from 'next/constants.js';
 import bundleAnalyzer from '@next/bundle-analyzer';
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -42,9 +41,7 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const createConfig = (phase) => {
-    const isExportPhase = phase === PHASE_EXPORT;
-
-    // Section redirects - cleaner than dynamic routes with output: export
+    // Section redirects
     const sectionRedirects = [
         { source: '/about', destination: '/#about' },
         { source: '/work', destination: '/#work' },
@@ -58,10 +55,11 @@ const createConfig = (phase) => {
     ].map(r => ({ ...r, permanent: true }));
 
     return {
-        distDir: 'out',
-        output: 'export',
+        // Remove output: 'export' and distDir: 'out' for standard server rendering
+        reactStrictMode: true,
+        poweredByHeader: false,
+        compress: true,
         images: {
-            unoptimized: true,
             formats: ['image/avif', 'image/webp']
         },
         experimental: {
@@ -87,10 +85,6 @@ const createConfig = (phase) => {
             return sectionRedirects;
         },
         async headers() {
-            if (isExportPhase) {
-                return [];
-            }
-
             return [
                 {
                     source: '/:all*(svg|jpg|jpeg|png|webp|avif|gif|ico)',
