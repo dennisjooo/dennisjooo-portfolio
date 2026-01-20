@@ -22,12 +22,21 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
         setExpandedIndex(prev => {
             const newIndex = prev === index ? null : index;
             if (newIndex !== null) {
+                // Wait for the accordion animation to complete (approx 300ms)
                 setTimeout(() => {
-                    cardRefs.current[index]?.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }, 100);
+                    const element = cardRefs.current[index];
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        // Only scroll if the card's header is obscured by the navbar (approx 100px)
+                        // We do NOT scroll if the bottom is cut off, to avoid aggressive jumping
+                        if (rect.top < 100) {
+                            element.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                }, 300);
             }
             return newIndex;
         });
