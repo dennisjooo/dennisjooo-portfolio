@@ -175,9 +175,9 @@ export const useSectionNavigation = (
             if (pathname === "/") {
                 // If on homepage and clicking home, scroll to top
                 if (sectionId === "home") {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    window.scrollTo({ top: 0, behavior: "auto" });
                 } else {
-                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
                 }
             } else {
                 try {
