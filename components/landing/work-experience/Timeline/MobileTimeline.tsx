@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { TimelineItemData } from '@/data/workContent';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { MobileWorkCard } from './MobileWorkCard';
@@ -12,12 +12,25 @@ interface MobileTimelineProps {
 export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
     // Memoize grouped items to avoid recalculation on every render
     const groupedItems = useMemo(() => groupItemsByCompany(items), [items]);
+
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     
     // Track which company card is expanded (default: first one)
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
     const handleToggle = useCallback((index: number) => {
-        setExpandedIndex(prev => prev === index ? null : index);
+        setExpandedIndex(prev => {
+            const newIndex = prev === index ? null : index;
+            if (newIndex !== null) {
+                setTimeout(() => {
+                    cardRefs.current[index]?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            }
+            return newIndex;
+        });
     }, []);
 
     return (
@@ -26,6 +39,7 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
             <div className="relative space-y-6">
                 {groupedItems.map((group, index) => (
                     <MobileWorkCard
+                        ref={el => { cardRefs.current[index] = el; }}
                         key={`${group.companyName}-${index}`}
                         group={group}
                         index={index}

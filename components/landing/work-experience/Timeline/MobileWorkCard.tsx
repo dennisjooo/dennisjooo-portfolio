@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo } from 'react';
+import React, { memo, forwardRef } from 'react';
 import Image from 'next/image';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { CompanyGroup } from '@/lib/utils/workExperience';
@@ -13,12 +13,12 @@ interface MobileWorkCardProps {
     onToggle: () => void;
 }
 
-export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
+export const MobileWorkCard = memo(forwardRef<HTMLDivElement, MobileWorkCardProps>(({
     group,
     index,
     isExpanded,
     onToggle,
-}) => {
+}, ref) => {
     // Get the date range for the company (first role start to last role end)
     const dateRange = group.roles.length > 1
         ? `${group.roles[group.roles.length - 1].date.split(' - ')[0]} - ${group.roles[0].date.split(' - ')[1] || 'Now'}`
@@ -26,7 +26,8 @@ export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
 
     return (
         <div
-            className="relative p-px"
+            ref={ref}
+            className="relative p-px scroll-mt-28"
             style={{ zIndex: isExpanded ? 10 : 1 }}
         >
             {/* Gradient Border - Only visible when expanded */}
@@ -133,6 +134,6 @@ export const MobileWorkCard: React.FC<MobileWorkCardProps> = memo(({
             </div>
         </div>
     );
-});
+}));
 
 MobileWorkCard.displayName = 'MobileWorkCard';
