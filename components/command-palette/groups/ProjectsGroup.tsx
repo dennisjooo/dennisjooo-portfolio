@@ -32,7 +32,7 @@ export function ProjectsGroup({ projects, searchTerm, onSelect, onNavigate }: Pr
                         <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
                             <div className="flex items-center gap-2">
                                 <span className="font-medium truncate">{project.title}</span>
-                                <span className="font-mono text-[9px] text-muted-foreground/50 uppercase tracking-wider shrink-0 px-1.5 py-0.5 bg-muted/50 rounded">
+                                <span className="font-mono text-[9px] text-muted-foreground/80 uppercase tracking-wider shrink-0 px-1.5 py-0.5 bg-muted/50 rounded">
                                     {project.type}
                                 </span>
                             </div>

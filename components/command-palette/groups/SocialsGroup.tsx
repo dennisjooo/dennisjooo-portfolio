@@ -26,7 +26,7 @@ export function SocialsGroup({ onSelect }: SocialsGroupProps) {
                         >
                             <Icon className="h-4 w-4" />
                             <span className="font-medium">{link.ariaLabel}</span>
-                            <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/40" />
+                            <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/70" />
                         </CommandItem>
                     );
                 })}

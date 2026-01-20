@@ -112,7 +112,7 @@ export function SearchOptionsBar({
 
                 {/* Scope filter */}
                 <div className="flex items-center gap-1.5">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60 mr-1">Scope:</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80 mr-1">Scope:</span>
                     <ScopeButton
                         active={searchScope === "all"}
                         onClick={() => onChangeScope("all")}

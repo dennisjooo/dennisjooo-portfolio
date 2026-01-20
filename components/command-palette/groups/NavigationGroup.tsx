@@ -31,7 +31,7 @@ export function NavigationGroup({ onSelect, onNavigate }: NavigationGroupProps) 
                             <Icon className="h-4 w-4" />
                             <span className="font-medium">{item.label}</span>
                             {item.href && (
-                                <span className="ml-auto font-mono text-[10px] text-muted-foreground/50 uppercase tracking-wider">
+                                <span className="ml-auto font-mono text-[10px] text-muted-foreground/80 uppercase tracking-wider">
                                     {item.href}
                                 </span>
                             )}

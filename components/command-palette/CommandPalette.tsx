@@ -62,9 +62,9 @@ export function CommandPalette() {
                 {/* No results message */}
                 {search.trim() && !hasSearchResults && (
                     <div className="py-10 text-center">
-                        <SearchX className="mx-auto h-8 w-8 text-muted-foreground/40 mb-3" />
+                        <SearchX className="mx-auto h-8 w-8 text-muted-foreground/70 mb-3" />
                         <p className="text-sm font-medium text-muted-foreground">No results found</p>
-                        <p className="text-xs text-muted-foreground/60 mt-1 font-mono">
+                        <p className="text-xs text-muted-foreground/80 mt-1 font-mono">
                             Try adjusting your search or filters
                         </p>
                     </div>

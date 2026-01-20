@@ -33,7 +33,7 @@ export function WorkExperienceGroup({ workExperience, searchTerm, onSelect, onNa
                             <div className="flex items-center gap-2">
                                 <span className="font-medium truncate">{work.title}</span>
                             </div>
-                            <span className="font-mono text-[10px] text-muted-foreground/60 uppercase tracking-wider truncate">
+                            <span className="font-mono text-[10px] text-muted-foreground/80 uppercase tracking-wider truncate">
                                 {work.company} / {work.date}
                             </span>
                             {work.context && (

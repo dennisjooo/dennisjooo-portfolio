@@ -38,8 +38,10 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
                         <span>{resp}</span>
                     </li>
                 ))}
-                
-                {/* Expandable items using CSS grid for smooth height animation */}
+            </ul>
+
+            {/* Expandable items using CSS grid for smooth height animation */}
+            {hasMore && (
                 <div
                     className="grid transition-[grid-template-rows] duration-150 ease-out"
                     style={{
@@ -47,7 +49,7 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
                     }}
                 >
                     <div className="overflow-hidden">
-                        <div className="space-y-2">
+                        <ul className="space-y-2">
                             {expandedItems.map((resp, respIndex) => (
                                 <li
                                     key={`expanded-${respIndex}`}
@@ -57,10 +59,10 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
                                     <span>{resp}</span>
                                 </li>
                             ))}
-                        </div>
+                        </ul>
                     </div>
                 </div>
-            </ul>
+            )}
 
             {/* Read More Button */}
             {hasMore && (
