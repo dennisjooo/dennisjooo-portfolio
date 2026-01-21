@@ -3,11 +3,30 @@ import Certification from "@/models/Certification";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   await dbConnect();
   try {
-    const certs = await Certification.find({}).sort({ date: -1 }); // Sort by newest date
-    return NextResponse.json({ success: true, data: certs });
+    // Parse query params
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const skip = (page - 1) * limit;
+
+    const [certs, total] = await Promise.all([
+        Certification.find({}).sort({ date: -1 }).skip(skip).limit(limit),
+        Certification.countDocuments({})
+    ]);
+
+    return NextResponse.json({ 
+        success: true, 
+        data: certs,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
+    });
   } catch (error) {
     return NextResponse.json({ success: false, error: "Failed to fetch certifications" }, { status: 400 });
   }

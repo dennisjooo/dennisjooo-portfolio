@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { AdminTable } from '@/components/admin/AdminTable';
+import { PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 interface Certification {
   _id: string;
@@ -13,23 +15,35 @@ interface Certification {
 export default function AdminCertificationsList() {
   const [certs, setCerts] = useState<Certification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
 
-  useEffect(() => {
-    fetchCerts();
-  }, []);
-
-  const fetchCerts = async () => {
+  const fetchCerts = useCallback(async (page: number) => {
+    setLoading(true);
     try {
-      const res = await fetch('/api/certifications');
+      const res = await fetch(`/api/certifications?page=${page}&limit=${pageSize}`);
       const data = await res.json();
       if (data.success) {
         setCerts(data.data);
+        if (data.pagination) {
+            setTotalPages(data.pagination.totalPages);
+            setCurrentPage(data.pagination.page);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch certifications:', error);
     } finally {
       setLoading(false);
     }
+  }, [pageSize]);
+
+  useEffect(() => {
+    fetchCerts(1);
+  }, [fetchCerts]);
+
+  const handlePageChange = (page: number) => {
+    fetchCerts(page);
   };
 
   const deleteCert = async (id: string) => {
@@ -41,7 +55,7 @@ export default function AdminCertificationsList() {
       });
       
       if (res.ok) {
-        fetchCerts(); // Refresh list
+        fetchCerts(currentPage); // Refresh list
       } else {
         alert('Failed to delete');
       }
@@ -50,70 +64,72 @@ export default function AdminCertificationsList() {
     }
   };
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  const columns = [
+    {
+      header: "Title",
+      cell: (row: Certification) => <span className="font-semibold text-foreground">{row.title}</span>
+    },
+    {
+      header: "Issuer",
+      accessorKey: "issuer"
+    },
+    {
+      header: "Year",
+      cell: (row: Certification) => <span className="font-mono text-xs bg-muted px-2 py-1 rounded">{row.date}</span>
+    },
+    {
+      header: "Actions",
+      className: "text-right",
+      cell: (row: Certification) => (
+        <div className="flex items-center justify-end gap-3">
+          <Link 
+            href={`/admin/certifications/${row._id}`}
+            className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
+            title="Edit"
+          >
+            <PencilSquareIcon className="w-4 h-4" />
+          </Link>
+          <button 
+            onClick={() => deleteCert(row._id)}
+            className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+            title="Delete"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </button>
+        </div>
+      )
+    }
+  ];
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Manage Certifications</h1>
-        <div className="flex gap-4">
-           <Link 
-            href="/admin" 
-            className="px-4 py-2 border rounded-md hover:bg-muted"
-          >
-            Back to Dashboard
-          </Link>
-          <Link 
-            href="/admin/certifications/new" 
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
-          >
-            Add New
-          </Link>
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+           <h1 className="font-playfair italic text-3xl md:text-4xl text-foreground">
+            Certifications <span className="not-italic font-sans font-bold">& Licenses</span>
+          </h1>
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
+            Academic and professional milestones
+          </p>
         </div>
+       
+        <Link 
+          href="/admin/certifications/new" 
+          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-urbanist font-medium shadow-lg shadow-primary/20"
+        >
+          <PlusIcon className="w-5 h-5" />
+          Add New
+        </Link>
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-muted/50">
-            <tr>
-              <th className="p-4 font-medium">Title</th>
-              <th className="p-4 font-medium">Issuer</th>
-              <th className="p-4 font-medium">Year</th>
-              <th className="p-4 font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {certs.length === 0 && (
-              <tr>
-                <td colSpan={4} className="p-8 text-center text-muted-foreground">
-                  No certifications found. Create one to get started.
-                </td>
-              </tr>
-            )}
-            {certs.map((cert) => (
-              <tr key={cert._id} className="hover:bg-muted/50">
-                <td className="p-4 font-medium">{cert.title}</td>
-                <td className="p-4">{cert.issuer}</td>
-                <td className="p-4">{cert.date}</td>
-                <td className="p-4 space-x-2">
-                  <Link 
-                    href={`/admin/certifications/${cert._id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <button 
-                    onClick={() => deleteCert(cert._id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <AdminTable 
+        columns={columns} 
+        data={certs} 
+        isLoading={loading} 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

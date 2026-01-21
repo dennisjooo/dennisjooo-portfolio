@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { AdminTable } from '@/components/admin/AdminTable';
+import { PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 interface Blog {
   _id: string;
@@ -13,21 +15,33 @@ interface Blog {
 export default function AdminBlogsList() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
-  const fetchBlogs = async () => {
+  const fetchBlogs = useCallback(async (page: number) => {
+    setLoading(true);
     try {
-      const res = await fetch('/api/blogs');
+      const res = await fetch(`/api/blogs?page=${page}&limit=${pageSize}`);
       const data = await res.json();
-      setBlogs(data);
+      if (data.data) {
+        setBlogs(data.data);
+        setTotalPages(data.pagination.totalPages);
+        setCurrentPage(data.pagination.page);
+      }
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
     } finally {
       setLoading(false);
     }
+  }, [pageSize]);
+
+  useEffect(() => {
+    fetchBlogs(1);
+  }, [fetchBlogs]);
+
+  const handlePageChange = (page: number) => {
+    fetchBlogs(page);
   };
 
   const deleteBlog = async (id: string) => {
@@ -39,7 +53,7 @@ export default function AdminBlogsList() {
       });
       
       if (res.ok) {
-        fetchBlogs(); // Refresh list
+        fetchBlogs(currentPage); // Refresh list
       } else {
         alert('Failed to delete');
       }
@@ -48,55 +62,80 @@ export default function AdminBlogsList() {
     }
   };
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  const columns = [
+    {
+      header: "Title",
+      cell: (row: Blog) => <span className="font-semibold text-foreground">{row.title}</span>
+    },
+    {
+      header: "Type",
+      cell: (row: Blog) => (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
+          row.type === 'project' 
+            ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' 
+            : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+        }`}>
+          {row.type}
+        </span>
+      )
+    },
+    {
+      header: "Date",
+      accessorKey: "date"
+    },
+    {
+      header: "Actions",
+      className: "text-right",
+      cell: (row: Blog) => (
+        <div className="flex items-center justify-end gap-3">
+          <Link 
+            href={`/admin/blogs/${row._id}`}
+            className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
+            title="Edit"
+          >
+            <PencilSquareIcon className="w-4 h-4" />
+          </Link>
+          <button 
+            onClick={() => deleteBlog(row._id)}
+            className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+            title="Delete"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </button>
+        </div>
+      )
+    }
+  ];
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Manage Blogs</h1>
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+           <h1 className="font-playfair italic text-3xl md:text-4xl text-foreground">
+            Editorial <span className="not-italic font-sans font-bold">Content</span>
+          </h1>
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
+            Manage your digital garden
+          </p>
+        </div>
+       
         <Link 
           href="/admin/blogs/new" 
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
+          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-urbanist font-medium shadow-lg shadow-primary/20"
         >
+          <PlusIcon className="w-5 h-5" />
           Create New
         </Link>
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-muted/50">
-            <tr>
-              <th className="p-4 font-medium">Title</th>
-              <th className="p-4 font-medium">Type</th>
-              <th className="p-4 font-medium">Date</th>
-              <th className="p-4 font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {blogs.map((blog) => (
-              <tr key={blog._id} className="hover:bg-muted/50">
-                <td className="p-4">{blog.title}</td>
-                <td className="p-4 capitalize">{blog.type}</td>
-                <td className="p-4">{blog.date}</td>
-                <td className="p-4 space-x-2">
-                  <Link 
-                    href={`/admin/blogs/${blog._id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <button 
-                    onClick={() => deleteBlog(blog._id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <AdminTable 
+        columns={columns} 
+        data={blogs} 
+        isLoading={loading} 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

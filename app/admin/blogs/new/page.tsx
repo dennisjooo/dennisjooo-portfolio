@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { BlogForm } from '@/components/admin/BlogForm';
-import { IBlog } from '@/models/Blog'; // Ensure this type is exported from where it's defined, or define a local type
+import { IBlog } from '@/models/Blog'; 
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -30,8 +31,25 @@ export default function NewBlogPage() {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8">Create New Post</h1>
+    <div className="space-y-8">
+       <div className="flex items-center gap-4">
+             <button
+                type="button"
+                onClick={() => router.back()}
+                className="p-2 rounded-full hover:bg-muted/50 transition-colors"
+            >
+                <ArrowLeftIcon className="w-5 h-5 text-muted-foreground" />
+            </button>
+             <div>
+                <h1 className="font-playfair italic text-3xl font-bold text-foreground">
+                    New <span className="not-italic font-sans">Entry</span>
+                </h1>
+                <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-1">
+                    Compose a new blog post or project
+                </p>
+             </div>
+        </div>
+
       <BlogForm onSubmit={handleSubmit} />
     </div>
   );
