@@ -16,6 +16,7 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
     const heroRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
+    void isMobile; // Suppress unused var warning
 
     useEffect(() => {
         // Check if mobile

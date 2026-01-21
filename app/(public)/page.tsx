@@ -1,7 +1,9 @@
 import Hero from '@/components/landing/hero';
-import { projects } from '@/data/blogs';
 import dynamic from 'next/dynamic';
 import { HomeClient } from './HomeClient';
+import dbConnect from '@/lib/mongodb';
+import Blog from '@/models/Blog';
+import SiteConfig from '@/models/SiteConfig';
 
 // Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
@@ -31,13 +33,40 @@ const Contacts = dynamic(() => import('@/components/landing/contacts'), {
 // Non-critical UI - lazy loaded
 const BackToTop = dynamic(() => import('@/components/shared/BackToTop'));
 
-export default function Home() {
+async function getProjects() {
+    try {
+        await dbConnect();
+        // Plain object serialization for client components
+        const blogs = await Blog.find({ type: 'project' }).sort({ date: -1 }).lean();
+        return JSON.parse(JSON.stringify(blogs));
+    } catch (error) {
+        console.error('Failed to fetch projects', error);
+        return [];
+    }
+}
+
+async function getSiteConfig() {
+    try {
+        await dbConnect();
+        const config = await SiteConfig.findOne().lean();
+        return config ? JSON.parse(JSON.stringify(config)) : {};
+    } catch (error) {
+        console.error('Failed to fetch site config', error);
+        return {};
+    }
+}
+
+export default async function Home() {
+    const projects = await getProjects();
+    const siteConfig = await getSiteConfig();
+    const profileImageUrl = siteConfig?.profileImageUrl;
+    
     return (
         <HomeClient
             heroContent={<Hero />}
             mainContent={
                 <>
-                    <About />
+                    <About profileImageUrl={profileImageUrl} />
                     <WorkExperience />
                     <FeaturedProjects projects={projects} />
                     <Skills />

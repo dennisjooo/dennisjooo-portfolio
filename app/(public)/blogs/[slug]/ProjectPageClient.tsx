@@ -4,7 +4,7 @@ import ProjectLinks from '@/components/blogs/article/ProjectLinks';
 import TableOfContents from '@/components/blogs/article/TableOfContents';
 import { ReadingProgress } from '@/components/shared';
 import { ArticleHero } from '@/components/blogs/article';
-import { Blog } from '@/data/blogs';
+import { IBlog } from '@/models/Blog';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
 import { extractHeadings } from '@/lib/utils/markdownHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
@@ -17,7 +17,7 @@ const ProjectContent = dynamic(() => import('@/components/blogs/article/ProjectC
     loading: () => <div className="animate-pulse bg-muted h-96 rounded-xl" />
 });
 
-export default function ProjectPageClient({ project }: { project: Blog }) {
+export default function ProjectPageClient({ project }: { project: IBlog }) {
     const headings = useMemo(() => extractHeadings(project.blogPost), [project.blogPost]);
     const wordCount = project.blogPost.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / 200);
