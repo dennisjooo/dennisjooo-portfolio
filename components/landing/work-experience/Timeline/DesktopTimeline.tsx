@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { TimelineItemData } from '@/data/workContent';
+import { TimelineItemData } from '../WorkExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { TimelineGroup } from './TimelineGroup';
 

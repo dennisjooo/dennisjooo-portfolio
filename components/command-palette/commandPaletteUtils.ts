@@ -1,7 +1,5 @@
 "use client";
 
-import { projects } from "@/data/blogs/index";
-import { workExperienceData } from "@/data/workContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { extractKeywords } from "@/lib/utils/extractKeywords";
 import {
@@ -45,37 +43,51 @@ export interface ProcessedWorkExperience {
 // Pre-processed Data (runs once at module load)
 // ============================================================================
 
-export const processedProjects: ProcessedProject[] = projects.map(project => {
-    const slug = createUrlSlug(project.title);
-    const path = `/blogs/${slug}`;
+export let processedProjects: ProcessedProject[] = [];
 
-    // Extract top keywords from blog post content
-    const contentKeywords = extractKeywords(project.blogPost, 50);
-    const descKeywords = extractKeywords(project.description, 20);
+// Helper to inject projects dynamically (if fetching on client)
+export function setProcessedProjects(projects: any[]) {
+    processedProjects = projects.map(project => {
+        const slug = project.slug || createUrlSlug(project.title);
+        const path = `/blogs/${slug}`;
 
-    return {
-        ...project,
-        slug,
-        path,
-        rawContent: `${project.title} ${project.description} ${project.blogPost}`,
-        searchKeywords: [
-            project.title.toLowerCase(),
-            ...descKeywords,
-            ...contentKeywords,
-            path,
+        // Extract top keywords from blog post content
+        const contentKeywords = extractKeywords(project.blogPost || '', 50);
+        const descKeywords = extractKeywords(project.description || '', 20);
+
+        return {
+            ...project,
             slug,
-            project.type
-        ]
-    };
-});
+            path,
+            rawContent: `${project.title} ${project.description} ${project.blogPost}`,
+            searchKeywords: [
+                project.title.toLowerCase(),
+                ...descKeywords,
+                ...contentKeywords,
+                path,
+                slug,
+                project.type
+            ]
+        };
+    });
+}
 
-export const processedWorkExperience: ProcessedWorkExperience[] = workExperienceData.map(work => {
-    const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
-    return {
-        ...work,
-        rawContent
-    };
-});
+export let processedWorkExperience: ProcessedWorkExperience[] = [];
+
+// Helper to inject work experience dynamically (if fetching on client)
+export function setProcessedWorkExperience(experiences: any[]) {
+    processedWorkExperience = experiences.map(work => {
+        const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
+        return {
+            id: work.id || work._id,
+            title: work.title,
+            company: work.company,
+            date: work.date,
+            responsibilities: work.responsibilities,
+            rawContent
+        };
+    });
+}
 
 // ============================================================================
 // Search Utility Functions

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { TimelineItemData } from '@/data/workContent';
+import { TimelineItemData } from '../WorkExperience';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TimelineRoleProps {

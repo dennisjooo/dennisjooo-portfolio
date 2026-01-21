@@ -53,15 +53,3 @@ This project is a responsive and interactive portfolio website showcasing Dennis
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
-
-## Deployment
-
-This project is set up for deployment on GitHub Pages. The deployment process is automated using GitHub Actions. To deploy:
-
-1. Push your changes to the `main` branch.
-2. The GitHub Action will automatically build and deploy the site to GitHub Pages.
-
-## Acknowledgments
-
-- [MagicUI](https://magicui.design/) - UI components
-- [Deployment YAML](https://www.freecodecamp.org/news/how-to-deploy-next-js-app-to-github-pages/)

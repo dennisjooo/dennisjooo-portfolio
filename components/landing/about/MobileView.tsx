@@ -13,9 +13,10 @@ interface ContentSection {
 
 interface MobileViewProps {
     contentSections: ContentSection[];
+    profileImageUrl?: string;
 }
 
-export const MobileView: React.FC<MobileViewProps> = ({ contentSections }) => (
+export const MobileView: React.FC<MobileViewProps> = ({ contentSections, profileImageUrl }) => (
     <div className="md:hidden w-full h-full overflow-hidden touch-pan-y">
         <div className="mobile-scroll-container flex w-[500%] h-full transform-gpu backface-hidden">
             {/* Card 1: Profile */}
@@ -23,7 +24,7 @@ export const MobileView: React.FC<MobileViewProps> = ({ contentSections }) => (
                 <span className="absolute top-32 font-mono text-xs uppercase tracking-widest opacity-50 text-muted-foreground">
                     Swipe to Explore
                 </span>
-                <ProfileImage />
+                <ProfileImage imageUrl={profileImageUrl} />
                 <motion.div
                     className="mt-8 text-center space-y-2"
                     variants={fadeInUpVariants}

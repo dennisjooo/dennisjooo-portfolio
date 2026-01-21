@@ -2,7 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { ArrowUpRightIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
-import type { Certification } from '@/data/certificationContent';
+
+export interface Certification {
+    id?: string;
+    title: string;
+    issuer: string;
+    date: string;
+    description: string;
+    link: string;
+}
 
 interface CertificationCardProps {
     certification: Certification;
@@ -11,7 +19,7 @@ interface CertificationCardProps {
 
 export const CertificationCard = ({ certification, index }: CertificationCardProps) => {
     const { title, issuer, date, description, link } = certification;
-    
+
     return (
         <motion.a
             href={link}
@@ -26,7 +34,7 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
             <article className="relative flex flex-col h-full p-6 rounded-lg border border-border bg-card hover:border-accent/50 transition-all duration-500">
                 {/* Gradient Glow on Hover */}
                 <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-500 -z-10" />
-                
+
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">

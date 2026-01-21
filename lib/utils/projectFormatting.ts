@@ -1,4 +1,4 @@
-import { Blog } from "@/data/blogs/types";
+import { Blog } from "@/lib/db";
 
 export const sortProjectsByDate = (projects: Blog[]): Blog[] =>
     [...projects].sort(

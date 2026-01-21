@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
+import { Toaster } from 'sonner';
 import { ScrollRestorer, SmoothScroll } from '@/components/shared';
 
 type ProvidersProps = {
@@ -15,6 +16,7 @@ export function Providers({ children }: ProvidersProps) {
             <SmoothScroll>
                 {children}
             </SmoothScroll>
+            <Toaster richColors position="top-center" />
         </ThemeProvider>
     );
 }

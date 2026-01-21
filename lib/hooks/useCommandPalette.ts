@@ -4,7 +4,9 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
     processedProjects,
+    setProcessedProjects,
     processedWorkExperience,
+    setProcessedWorkExperience,
     getContextSnippet,
     type ProcessedProject,
     type ProcessedWorkExperience,
@@ -92,6 +94,30 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     const router = useRouter();
     const { copied, copyToClipboard } = useCopyToClipboard();
 
+    // Fetch projects and work experience when command palette opens
+    React.useEffect(() => {
+        if (open) {
+            if (processedProjects.length === 0) {
+                fetch('/api/blogs')
+                    .then(res => res.json())
+                    .then(data => {
+                        setProcessedProjects(data.data);
+                    })
+                    .catch(err => console.error("Failed to fetch projects for command palette", err));
+            }
+            if (processedWorkExperience.length === 0) {
+                fetch('/api/work-experience')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            setProcessedWorkExperience(data.data);
+                        }
+                    })
+                    .catch(err => console.error("Failed to fetch work experience for command palette", err));
+            }
+        }
+    }, [open]);
+
     // Keyboard shortcut (Ctrl/Cmd + K) and custom event listener
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -153,7 +179,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...project, context };
             })
             .filter((p): p is FilteredProject => p !== null);
-    }, [search, matcher, searchScope]);
+    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
 
     // Filtered work experience with context
     const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
@@ -169,7 +195,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...work, context };
             })
             .filter((w): w is FilteredWorkExperience => w !== null);
-    }, [search, matcher, searchScope]);
+    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
 
     return {
         open,
@@ -191,4 +217,3 @@ export function useCommandPalette(): UseCommandPaletteReturn {
         router,
     };
 }
-

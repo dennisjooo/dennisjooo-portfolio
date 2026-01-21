@@ -1,16 +1,25 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 import { MobileView } from './MobileView';
 import { DesktopView } from './DesktopView';
 import { useAboutAnimations } from '@/lib/hooks/useAboutAnimations';
-import { contentSections } from './contentSections';
+import { createContentSections, defaultAboutContent, AboutContent } from './contentSections';
 
-const About: React.FC = () => {
+interface AboutProps {
+    profileImageUrl?: string;
+    aboutContent?: AboutContent;
+}
+
+const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollContentRef = useRef<HTMLDivElement>(null);
+
+    const contentSections = useMemo(() => {
+        return createContentSections(aboutContent || defaultAboutContent);
+    }, [aboutContent]);
 
     useAboutAnimations({
         sectionRef,
@@ -37,10 +46,14 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="flex-1 w-full relative overflow-hidden flex flex-col md:flex-row">
-                    <MobileView contentSections={contentSections} />
+                    <MobileView
+                        contentSections={contentSections}
+                        profileImageUrl={profileImageUrl}
+                    />
                     <DesktopView
                         contentSections={contentSections}
                         scrollContentRef={scrollContentRef}
+                        profileImageUrl={profileImageUrl}
                     />
                 </div>
             </div>

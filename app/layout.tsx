@@ -1,15 +1,11 @@
-import Navbar from "@/components/layout/navbar/Navbar";
 import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
 import { Urbanist, Roboto_Mono, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
-import dynamic from "next/dynamic";
 import "react-photo-view/dist/react-photo-view.css";
 import "./globals.css";
 import { Providers } from "./providers";
-
-// Lazy load Footer since it's always below the fold
-const Footer = dynamic(() => import("@/components/layout/Footer"));
+import { ClerkProvider } from '@clerk/nextjs';
 
 // Viewport configuration for mobile optimization
 export const viewport: Viewport = {
@@ -20,14 +16,6 @@ export const viewport: Viewport = {
         { media: '(prefers-color-scheme: dark)', color: '#000000' }
     ],
 };
-
-// Lazy load non-critical components for better initial load performance
-const CommandPalette = dynamic(
-    () => import("@/components/command-palette/CommandPalette").then(m => ({ default: m.CommandPalette }))
-);
-const EasterEggs = dynamic(
-    () => import("@/components/fun/EasterEggs").then(m => ({ default: m.EasterEggs }))
-);
 
 const urbanist = Urbanist({
     subsets: ["latin"],
@@ -99,16 +87,14 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
-                <Providers>
-                    <Navbar />
-                    <CommandPalette />
-                    <EasterEggs />
-                    <main>{children}</main>
-                    <Footer />
-                </Providers>
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang="en" suppressHydrationWarning>
+                <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
+                    <Providers>
+                        {children}
+                    </Providers>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { PhotoView } from 'react-photo-view';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface ArticleHeroProps {
     title: string;
@@ -91,13 +91,12 @@ export const ArticleHero = ({
 function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
     const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
-    useEffect(() => {
-        const img = new window.Image();
-        img.onload = () => {
+    const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+        const img = e.currentTarget;
+        if (img.naturalWidth && img.naturalHeight) {
             setAspectRatio(img.naturalWidth / img.naturalHeight);
-        };
-        img.src = src;
-    }, [src]);
+        }
+    };
 
     return (
         <PhotoView src={src}>
@@ -138,6 +137,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                         className="transition-transform duration-700 group-hover:scale-[1.02]"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
                         priority
+                        onLoad={handleImageLoad}
                     />
                     
                     {/* Zoom Hint */}

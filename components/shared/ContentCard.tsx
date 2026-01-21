@@ -81,6 +81,7 @@ export const ContentCard = ({
                                 src={imageUrl}
                                 alt={title}
                                 fill
+                                loading="lazy"
                                 className={cn(
                                     "object-cover transition-transform duration-700 ease-out",
                                     isFeatured ? "group-hover:scale-110" : "group-hover:scale-105"
