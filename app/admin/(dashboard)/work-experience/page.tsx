@@ -1,15 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { AdminTable } from "@/components/admin/AdminTable";
-import {
-  PencilSquareIcon,
-  TrashIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
-import { toast } from "sonner";
+import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
+import { useAdminList } from "@/components/admin/hooks";
 
 interface WorkExperience {
   id: string;
@@ -21,88 +15,19 @@ interface WorkExperience {
 }
 
 export default function AdminWorkExperienceList() {
-  const [items, setItems] = useState<WorkExperience[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchItems = useCallback(async (showLoading = true) => {
-    if (showLoading) setLoading(true);
-    try {
-      const res = await fetch("/api/work-experience", {
-        cache: 'no-store'
-      });
-      const data = await res.json();
-      if (data.success) {
-        setItems(data.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch work experiences:", error);
-    } finally {
-      if (showLoading) setLoading(false);
-    }
-  }, []);
-
-  const handleReorder = async (nextItems: WorkExperience[]) => {
-    const payload = nextItems.map((item, index) => ({
-      id: item.id,
-      order: index,
-    }));
-
-    setItems(
-      nextItems.map((item, index) => ({
-        ...item,
-        order: index,
-      }))
-    );
-
-    try {
-      const res = await fetch("/api/work-experience/reorder", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items: payload }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to reorder");
-      }
-      toast.success("Order updated");
-      fetchItems(false);
-    } catch (error) {
-      console.error("Failed to reorder work experiences:", error);
-      toast.error("Failed to update order");
-      fetchItems(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
-
-  const deleteItem = async (id: string) => {
-    toast("Are you sure you want to delete this work experience?", {
-      action: {
-        label: "Delete",
-        onClick: async () => {
-          try {
-            const res = await fetch(`/api/work-experience/${id}`, {
-              method: "DELETE",
-            });
-
-            if (res.ok) {
-              fetchItems();
-              toast.success("Item deleted successfully");
-            } else {
-              toast.error("Failed to delete");
-            }
-          } catch (error) {
-            console.error("Error deleting:", error);
-            toast.error("Something went wrong");
-          }
-        },
-      },
-    });
-  };
+  const {
+    items,
+    loading,
+    handleDelete,
+    handleReorder,
+  } = useAdminList<WorkExperience>({
+    endpoint: "/api/work-experience",
+    enableReorder: true,
+    reorderEndpoint: "/api/work-experience/reorder",
+    itemName: "work experience",
+    deleteConfirmMessage: "Are you sure you want to delete this work experience?",
+    deleteSuccessMessage: "Item deleted successfully",
+  });
 
   const columns = [
     {
@@ -144,46 +69,23 @@ export default function AdminWorkExperienceList() {
       header: "Actions",
       className: "text-right",
       cell: (row: WorkExperience) => (
-        <div className="flex items-center justify-end gap-3">
-          <Link
-            href={`/admin/work-experience/${row.id}`}
-            className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
-            title="Edit"
-          >
-            <PencilSquareIcon className="w-4 h-4" />
-          </Link>
-          <button
-            onClick={() => deleteItem(row.id)}
-            className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
-            title="Delete"
-          >
-            <TrashIcon className="w-4 h-4" />
-          </button>
-        </div>
+        <AdminActionCell
+          editHref={`/admin/work-experience/${row.id}`}
+          onDelete={() => handleDelete(row.id)}
+        />
       ),
     },
   ];
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-playfair italic text-3xl md:text-4xl text-foreground">
-            Work <span className="not-italic font-sans font-bold">Experience</span>
-          </h1>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
-            Career timeline and education
-          </p>
-        </div>
-
-        <Link
-          href="/admin/work-experience/new"
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-urbanist font-medium shadow-lg shadow-primary/20"
-        >
-          <PlusIcon className="w-5 h-5" />
-          Add New
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Work"
+        titleAccent="Experience"
+        subtitle="Career timeline and education"
+        actionHref="/admin/work-experience/new"
+        actionLabel="Add New"
+      />
 
       <AdminTable
         columns={columns}
@@ -191,7 +93,7 @@ export default function AdminWorkExperienceList() {
         isLoading={loading}
         currentPage={1}
         totalPages={1}
-        onPageChange={() => { }}
+        onPageChange={() => {}}
         enableReorder
         onReorder={handleReorder}
       />

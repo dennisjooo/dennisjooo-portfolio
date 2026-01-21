@@ -1,12 +1,16 @@
 "use client";
 
 import CertificationForm from "@/components/admin/CertificationForm";
+import { AdminFormLayout } from "@/components/admin/shared";
 
 export default function NewCertificationPage() {
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8">Add New Certification</h1>
+    <AdminFormLayout
+      title="New"
+      titleAccent="Certification"
+      subtitle="Add a new credential or achievement"
+    >
       <CertificationForm />
-    </div>
+    </AdminFormLayout>
   );
 }

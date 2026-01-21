@@ -1,50 +1,39 @@
 "use client";
 
 import ContactForm from "@/components/admin/ContactForm";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { AdminFormLayout, LoadingSpinner } from "@/components/admin/shared";
+import { useAdminForm } from "@/components/admin/hooks";
+import { useParams } from "next/navigation";
+
+interface Contact {
+  id: string;
+  label: string;
+  href: string;
+  icon: string;
+  order: number;
+}
 
 export default function EditContactPage() {
   const params = useParams();
-  const router = useRouter();
-  const [contact, setContact] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const id = params.id as string;
 
-  useEffect(() => {
-    const fetchContact = async () => {
-      try {
-        const res = await fetch(`/api/contacts/${params.id}`, {
-          cache: 'no-store'
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch contact");
-        }
-        const data = await res.json();
-        if (data.success) {
-          setContact(data.data);
-        } else {
-          throw new Error(data.error);
-        }
-      } catch (error) {
-        console.error(error);
-        router.push("/admin/contacts");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: contact, loading } = useAdminForm<Contact>({
+    endpoint: '/api/contacts',
+    id,
+    redirectTo: '/admin/contacts',
+    itemName: 'contact',
+  });
 
-    if (params.id) {
-      fetchContact();
-    }
-  }, [params.id, router]);
+  if (loading) return <LoadingSpinner />;
+  if (!contact) return null;
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
-    );
-  }
-
-  return contact && <ContactForm initialData={contact} isEditing />;
+  return (
+    <AdminFormLayout
+      title="Edit"
+      titleAccent="Contact"
+      subtitle="Update contact details"
+    >
+      <ContactForm initialData={contact} isEditing />
+    </AdminFormLayout>
+  );
 }

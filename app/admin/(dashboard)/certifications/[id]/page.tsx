@@ -1,51 +1,40 @@
 "use client";
 
 import CertificationForm from "@/components/admin/CertificationForm";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { AdminFormLayout, LoadingSpinner } from "@/components/admin/shared";
+import { useAdminForm } from "@/components/admin/hooks";
+import { useParams } from "next/navigation";
+
+interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  description: string;
+  link: string;
+}
 
 export default function EditCertificationPage() {
   const params = useParams();
-  const router = useRouter();
-  const [cert, setCert] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const id = params.id as string;
+  
+  const { data: cert, loading } = useAdminForm<Certification>({
+    endpoint: '/api/certifications',
+    id,
+    redirectTo: '/admin/certifications',
+    itemName: 'certification',
+  });
 
-  useEffect(() => {
-    const fetchCert = async () => {
-      try {
-        const res = await fetch(`/api/certifications/${params.id}`, {
-          cache: 'no-store'
-        });
-        if (!res.ok) {
-           throw new Error("Failed to fetch certification");
-        }
-        const data = await res.json();
-        if (data.success) {
-          setCert(data.data);
-        } else {
-           throw new Error(data.error);
-        }
-      } catch (error) {
-        console.error(error);
-        router.push("/admin/certifications");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.id) {
-      fetchCert();
-    }
-  }, [params.id, router]);
+  if (loading) return <LoadingSpinner />;
+  if (!cert) return null;
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8">Edit Certification</h1>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        cert && <CertificationForm initialData={cert} isEditing />
-      )}
-    </div>
+    <AdminFormLayout
+      title="Edit"
+      titleAccent="Certification"
+      subtitle="Update credential details"
+    >
+      <CertificationForm initialData={cert} isEditing />
+    </AdminFormLayout>
   );
 }
