@@ -22,10 +22,10 @@ interface HeroSectionState {
 }
 
 export const useHeroSectionState = (isClientReady: boolean, pathname: string): HeroSectionState => {
-    const [state, setState] = useState<HeroSectionState>({
-        isHeroSection: true,
+    const [state, setState] = useState<HeroSectionState>(() => ({
+        isHeroSection: pathname === "/",
         scrolled: false,
-    });
+    }));
 
     useEffect(() => {
         if (!isClientReady) return;
@@ -220,12 +220,14 @@ export const useNavbarStyles = (
     { isHeroSection, scrolled, isMenuOpen, pathname }: NavbarStylesParams
 ): NavbarStyles =>
     useMemo(() => {
+        const isHeroForNav = pathname === "/" ? isHeroSection : false;
+
         // Use glass-panel when scrolled, menu open, or not in hero section
-        const bgClass = !isHeroSection || scrolled || isMenuOpen ? "glass-panel" : "bg-transparent";
+        const bgClass = !isHeroForNav || scrolled || isMenuOpen ? "glass-panel" : "bg-transparent";
 
         // Wider navbar in hero section when not scrolled
         const navWidth =
-            isHeroSection && !scrolled && pathname === "/"
+            isHeroForNav && !scrolled && pathname === "/"
                 ? "w-11/12 lg:w-5/6"
                 : "w-11/12 lg:w-3/4 xl:w-2/3";
 
