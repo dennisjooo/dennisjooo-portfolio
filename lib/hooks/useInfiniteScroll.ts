@@ -24,7 +24,7 @@ export function useInfiniteScroll({
   rootMargin = '100px',
   threshold = 0.1,
 }: UseInfiniteScrollOptions) {
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -36,21 +36,24 @@ export function useInfiniteScroll({
     [onLoadMore, hasMore, isLoading]
   );
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
 
-    const observer = new IntersectionObserver(handleObserver, {
-      rootMargin,
-      threshold,
-    });
+      if (node) {
+        const observer = new IntersectionObserver(handleObserver, {
+          rootMargin,
+          threshold,
+        });
+        observer.observe(node);
+        observerRef.current = observer;
+      }
+    },
+    [handleObserver, rootMargin, threshold]
+  );
 
-    observer.observe(sentinel);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [handleObserver, rootMargin, threshold]);
-
-  return sentinelRef;
+  return ref;
 }
