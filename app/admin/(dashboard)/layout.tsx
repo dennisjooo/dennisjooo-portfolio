@@ -17,7 +17,7 @@ export default async function AdminDashboardLayout({
   return (
     <div className="min-h-screen bg-background text-foreground bg-noise relative flex">
       <AdminSidebar />
-      <main className="flex-1 lg:ml-64 relative z-10 p-8 md:p-12 overflow-y-auto h-screen">
+      <main className="flex-1 lg:ml-64 relative z-10 p-8 md:p-12 min-h-screen">
         <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
           {/* Mobile Header (visible only on small screens) */}
           <div className="lg:hidden flex items-center justify-between mb-8 pb-4 border-b border-border">

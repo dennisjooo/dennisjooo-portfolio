@@ -1,4 +1,4 @@
-import { put } from '@vercel/blob';
+import { put, del } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
@@ -24,5 +24,25 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  try {
+    const { urls } = await request.json();
+    if (!urls || !Array.isArray(urls)) {
+        return new NextResponse('Invalid body', { status: 400 });
+    }
+
+    await del(urls);
+    return new NextResponse('Deleted', { status: 200 });
+  } catch (error) {
+    console.error('Delete error:', error);
+    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
   }
 }

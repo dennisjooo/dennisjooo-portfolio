@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { IBlog } from '@/models/Blog';
 import Image from 'next/image';
-import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
 
 interface BlogFormProps {
   initialData?: IBlog;
   onSubmit: (data: Partial<IBlog>) => Promise<void>;
+}
+
+interface PendingImage {
+  id: string;
+  file: File;
+  previewUrl: string;
 }
 
 export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
@@ -25,6 +31,25 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   });
 
   const [linkInput, setLinkInput] = useState({ text: '', url: '' });
+  const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
+  const [dragActive, setDragActive] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      pendingImages.forEach(img => URL.revokeObjectURL(img.previewUrl));
+    };
+  }, [pendingImages]);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+  }, [formData.blogPost]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -72,11 +97,161 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     }));
   };
 
+  const insertImageToMarkdown = (file: File) => {
+    const id = Math.random().toString(36).substring(7);
+    const previewUrl = URL.createObjectURL(file);
+    
+    setPendingImages(prev => [...prev, { id, file, previewUrl }]);
+    
+    const imageMarkdown = `![Image](${previewUrl})`;
+    
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = formData.blogPost || '';
+      const newText = text.substring(0, start) + imageMarkdown + text.substring(end);
+      
+      setFormData(prev => ({ ...prev, blogPost: newText }));
+      
+      // Restore cursor position (after the inserted image)
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + imageMarkdown.length, start + imageMarkdown.length);
+      }, 0);
+    } else {
+        setFormData(prev => ({ ...prev, blogPost: (prev.blogPost || '') + '\n' + imageMarkdown }));
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    for (const item of items) {
+      if (item.type.indexOf('image') !== -1) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) insertImageToMarkdown(file);
+      }
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].type.startsWith('image/')) {
+      insertImageToMarkdown(files[0]);
+    }
+  };
+
+  const handleMarkdownImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+        insertImageToMarkdown(e.target.files[0]);
+    }
+  };
+
+  const processContent = async (content: string) => {
+    let processedContent = content;
+    const uploadPromises: Promise<void>[] = [];
+
+    // Find all blob URLs in the content
+    const blobRegex = /!\[.*?\]\((blob:.*?)\)/g;
+    let match;
+    
+    // We need to collect matches first to avoid issues with modifying the string while iterating
+    const matches: { fullMatch: string, url: string }[] = [];
+    while ((match = blobRegex.exec(content)) !== null) {
+        matches.push({ fullMatch: match[0], url: match[1] });
+    }
+
+    // Filter unique URLs to avoid duplicate uploads
+    const uniqueUrls = Array.from(new Set(matches.map(m => m.url)));
+
+    for (const url of uniqueUrls) {
+        const pendingImage = pendingImages.find(img => img.previewUrl === url);
+        if (pendingImage) {
+            const uploadPromise = (async () => {
+                try {
+                    const response = await fetch(`/api/upload?filename=${pendingImage.file.name}`, {
+                        method: 'POST',
+                        body: pendingImage.file,
+                    });
+                    if (!response.ok) throw new Error('Upload failed');
+                    const blob = await response.json();
+                    
+                    // Replace ALL occurrences of this blob URL in the content
+                    processedContent = processedContent.split(url).join(blob.url);
+                } catch (error) {
+                    console.error('Failed to upload image:', pendingImage.file.name, error);
+                    // Optionally handle error (e.g., leave blob URL or show alert)
+                }
+            })();
+            uploadPromises.push(uploadPromise);
+        }
+    }
+
+    await Promise.all(uploadPromises);
+    return processedContent;
+  };
+
+  const extractImages = (content: string) => {
+    const regex = /!\[.*?\]\((.*?)\)/g;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(content)) !== null) {
+      matches.push(match[1]);
+    }
+    return matches;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await onSubmit(formData);
-    setLoading(false);
+    
+    try {
+        const finalContent = await processContent(formData.blogPost || '');
+
+        // Handle deletions of removed images
+        if (initialData) {
+            const initialImages = extractImages(initialData.blogPost || '');
+            if (initialData.imageUrl) initialImages.push(initialData.imageUrl);
+
+            const currentImages = extractImages(finalContent);
+            if (formData.imageUrl) currentImages.push(formData.imageUrl);
+
+            const imagesToDelete = initialImages.filter(url => 
+                !currentImages.includes(url) && 
+                url.includes('vercel-storage.com') // Only delete Vercel Blob images
+            );
+
+            if (imagesToDelete.length > 0) {
+                await fetch('/api/upload', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: imagesToDelete }),
+                });
+            }
+        }
+
+        await onSubmit({ ...formData, blogPost: finalContent });
+    } catch (error) {
+        console.error(error);
+        alert('Failed to save blog post');
+    } finally {
+        setLoading(false);
+    }
   };
 
   const inputClasses = "w-full p-3 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none";
@@ -253,20 +428,42 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       </div>
 
       <div>
-        <label className={labelClasses}>Content (Markdown)</label>
+        <div className="flex items-center justify-between mb-2">
+            <label className={labelClasses}>Content (Markdown)</label>
+            <label className="flex items-center gap-2 text-xs text-primary cursor-pointer hover:underline">
+                <DocumentPlusIcon className="w-4 h-4" />
+                <span>Add Image</span>
+                <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleMarkdownImageUpload}
+                    className="hidden"
+                />
+            </label>
+        </div>
         <div className="relative">
             <textarea
+            ref={textareaRef}
             name="blogPost"
             required
-            rows={20}
             value={formData.blogPost}
             onChange={handleChange}
-            className={`${inputClasses} font-mono text-sm leading-relaxed resize-y`}
-            placeholder="# Write your masterpiece here..."
+            onPaste={handlePaste}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+            className={`${inputClasses} font-mono text-sm leading-relaxed resize-none overflow-hidden min-h-[500px] ${dragActive ? 'border-primary ring-2 ring-primary/20' : ''}`}
+            placeholder="# Write your masterpiece here... (Drag & drop images supported)"
             />
-            <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border">
-                Markdown Supported
+            <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none">
+                Markdown Supported • Drag & Drop Images
             </div>
+            {dragActive && (
+                <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px] border-2 border-primary border-dashed rounded-lg flex items-center justify-center pointer-events-none">
+                    <span className="text-primary font-medium">Drop image to insert</span>
+                </div>
+            )}
         </div>
       </div>
 
@@ -276,7 +473,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           disabled={loading || uploading}
           className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
-          {loading ? 'Saving Changes...' : 'Publish Content'}
+          {loading ? 'Uploading & Saving...' : 'Publish Content'}
         </button>
       </div>
     </form>

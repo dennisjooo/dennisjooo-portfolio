@@ -58,9 +58,7 @@ export function AdminSidebar() {
 
       <div className="p-4 border-t border-border">
         {/* Theme Toggle */}
-        <div className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg hover:bg-accent/10 transition-colors">
-          <ThemeToggle className="w-5 h-5" />
-        </div>
+        <ThemeToggle className="mt-2 ml-4" />
 
         {/* Sign Out */}
         <SignOutButton>
