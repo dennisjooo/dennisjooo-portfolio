@@ -1,11 +1,22 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
+// Public routes (login and its catch-all children)
+const isPublicRoute = createRouteMatcher([
+  "/admin/login(.*)",
+]);
+
+// Protect all admin routes except public ones
 const isProtected = createRouteMatcher([
-  '/admin(.*)',
+  "/admin(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtected(req)) await auth.protect();
+  // Protect admin routes, but not the login page
+  if (isProtected(req) && !isPublicRoute(req)) {
+    await auth.protect({
+      unauthenticatedUrl: new URL("/admin/login", req.url).toString(),
+    });
+  }
 });
 
 export const config = {

@@ -7,17 +7,21 @@ import {
   DocumentTextIcon,
   AcademicCapIcon,
   UserCircleIcon,
-  ArrowLeftOnRectangleIcon,
+  ArrowLeftStartOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   BriefcaseIcon,
   IdentificationIcon,
+  LinkIcon,
 } from "@heroicons/react/24/outline";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignOutButton } from "@clerk/nextjs";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Blogs & Projects", href: "/admin/blogs", icon: DocumentTextIcon },
   { name: "Work Experience", href: "/admin/work-experience", icon: BriefcaseIcon },
   { name: "Certifications", href: "/admin/certifications", icon: AcademicCapIcon },
+  { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
 ];
@@ -41,8 +45,8 @@ export function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 group ${isActive
-                  ? "bg-primary text-primary-foreground shadow-lg"
-                  : "hover:bg-accent/10 hover:text-accent"
+                ? "bg-primary text-primary-foreground shadow-lg"
+                : "hover:bg-accent/10 hover:text-accent"
                 }`}
             >
               <item.icon className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`} />
@@ -56,11 +60,26 @@ export function AdminSidebar() {
         <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors">
           <UserButton showName />
         </div>
+
+        {/* Theme Toggle */}
+        <div className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg hover:bg-accent/10 transition-colors">
+          <ThemeToggle className="w-5 h-5" />
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Toggle Theme</span>
+        </div>
+
+        {/* Sign Out */}
+        <SignOutButton>
+          <button className="w-full flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors">
+            <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
+            <span className="font-mono text-xs uppercase tracking-widest">Sign Out</span>
+          </button>
+        </SignOutButton>
+
         <Link
           href="/"
           className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeftOnRectangleIcon className="w-5 h-5" />
+          <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
           <span className="font-mono text-xs uppercase tracking-widest">Exit to Site</span>
         </Link>
       </div>
