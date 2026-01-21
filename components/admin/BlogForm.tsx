@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Blog } from '@/lib/db';
 import Image from 'next/image';
 import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 
 interface BlogFormProps {
   initialData?: Blog;
@@ -74,7 +75,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       setFormData(prev => ({ ...prev, imageUrl: newBlob.url }));
     } catch (error) {
       console.error(error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image');
     } finally {
       setUploading(false);
     }
@@ -248,7 +249,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         await onSubmit({ ...formData, blogPost: finalContent });
     } catch (error) {
         console.error(error);
-        alert('Failed to save blog post');
+        toast.error('Failed to save blog post');
     } finally {
         setLoading(false);
     }

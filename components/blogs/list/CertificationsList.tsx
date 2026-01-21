@@ -32,10 +32,10 @@ export default function CertificationsList() {
         try {
             const res = await fetch(`/api/certifications?page=${page}&limit=${PAGE_SIZE}`);
             const data = await res.json();
-            
+
             if (data.success) {
                 const newCerts = data.data || [];
-                
+
                 setCertifications(prev => reset ? newCerts : [...prev, ...newCerts]);
                 setPagination({
                     page: data.pagination.page,
@@ -92,8 +92,8 @@ export default function CertificationsList() {
         <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {certifications.map((cert, index) => (
-                    <CertificationCard 
-                        key={cert._id} 
+                    <CertificationCard
+                        key={cert.id}
                         certification={cert}
                         index={index}
                     />

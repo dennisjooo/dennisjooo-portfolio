@@ -47,29 +47,29 @@ export let processedProjects: ProcessedProject[] = [];
 
 // Helper to inject projects dynamically (if fetching on client)
 export function setProcessedProjects(projects: any[]) {
-  processedProjects = projects.map(project => {
-    const slug = project.slug || createUrlSlug(project.title);
-    const path = `/blogs/${slug}`;
+    processedProjects = projects.map(project => {
+        const slug = project.slug || createUrlSlug(project.title);
+        const path = `/blogs/${slug}`;
 
-    // Extract top keywords from blog post content
-    const contentKeywords = extractKeywords(project.blogPost || '', 50);
-    const descKeywords = extractKeywords(project.description || '', 20);
+        // Extract top keywords from blog post content
+        const contentKeywords = extractKeywords(project.blogPost || '', 50);
+        const descKeywords = extractKeywords(project.description || '', 20);
 
-    return {
-        ...project,
-        slug,
-        path,
-        rawContent: `${project.title} ${project.description} ${project.blogPost}`,
-        searchKeywords: [
-            project.title.toLowerCase(),
-            ...descKeywords,
-            ...contentKeywords,
-            path,
+        return {
+            ...project,
             slug,
-            project.type
-        ]
-    };
-  });
+            path,
+            rawContent: `${project.title} ${project.description} ${project.blogPost}`,
+            searchKeywords: [
+                project.title.toLowerCase(),
+                ...descKeywords,
+                ...contentKeywords,
+                path,
+                slug,
+                project.type
+            ]
+        };
+    });
 }
 
 export let processedWorkExperience: ProcessedWorkExperience[] = [];
@@ -79,7 +79,7 @@ export function setProcessedWorkExperience(experiences: any[]) {
     processedWorkExperience = experiences.map(work => {
         const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
         return {
-            id: work._id || work.id,
+            id: work.id || work._id,
             title: work.title,
             company: work.company,
             date: work.date,

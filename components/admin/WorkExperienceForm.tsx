@@ -10,9 +10,10 @@ import {
   TrashIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 interface WorkExperience {
-  _id?: string;
+  id?: string;
   title: string;
   company: string;
   date: string;
@@ -63,11 +64,11 @@ export default function WorkExperienceForm({
       if (newBlob.url) {
         setFormData({ ...formData, imageSrc: newBlob.url });
       } else {
-        alert("Upload failed");
+        toast.error("Upload failed");
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to upload image");
+      toast.error("Failed to upload image");
     } finally {
       setUploading(false);
     }
@@ -85,7 +86,7 @@ export default function WorkExperienceForm({
 
     try {
       const url = isEditing
-        ? `/api/work-experience/${initialData?._id}`
+        ? `/api/work-experience/${initialData?.id}`
         : "/api/work-experience";
       const method = isEditing ? "PUT" : "POST";
 
@@ -99,11 +100,12 @@ export default function WorkExperienceForm({
 
       if (!res.ok) throw new Error("Failed to save");
 
+      toast.success(isEditing ? "Record updated" : "Record created");
       router.push("/admin/work-experience");
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

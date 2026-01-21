@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { CameraIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 
 export default function ProfileAdminPage() {
   const [imageUrl, setImageUrl] = useState('');
@@ -42,10 +43,10 @@ export default function ProfileAdminPage() {
 
       setImageUrl(newBlob.url);
       // Optional: Add a toast notification here
-      alert('Profile updated!'); 
+      toast.success('Profile updated!'); 
     } catch (error) {
       console.error(error);
-      alert('Failed to update profile');
+      toast.error('Failed to update profile');
     } finally {
       setUploading(false);
     }

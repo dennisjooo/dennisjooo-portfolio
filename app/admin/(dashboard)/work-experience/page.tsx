@@ -9,9 +9,10 @@ import {
   TrashIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 interface WorkExperience {
-  _id: string;
+  id: string;
   title: string;
   company: string;
   date: string;
@@ -43,22 +44,28 @@ export default function AdminWorkExperienceList() {
   }, [fetchItems]);
 
   const deleteItem = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this work experience?"))
-      return;
+    toast("Are you sure you want to delete this work experience?", {
+      action: {
+        label: "Delete",
+        onClick: async () => {
+          try {
+            const res = await fetch(`/api/work-experience/${id}`, {
+              method: "DELETE",
+            });
 
-    try {
-      const res = await fetch(`/api/work-experience/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        fetchItems();
-      } else {
-        alert("Failed to delete");
-      }
-    } catch (error) {
-      console.error("Error deleting:", error);
-    }
+            if (res.ok) {
+              fetchItems();
+              toast.success("Item deleted successfully");
+            } else {
+              toast.error("Failed to delete");
+            }
+          } catch (error) {
+            console.error("Error deleting:", error);
+            toast.error("Something went wrong");
+          }
+        },
+      },
+    });
   };
 
   const columns = [
@@ -111,14 +118,14 @@ export default function AdminWorkExperienceList() {
       cell: (row: WorkExperience) => (
         <div className="flex items-center justify-end gap-3">
           <Link
-            href={`/admin/work-experience/${row._id}`}
+            href={`/admin/work-experience/${row.id}`}
             className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
             title="Edit"
           >
             <PencilSquareIcon className="w-4 h-4" />
           </Link>
           <button
-            onClick={() => deleteItem(row._id)}
+            onClick={() => deleteItem(row.id)}
             className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
             title="Delete"
           >
@@ -156,7 +163,7 @@ export default function AdminWorkExperienceList() {
         isLoading={loading}
         currentPage={1}
         totalPages={1}
-        onPageChange={() => {}}
+        onPageChange={() => { }}
       />
     </div>
   );

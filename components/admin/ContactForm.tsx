@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 interface Contact {
-  _id?: string;
+  id?: string;
   label: string;
   href: string;
   icon: string;
@@ -48,7 +49,7 @@ export default function ContactForm({
 
     try {
       const url = isEditing
-        ? `/api/contacts/${initialData?._id}`
+        ? `/api/contacts/${initialData?.id}`
         : "/api/contacts";
       const method = isEditing ? "PUT" : "POST";
 
@@ -62,11 +63,12 @@ export default function ContactForm({
 
       if (!res.ok) throw new Error("Failed to save contact");
 
+      toast.success(isEditing ? "Contact updated" : "Contact created");
       router.push("/admin/contacts");
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

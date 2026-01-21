@@ -6,7 +6,6 @@ import { SectionHeader } from '@/components/shared/SectionHeader';
 
 export interface TimelineItemData {
     id?: string;
-    _id?: string;
     date: string;
     title: string;
     company: string;

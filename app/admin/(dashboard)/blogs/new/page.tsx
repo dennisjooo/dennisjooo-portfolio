@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { BlogForm } from '@/components/admin/BlogForm';
 import { Blog } from '@/lib/db'; 
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function NewBlogPage() {
       });
 
       if (res.ok) {
+        toast.success('Blog created successfully');
         router.push('/admin/blogs');
         router.refresh();
       } else {
@@ -26,7 +28,7 @@ export default function NewBlogPage() {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to create blog post');
+      toast.error('Failed to create blog post');
     }
   };
 

@@ -6,6 +6,7 @@ import { BlogForm } from '@/components/admin/BlogForm';
 import { use } from 'react';
 import { Blog } from '@/lib/db';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 
 export default function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
       .then(res => res.json())
       .then(data => {
         if (data.error) {
-          alert('Blog not found');
+          toast.error('Blog not found');
           router.push('/admin/blogs');
         } else {
           setBlog(data);
@@ -38,6 +39,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
       });
 
       if (res.ok) {
+        toast.success('Blog updated successfully');
         router.push('/admin/blogs');
         router.refresh();
       } else {
@@ -45,7 +47,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to update blog post');
+      toast.error('Failed to update blog post');
     }
   };
 

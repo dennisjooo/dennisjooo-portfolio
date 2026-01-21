@@ -17,13 +17,13 @@ interface AdminTableProps {
   onPageChange: (page: number) => void;
 }
 
-export function AdminTable({ 
-  columns, 
-  data, 
-  isLoading, 
-  currentPage, 
-  totalPages, 
-  onPageChange 
+export function AdminTable({
+  columns,
+  data,
+  isLoading,
+  currentPage,
+  totalPages,
+  onPageChange
 }: AdminTableProps) {
   if (isLoading) {
     return (
@@ -49,8 +49,8 @@ export function AdminTable({
             <thead>
               <tr className="border-b border-border/50 bg-muted/20">
                 {columns.map((col, idx) => (
-                  <th 
-                    key={idx} 
+                  <th
+                    key={idx}
                     className={`px-6 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground ${col.className || ''}`}
                   >
                     {col.header}
@@ -60,8 +60,8 @@ export function AdminTable({
             </thead>
             <tbody className="divide-y divide-border/30">
               {data.map((row, rowIdx) => (
-                <tr 
-                  key={row._id || rowIdx} 
+                <tr
+                  key={row.id || rowIdx}
                   className="group hover:bg-muted/30 transition-colors duration-200"
                 >
                   {columns.map((col, colIdx) => (

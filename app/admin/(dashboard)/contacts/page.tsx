@@ -8,6 +8,7 @@ import {
   TrashIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 import {
   Mail,
   Github,
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 
 interface Contact {
-  _id: string;
+  id: string;
   label: string;
   href: string;
   icon: string;
@@ -74,21 +75,28 @@ export default function AdminContactsList() {
   };
 
   const deleteContact = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this contact?")) return;
+    toast("Are you sure you want to delete this contact?", {
+      action: {
+        label: "Delete",
+        onClick: async () => {
+          try {
+            const res = await fetch(`/api/contacts/${id}`, {
+              method: "DELETE",
+            });
 
-    try {
-      const res = await fetch(`/api/contacts/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        fetchContacts(currentPage);
-      } else {
-        alert("Failed to delete");
-      }
-    } catch (error) {
-      console.error("Error deleting:", error);
-    }
+            if (res.ok) {
+              fetchContacts(currentPage);
+              toast.success("Contact deleted successfully");
+            } else {
+              toast.error("Failed to delete");
+            }
+          } catch (error) {
+            console.error("Error deleting:", error);
+            toast.error("Something went wrong");
+          }
+        },
+      },
+    });
   };
 
   const columns = [
@@ -136,14 +144,14 @@ export default function AdminContactsList() {
       cell: (row: Contact) => (
         <div className="flex items-center justify-end gap-3">
           <Link
-            href={`/admin/contacts/${row._id}`}
+            href={`/admin/contacts/${row.id}`}
             className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
             title="Edit"
           >
             <PencilSquareIcon className="w-4 h-4" />
           </Link>
           <button
-            onClick={() => deleteContact(row._id)}
+            onClick={() => deleteContact(row.id)}
             className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
             title="Delete"
           >

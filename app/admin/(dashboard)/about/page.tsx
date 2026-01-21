@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 interface AboutContent {
   aboutIntro: string;
@@ -53,13 +54,14 @@ export default function AboutAdminPage() {
 
       if (res.ok) {
         setSaved(true);
+        toast.success("Changes saved successfully");
         setTimeout(() => setSaved(false), 2000);
       } else {
-        alert("Failed to save");
+        toast.error("Failed to save");
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to save");
+      toast.error("Failed to save");
     } finally {
       setSaving(false);
     }
