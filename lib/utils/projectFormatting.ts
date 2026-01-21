@@ -1,6 +1,6 @@
-import { Blog } from "@/data/blogs/types";
+import { IBlog } from "@/models/Blog";
 
-export const sortProjectsByDate = (projects: Blog[]): Blog[] =>
+export const sortProjectsByDate = (projects: IBlog[]): IBlog[] =>
     [...projects].sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );

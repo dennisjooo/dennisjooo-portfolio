@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
     processedProjects,
+    setProcessedProjects,
     processedWorkExperience,
     getContextSnippet,
     type ProcessedProject,
@@ -92,6 +93,18 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     const router = useRouter();
     const { copied, copyToClipboard } = useCopyToClipboard();
 
+    // Fetch projects when command palette opens
+    React.useEffect(() => {
+        if (open && processedProjects.length === 0) {
+            fetch('/api/blogs')
+                .then(res => res.json())
+                .then(data => {
+                    setProcessedProjects(data);
+                })
+                .catch(err => console.error("Failed to fetch projects for command palette", err));
+        }
+    }, [open]);
+
     // Keyboard shortcut (Ctrl/Cmd + K) and custom event listener
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -153,7 +166,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...project, context };
             })
             .filter((p): p is FilteredProject => p !== null);
-    }, [search, matcher, searchScope]);
+    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
 
     // Filtered work experience with context
     const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
@@ -191,4 +204,3 @@ export function useCommandPalette(): UseCommandPaletteReturn {
         router,
     };
 }
-

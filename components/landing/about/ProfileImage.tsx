@@ -7,9 +7,10 @@ import { fadeInUpVariants } from '@/lib/animations/variants';
 
 interface ProfileImageProps {
     mainControls?: AnimationControls;
+    imageUrl?: string;
 }
 
-export const ProfileImage: React.FC<ProfileImageProps> = ({ mainControls }) => (
+export const ProfileImage: React.FC<ProfileImageProps> = ({ mainControls, imageUrl = '/images/profile.webp' }) => (
     <motion.div
         className="w-full max-w-[300px] aspect-square relative flex-shrink-0 group"
         variants={fadeInUpVariants}
@@ -19,7 +20,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({ mainControls }) => (
     >
         <div className="absolute -inset-4 bg-gradient-accent rounded-[2rem] opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-500" />
         <Image
-            src="/images/profile.webp"
+            src={imageUrl}
             alt="Profile picture"
             fill
             className="rounded-2xl object-cover shadow-2xl group-hover:grayscale-0 transition-all duration-500 relative z-10"

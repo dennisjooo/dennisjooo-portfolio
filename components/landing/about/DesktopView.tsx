@@ -14,9 +14,10 @@ interface ContentSection {
 interface DesktopViewProps {
     contentSections: ContentSection[];
     scrollContentRef: Ref<HTMLDivElement>;
+    profileImageUrl?: string;
 }
 
-export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrollContentRef }) => (
+export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrollContentRef, profileImageUrl }) => (
     <div className="hidden md:flex w-full h-full">
         {/* Col 1: Sticky Image & Metadata (40%) */}
         <div className="w-[40%] h-full flex flex-col justify-center items-center p-12 relative z-10">
@@ -24,7 +25,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
             <div className="absolute right-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
 
             <div className="w-full max-w-md flex flex-col items-center">
-                <ProfileImage />
+                <ProfileImage imageUrl={profileImageUrl} />
 
                 <motion.div
                     className="mt-8 text-center space-y-2"

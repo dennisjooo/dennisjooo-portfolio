@@ -1,6 +1,5 @@
 "use client";
 
-import { projects } from "@/data/blogs/index";
 import { workExperienceData } from "@/data/workContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { extractKeywords } from "@/lib/utils/extractKeywords";
@@ -45,13 +44,17 @@ export interface ProcessedWorkExperience {
 // Pre-processed Data (runs once at module load)
 // ============================================================================
 
-export const processedProjects: ProcessedProject[] = projects.map(project => {
-    const slug = createUrlSlug(project.title);
+export let processedProjects: ProcessedProject[] = [];
+
+// Helper to inject projects dynamically (if fetching on client)
+export function setProcessedProjects(projects: any[]) {
+  processedProjects = projects.map(project => {
+    const slug = project.slug || createUrlSlug(project.title);
     const path = `/blogs/${slug}`;
 
     // Extract top keywords from blog post content
-    const contentKeywords = extractKeywords(project.blogPost, 50);
-    const descKeywords = extractKeywords(project.description, 20);
+    const contentKeywords = extractKeywords(project.blogPost || '', 50);
+    const descKeywords = extractKeywords(project.description || '', 20);
 
     return {
         ...project,
@@ -67,7 +70,8 @@ export const processedProjects: ProcessedProject[] = projects.map(project => {
             project.type
         ]
     };
-});
+  });
+}
 
 export const processedWorkExperience: ProcessedWorkExperience[] = workExperienceData.map(work => {
     const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;

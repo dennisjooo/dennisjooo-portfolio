@@ -7,7 +7,11 @@ import { DesktopView } from './DesktopView';
 import { useAboutAnimations } from '@/lib/hooks/useAboutAnimations';
 import { contentSections } from './contentSections';
 
-const About: React.FC = () => {
+interface AboutProps {
+    profileImageUrl?: string;
+}
+
+const About: React.FC<AboutProps> = ({ profileImageUrl }) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollContentRef = useRef<HTMLDivElement>(null);
@@ -37,10 +41,14 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="flex-1 w-full relative overflow-hidden flex flex-col md:flex-row">
-                    <MobileView contentSections={contentSections} />
+                    <MobileView 
+                        contentSections={contentSections} 
+                        profileImageUrl={profileImageUrl}
+                    />
                     <DesktopView
                         contentSections={contentSections}
                         scrollContentRef={scrollContentRef}
+                        profileImageUrl={profileImageUrl}
                     />
                 </div>
             </div>
