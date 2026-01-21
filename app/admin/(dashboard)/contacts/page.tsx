@@ -48,7 +48,9 @@ export default function AdminContactsList() {
     async (page: number) => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/contacts?page=${page}&limit=${pageSize}`);
+        const res = await fetch(`/api/contacts?page=${page}&limit=${pageSize}`, {
+          cache: 'no-store'
+        });
         const data = await res.json();
         if (data.success) {
           setContacts(data.data);

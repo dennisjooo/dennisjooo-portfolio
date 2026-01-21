@@ -13,7 +13,9 @@ export default function EditContactPage() {
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        const res = await fetch(`/api/contacts/${params.id}`);
+        const res = await fetch(`/api/contacts/${params.id}`, {
+          cache: 'no-store'
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch contact");
         }

@@ -23,7 +23,9 @@ export default function AdminCertificationsList() {
   const fetchCerts = useCallback(async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/certifications?page=${page}&limit=${pageSize}`);
+      const res = await fetch(`/api/certifications?page=${page}&limit=${pageSize}`, {
+        cache: 'no-store'
+      });
       const data = await res.json();
       if (data.success) {
         setCerts(data.data);

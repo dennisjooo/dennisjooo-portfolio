@@ -13,7 +13,9 @@ export default function EditWorkExperiencePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/work-experience/${params.id}`);
+        const res = await fetch(`/api/work-experience/${params.id}`, {
+          cache: 'no-store'
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch");
         }

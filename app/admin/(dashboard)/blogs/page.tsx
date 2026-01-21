@@ -23,7 +23,9 @@ export default function AdminBlogsList() {
   const fetchBlogs = useCallback(async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/blogs?page=${page}&limit=${pageSize}`);
+      const res = await fetch(`/api/blogs?page=${page}&limit=${pageSize}`, {
+        cache: 'no-store'
+      });
       const data = await res.json();
       if (data.data) {
         setBlogs(data.data);

@@ -11,7 +11,7 @@ export default function ProfileAdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/site-config')
+    fetch('/api/site-config', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         setImageUrl(data.profileImageUrl || '/images/profile.webp');

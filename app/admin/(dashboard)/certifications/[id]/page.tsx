@@ -13,7 +13,9 @@ export default function EditCertificationPage() {
   useEffect(() => {
     const fetchCert = async () => {
       try {
-        const res = await fetch(`/api/certifications/${params.id}`);
+        const res = await fetch(`/api/certifications/${params.id}`, {
+          cache: 'no-store'
+        });
         if (!res.ok) {
            throw new Error("Failed to fetch certification");
         }

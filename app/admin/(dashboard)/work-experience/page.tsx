@@ -27,7 +27,9 @@ export default function AdminWorkExperienceList() {
   const fetchItems = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/work-experience");
+      const res = await fetch("/api/work-experience", {
+        cache: 'no-store'
+      });
       const data = await res.json();
       if (data.success) {
         setItems(data.data);

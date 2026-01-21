@@ -15,7 +15,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/blogs/${id}`)
+    fetch(`/api/blogs/${id}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.error) {

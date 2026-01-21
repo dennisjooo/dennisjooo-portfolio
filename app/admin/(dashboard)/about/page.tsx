@@ -30,7 +30,7 @@ export default function AboutAdminPage() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    fetch("/api/site-config")
+    fetch("/api/site-config", { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         setContent({
