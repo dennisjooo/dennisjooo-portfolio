@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { DocumentTextIcon, UserCircleIcon, AcademicCapIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
 
 interface ServiceStatus {
   status: 'operational' | 'degraded' | 'down';
@@ -91,6 +92,7 @@ function StatusIndicator({ status }: { status: ServiceStatus | undefined }) {
 }
 
 export default function AdminDashboard() {
+  const { user } = useUser();
   const [statusData, setStatusData] = useState<StatusData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -119,7 +121,7 @@ export default function AdminDashboard() {
     <div className="space-y-12">
       <div className="space-y-2">
         <h1 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl text-foreground">
-          Welcome back, <span className="not-italic font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-600">Dennis.</span>
+          Welcome back, <span className="not-italic font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-600">{user?.firstName || 'Admin'}.</span>
         </h1>
         <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest max-w-xl">
           System Status: Operational // Ready for content injection
