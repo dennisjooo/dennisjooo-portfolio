@@ -54,17 +54,18 @@ export default function WorkExperienceForm({
     try {
       const { contentHash, body } = await buildUploadPayload(file);
 
-      const response = await fetch(
-        `/api/upload?filename=work/${file.name}&contentHash=${contentHash}`,
-        {
-          method: "POST",
-          body,
-        }
-      );
+      const params = new URLSearchParams({
+        filename: `work/${file.name}`,
+        contentHash,
+      });
+      const response = await fetch(`/api/upload?${params.toString()}`, {
+        method: "POST",
+        body,
+      });
 
       const newBlob = await response.json();
       if (newBlob.url) {
-        setFormData({ ...formData, imageSrc: newBlob.url });
+        setFormData((prev) => ({ ...prev, imageSrc: newBlob.url }));
       } else {
         toast.error("Upload failed");
       }
@@ -90,6 +91,8 @@ export default function WorkExperienceForm({
       await onSubmit(cleanedData);
     } catch (error) {
       console.error(error);
+      const message = error instanceof Error ? error.message : "Unknown error";
+      toast.error(`Failed to save work experience: ${message}`);
     } finally {
       setLoading(false);
     }

@@ -3,18 +3,10 @@
 import CertificationForm from "@/components/admin/CertificationForm";
 import { AdminFormLayout } from "@/components/admin/shared";
 import { useAdminForm } from "@/components/admin/hooks";
-
-interface Certification {
-  id?: string;
-  title: string;
-  issuer: string;
-  date: string;
-  description: string;
-  link: string;
-}
+import type { Certification } from "@/lib/db/schema";
 
 export default function NewCertificationPage() {
-  const { handleSubmit } = useAdminForm<Certification>({
+  const { handleSubmit } = useAdminForm<Partial<Certification>>({
     endpoint: '/api/certifications',
     redirectTo: '/admin/certifications',
     itemName: 'certification',
