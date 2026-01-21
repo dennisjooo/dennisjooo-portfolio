@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BackToTop } from '@/components/shared';
 import ProjectPageClient from './ProjectPageClient';
+import ProjectContent from '@/components/blogs/article/ProjectContent';
 import { db, blogs } from '@/lib/db';
 import { eq } from 'drizzle-orm';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { unstable_cache } from 'next/cache';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
+import { extractHeadings } from '@/lib/utils/markdownHelpers';
 
 type ProjectPageProps = {
     params: Promise<{ slug: string }>;
@@ -78,9 +80,13 @@ export default async function Page({ params }: ProjectPageProps) {
         notFound();
     }
 
+    const headings = extractHeadings(project.blogPost);
+
     return (
         <>
-            <ProjectPageClient project={project} />
+            <ProjectPageClient project={project} headings={headings}>
+                <ProjectContent content={project.blogPost} />
+            </ProjectPageClient>
             <BackToTop />
         </>
     );

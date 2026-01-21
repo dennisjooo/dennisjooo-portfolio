@@ -2,29 +2,30 @@
 
 import ProjectLinks from '@/components/blogs/article/ProjectLinks';
 import TableOfContents from '@/components/blogs/article/TableOfContents';
+import HashScrollHandler from '@/components/blogs/article/HashScrollHandler';
 import { ReadingProgress } from '@/components/shared';
 import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
-import { extractHeadings } from '@/lib/utils/markdownHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
 import { PhotoProvider } from 'react-photo-view';
+import { Heading } from '@/lib/utils/markdownHelpers';
 
-const ProjectContent = dynamic(() => import('@/components/blogs/article/ProjectContent'), {
-    loading: () => <div className="animate-pulse bg-muted h-96 rounded-xl" />
-});
+interface ProjectPageClientProps {
+    project: Blog;
+    headings: Heading[];
+    children: React.ReactNode;
+}
 
-export default function ProjectPageClient({ project }: { project: Blog }) {
-    const headings = useMemo(() => extractHeadings(project.blogPost), [project.blogPost]);
+export default function ProjectPageClient({ project, headings, children }: ProjectPageClientProps) {
     const wordCount = project.blogPost.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / 200);
 
     return (
         <>
             <ReadingProgress />
+            <HashScrollHandler />
             <TableOfContents headings={headings} />
             <PhotoProvider maskOpacity={PHOTO_VIEWER_CONFIG.maskOpacity} speed={() => PHOTO_VIEWER_CONFIG.speed}>
                 <main className="min-h-screen bg-background text-foreground">
@@ -44,10 +45,10 @@ export default function ProjectPageClient({ project }: { project: Blog }) {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.5 }}
+                            transition={{ duration: 0.6 }}
                             className="mb-16"
                         >
-                            <ProjectContent content={project.blogPost} />
+                            {children}
                         </motion.div>
 
                         {/* Project Links */}
@@ -55,7 +56,7 @@ export default function ProjectPageClient({ project }: { project: Blog }) {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.6 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
                             >
                                 <ProjectLinks links={project.links} />
                             </motion.div>
