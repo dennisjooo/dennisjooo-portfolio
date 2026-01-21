@@ -40,7 +40,7 @@ export const DockIcon = ({
 
     const width = useSpring(
         useTransform(distanceCalc, [-distance, 0, distance], [40, magnification, 40]),
-        { mass: 0.1, stiffness: 150, damping: 12 }
+        { mass: 0.1, stiffness: 400, damping: 12 }
     );
 
     return (

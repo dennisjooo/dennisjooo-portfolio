@@ -11,7 +11,6 @@ interface DockIconLinkProps extends Partial<DockIconProps> {
 export const DockIconLink: React.FC<DockIconLinkProps> = ({ href, ariaLabel, icon, ...dockProps }) => {
     return (
         <DockIcon
-            className="transition-all duration-200"
             {...dockProps}
         >
             <Link

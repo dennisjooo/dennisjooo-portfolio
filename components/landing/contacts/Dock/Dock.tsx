@@ -8,7 +8,7 @@ import { DEFAULT_DISTANCE, DEFAULT_MAGNIFICATION } from "./constants";
 import type { DockIconProps } from "./DockIcon";
 
 const dockVariants = cva(
-    "mx-auto w-max h-[58px] p-2 flex gap-2 rounded-full border supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-md transition-all duration-300"
+    "mx-auto w-max h-[58px] p-2 flex gap-2 rounded-full border supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-md"
 );
 
 export interface DockProps extends VariantProps<typeof dockVariants> {
