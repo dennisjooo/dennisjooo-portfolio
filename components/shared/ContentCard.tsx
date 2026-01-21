@@ -48,7 +48,7 @@ export const ContentCard = ({
         : {
             initial: { opacity: 0, y: 30 },
             whileInView: { opacity: 1, y: 0 },
-            transition: { duration: 0.5, delay: Math.min(index * 0.05, 0.3) },
+            transition: { duration: 0.4, delay: Math.min(index * 0.05, 0.3) },
             viewport: { once: true, margin: "-50px" }
         };
 
@@ -70,9 +70,9 @@ export const ContentCard = ({
                     <div className="relative w-full h-full bg-muted overflow-hidden rounded-md border border-border">
                         {/* Noise Overlay */}
                         <div 
-                            className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay"
+                            className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
                             style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
                             }}
                         />
                         

@@ -28,7 +28,7 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
             className="group block h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.3) }}
+            transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
             viewport={{ once: true, margin: "-50px" }}
         >
             <article className="relative flex flex-col h-full p-6 rounded-lg border border-border bg-card hover:border-accent/50 transition-all duration-500">
