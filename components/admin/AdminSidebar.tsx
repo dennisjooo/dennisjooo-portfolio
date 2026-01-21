@@ -57,34 +57,6 @@ export function AdminSidebar() {
       </nav>
 
       <div className="p-4 border-t border-border">
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors">
-          <UserButton
-            showName
-            appearance={{
-              variables: {
-                colorPrimary: "hsl(var(--primary))",
-                colorBackground: "hsl(var(--card))",
-                colorInputBackground: "hsl(var(--input))",
-                colorInputText: "hsl(var(--foreground))",
-                colorText: "hsl(var(--foreground))",
-                colorTextSecondary: "hsl(var(--muted-foreground))",
-                borderRadius: "0.75rem",
-              },
-              elements: {
-                rootBox: "w-full",
-                userButtonBox: "flex-row-reverse",
-                userButtonOuterIdentifier: "text-foreground font-urbanist",
-                userButtonTrigger: "focus:shadow-none",
-                card: "bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-xl",
-                userPreviewMainIdentifier: "text-foreground font-urbanist",
-                userPreviewSecondaryIdentifier: "text-muted-foreground font-mono text-xs",
-                menuButton: "text-foreground hover:bg-accent/10",
-                menuItem: "text-foreground hover:bg-accent/10 font-urbanist",
-              },
-            }}
-          />
-        </div>
-
         {/* Theme Toggle */}
         <div className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg hover:bg-accent/10 transition-colors">
           <ThemeToggle className="w-5 h-5" />
