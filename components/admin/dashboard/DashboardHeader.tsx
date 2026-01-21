@@ -12,7 +12,7 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
         </span>
       </h1>
       <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest max-w-xl">
-        System Status: Operational // Ready for content injection
+        System Status: Operational {/* Ready for content injection */}
       </p>
     </div>
   );

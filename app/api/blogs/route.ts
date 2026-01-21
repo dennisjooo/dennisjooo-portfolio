@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
 import { desc, count, eq } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(request: Request) {
   try {
@@ -57,6 +58,11 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const [blog] = await db.insert(blogs).values(body).returning();

@@ -68,6 +68,13 @@ export async function DELETE(request: Request) {
       return new NextResponse('Invalid body', { status: 400 });
     }
 
+    // Validate that all URLs are valid Vercel Blob URLs
+    const validUrlPattern = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/.+$/;
+    const invalidUrls = urls.filter(url => typeof url !== 'string' || !validUrlPattern.test(url));
+    if (invalidUrls.length > 0) {
+      return new NextResponse('Invalid blob URLs provided', { status: 400 });
+    }
+
     await del(urls);
     return new NextResponse('Deleted', { status: 200 });
   } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 
 interface UseAdminListOptions {
@@ -42,6 +42,12 @@ export function useAdminList<T extends { id: string; order?: number }>({
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const currentPageRef = useRef(currentPage);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
 
   const fetchItems = useCallback(
     async (page: number, showLoading = true) => {
@@ -102,7 +108,8 @@ export function useAdminList<T extends { id: string; order?: number }>({
               });
 
               if (res.ok) {
-                fetchItems(currentPage);
+                // Use ref to get the latest page value at click time
+                fetchItems(currentPageRef.current);
                 toast.success(successMsg);
               } else {
                 toast.error('Failed to delete');
@@ -115,7 +122,7 @@ export function useAdminList<T extends { id: string; order?: number }>({
         },
       });
     },
-    [endpoint, currentPage, fetchItems, deleteConfirmMessage, deleteSuccessMessage, itemName]
+    [endpoint, fetchItems, deleteConfirmMessage, deleteSuccessMessage, itemName]
   );
 
   const handleReorder = useCallback(

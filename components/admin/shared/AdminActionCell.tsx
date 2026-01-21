@@ -12,14 +12,15 @@ export function AdminActionCell({ editHref, onDelete }: AdminActionCellProps) {
       <Link
         href={editHref}
         className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
-        title="Edit"
+        aria-label="Edit"
       >
         <PencilSquareIcon className="w-4 h-4" />
       </Link>
       <button
+        type="button"
         onClick={onDelete}
         className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
-        title="Delete"
+        aria-label="Delete"
       >
         <TrashIcon className="w-4 h-4" />
       </button>

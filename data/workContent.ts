@@ -1,11 +1,4 @@
-export interface TimelineItemData {
-    id: string;
-    date: string;
-    title: string;
-    company: string;
-    imageSrc: string;
-    responsibilities: string[];
-}
+import type { TimelineItemData } from '@/components/landing/work-experience/WorkExperience';
 
 export const workExperienceData: TimelineItemData[] = [
     {

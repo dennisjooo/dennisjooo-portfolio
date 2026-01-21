@@ -39,7 +39,7 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
         <div className="space-y-1">
           <StatusIndicator status={statusData?.database} />
           <div className="text-sm text-muted-foreground">Database Status</div>
-          {statusData?.database?.latency && (
+          {statusData?.database?.latency != null && (
             <div className="text-xs text-muted-foreground/60">
               {statusData.database.latency}ms
             </div>
@@ -48,7 +48,7 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
         <div className="space-y-1">
           <StatusIndicator status={statusData?.auth} />
           <div className="text-sm text-muted-foreground">Auth System</div>
-          {statusData?.auth?.latency && (
+          {statusData?.auth?.latency != null && (
             <div className="text-xs text-muted-foreground/60">
               {statusData.auth.latency}ms
             </div>

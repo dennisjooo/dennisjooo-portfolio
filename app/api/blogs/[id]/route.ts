@@ -3,6 +3,7 @@ import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
   request: Request,
@@ -29,6 +30,11 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -54,6 +60,11 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
 

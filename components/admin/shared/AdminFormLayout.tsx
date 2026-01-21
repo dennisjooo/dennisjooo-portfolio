@@ -25,6 +25,7 @@ export function AdminFormLayout({
           type="button"
           onClick={() => router.back()}
           className="p-2 rounded-full hover:bg-muted/50 transition-colors"
+          aria-label="Go back"
         >
           <ArrowLeftIcon className="w-5 h-5 text-muted-foreground" />
         </button>
