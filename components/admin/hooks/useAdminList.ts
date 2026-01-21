@@ -58,6 +58,22 @@ export function useAdminList<T extends { id: string; order?: number }>({
           : `${endpoint}?page=${page}&limit=${pageSize}`;
         
         const res = await fetch(url, { cache: 'no-store' });
+
+        if (!res.ok) {
+          let errorMessage = `Failed to fetch ${itemName}s`;
+          try {
+            const errorData = await res.json();
+            if (errorData.error) {
+              errorMessage = errorData.error;
+            }
+          } catch {
+            // Response body wasn't JSON, use status text
+            errorMessage = `Failed to fetch ${itemName}s: ${res.status} ${res.statusText}`;
+          }
+          toast.error(errorMessage);
+          return;
+        }
+
         const data = await res.json();
 
         if (data.success !== false && (data.data || Array.isArray(data))) {
@@ -75,6 +91,7 @@ export function useAdminList<T extends { id: string; order?: number }>({
         }
       } catch (error) {
         console.error(`Failed to fetch ${itemName}s:`, error);
+        toast.error(`Failed to fetch ${itemName}s. Please try again.`);
       } finally {
         if (showLoading) setLoading(false);
       }

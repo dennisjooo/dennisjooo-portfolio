@@ -38,11 +38,57 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
+
+    // Allowlist of mutable fields - reject any unexpected keys
+    const allowedFields = [
+      "title",
+      "description",
+      "imageUrl",
+      "blogPost",
+      "date",
+      "type",
+      "wordCount",
+      "readTime",
+      "links",
+      "slug",
+    ] as const;
+
+    // Build sanitized update object with only allowed fields
+    const updateData: Record<string, unknown> = {};
+    for (const field of allowedFields) {
+      if (field in body) {
+        updateData[field] = body[field];
+      }
+    }
+
+    // Check for unexpected keys
+    const unexpectedKeys = Object.keys(body).filter(
+      (key) => !allowedFields.includes(key as (typeof allowedFields)[number])
+    );
+    if (unexpectedKeys.length > 0) {
+      return NextResponse.json(
+        { error: `Unexpected fields: ${unexpectedKeys.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Require at least one field to update
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json(
+        { error: "No valid fields to update" },
+        { status: 400 }
+      );
+    }
+
+    // Set updatedAt explicitly
+    updateData.updatedAt = new Date();
+
     const [blog] = await db
       .update(blogs)
-      .set({ ...body, updatedAt: new Date() })
+      .set(updateData)
       .where(eq(blogs.id, id))
       .returning();
+
     if (!blog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
