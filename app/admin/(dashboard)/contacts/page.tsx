@@ -45,8 +45,8 @@ export default function AdminContactsList() {
   const pageSize = 10;
 
   const fetchContacts = useCallback(
-    async (page: number) => {
-      setLoading(true);
+    async (page: number, showLoading = true) => {
+      if (showLoading) setLoading(true);
       try {
         const res = await fetch(`/api/contacts?page=${page}&limit=${pageSize}`, {
           cache: 'no-store'
@@ -62,11 +62,45 @@ export default function AdminContactsList() {
       } catch (error) {
         console.error("Failed to fetch contacts:", error);
       } finally {
-        setLoading(false);
+        if (showLoading) setLoading(false);
       }
     },
     [pageSize]
   );
+
+  const handleReorder = async (nextItems: Contact[]) => {
+    const payload = nextItems.map((item, index) => ({
+      id: item.id,
+      order: index,
+    }));
+
+    setContacts(
+      nextItems.map((item, index) => ({
+        ...item,
+        order: index,
+      }))
+    );
+
+    try {
+      const res = await fetch("/api/contacts/reorder", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: payload }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to reorder");
+      }
+      toast.success("Order updated");
+      fetchContacts(currentPage, false);
+    } catch (error) {
+      console.error("Failed to reorder contacts:", error);
+      toast.error("Failed to update order");
+      fetchContacts(currentPage, false);
+    }
+  };
 
   useEffect(() => {
     fetchContacts(1);
@@ -133,14 +167,6 @@ export default function AdminContactsList() {
       ),
     },
     {
-      header: "Order",
-      cell: (row: Contact) => (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
-          {row.order}
-        </span>
-      ),
-    },
-    {
       header: "Actions",
       className: "text-right",
       cell: (row: Contact) => (
@@ -193,7 +219,12 @@ export default function AdminContactsList() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+        enableReorder
+        onReorder={handleReorder}
       />
+      <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+        Drag the grip in the Order column to reorder. Lower numbers appear first.
+      </p>
     </div>
   );
 }

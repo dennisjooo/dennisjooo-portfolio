@@ -24,8 +24,8 @@ export default function AdminWorkExperienceList() {
   const [items, setItems] = useState<WorkExperience[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true);
+  const fetchItems = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
     try {
       const res = await fetch("/api/work-experience", {
         cache: 'no-store'
@@ -37,9 +37,43 @@ export default function AdminWorkExperienceList() {
     } catch (error) {
       console.error("Failed to fetch work experiences:", error);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }, []);
+
+  const handleReorder = async (nextItems: WorkExperience[]) => {
+    const payload = nextItems.map((item, index) => ({
+      id: item.id,
+      order: index,
+    }));
+
+    setItems(
+      nextItems.map((item, index) => ({
+        ...item,
+        order: index,
+      }))
+    );
+
+    try {
+      const res = await fetch("/api/work-experience/reorder", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: payload }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to reorder");
+      }
+      toast.success("Order updated");
+      fetchItems(false);
+    } catch (error) {
+      console.error("Failed to reorder work experiences:", error);
+      toast.error("Failed to update order");
+      fetchItems(false);
+    }
+  };
 
   useEffect(() => {
     fetchItems();
@@ -107,14 +141,6 @@ export default function AdminWorkExperienceList() {
       ),
     },
     {
-      header: "Order",
-      cell: (row: WorkExperience) => (
-        <span className="font-mono text-xs text-muted-foreground">
-          {row.order}
-        </span>
-      ),
-    },
-    {
       header: "Actions",
       className: "text-right",
       cell: (row: WorkExperience) => (
@@ -166,7 +192,12 @@ export default function AdminWorkExperienceList() {
         currentPage={1}
         totalPages={1}
         onPageChange={() => { }}
+        enableReorder
+        onReorder={handleReorder}
       />
+      <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+        Drag the grip in the Order column to reorder. Lower numbers appear first.
+      </p>
     </div>
   );
 }
