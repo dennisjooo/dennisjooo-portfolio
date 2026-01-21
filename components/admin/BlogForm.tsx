@@ -67,7 +67,11 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     try {
       const { contentHash, body } = await buildUploadPayload(file);
 
-      const response = await fetch(`/api/upload?filename=${file.name}&contentHash=${contentHash}`, {
+      const filename = formData.title 
+        ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${file.name}`
+        : file.name;
+
+      const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}&contentHash=${contentHash}`, {
         method: 'POST',
         body,
       });
@@ -190,7 +194,11 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           try {
             const { contentHash, body } = await buildUploadPayload(pendingImage.file);
 
-            const response = await fetch(`/api/upload?filename=${pendingImage.file.name}&contentHash=${contentHash}`, {
+            const filename = formData.title 
+              ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${pendingImage.file.name}`
+              : pendingImage.file.name;
+
+            const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}&contentHash=${contentHash}`, {
               method: 'POST',
               body,
             });
