@@ -1,4 +1,4 @@
-import { IBlog } from '@/models/Blog';
+import { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
 import { ContentCard } from '@/components/shared';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 // }
 
 export default function ProjectsList({ type = 'project' }: { type?: 'project' | 'blog' | 'all' }) {
-    const [projects, setProjects] = useState<IBlog[]>([]);
+    const [projects, setProjects] = useState<Blog[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function ProjectsList({ type = 'project' }: { type?: 'project' | 
                     description={description}
                     slug={createUrlSlug(title)}
                     date={formatProjectDate(date, true)}
-                    imageUrl={imageUrl}
+                    imageUrl={imageUrl ?? undefined}
                     index={index}
                     type={itemType}
                     readTime={`${Math.ceil(blogPost.split(/\s+/).length / 200)} min`}

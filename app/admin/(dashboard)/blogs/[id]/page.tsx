@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { BlogForm } from '@/components/admin/BlogForm';
 import { use } from 'react';
-import { IBlog } from '@/models/Blog';
+import { Blog } from '@/lib/db';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export default function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const [blog, setBlog] = useState<IBlog | null>(null);
+  const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
       .finally(() => setLoading(false));
   }, [id, router]);
 
-  const handleSubmit = async (data: Partial<IBlog>) => {
+  const handleSubmit = async (data: Partial<Blog>) => {
     try {
       const res = await fetch(`/api/blogs/${id}`, {
         method: 'PUT',

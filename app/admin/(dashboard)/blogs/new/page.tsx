@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { BlogForm } from '@/components/admin/BlogForm';
-import { IBlog } from '@/models/Blog'; 
+import { Blog } from '@/lib/db'; 
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export default function NewBlogPage() {
   const router = useRouter();
   
-  const handleSubmit = async (data: Partial<IBlog>) => {
+  const handleSubmit = async (data: Partial<Blog>) => {
     try {
       const res = await fetch('/api/blogs', {
         method: 'POST',

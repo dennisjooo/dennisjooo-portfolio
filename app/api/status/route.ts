@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
+import { neon } from '@neondatabase/serverless';
 import { list } from '@vercel/blob';
 import { auth } from '@clerk/nextjs/server';
 import packageJson from '@/package.json';
@@ -27,9 +27,16 @@ let lastChecked: number = 0;
 async function checkDatabase(): Promise<ServiceStatus> {
   const start = Date.now();
   try {
-    const connection = await dbConnect();
-    // Ping the database to verify connection
-    await connection.connection.db?.admin().ping();
+    const DATABASE_URL = process.env.DATABASE_URL;
+    if (!DATABASE_URL) {
+      return {
+        status: 'down',
+        message: 'DATABASE_URL not configured',
+      };
+    }
+    const sql = neon(DATABASE_URL);
+    // Simple ping query
+    await sql`SELECT 1`;
     return {
       status: 'operational',
       latency: Date.now() - start,

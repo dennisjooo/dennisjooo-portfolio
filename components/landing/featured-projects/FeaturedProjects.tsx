@@ -2,13 +2,13 @@
 
 import { useMemo } from 'react';
 import { sortProjectsByDate } from '@/lib/utils/projectFormatting';
-import { IBlog } from '@/models/Blog';
+import { Blog } from '@/lib/db';
 import { FeaturedProjectsHeader } from './FeaturedProjectsHeader';
 import { FeaturedProjectsGrid } from './FeaturedProjectsGrid';
 import { ViewAllButton } from './ViewAllButton';
 
 interface FeaturedProjectsProps {
-    projects: IBlog[];
+    projects: Blog[];
 }
 
 const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ projects }) => {

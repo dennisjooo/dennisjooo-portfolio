@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { IBlog } from '@/models/Blog';
+import { Blog } from '@/lib/db';
 import Image from 'next/image';
 import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
 
 interface BlogFormProps {
-  initialData?: IBlog;
-  onSubmit: (data: Partial<IBlog>) => Promise<void>;
+  initialData?: Blog;
+  onSubmit: (data: Partial<Blog>) => Promise<void>;
 }
 
 interface PendingImage {
@@ -19,7 +19,7 @@ interface PendingImage {
 export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [formData, setFormData] = useState<Partial<IBlog>>({
+  const [formData, setFormData] = useState<Partial<Blog>>({
     title: initialData?.title || '',
     description: initialData?.description || '',
     type: initialData?.type || 'blog',
@@ -279,7 +279,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                 <input
                 type="text"
                 name="slug"
-                value={formData.slug}
+                value={formData.slug ?? ''}
                 onChange={handleChange}
                 placeholder="auto-generated-from-title"
                 className={`${inputClasses} font-mono text-sm`}
@@ -356,7 +356,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                         <input
                             type="text"
                             name="imageUrl"
-                            value={formData.imageUrl}
+                            value={formData.imageUrl ?? ''}
                             onChange={handleChange}
                             placeholder="Paste image URL..."
                             className={`${inputClasses} text-xs font-mono`}

@@ -2,11 +2,11 @@
 
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
-import { IBlog } from '@/models/Blog';
+import { Blog } from '@/lib/db';
 import { ContentCard } from '@/components/shared';
 
 interface FeaturedProjectsGridProps {
-    projects: IBlog[];
+    projects: Blog[];
 }
 
 export const FeaturedProjectsGrid: React.FC<FeaturedProjectsGridProps> = ({ projects }) => (
@@ -21,7 +21,7 @@ export const FeaturedProjectsGrid: React.FC<FeaturedProjectsGridProps> = ({ proj
                     description={description}
                     slug={createUrlSlug(title)}
                     date={formatProjectDate(date, true)}
-                    imageUrl={imageUrl}
+                    imageUrl={imageUrl ?? undefined}
                     index={index}
                     variant="featured"
                 />

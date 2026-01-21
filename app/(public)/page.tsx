@@ -1,10 +1,8 @@
 import Hero from '@/components/landing/hero';
 import dynamic from 'next/dynamic';
 import { HomeClient } from './HomeClient';
-import dbConnect from '@/lib/mongodb';
-import Blog from '@/models/Blog';
-import SiteConfig from '@/models/SiteConfig';
-import WorkExperienceModel from '@/models/WorkExperience';
+import { db, blogs, siteConfig, workExperiences, type SiteConfig } from '@/lib/db';
+import { eq, desc, asc } from 'drizzle-orm';
 
 // Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
@@ -36,32 +34,40 @@ const BackToTop = dynamic(() => import('@/components/shared/BackToTop'));
 
 async function getProjects() {
     try {
-        await dbConnect();
-        // Plain object serialization for client components
-        const blogs = await Blog.find({ type: 'project' }).sort({ date: -1 }).lean();
-        return JSON.parse(JSON.stringify(blogs));
+        const projects = await db
+            .select()
+            .from(blogs)
+            .where(eq(blogs.type, 'project'))
+            .orderBy(desc(blogs.date));
+        return projects;
     } catch (error) {
         console.error('Failed to fetch projects', error);
         return [];
     }
 }
 
-async function getSiteConfig() {
+async function getSiteConfig(): Promise<SiteConfig | null> {
     try {
-        await dbConnect();
-        const config = await SiteConfig.findOne().lean();
-        return config ? JSON.parse(JSON.stringify(config)) : {};
+        const [config] = await db.select().from(siteConfig).limit(1);
+        return config ?? null;
     } catch (error) {
         console.error('Failed to fetch site config', error);
-        return {};
+        return null;
     }
 }
 
 async function getWorkExperience() {
     try {
-        await dbConnect();
-        const experiences = await WorkExperienceModel.find({}).sort({ order: 1, createdAt: -1 }).lean();
-        return JSON.parse(JSON.stringify(experiences));
+        const experiences = await db
+            .select()
+            .from(workExperiences)
+            .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt));
+        // Ensure responsibilities is always an array and order is number | undefined
+        return experiences.map(exp => ({
+            ...exp,
+            responsibilities: exp.responsibilities ?? [],
+            order: exp.order ?? undefined
+        }));
     } catch (error) {
         console.error('Failed to fetch work experience', error);
         return [];
@@ -69,18 +75,18 @@ async function getWorkExperience() {
 }
 
 export default async function Home() {
-    const [projects, siteConfig, workExperience] = await Promise.all([
+    const [projects, config, workExperience] = await Promise.all([
         getProjects(),
         getSiteConfig(),
         getWorkExperience()
     ]);
 
-    const profileImageUrl = siteConfig?.profileImageUrl;
-    const aboutContent = siteConfig ? {
-        intro: siteConfig.aboutIntro,
-        experience: siteConfig.aboutExperience,
-        personal: siteConfig.aboutPersonal,
-        outro: siteConfig.aboutOutro,
+    const profileImageUrl = config?.profileImageUrl ?? undefined;
+    const aboutContent = config ? {
+        intro: config.aboutIntro ?? '',
+        experience: config.aboutExperience ?? '',
+        personal: config.aboutPersonal ?? '',
+        outro: config.aboutOutro ?? '',
     } : undefined;
 
     return (

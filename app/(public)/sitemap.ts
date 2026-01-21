@@ -1,6 +1,5 @@
 import { MetadataRoute } from 'next';
-import dbConnect from '@/lib/mongodb';
-import Blog from '@/models/Blog';
+import { db, blogs } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 
 export const dynamic = 'force-dynamic'; // Changed to force-dynamic since we fetch from DB
@@ -11,9 +10,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let projectPages: MetadataRoute.Sitemap = [];
 
     try {
-        await dbConnect();
-        const projects = await Blog.find({}, 'title date slug');
-        
+        const projects = await db
+            .select({
+                title: blogs.title,
+                date: blogs.date,
+                slug: blogs.slug,
+            })
+            .from(blogs);
+
         projectPages = projects.map((project) => ({
             url: `${baseUrl}/blogs/${project.slug || createUrlSlug(project.title)}`,
             lastModified: new Date(project.date),
