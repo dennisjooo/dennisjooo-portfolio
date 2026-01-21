@@ -11,6 +11,10 @@ export async function POST(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const originalFilename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
+  const contentHashParam = searchParams.get('contentHash');
+  const normalizedHash = contentHashParam
+    ? contentHashParam.toLowerCase().replace(/[^a-f0-9]/g, '').slice(0, 32)
+    : null;
 
   if (!request.body) {
     return new NextResponse('No body', { status: 400 });
@@ -30,6 +34,9 @@ export async function POST(request: Request) {
     let webpFilename;
     if (originalFilename === 'profile.webp') {
       webpFilename = 'profile.webp';
+    } else if (normalizedHash) {
+      const baseName = originalFilename.replace(/\.[^.]+$/, '');
+      webpFilename = `${baseName}-${normalizedHash}.webp`;
     } else {
       // Generate unique filename: basename-{timestamp}-{randomId}.webp
       const baseName = originalFilename.replace(/\.[^.]+$/, '');
@@ -39,7 +46,7 @@ export async function POST(request: Request) {
 
     const blob = await put(webpFilename, optimizedBuffer, {
       access: 'public',
-      addRandomSuffix: webpFilename !== 'profile.webp',
+      addRandomSuffix: webpFilename !== 'profile.webp' && !normalizedHash,
     });
 
     return NextResponse.json(blob);

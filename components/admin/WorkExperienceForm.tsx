@@ -11,6 +11,7 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
+import { buildUploadPayload } from "@/lib/utils/blobUpload";
 
 interface WorkExperience {
   id?: string;
@@ -52,11 +53,13 @@ export default function WorkExperienceForm({
     const file = e.target.files[0];
 
     try {
+      const { contentHash, body } = await buildUploadPayload(file);
+
       const response = await fetch(
-        `/api/upload?filename=work/${file.name}`,
+        `/api/upload?filename=work/${file.name}&contentHash=${contentHash}`,
         {
           method: "POST",
-          body: file,
+          body,
         }
       );
 

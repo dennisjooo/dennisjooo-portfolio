@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
-import { list } from '@vercel/blob';
 import { auth } from '@clerk/nextjs/server';
 import packageJson from '@/package.json';
 
@@ -53,11 +52,19 @@ async function checkDatabase(): Promise<ServiceStatus> {
 async function checkBlobStorage(): Promise<ServiceStatus> {
   const start = Date.now();
   try {
-    // Try to list blobs (limit 1 for minimal overhead)
-    await list({ limit: 1 });
+    const hasToken = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+
+    if (!hasToken) {
+      return {
+        status: 'degraded',
+        message: 'Token not configured',
+      };
+    }
+
     return {
       status: 'operational',
       latency: Date.now() - start,
+      message: 'Config present (no deep check)',
     };
   } catch (error) {
     console.error('Blob storage check failed:', error);
@@ -129,7 +136,7 @@ export async function GET() {
     return NextResponse.json(freshStatus);
   } catch (error) {
     console.error('Status check error:', error);
-    
+
     // If we have stale cache, return it rather than erroring
     if (cachedStatus) {
       return NextResponse.json({
