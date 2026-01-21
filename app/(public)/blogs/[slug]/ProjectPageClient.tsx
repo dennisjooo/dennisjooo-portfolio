@@ -3,7 +3,7 @@
 import ProjectLinks from '@/components/blogs/article/ProjectLinks';
 import TableOfContents from '@/components/blogs/article/TableOfContents';
 import { ReadingProgress } from '@/components/shared';
-import { ArticleHero } from '@/components/blogs/article';
+import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
 import { extractHeadings } from '@/lib/utils/markdownHelpers';
