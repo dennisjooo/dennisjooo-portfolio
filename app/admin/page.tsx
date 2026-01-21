@@ -169,12 +169,19 @@ export default function AdminDashboard() {
       <div className="p-8 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">System Analytics</h3>
-          {isLoading && (
-            <span className="font-mono text-xs text-muted-foreground animate-pulse">Checking...</span>
-          )}
-          {error && (
-            <span className="font-mono text-xs text-red-500">Error: {error}</span>
-          )}
+          <div className="flex items-center gap-3">
+            {statusData?.timestamp && (
+              <span className="font-mono text-xs text-muted-foreground">
+                Updated: {new Date(statusData.timestamp).toLocaleTimeString()}
+              </span>
+            )}
+            {isLoading && (
+              <span className="font-mono text-xs text-muted-foreground animate-pulse">Checking...</span>
+            )}
+            {error && (
+              <span className="font-mono text-xs text-red-500">Error: {error}</span>
+            )}
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="space-y-1">
