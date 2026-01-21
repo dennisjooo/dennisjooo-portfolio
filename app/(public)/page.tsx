@@ -4,6 +4,7 @@ import { HomeClient } from './HomeClient';
 import dbConnect from '@/lib/mongodb';
 import Blog from '@/models/Blog';
 import SiteConfig from '@/models/SiteConfig';
+import WorkExperienceModel from '@/models/WorkExperience';
 
 // Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
@@ -56,18 +57,39 @@ async function getSiteConfig() {
     }
 }
 
+async function getWorkExperience() {
+    try {
+        await dbConnect();
+        const experiences = await WorkExperienceModel.find({}).sort({ order: 1, createdAt: -1 }).lean();
+        return JSON.parse(JSON.stringify(experiences));
+    } catch (error) {
+        console.error('Failed to fetch work experience', error);
+        return [];
+    }
+}
+
 export default async function Home() {
-    const projects = await getProjects();
-    const siteConfig = await getSiteConfig();
+    const [projects, siteConfig, workExperience] = await Promise.all([
+        getProjects(),
+        getSiteConfig(),
+        getWorkExperience()
+    ]);
+
     const profileImageUrl = siteConfig?.profileImageUrl;
-    
+    const aboutContent = siteConfig ? {
+        intro: siteConfig.aboutIntro,
+        experience: siteConfig.aboutExperience,
+        personal: siteConfig.aboutPersonal,
+        outro: siteConfig.aboutOutro,
+    } : undefined;
+
     return (
         <HomeClient
             heroContent={<Hero />}
             mainContent={
                 <>
-                    <About profileImageUrl={profileImageUrl} />
-                    <WorkExperience />
+                    <About profileImageUrl={profileImageUrl} aboutContent={aboutContent} />
+                    <WorkExperience workExperience={workExperience} />
                     <FeaturedProjects projects={projects} />
                     <Skills />
                     <Contacts />

@@ -2,19 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { 
-  HomeIcon, 
-  DocumentTextIcon, 
-  AcademicCapIcon, 
-  UserCircleIcon, 
-  ArrowLeftOnRectangleIcon 
+import {
+  HomeIcon,
+  DocumentTextIcon,
+  AcademicCapIcon,
+  UserCircleIcon,
+  ArrowLeftOnRectangleIcon,
+  BriefcaseIcon,
+  IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import { UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Blogs & Projects", href: "/admin/blogs", icon: DocumentTextIcon },
+  { name: "Work Experience", href: "/admin/work-experience", icon: BriefcaseIcon },
   { name: "Certifications", href: "/admin/certifications", icon: AcademicCapIcon },
+  { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
 ];
 
@@ -36,11 +40,10 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 group ${
-                isActive 
-                  ? "bg-primary text-primary-foreground shadow-lg" 
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 group ${isActive
+                  ? "bg-primary text-primary-foreground shadow-lg"
                   : "hover:bg-accent/10 hover:text-accent"
-              }`}
+                }`}
             >
               <item.icon className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`} />
               <span className="font-urbanist font-medium tracking-wide">{item.name}</span>
@@ -53,12 +56,12 @@ export function AdminSidebar() {
         <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors">
           <UserButton showName />
         </div>
-        <Link 
-            href="/" 
-            className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+        <Link
+          href="/"
+          className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
         >
-            <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-            <span className="font-mono text-xs uppercase tracking-widest">Exit to Site</span>
+          <ArrowLeftOnRectangleIcon className="w-5 h-5" />
+          <span className="font-mono text-xs uppercase tracking-widest">Exit to Site</span>
         </Link>
       </div>
     </aside>

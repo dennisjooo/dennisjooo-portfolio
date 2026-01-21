@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, memo } from 'react';
-import { TimelineItemData } from '@/data/workContent';
+import { TimelineItemData } from '../WorkExperience';
 
 interface MobileRoleProps {
     role: TimelineItemData;

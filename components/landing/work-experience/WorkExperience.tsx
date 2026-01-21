@@ -1,11 +1,30 @@
 "use client";
 
 import React from 'react';
-import { workExperienceData } from '@/data/workContent';
 import { DesktopTimeline, MobileTimeline } from './Timeline';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 
-const WorkExperience: React.FC = () => {
+export interface TimelineItemData {
+    id?: string;
+    _id?: string;
+    date: string;
+    title: string;
+    company: string;
+    imageSrc: string;
+    responsibilities: string[];
+    order?: number;
+}
+
+// Default data for fallback
+const defaultWorkExperienceData: TimelineItemData[] = [];
+
+interface WorkExperienceProps {
+    workExperience?: TimelineItemData[];
+}
+
+const WorkExperience: React.FC<WorkExperienceProps> = ({ workExperience }) => {
+    const items = workExperience || defaultWorkExperienceData;
+
     return (
         <section
             id="work"
@@ -20,8 +39,8 @@ const WorkExperience: React.FC = () => {
                 />
 
                 {/* Content */}
-                <DesktopTimeline items={workExperienceData} />
-                <MobileTimeline items={workExperienceData} />
+                <DesktopTimeline items={items} />
+                <MobileTimeline items={items} />
             </div>
         </section>
     );

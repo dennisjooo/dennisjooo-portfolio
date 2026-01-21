@@ -6,6 +6,7 @@ import {
     processedProjects,
     setProcessedProjects,
     processedWorkExperience,
+    setProcessedWorkExperience,
     getContextSnippet,
     type ProcessedProject,
     type ProcessedWorkExperience,
@@ -93,15 +94,27 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     const router = useRouter();
     const { copied, copyToClipboard } = useCopyToClipboard();
 
-    // Fetch projects when command palette opens
+    // Fetch projects and work experience when command palette opens
     React.useEffect(() => {
-        if (open && processedProjects.length === 0) {
-            fetch('/api/blogs')
-                .then(res => res.json())
-                .then(data => {
-                    setProcessedProjects(data);
-                })
-                .catch(err => console.error("Failed to fetch projects for command palette", err));
+        if (open) {
+            if (processedProjects.length === 0) {
+                fetch('/api/blogs')
+                    .then(res => res.json())
+                    .then(data => {
+                        setProcessedProjects(data);
+                    })
+                    .catch(err => console.error("Failed to fetch projects for command palette", err));
+            }
+            if (processedWorkExperience.length === 0) {
+                fetch('/api/work-experience')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            setProcessedWorkExperience(data.data);
+                        }
+                    })
+                    .catch(err => console.error("Failed to fetch work experience for command palette", err));
+            }
         }
     }, [open]);
 
@@ -182,7 +195,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...work, context };
             })
             .filter((w): w is FilteredWorkExperience => w !== null);
-    }, [search, matcher, searchScope]);
+    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
 
     return {
         open,

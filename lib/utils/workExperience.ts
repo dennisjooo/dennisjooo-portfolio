@@ -1,4 +1,4 @@
-import { TimelineItemData } from '@/data/workContent';
+import { TimelineItemData } from '@/components/landing/work-experience/WorkExperience';
 
 export interface CompanyGroup {
     companyName: string;

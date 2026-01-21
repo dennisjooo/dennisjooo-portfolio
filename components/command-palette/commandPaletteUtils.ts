@@ -1,6 +1,5 @@
 "use client";
 
-import { workExperienceData } from "@/data/workContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { extractKeywords } from "@/lib/utils/extractKeywords";
 import {
@@ -73,13 +72,22 @@ export function setProcessedProjects(projects: any[]) {
   });
 }
 
-export const processedWorkExperience: ProcessedWorkExperience[] = workExperienceData.map(work => {
-    const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
-    return {
-        ...work,
-        rawContent
-    };
-});
+export let processedWorkExperience: ProcessedWorkExperience[] = [];
+
+// Helper to inject work experience dynamically (if fetching on client)
+export function setProcessedWorkExperience(experiences: any[]) {
+    processedWorkExperience = experiences.map(work => {
+        const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
+        return {
+            id: work._id || work.id,
+            title: work.title,
+            company: work.company,
+            date: work.date,
+            responsibilities: work.responsibilities,
+            rawContent
+        };
+    });
+}
 
 // ============================================================================
 // Search Utility Functions
