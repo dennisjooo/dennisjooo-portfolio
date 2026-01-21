@@ -20,6 +20,14 @@ export default function AdminDashboard() {
           <h2 className="text-2xl font-semibold mb-2">Profile Settings</h2>
           <p className="text-muted-foreground">Update profile picture and site configuration.</p>
         </Link>
+
+        <Link 
+          href="/admin/certifications" 
+          className="p-6 border rounded-lg hover:bg-accent transition-colors block"
+        >
+          <h2 className="text-2xl font-semibold mb-2">Manage Certifications</h2>
+          <p className="text-muted-foreground">Add, edit, or remove certifications.</p>
+        </Link>
       </div>
     </div>
   );
