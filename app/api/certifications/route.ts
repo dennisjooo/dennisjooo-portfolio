@@ -2,6 +2,7 @@ import { db, certifications } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { desc, count } from "drizzle-orm";
+import { withCacheHeaders } from "@/lib/constants/cache";
 
 export async function GET(request: Request) {
   try {
@@ -22,17 +23,21 @@ export async function GET(request: Request) {
     ]);
 
     const total = totalResult[0]?.count ?? 0;
+    const totalPages = Math.ceil(total / limit);
 
-    return NextResponse.json({
-      success: true,
-      data: certs,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      },
-    });
+    return withCacheHeaders(
+      NextResponse.json({
+        success: true,
+        data: certs,
+        pagination: {
+          total,
+          page,
+          limit,
+          totalPages,
+          hasMore: page < totalPages,
+        },
+      })
+    );
   } catch (error) {
     console.error("Failed to fetch certifications:", error);
     return NextResponse.json(

@@ -336,6 +336,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                             src={formData.imageUrl} 
                             alt="Cover preview" 
                             fill 
+                            loading="lazy"
                             className="object-cover"
                             unoptimized={formData.imageUrl.startsWith('http')}
                         />

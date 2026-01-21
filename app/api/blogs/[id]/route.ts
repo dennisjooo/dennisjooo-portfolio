@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { cachedJsonResponse } from "@/lib/constants/cache";
 
 export async function GET(
   request: Request,
@@ -12,7 +13,8 @@ export async function GET(
     if (!blog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
-    return NextResponse.json(blog);
+    
+    return cachedJsonResponse(blog);
   } catch (error) {
     console.error("Error fetching blog:", error);
     return NextResponse.json(

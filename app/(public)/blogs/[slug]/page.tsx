@@ -3,29 +3,48 @@ import { notFound } from "next/navigation";
 import { BackToTop } from '@/components/shared';
 import ProjectPageClient from './ProjectPageClient';
 import { db, blogs } from '@/lib/db';
-import { eq, or } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
+import { unstable_cache } from 'next/cache';
+import { CACHE_CONFIG } from '@/lib/constants/cache';
 
 type ProjectPageProps = {
     params: Promise<{ slug: string }>;
 };
 
-async function getProject(slug: string) {
-    // Try to find by slug field first
-    const [project] = await db
-        .select()
-        .from(blogs)
-        .where(eq(blogs.slug, slug));
+const getProject = unstable_cache(
+    async (slug: string) => {
+        // Try to find by slug field first
+        const [project] = await db
+            .select()
+            .from(blogs)
+            .where(eq(blogs.slug, slug));
 
-    if (project) {
-        return project;
-    }
+        if (project) {
+            return project;
+        }
 
-    // Fallback: search all and match by derived slug from title
-    const all = await db.select().from(blogs);
-    const found = all.find(p => createUrlSlug(p.title) === slug || p.slug === slug);
-    return found ?? null;
-}
+        // Fallback: fetch all titles/slugs only (not full content) to find match
+        const allSlugs = await db
+            .select({ id: blogs.id, title: blogs.title, slug: blogs.slug })
+            .from(blogs);
+        
+        const match = allSlugs.find(p => createUrlSlug(p.title) === slug || p.slug === slug);
+        
+        if (match) {
+            // Fetch the full blog by id
+            const [fullProject] = await db
+                .select()
+                .from(blogs)
+                .where(eq(blogs.id, match.id));
+            return fullProject ?? null;
+        }
+        
+        return null;
+    },
+    ['blog-by-slug'],
+    { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['blogs'] }
+);
 
 export async function generateMetadata(
     { params }: ProjectPageProps,
