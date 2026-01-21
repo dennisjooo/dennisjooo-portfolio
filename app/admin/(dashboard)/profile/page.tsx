@@ -26,7 +26,7 @@ export default function ProfileAdminPage() {
 
     try {
       // 1. Upload to Blob
-      const response = await fetch(`/api/upload?filename=${file.name}`, {
+      const response = await fetch(`/api/upload?filename=profile.webp`, {
         method: 'POST',
         body: file,
       });

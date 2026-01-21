@@ -1,7 +1,8 @@
 import { db, workExperiences } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { eq, and, ne } from "drizzle-orm";
+import { del } from "@vercel/blob";
 
 export async function GET(
   request: Request,
@@ -82,16 +83,44 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const [deleted] = await db
-      .delete(workExperiences)
-      .where(eq(workExperiences.id, id))
-      .returning();
-    if (!deleted) {
+    // Fetch experience first to get image URL
+    const [experience] = await db
+      .select()
+      .from(workExperiences)
+      .where(eq(workExperiences.id, id));
+
+    if (!experience) {
       return NextResponse.json(
         { success: false, error: "Work experience not found" },
         { status: 404 }
       );
     }
+
+    // Check if image is used by any other work experience
+    const imageUrl = experience.imageSrc;
+    let shouldDeleteBlob = false;
+
+    if (imageUrl?.includes('vercel-storage.com')) {
+      const [otherUsage] = await db
+        .select({ id: workExperiences.id })
+        .from(workExperiences)
+        .where(and(
+          eq(workExperiences.imageSrc, imageUrl),
+          ne(workExperiences.id, id)
+        ))
+        .limit(1);
+
+      shouldDeleteBlob = !otherUsage;
+    }
+
+    // Delete from database
+    await db.delete(workExperiences).where(eq(workExperiences.id, id));
+
+    // Delete blob if not used elsewhere (non-blocking)
+    if (shouldDeleteBlob) {
+      del([imageUrl]).catch(err => console.error('Failed to delete blob:', err));
+    }
+
     return NextResponse.json({ success: true, data: {} });
   } catch (error) {
     console.error("Failed to delete work experience:", error);
@@ -101,3 +130,4 @@ export async function DELETE(
     );
   }
 }
+

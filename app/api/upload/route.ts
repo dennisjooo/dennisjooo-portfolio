@@ -1,6 +1,7 @@
 import { put, del } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
+import sharp from 'sharp';
 
 export async function POST(request: Request) {
   const { userId } = await auth();
@@ -9,15 +10,36 @@ export async function POST(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const filename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
+  const originalFilename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
 
   if (!request.body) {
-     return new NextResponse('No body', { status: 400 });
+    return new NextResponse('No body', { status: 400 });
   }
 
   try {
-    const blob = await put(filename, request.body, {
+    // Read the image data into a buffer
+    const arrayBuffer = await request.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Convert to WebP format with optimization
+    const optimizedBuffer = await sharp(buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+
+    // Generate filename - force profile.webp for profile updates
+    let webpFilename;
+    if (originalFilename === 'profile.webp') {
+      webpFilename = 'profile.webp';
+    } else {
+      // Generate unique filename: basename-{timestamp}-{randomId}.webp
+      const baseName = originalFilename.replace(/\.[^.]+$/, '');
+      const uniqueId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+      webpFilename = `${baseName}-${uniqueId}.webp`;
+    }
+
+    const blob = await put(webpFilename, optimizedBuffer, {
       access: 'public',
+      addRandomSuffix: webpFilename !== 'profile.webp',
     });
 
     return NextResponse.json(blob);
@@ -36,7 +58,7 @@ export async function DELETE(request: Request) {
   try {
     const { urls } = await request.json();
     if (!urls || !Array.isArray(urls)) {
-        return new NextResponse('Invalid body', { status: 400 });
+      return new NextResponse('Invalid body', { status: 400 });
     }
 
     await del(urls);
