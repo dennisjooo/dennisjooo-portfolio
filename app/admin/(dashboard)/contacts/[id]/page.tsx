@@ -17,7 +17,7 @@ export default function EditContactPage() {
   const params = useParams();
   const id = params.id as string;
 
-  const { data: contact, loading } = useAdminForm<Contact>({
+  const { data: contact, loading, handleSubmit } = useAdminForm<Contact>({
     endpoint: '/api/contacts',
     id,
     redirectTo: '/admin/contacts',
@@ -33,7 +33,7 @@ export default function EditContactPage() {
       titleAccent="Contact"
       subtitle="Update contact details"
     >
-      <ContactForm initialData={contact} isEditing />
+      <ContactForm initialData={contact} onSubmit={handleSubmit} />
     </AdminFormLayout>
   );
 }

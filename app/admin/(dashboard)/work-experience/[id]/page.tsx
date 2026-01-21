@@ -19,7 +19,7 @@ export default function EditWorkExperiencePage() {
   const params = useParams();
   const id = params.id as string;
 
-  const { data, loading } = useAdminForm<WorkExperience>({
+  const { data, loading, handleSubmit } = useAdminForm<WorkExperience>({
     endpoint: '/api/work-experience',
     id,
     redirectTo: '/admin/work-experience',
@@ -35,7 +35,7 @@ export default function EditWorkExperiencePage() {
       titleAccent="Experience"
       subtitle="Update position details"
     >
-      <WorkExperienceForm initialData={data} isEditing />
+      <WorkExperienceForm initialData={data} onSubmit={handleSubmit} />
     </AdminFormLayout>
   );
 }

@@ -18,7 +18,7 @@ export default function EditCertificationPage() {
   const params = useParams();
   const id = params.id as string;
   
-  const { data: cert, loading } = useAdminForm<Certification>({
+  const { data: cert, loading, handleSubmit } = useAdminForm<Certification>({
     endpoint: '/api/certifications',
     id,
     redirectTo: '/admin/certifications',
@@ -34,7 +34,7 @@ export default function EditCertificationPage() {
       titleAccent="Certification"
       subtitle="Update credential details"
     >
-      <CertificationForm initialData={cert} isEditing />
+      <CertificationForm initialData={cert} onSubmit={handleSubmit} />
     </AdminFormLayout>
   );
 }
