@@ -17,7 +17,7 @@ export default function ProjectsList({ type = 'project' }: { type?: 'project' | 
             try {
                 const res = await fetch('/api/blogs');
                 const data = await res.json();
-                setProjects(data);
+                setProjects(data.data || []);
             } catch (error) {
                 console.error('Failed to fetch projects', error);
             } finally {
