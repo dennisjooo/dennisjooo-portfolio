@@ -1,71 +1,20 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import { CertificationCard, Certification } from './CertificationCard';
-import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
+import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
 
 const PAGE_SIZE = 9;
 
-interface PaginationState {
-    page: number;
-    hasMore: boolean;
-    total: number;
-}
-
 export default function CertificationsList() {
-    const [certifications, setCertifications] = useState<Certification[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [pagination, setPagination] = useState<PaginationState>({
-        page: 1,
-        hasMore: true,
-        total: 0,
-    });
-
-    const fetchCertifications = useCallback(async (page: number, reset = false) => {
-        if (page === 1) {
-            setLoading(true);
-        } else {
-            setLoadingMore(true);
-        }
-
-        try {
-            const res = await fetch(`/api/certifications?page=${page}&limit=${PAGE_SIZE}`);
-            const data = await res.json();
-
-            if (data.success) {
-                const newCerts = data.data || [];
-
-                setCertifications(prev => reset ? newCerts : [...prev, ...newCerts]);
-                setPagination({
-                    page: data.pagination.page,
-                    hasMore: data.pagination.hasMore,
-                    total: data.pagination.total,
-                });
-            }
-        } catch (error) {
-            console.error("Failed to fetch certifications", error);
-        } finally {
-            setLoading(false);
-            setLoadingMore(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchCertifications(1, true);
-    }, [fetchCertifications]);
-
-    const loadMore = useCallback(() => {
-        if (!loadingMore && pagination.hasMore) {
-            fetchCertifications(pagination.page + 1);
-        }
-    }, [fetchCertifications, loadingMore, pagination.hasMore, pagination.page]);
-
-    const sentinelRef = useInfiniteScroll({
-        onLoadMore: loadMore,
-        hasMore: pagination.hasMore,
-        isLoading: loadingMore,
-        rootMargin: '200px',
+    const {
+        items: certifications,
+        loading,
+        loadingMore,
+        pagination,
+        sentinelRef
+    } = usePaginatedList<Certification>({
+        endpoint: '/api/certifications',
+        pageSize: PAGE_SIZE
     });
 
     if (loading) {

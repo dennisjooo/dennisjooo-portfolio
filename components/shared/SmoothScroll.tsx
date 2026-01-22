@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useRef } from 'react';
 
 interface SmoothScrollProps {
     children: ReactNode;
@@ -8,8 +8,10 @@ interface SmoothScrollProps {
 
 export const SmoothScroll = ({ children }: SmoothScrollProps) => {
     const [isMobile, setIsMobile] = useState(false);
+    const isMounted = useRef(false);
 
     useEffect(() => {
+        isMounted.current = true;
         // Check if mobile - skip smooth scroll on mobile for better performance
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
@@ -22,6 +24,8 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
         // Defer Lenis initialization significantly to not block LCP
         // This prevents blocking the main thread during initial load
         const initLenis = async () => {
+            if (!isMounted.current) return () => { };
+
             const [{ default: Lenis }, { default: gsap }, { ScrollTrigger }] = await Promise.all([
                 import('lenis'),
                 import('gsap'),
@@ -83,6 +87,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             const idleId = window.requestIdleCallback(startInit, { timeout: 3000 });
             return () => {
                 window.cancelIdleCallback(idleId);
+                isMounted.current = false;
                 cleanup?.();
             };
         } else {
@@ -90,6 +95,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             const timeoutId = setTimeout(startInit, 1500);
             return () => {
                 clearTimeout(timeoutId);
+                isMounted.current = false;
                 cleanup?.();
             };
         }

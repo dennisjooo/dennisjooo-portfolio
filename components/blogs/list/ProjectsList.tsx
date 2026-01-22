@@ -2,17 +2,11 @@ import { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
 import { ContentCard } from '@/components/shared';
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
 import type { PaginationResult } from '@/lib/data/blogs';
+import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
+import { useMemo } from 'react';
 
 const PAGE_SIZE = 9;
-
-interface PaginationState {
-    page: number;
-    hasMore: boolean;
-    total: number;
-}
 
 interface ProjectsListProps {
     type?: 'project' | 'blog' | 'all';
@@ -20,78 +14,27 @@ interface ProjectsListProps {
     initialPagination?: PaginationResult;
 }
 
-export default function ProjectsList({ 
-    type = 'project', 
-    initialData, 
-    initialPagination 
+export default function ProjectsList({
+    type = 'project',
+    initialData,
+    initialPagination
 }: ProjectsListProps) {
-    // Track if we have server-provided initial data
-    const hasInitialData = initialData && initialData.length > 0;
-    
-    const [projects, setProjects] = useState<Blog[]>(initialData ?? []);
-    const [loading, setLoading] = useState(!hasInitialData);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [pagination, setPagination] = useState<PaginationState>({
-        page: initialPagination?.page ?? 1,
-        hasMore: initialPagination?.hasMore ?? true,
-        total: initialPagination?.total ?? 0,
-    });
-    
-    // Track if initial fetch was skipped due to server data
-    const initialFetchSkipped = useRef(hasInitialData);
+    const queryParams = useMemo(() => ({
+        type: type === 'all' ? undefined : type
+    }), [type]);
 
-    const fetchProjects = useCallback(async (page: number, reset = false) => {
-        if (page === 1) {
-            setLoading(true);
-        } else {
-            setLoadingMore(true);
-        }
-
-        try {
-            const typeParam = type === 'all' ? '' : `&type=${type}`;
-            const res = await fetch(`/api/blogs?page=${page}&limit=${PAGE_SIZE}${typeParam}`);
-            const data = await res.json();
-            
-            const newProjects = data.data || [];
-            
-            setProjects(prev => reset ? newProjects : [...prev, ...newProjects]);
-            setPagination({
-                page: data.pagination.page,
-                hasMore: data.pagination.hasMore,
-                total: data.pagination.total,
-            });
-        } catch (error) {
-            console.error('Failed to fetch projects', error);
-        } finally {
-            setLoading(false);
-            setLoadingMore(false);
-        }
-    }, [type]);
-
-    // Initial fetch only if no server-provided data
-    useEffect(() => {
-        // Skip initial fetch if we have server-provided data for the initial type
-        if (initialFetchSkipped.current) {
-            initialFetchSkipped.current = false;
-            return;
-        }
-        
-        setProjects([]);
-        setPagination({ page: 1, hasMore: true, total: 0 });
-        fetchProjects(1, true);
-    }, [fetchProjects]);
-
-    const loadMore = useCallback(() => {
-        if (!loadingMore && pagination.hasMore) {
-            fetchProjects(pagination.page + 1);
-        }
-    }, [fetchProjects, loadingMore, pagination.hasMore, pagination.page]);
-
-    const sentinelRef = useInfiniteScroll({
-        onLoadMore: loadMore,
-        hasMore: pagination.hasMore,
-        isLoading: loadingMore,
-        rootMargin: '200px',
+    const {
+        items: projects,
+        loading,
+        loadingMore,
+        pagination,
+        sentinelRef
+    } = usePaginatedList<Blog>({
+        endpoint: '/api/blogs',
+        pageSize: PAGE_SIZE,
+        initialData,
+        initialPagination,
+        queryParams
     });
 
     if (loading) {
