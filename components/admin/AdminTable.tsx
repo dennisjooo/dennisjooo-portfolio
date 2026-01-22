@@ -7,25 +7,25 @@ import {
 } from "@heroicons/react/24/outline";
 import { GripVertical } from "lucide-react";
 
-interface Column {
+export interface Column<T> {
   header: string;
-  accessorKey?: string;
-  cell?: (row: any) => ReactNode;
+  accessorKey?: keyof T;
+  cell?: (row: T) => ReactNode;
   className?: string;
 }
 
-interface AdminTableProps {
-  columns: Column[];
-  data: any[];
+interface AdminTableProps<T> {
+  columns: Column<T>[];
+  data: T[];
   isLoading?: boolean;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
   enableReorder?: boolean;
-  onReorder?: (rows: any[]) => void | Promise<void>;
+  onReorder?: (rows: T[]) => void | Promise<void>;
 }
 
-export function AdminTable({
+export function AdminTable<T extends { id?: string | number }>({
   columns,
   data,
   isLoading,
@@ -34,8 +34,8 @@ export function AdminTable({
   onPageChange,
   enableReorder = false,
   onReorder,
-}: AdminTableProps) {
-  const [localData, setLocalData] = useState<any[]>(data || []);
+}: AdminTableProps<T>) {
+  const [localData, setLocalData] = useState<T[]>(data || []);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -175,7 +175,7 @@ export function AdminTable({
                         {col.cell
                           ? col.cell(row)
                           : col.accessorKey
-                          ? row[col.accessorKey]
+                          ? String(row[col.accessorKey] ?? "")
                           : ""}
                       </td>
                     ))}

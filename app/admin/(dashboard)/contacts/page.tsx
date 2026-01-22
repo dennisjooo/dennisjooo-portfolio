@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminTable } from "@/components/admin/AdminTable";
+import { AdminTable, Column } from "@/components/admin/AdminTable";
 import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import {
@@ -50,7 +50,7 @@ export default function AdminContactsList() {
     deleteSuccessMessage: "Contact deleted successfully",
   });
 
-  const columns = [
+  const columns: Column<Contact>[] = [
     {
       header: "Icon",
       cell: (row: Contact) => {

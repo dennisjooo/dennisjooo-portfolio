@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminTable } from '@/components/admin/AdminTable';
+import { AdminTable, Column } from '@/components/admin/AdminTable';
 import { AdminPageHeader } from '@/components/admin/shared';
 import { AdminActionCell } from '@/components/admin/shared';
 import { useAdminList } from '@/components/admin/hooks';
@@ -28,7 +28,7 @@ export default function AdminBlogsList() {
     deleteSuccessMessage: 'Blog deleted successfully',
   });
 
-  const columns = [
+  const columns: Column<Blog>[] = [
     {
       header: "Title",
       cell: (row: Blog) => <span className="font-semibold text-foreground">{row.title}</span>

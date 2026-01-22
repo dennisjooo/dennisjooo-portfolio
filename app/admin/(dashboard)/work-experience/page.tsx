@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AdminTable } from "@/components/admin/AdminTable";
+import { AdminTable, Column } from "@/components/admin/AdminTable";
 import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 
@@ -29,7 +29,7 @@ export default function AdminWorkExperienceList() {
     deleteSuccessMessage: "Item deleted successfully",
   });
 
-  const columns = [
+  const columns: Column<WorkExperience>[] = [
     {
       header: "Logo",
       cell: (row: WorkExperience) => (

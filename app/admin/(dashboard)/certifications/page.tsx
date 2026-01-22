@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminTable } from '@/components/admin/AdminTable';
+import { AdminTable, Column } from '@/components/admin/AdminTable';
 import { AdminPageHeader, AdminActionCell } from '@/components/admin/shared';
 import { useAdminList } from '@/components/admin/hooks';
 
@@ -27,7 +27,7 @@ export default function AdminCertificationsList() {
     deleteSuccessMessage: 'Certification deleted successfully',
   });
 
-  const columns = [
+  const columns: Column<Certification>[] = [
     {
       header: "Title",
       cell: (row: Certification) => <span className="font-semibold text-foreground">{row.title}</span>

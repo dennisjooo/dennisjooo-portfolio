@@ -13,7 +13,7 @@ import {
   IdentificationIcon,
   LinkIcon,
 } from "@heroicons/react/24/outline";
-import { UserButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const navItems = [

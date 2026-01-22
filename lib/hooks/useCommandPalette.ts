@@ -179,7 +179,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...project, context };
             })
             .filter((p): p is FilteredProject => p !== null);
-    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
+    }, [search, matcher, searchScope]); // Added open to trigger re-calc after fetch
 
     // Filtered work experience with context
     const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
@@ -195,7 +195,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...work, context };
             })
             .filter((w): w is FilteredWorkExperience => w !== null);
-    }, [search, matcher, searchScope, open]); // Added open to trigger re-calc after fetch
+    }, [search, matcher, searchScope]); // Added open to trigger re-calc after fetch
 
     return {
         open,

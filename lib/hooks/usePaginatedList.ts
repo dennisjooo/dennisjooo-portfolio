@@ -18,8 +18,8 @@ interface UsePaginatedListOptions<T> {
     pageSize: number;
     initialData?: T[];
     initialPagination?: PaginationResult;
-    queryParams?: Record<string, any>;
-    resolveData?: (data: any) => T[];
+    queryParams?: Record<string, string | number | boolean>;
+    resolveData?: (data: Record<string, unknown>) => T[];
     dataKey?: string; // Key to extract data from response if resolveData is not provided (default: 'data')
     paginationKey?: string; // Key to extract pagination from response (default: 'pagination')
 }
@@ -94,8 +94,8 @@ export function usePaginatedList<T>({
                     total: paginationData.total,
                 });
             }
-        } catch (error: any) {
-            if (error.name !== 'AbortError') {
+        } catch (error: unknown) {
+            if (error instanceof Error && error.name !== 'AbortError') {
                 console.error(`Failed to fetch items from ${endpoint}`, error);
             }
         } finally {

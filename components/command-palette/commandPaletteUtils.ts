@@ -46,7 +46,7 @@ export interface ProcessedWorkExperience {
 export let processedProjects: ProcessedProject[] = [];
 
 // Helper to inject projects dynamically (if fetching on client)
-export function setProcessedProjects(projects: any[]) {
+export function setProcessedProjects(projects: ProcessedProject[]) {
     processedProjects = projects.map(project => {
         const slug = project.slug || createUrlSlug(project.title);
         const path = `/blogs/${slug}`;
@@ -75,11 +75,11 @@ export function setProcessedProjects(projects: any[]) {
 export let processedWorkExperience: ProcessedWorkExperience[] = [];
 
 // Helper to inject work experience dynamically (if fetching on client)
-export function setProcessedWorkExperience(experiences: any[]) {
+export function setProcessedWorkExperience(experiences: ProcessedWorkExperience[]) {
     processedWorkExperience = experiences.map(work => {
         const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(' ')}`;
         return {
-            id: work.id || work._id,
+            id: work.id,
             title: work.title,
             company: work.company,
             date: work.date,

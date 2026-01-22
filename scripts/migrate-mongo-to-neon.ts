@@ -9,7 +9,7 @@
  *   - DATABASE_URL: Your Neon PostgreSQL connection string
  */
 
-import { MongoClient } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as dotenv from "dotenv";
@@ -41,7 +41,7 @@ if (!DATABASE_URL) {
 const sql = neon(DATABASE_URL);
 const db = drizzle(sql);
 
-async function migrateBlogs(mongoDb: any) {
+async function migrateBlogs(mongoDb: Db) {
   console.log("\n--- Migrating Blogs ---");
   const mongoBlogs = await mongoDb.collection("blogs").find({}).toArray();
   console.log(`Found ${mongoBlogs.length} blogs in MongoDB`);
@@ -68,17 +68,18 @@ async function migrateBlogs(mongoDb: any) {
         updatedAt: blog.updatedAt ? new Date(blog.updatedAt) : new Date(),
       });
       console.log(`  Migrated blog: ${blog.title}`);
-    } catch (error: any) {
-      if (error.message?.includes("duplicate key")) {
+    } catch (error: unknown) {
+      const err = error as Error;
+      if (err.message?.includes("duplicate key")) {
         console.log(`  Skipped (already exists): ${blog.title}`);
       } else {
-        console.error(`  Failed to migrate blog "${blog.title}":`, error.message);
+        console.error(`  Failed to migrate blog "${blog.title}":`, err.message);
       }
     }
   }
 }
 
-async function migrateContacts(mongoDb: any) {
+async function migrateContacts(mongoDb: Db) {
   console.log("\n--- Migrating Contacts ---");
   const mongoContacts = await mongoDb.collection("contacts").find({}).toArray();
   console.log(`Found ${mongoContacts.length} contacts in MongoDB`);
@@ -99,13 +100,14 @@ async function migrateContacts(mongoDb: any) {
         updatedAt: contact.updatedAt ? new Date(contact.updatedAt) : new Date(),
       });
       console.log(`  Migrated contact: ${contact.label}`);
-    } catch (error: any) {
-      console.error(`  Failed to migrate contact "${contact.label}":`, error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error(`  Failed to migrate contact "${contact.label}":`, err.message);
     }
   }
 }
 
-async function migrateWorkExperiences(mongoDb: any) {
+async function migrateWorkExperiences(mongoDb: Db) {
   console.log("\n--- Migrating Work Experiences ---");
   const mongoExperiences = await mongoDb
     .collection("workexperiences")
@@ -131,16 +133,17 @@ async function migrateWorkExperiences(mongoDb: any) {
         updatedAt: exp.updatedAt ? new Date(exp.updatedAt) : new Date(),
       });
       console.log(`  Migrated work experience: ${exp.title} at ${exp.company}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       console.error(
         `  Failed to migrate work experience "${exp.title}":`,
-        error.message
+        err.message
       );
     }
   }
 }
 
-async function migrateCertifications(mongoDb: any) {
+async function migrateCertifications(mongoDb: Db) {
   console.log("\n--- Migrating Certifications ---");
   const mongoCerts = await mongoDb
     .collection("certifications")
@@ -165,16 +168,17 @@ async function migrateCertifications(mongoDb: any) {
         updatedAt: cert.updatedAt ? new Date(cert.updatedAt) : new Date(),
       });
       console.log(`  Migrated certification: ${cert.title}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       console.error(
         `  Failed to migrate certification "${cert.title}":`,
-        error.message
+        err.message
       );
     }
   }
 }
 
-async function migrateSiteConfig(mongoDb: any) {
+async function migrateSiteConfig(mongoDb: Db) {
   console.log("\n--- Migrating Site Config ---");
   const mongoConfig = await mongoDb
     .collection("siteconfigs")
@@ -199,14 +203,15 @@ async function migrateSiteConfig(mongoDb: any) {
         ? new Date(mongoConfig.updatedAt)
         : new Date(),
     });
-    console.log("  Migrated site config successfully");
-  } catch (error: any) {
-    if (error.message?.includes("duplicate key")) {
-      console.log("  Site config already exists, skipping");
-    } else {
-      console.error("  Failed to migrate site config:", error.message);
+      console.log("  Migrated site config successfully");
+    } catch (error: unknown) {
+      const err = error as Error;
+      if (err.message?.includes("duplicate key")) {
+        console.log("  Site config already exists, skipping");
+      } else {
+        console.error("  Failed to migrate site config:", err.message);
+      }
     }
-  }
 }
 
 async function main() {

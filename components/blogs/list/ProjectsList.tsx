@@ -19,9 +19,13 @@ export default function ProjectsList({
     initialData,
     initialPagination
 }: ProjectsListProps) {
-    const queryParams = useMemo(() => ({
-        type: type === 'all' ? undefined : type
-    }), [type]);
+    const queryParams = useMemo(() => {
+        const params: Record<string, string | number | boolean> = {};
+        if (type !== 'all') {
+            params.type = type;
+        }
+        return params;
+    }, [type]);
 
     const {
         items: projects,
