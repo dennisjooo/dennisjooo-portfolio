@@ -37,7 +37,7 @@ export function getDisplayActiveId(
 }
 
 /**
- * Handle click on table of contents item with smooth scrolling and URL update
+ * Handle click on table of contents item with smooth scrolling
  */
 export function handleTocClick(
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -57,9 +57,4 @@ export function handleTocClick(
 
     // Use shared scroll utility for consistent centering
     scrollToCentered(element);
-
-    // Update hash after a short delay
-    setTimeout(() => {
-        window.history.replaceState({}, '', `#${id}`);
-    }, 10);
 }

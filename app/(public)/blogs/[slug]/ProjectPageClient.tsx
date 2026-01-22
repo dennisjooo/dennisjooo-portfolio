@@ -2,7 +2,6 @@
 
 import ProjectLinks from '@/components/blogs/article/ProjectLinks';
 import TableOfContents from '@/components/blogs/article/TableOfContents';
-import HashScrollHandler from '@/components/blogs/article/HashScrollHandler';
 import { ReadingProgress } from '@/components/shared';
 import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
@@ -25,7 +24,6 @@ export default function ProjectPageClient({ project, headings, children }: Proje
     return (
         <>
             <ReadingProgress />
-            <HashScrollHandler />
             <TableOfContents headings={headings} />
             <PhotoProvider maskOpacity={PHOTO_VIEWER_CONFIG.maskOpacity} speed={() => PHOTO_VIEWER_CONFIG.speed}>
                 <main className="min-h-screen bg-background text-foreground">
