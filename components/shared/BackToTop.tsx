@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { BsArrowUp } from 'react-icons/bs';
-import { scrollToTop } from '@/lib/utils/scrollHelpers';
+import { forceScrollToTop, refreshScrollTrigger } from '@/lib/utils/scrollHelpers';
 
 const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -24,7 +24,12 @@ const BackToTop = () => {
     }, []);
 
     const handleScrollToTop = () => {
-        scrollToTop();
+        // Use forceScrollToTop to ensure it works after dynamic content loads (infinite scroll)
+        forceScrollToTop();
+        // Refresh ScrollTrigger after scroll to recalculate page boundaries
+        requestAnimationFrame(() => {
+            refreshScrollTrigger();
+        });
     };
 
     return (
