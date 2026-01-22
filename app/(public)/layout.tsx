@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/navbar/Navbar";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 
@@ -13,6 +14,7 @@ const EasterEggs = dynamic(
 export default function PublicLayout({ children }: { children: ReactNode }) {
     return (
         <>
+            <ScrollToTop />
             <Navbar />
             <CommandPalette />
             <EasterEggs />

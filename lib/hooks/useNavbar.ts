@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { scrollToTop } from "@/lib/utils/scrollHelpers";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
@@ -82,22 +83,22 @@ export const useSectionNavigation = (
         (sectionId: string) => {
             if (!isClientReady) return;
 
-            // Disable browser scroll restoration
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
-            }
-
             if (pathname === "/") {
                 // On homepage: scroll to section instantly
                 if (sectionId === "home") {
-                    window.scrollTo({ top: 0, behavior: "auto" });
+                    scrollToTop(true); // instant scroll
                 } else {
                     document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
                 }
             } else {
                 // From other pages: navigate to homepage
-                // Use hash for all sections including home to ensure correct scroll position
-                router.push(`/#${sectionId}`);
+                if (sectionId === "home") {
+                    // For home, navigate without hash - Next.js will scroll to top
+                    router.push('/');
+                } else {
+                    // For other sections, use hash for scroll position
+                    router.push(`/#${sectionId}`);
+                }
             }
 
             closeMenu();

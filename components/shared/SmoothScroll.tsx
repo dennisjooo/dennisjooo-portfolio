@@ -37,9 +37,12 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
                 smoothWheel: true,
             });
 
+            // Expose Lenis globally for scroll-to-top functionality
+            window.lenis = lenis;
+
             // Sync Lenis with GSAP ScrollTrigger
             gsap.registerPlugin(ScrollTrigger);
-            
+
             lenis.on('scroll', ScrollTrigger.update);
 
             // Add Lenis's raf method to GSAP's ticker
@@ -60,13 +63,14 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             // Store cleanup function
             return () => {
                 lenis.destroy();
+                delete window.lenis;
                 gsap.ticker.remove(lenis.raf);
             };
         };
 
         // Use requestIdleCallback for better performance - defer until browser is idle
         let cleanup: (() => void) | undefined;
-        
+
         const startInit = () => {
             initLenis().then(cleanupFn => {
                 cleanup = cleanupFn;

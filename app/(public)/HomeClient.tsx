@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, type ReactNode } from 'react';
+import { forceScrollToTop } from '@/lib/utils/scrollHelpers';
 
 interface HomeClientProps {
     heroContent: ReactNode;
@@ -24,12 +25,17 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
             const hash = window.location.hash.substring(1);
             // Small delay to ensure content is rendered
             const scrollToHash = () => {
-                const element = document.getElementById(hash);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'auto' });
-                    // Clear hash from URL without triggering navigation
-                    window.history.replaceState({}, '', window.location.pathname);
+                // Special case for "home" - scroll to top since hero is in a sticky container
+                if (hash === 'home') {
+                    forceScrollToTop();
+                } else {
+                    const element = document.getElementById(hash);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'auto' });
+                    }
                 }
+                // Clear hash from URL without triggering navigation
+                window.history.replaceState({}, '', window.location.pathname);
             };
             // Use requestAnimationFrame to ensure DOM is ready
             requestAnimationFrame(() => {
@@ -93,8 +99,8 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
             </div>
 
             {/* Main Content Stack - z-10 ensures it slides OVER the hero */}
-            <div 
-                ref={contentRef} 
+            <div
+                ref={contentRef}
                 className="relative z-10 bg-white dark:bg-black shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
             >
                 {mainContent}
