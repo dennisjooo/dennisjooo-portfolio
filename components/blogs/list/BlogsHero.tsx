@@ -26,7 +26,7 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => (
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative w-full pt-8 md:pt-12 select-none overflow-x-hidden"
+            className="relative w-full pt-8 md:pt-12 select-none overflow-hidden"
         >
             <div className="flex flex-col items-end w-full">
                 <motion.span 
