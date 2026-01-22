@@ -132,7 +132,8 @@ export const useSectionNavigation = (
         let rafId: number | null = null;
 
         const updateSection = () => {
-            const sections = ["home", "about", "skills", "contact"];
+            // Check sections in reverse order (bottom to top) to handle the sticky "home" section
+            const sections = ["contact", "skills", "about", "home"];
             for (const section of sections) {
                 const element = document.getElementById(section);
                 if (element) {
