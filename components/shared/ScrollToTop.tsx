@@ -47,15 +47,19 @@ export const ScrollToTop = () => {
     useEffect(() => {
         // Only scroll if pathname actually changed (not on initial mount)
         if (prevPathname.current !== null && prevPathname.current !== pathname) {
-            // Immediate scroll attempt
-            scrollToTopWithRefresh();
+            // Skip scroll-to-top if there's a hash - let HomeClient handle hash navigation
+            const hasHash = typeof window !== 'undefined' && window.location.hash;
+            if (!hasHash) {
+                // Immediate scroll attempt
+                scrollToTopWithRefresh();
 
-            // Delayed attempt to catch any async scroll restoration
-            const timeoutId = setTimeout(scrollToTopWithRefresh, 100);
+                // Delayed attempt to catch any async scroll restoration
+                const timeoutId = setTimeout(scrollToTopWithRefresh, 100);
 
-            return () => {
-                clearTimeout(timeoutId);
-            };
+                return () => {
+                    clearTimeout(timeoutId);
+                };
+            }
         }
         prevPathname.current = pathname;
     }, [pathname]);

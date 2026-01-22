@@ -31,7 +31,22 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
                 } else {
                     const element = document.getElementById(hash);
                     if (element) {
-                        element.scrollIntoView({ behavior: 'auto' });
+                        // Stop Lenis temporarily to prevent interference during hash scroll
+                        if (window.lenis) {
+                            window.lenis.stop();
+                        }
+                        // First scroll to top instantly to reset scroll state
+                        window.scrollTo(0, 0);
+                        // Then scroll to the target element
+                        requestAnimationFrame(() => {
+                            element.scrollIntoView({ behavior: 'auto' });
+                            // Resume Lenis after scroll completes
+                            if (window.lenis) {
+                                requestAnimationFrame(() => {
+                                    window.lenis?.start();
+                                });
+                            }
+                        });
                     }
                 }
                 // Clear hash from URL without triggering navigation

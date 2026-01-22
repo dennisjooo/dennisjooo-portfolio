@@ -91,14 +91,7 @@ export const useSectionNavigation = (
                     document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
                 }
             } else {
-                // From other pages: navigate to homepage
-                if (sectionId === "home") {
-                    // For home, navigate without hash - Next.js will scroll to top
-                    router.push('/');
-                } else {
-                    // For other sections, use hash for scroll position
-                    router.push(`/#${sectionId}`);
-                }
+                router.push(`/#${sectionId}`);
             }
 
             closeMenu();

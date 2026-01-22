@@ -23,9 +23,15 @@ export function NavigationGroup({ onSelect, onNavigate }: NavigationGroupProps) 
                             onSelect={() => onSelect(() => {
                                 if (item.href) {
                                     onNavigate(item.href);
-                                } else {
-                                    onNavigate(`/#${item.id}`);
+                                    return;
                                 }
+
+                                if (item.id === "home") {
+                                    onNavigate("/#home");
+                                    return;
+                                }
+
+                                onNavigate(`/#${item.id}`);
                             })}
                         >
                             <Icon className="h-4 w-4" />
