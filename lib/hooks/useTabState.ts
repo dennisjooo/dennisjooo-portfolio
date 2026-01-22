@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSessionItem, removeSessionItem, setSessionItem } from '@/lib/utils/storage';
+import { getSessionItem, setSessionItem } from '@/lib/utils/storage';
 
 type TabType = 'blog' | 'certifications';
 
@@ -10,16 +10,9 @@ export function useTabState() {
     useEffect(() => {
         setMounted(true);
 
-        const fromNav = getSessionItem('fromNav') === 'true';
-        if (fromNav) {
-            removeSessionItem('fromNav');
-            removeSessionItem('projectsActiveTab');
-            setActiveTab('blog');
-        } else {
-            const storedTab = getSessionItem('projectsActiveTab') as TabType | null;
-            if (storedTab && (storedTab === 'blog' || storedTab === 'certifications')) {
-                setActiveTab(storedTab);
-            }
+        const storedTab = getSessionItem('projectsActiveTab') as TabType | null;
+        if (storedTab && (storedTab === 'blog' || storedTab === 'certifications')) {
+            setActiveTab(storedTab);
         }
     }, []);
 
