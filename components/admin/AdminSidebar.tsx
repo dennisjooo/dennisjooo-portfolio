@@ -13,7 +13,7 @@ import {
   IdentificationIcon,
   LinkIcon,
 } from "@heroicons/react/24/outline";
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const navItems = [
@@ -28,13 +28,12 @@ const navItems = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const { user } = useUser();
 
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card/50 backdrop-blur-xl hidden lg:flex flex-col">
       <div className="p-8 border-b border-border">
         <h1 className="font-playfair italic text-2xl font-bold">
-          {user?.firstName || 'Admin'} <span className="font-sans not-italic text-sm tracking-widest uppercase block mt-1 text-muted-foreground">Mission Control</span>
+          Dennis' Portfolio <span className="font-sans not-italic text-sm tracking-widest uppercase block mt-1 text-muted-foreground">Mission Control</span>
         </h1>
       </div>
 
