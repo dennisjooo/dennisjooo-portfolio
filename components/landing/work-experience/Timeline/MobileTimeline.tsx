@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useRef, useLayoutEffect } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useLayoutEffect, useEffect } from 'react';
 import { TimelineItemData } from '../WorkExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { MobileWorkCard } from './MobileWorkCard';
@@ -20,8 +20,21 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
     // Store the card we want to "pin" during layout shifts
     const pinnedCard = useRef<{ index: number; viewportTop: number } | null>(null);
 
+    // Track if this is the initial mount - skip scroll behavior on mount to not interfere with hash navigation
+    const isInitialMount = useRef(true);
+    useEffect(() => {
+        // Mark as no longer initial mount after a delay to allow hash navigation to complete
+        const timer = setTimeout(() => {
+            isInitialMount.current = false;
+        }, 500);
+        return () => clearTimeout(timer);
+    }, []);
+
     // Use layoutEffect to adjust scroll BEFORE browser paints, then continue during animation
     useLayoutEffect(() => {
+        // Skip scroll behavior on initial mount to not interfere with hash navigation
+        if (isInitialMount.current) return;
+
         const expandedElement = expandedIndex !== null ? cardRefs.current[expandedIndex] : null;
 
         if (pinnedCard.current) {

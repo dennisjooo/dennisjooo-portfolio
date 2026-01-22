@@ -18,6 +18,26 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
     const [isMobile, setIsMobile] = useState(false);
     void isMobile; // Suppress unused var warning
 
+    // Handle hash navigation after page load
+    useEffect(() => {
+        if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            // Small delay to ensure content is rendered
+            const scrollToHash = () => {
+                const element = document.getElementById(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'auto' });
+                    // Clear hash from URL without triggering navigation
+                    window.history.replaceState({}, '', window.location.pathname);
+                }
+            };
+            // Use requestAnimationFrame to ensure DOM is ready
+            requestAnimationFrame(() => {
+                setTimeout(scrollToHash, 100);
+            });
+        }
+    }, []);
+
     useEffect(() => {
         // Check if mobile
         const checkMobile = window.innerWidth < 768;

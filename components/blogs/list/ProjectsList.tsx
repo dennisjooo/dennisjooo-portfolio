@@ -2,8 +2,9 @@ import { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
 import { ContentCard } from '@/components/shared';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
+import type { PaginationResult } from '@/lib/data/blogs';
 
 const PAGE_SIZE = 9;
 
@@ -13,15 +14,31 @@ interface PaginationState {
     total: number;
 }
 
-export default function ProjectsList({ type = 'project' }: { type?: 'project' | 'blog' | 'all' }) {
-    const [projects, setProjects] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(true);
+interface ProjectsListProps {
+    type?: 'project' | 'blog' | 'all';
+    initialData?: Blog[];
+    initialPagination?: PaginationResult;
+}
+
+export default function ProjectsList({ 
+    type = 'project', 
+    initialData, 
+    initialPagination 
+}: ProjectsListProps) {
+    // Track if we have server-provided initial data
+    const hasInitialData = initialData && initialData.length > 0;
+    
+    const [projects, setProjects] = useState<Blog[]>(initialData ?? []);
+    const [loading, setLoading] = useState(!hasInitialData);
     const [loadingMore, setLoadingMore] = useState(false);
     const [pagination, setPagination] = useState<PaginationState>({
-        page: 1,
-        hasMore: true,
-        total: 0,
+        page: initialPagination?.page ?? 1,
+        hasMore: initialPagination?.hasMore ?? true,
+        total: initialPagination?.total ?? 0,
     });
+    
+    // Track if initial fetch was skipped due to server data
+    const initialFetchSkipped = useRef(hasInitialData);
 
     const fetchProjects = useCallback(async (page: number, reset = false) => {
         if (page === 1) {
@@ -51,8 +68,14 @@ export default function ProjectsList({ type = 'project' }: { type?: 'project' | 
         }
     }, [type]);
 
-    // Initial fetch and refetch when type changes
+    // Initial fetch only if no server-provided data
     useEffect(() => {
+        // Skip initial fetch if we have server-provided data for the initial type
+        if (initialFetchSkipped.current) {
+            initialFetchSkipped.current = false;
+            return;
+        }
+        
         setProjects([]);
         setPagination({ page: 1, hasMore: true, total: 0 });
         fetchProjects(1, true);

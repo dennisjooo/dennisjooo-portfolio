@@ -9,8 +9,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";
 import { useMemo, useEffect } from "react";
+import type { Blog } from "@/lib/db";
+import type { PaginationResult } from "@/lib/data/blogs";
 
-export function BlogsTabs() {
+interface BlogsTabsProps {
+    initialProjects?: Blog[];
+    initialPagination?: PaginationResult;
+}
+
+export function BlogsTabs({ initialProjects, initialPagination }: BlogsTabsProps) {
     const { activeTab, setActiveTab, mounted } = useTabState();
     
     // Always show certifications tab for now as it's database driven
@@ -45,7 +52,11 @@ export function BlogsTabs() {
                         <AnimatePresence mode="wait">
                             {activeTab === "blog" ? (
                                 <motion.div key="blog" {...tabContentVariants}>
-                                    <ProjectsList type="all" />
+                                    <ProjectsList 
+                                        type="all" 
+                                        initialData={initialProjects}
+                                        initialPagination={initialPagination}
+                                    />
                                 </motion.div>
                             ) : (
                                 <motion.div key="certifications" {...tabContentVariants}>
@@ -55,7 +66,11 @@ export function BlogsTabs() {
                         </AnimatePresence>
                     ) : (
                         <motion.div key="blog" {...tabContentVariants}>
-                            <ProjectsList type="all" />
+                            <ProjectsList 
+                                type="all" 
+                                initialData={initialProjects}
+                                initialPagination={initialPagination}
+                            />
                         </motion.div>
                     )}
                 </div>

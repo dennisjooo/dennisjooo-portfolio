@@ -67,53 +67,6 @@ export const useHeroSectionState = (isClientReady: boolean, pathname: string): H
     return state;
 };
 
-export const useScrollToSavedSection = (isClientReady: boolean, pathname: string) => {
-    useEffect(() => {
-        if (!isClientReady || pathname !== "/") return;
-
-        try {
-            const sectionToScroll = sessionStorage.getItem("scrollToSection");
-            if (sectionToScroll) {
-                const scrollToElement = () => {
-                    const element = document.getElementById(sectionToScroll);
-                    if (element) {
-                        // Small delay to ensure layout is stable
-                        setTimeout(() => {
-                            element.scrollIntoView({ behavior: "auto" });
-                            sessionStorage.removeItem("scrollToSection");
-                        }, 100);
-                        return true;
-                    }
-                    return false;
-                };
-
-                // Try immediately
-                if (!scrollToElement()) {
-                    // Retry every 100ms for up to 2 seconds
-                    const intervalId = setInterval(() => {
-                        if (scrollToElement()) {
-                            clearInterval(intervalId);
-                        }
-                    }, 100);
-
-                    // Stop retrying after 2 seconds
-                    const timeoutId = setTimeout(() => {
-                        clearInterval(intervalId);
-                        sessionStorage.removeItem("scrollToSection");
-                    }, 2000);
-
-                    return () => {
-                        clearInterval(intervalId);
-                        clearTimeout(timeoutId);
-                    };
-                }
-            }
-        } catch (error) {
-            console.error("Error accessing sessionStorage:", error);
-        }
-    }, [isClientReady, pathname]);
-};
-
 interface UseSectionNavigationParams {
     isClientReady: boolean;
     pathname: string;
@@ -125,77 +78,26 @@ export const useSectionNavigation = (
 ): ((sectionId: string) => void) => {
     const router = useRouter();
 
-    // Track the current section when scrolling on the homepage
-    useEffect(() => {
-        if (!isClientReady || pathname !== "/") return;
-
-        let rafId: number | null = null;
-
-        const updateSection = () => {
-            // Check sections in reverse order (bottom to top) to handle the sticky "home" section
-            const sections = ["contact", "skills", "about", "home"];
-            for (const section of sections) {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    // If the section is in view (top is above middle of viewport)
-                    if (rect.top <= window.innerHeight / 2 && rect.bottom > 0) {
-                        try {
-                            sessionStorage.setItem("currentSection", section);
-                        } catch (error) {
-                            console.error("Error saving current section:", error);
-                        }
-                        break;
-                    }
-                }
-            }
-            rafId = null;
-        };
-
-        const handleScroll = () => {
-            // Throttle to one update per frame
-            if (rafId === null) {
-                rafId = requestAnimationFrame(updateSection);
-            }
-        };
-
-        handleScroll();
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-            if (rafId !== null) {
-                cancelAnimationFrame(rafId);
-            }
-        };
-    }, [isClientReady, pathname]);
-
     return useCallback(
         (sectionId: string) => {
             if (!isClientReady) return;
 
+            // Disable browser scroll restoration
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+
             if (pathname === "/") {
-                // If on homepage and clicking home, scroll to top
+                // On homepage: scroll to section instantly
                 if (sectionId === "home") {
                     window.scrollTo({ top: 0, behavior: "auto" });
                 } else {
                     document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
                 }
             } else {
-                try {
-                    // If clicking home from another page, go to the last visited section
-                    if (sectionId === "home") {
-                        const lastSection = sessionStorage.getItem("currentSection");
-                        sessionStorage.setItem("scrollToSection", lastSection || "home");
-                    } else {
-                        sessionStorage.setItem("scrollToSection", sectionId);
-                    }
-                    // Clear any saved scroll position for home so it doesn't conflict with our explicit jump
-                    sessionStorage.removeItem("scroll-pos-/");
-                    router.push("/");
-                } catch (error) {
-                    console.error("Error accessing sessionStorage:", error);
-                    router.push("/");
-                }
+                // From other pages: navigate to homepage
+                // Use hash for all sections including home to ensure correct scroll position
+                router.push(`/#${sectionId}`);
             }
 
             closeMenu();

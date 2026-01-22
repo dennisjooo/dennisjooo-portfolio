@@ -1,10 +1,12 @@
 import Hero from '@/components/landing/hero';
 import dynamic from 'next/dynamic';
 import { HomeClient } from './HomeClient';
-import { db, blogs, siteConfig, workExperiences, type SiteConfig } from '@/lib/db';
-import { eq, desc, asc } from 'drizzle-orm';
+import { db, siteConfig, workExperiences, type SiteConfig } from '@/lib/db';
+import { desc, asc } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
+import { getFeaturedProjects } from '@/lib/data/blogs';
+import FeaturedProjects from '@/components/landing/featured-projects';
 
 // Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
@@ -21,9 +23,8 @@ const About = dynamic(() => import('@/components/landing/about'), {
 const WorkExperience = dynamic(() => import('@/components/landing/work-experience'), {
     loading: () => <SectionSkeleton />
 });
-const FeaturedProjects = dynamic(() => import('@/components/landing/featured-projects'), {
-    loading: () => <SectionSkeleton />
-});
+// FeaturedProjects is now a regular import since it receives server-fetched data
+// and needs to be available immediately for hash navigation (#projects)
 const Skills = dynamic(() => import('@/components/landing/skills'), {
     loading: () => <SectionSkeleton height="min-h-[50vh]" />
 });
@@ -33,27 +34,6 @@ const Contacts = dynamic(() => import('@/components/landing/contacts'), {
 
 // Non-critical UI - lazy loaded
 const BackToTop = dynamic(() => import('@/components/shared/BackToTop'));
-
-// Cached data fetching functions
-const getFeaturedProjects = unstable_cache(
-    async () => {
-        try {
-            // Only fetch the 3 most recent projects for featured section
-            const projects = await db
-                .select()
-                .from(blogs)
-                .where(eq(blogs.type, 'project'))
-                .orderBy(desc(blogs.date))
-                .limit(3);
-            return projects;
-        } catch (error) {
-            console.error('Failed to fetch projects', error);
-            return [];
-        }
-    },
-    ['featured-projects'],
-    { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['projects'] }
-);
 
 const getSiteConfig = unstable_cache(
     async (): Promise<SiteConfig | null> => {

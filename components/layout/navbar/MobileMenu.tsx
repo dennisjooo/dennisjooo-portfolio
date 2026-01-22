@@ -28,17 +28,6 @@ export const MobileMenu = ({
 
     const handleToggleOff = () => onToggle(false);
 
-    const handleLinkClick = (item: NavItem) => () => {
-        if (item.id === "projects") {
-            try {
-                sessionStorage.setItem("fromNav", "true");
-            } catch (error) {
-                console.error("Error accessing sessionStorage:", error);
-            }
-        }
-        handleToggleOff();
-    };
-
     const handleNavigateClick = (item: NavItem) => () => {
         onNavigate(item.id);
         handleToggleOff();
@@ -63,7 +52,7 @@ export const MobileMenu = ({
                             return (
                                 <li key={item.id} className={itemClassName}>
                                     {item.href ? (
-                                        <Link href={item.href} onClick={handleLinkClick(item)} className={linkClassName}>
+                                        <Link href={item.href} onClick={handleToggleOff} className={linkClassName}>
                                             {item.label}
                                         </Link>
                                     ) : (

@@ -12,7 +12,6 @@ import {
     useClientReady,
     useHeroSectionState,
     useNavbarStyles,
-    useScrollToSavedSection,
     useSectionNavigation,
 } from "@/lib/hooks/useNavbar";
 
@@ -21,8 +20,6 @@ const Navbar = () => {
     const pathname = usePathname() ?? "/";
     const isClientReady = useClientReady();
     const { scrolled, isHeroSection } = useHeroSectionState(isClientReady, pathname);
-
-    useScrollToSavedSection(isClientReady, pathname);
 
     const handleNavigation = useSectionNavigation({
         isClientReady,
