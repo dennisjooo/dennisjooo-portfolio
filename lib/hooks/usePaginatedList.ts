@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
 
 interface PaginationResult {
@@ -24,16 +24,23 @@ interface UsePaginatedListOptions<T> {
     paginationKey?: string; // Key to extract pagination from response (default: 'pagination')
 }
 
+const EMPTY_QUERY_PARAMS: Record<string, string | number | boolean> = {};
+
 export function usePaginatedList<T>({
     endpoint,
     pageSize,
     initialData,
     initialPagination,
-    queryParams = {},
+    queryParams,
     resolveData,
     dataKey = 'data',
     paginationKey = 'pagination'
 }: UsePaginatedListOptions<T>) {
+    // Stabilize queryParams reference - serialize to detect actual changes
+    const stableQueryParams = useMemo(() => {
+        return queryParams ?? EMPTY_QUERY_PARAMS;
+    }, [queryParams ? JSON.stringify(queryParams) : '']);
+
     // Track if we have server-provided initial data
     const hasInitialData = initialData && initialData.length > 0;
 
@@ -71,7 +78,7 @@ export function usePaginatedList<T>({
             params.append('page', page.toString());
             params.append('limit', pageSize.toString());
 
-            Object.entries(queryParams).forEach(([key, value]) => {
+            Object.entries(stableQueryParams).forEach(([key, value]) => {
                 if (value !== undefined && value !== null && value !== '') {
                     params.append(key, String(value));
                 }
@@ -105,7 +112,7 @@ export function usePaginatedList<T>({
                 setLoadingMore(false);
             }
         }
-    }, [endpoint, pageSize, queryParams, resolveData, dataKey, paginationKey]);
+    }, [endpoint, pageSize, stableQueryParams, resolveData, dataKey, paginationKey]);
 
     // Initial fetch only if no server-provided data
     useEffect(() => {
