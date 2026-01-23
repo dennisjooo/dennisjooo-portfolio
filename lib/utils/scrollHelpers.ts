@@ -32,8 +32,9 @@ export function scrollToCentered(element: HTMLElement, smooth: boolean = true): 
 export function scrollToTop(instant: boolean = false): void {
     if (window.lenis) {
         if (instant) {
+            // Stop Lenis, use native scroll, then resume
             window.lenis.stop();
-            window.lenis.scrollTo(0, { immediate: true });
+            window.scrollTo(0, 0);
             requestAnimationFrame(() => {
                 window.lenis?.start();
             });
@@ -54,17 +55,17 @@ export function forceScrollToTop(): void {
         history.scrollRestoration = 'manual';
     }
 
-    if (window.lenis) {
-        // Stop Lenis temporarily to prevent interference
-        window.lenis.stop();
-        window.lenis.scrollTo(0, { immediate: true });
+    // Always use native scroll for immediate, reliable scrolling
+    window.scrollTo(0, 0);
 
+    if (window.lenis) {
+        // Stop Lenis temporarily to prevent it from overriding native scroll
+        window.lenis.stop();
+        
         // Resume Lenis after a frame
         requestAnimationFrame(() => {
             window.lenis?.start();
         });
-    } else {
-        window.scrollTo(0, 0);
     }
 }
 
