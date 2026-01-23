@@ -31,7 +31,15 @@ export function scrollToCentered(element: HTMLElement, smooth: boolean = true): 
  */
 export function scrollToTop(instant: boolean = false): void {
     if (window.lenis) {
-        window.lenis.scrollTo(0, { immediate: instant });
+        if (instant) {
+            window.lenis.stop();
+            window.lenis.scrollTo(0, { immediate: true });
+            requestAnimationFrame(() => {
+                window.lenis?.start();
+            });
+        } else {
+            window.lenis.scrollTo(0, { immediate: false });
+        }
     } else {
         window.scrollTo({ top: 0, behavior: instant ? 'instant' : 'smooth' });
     }
