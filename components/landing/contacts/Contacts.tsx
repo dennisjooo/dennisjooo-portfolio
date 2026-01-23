@@ -6,39 +6,9 @@ import { Dock } from './Dock/Dock';
 import { DockIconLink } from './Dock/DockIconLink';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 import { contactLinks } from '@/data/contactContent';
+import { staggerContainerVariants, blurRevealVariants, springItemVariants } from '@/lib/animations/variants';
 
-// Animation variants for staggered text reveal
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.15,
-            delayChildren: 0.2,
-        },
-    },
-};
-
-const wordVariants = {
-    hidden: {
-        opacity: 0,
-        y: 80,
-        filter: 'blur(10px)',
-        scale: 0.9,
-    },
-    visible: {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        scale: 1,
-        transition: {
-            type: 'spring',
-            damping: 20,
-            stiffness: 100,
-        },
-    },
-};
-
+// Custom timing for bottom group (delayChildren: 0.6)
 const bottomGroupVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -46,24 +16,6 @@ const bottomGroupVariants = {
         transition: {
             staggerChildren: 0.1,
             delayChildren: 0.6,
-        },
-    },
-};
-
-const itemVariants = {
-    hidden: {
-        opacity: 0,
-        y: 30,
-        filter: 'blur(8px)',
-    },
-    visible: {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        transition: {
-            type: 'spring',
-            damping: 25,
-            stiffness: 120,
         },
     },
 };
@@ -84,7 +36,7 @@ const Contacts: React.FC = () => {
                 <div className="flex-1 w-full flex flex-col justify-center items-center min-h-[50vh]">
                     {/* Headline with staggered word reveal */}
                     <motion.div
-                        variants={containerVariants}
+                        variants={staggerContainerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: '-100px' }}
@@ -92,7 +44,7 @@ const Contacts: React.FC = () => {
                     >
                         {/* Metadata label above headline */}
                         <motion.span
-                            variants={itemVariants}
+                            variants={springItemVariants}
                             className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] opacity-50 text-muted-foreground mb-6"
                         >
                             Get In Touch
@@ -100,7 +52,7 @@ const Contacts: React.FC = () => {
 
                         {/* Main headline - Playfair italic for "Let's" */}
                         <motion.span
-                            variants={wordVariants}
+                            variants={blurRevealVariants}
                             className="font-playfair italic text-[18vw] md:text-[10vw] leading-[0.8] text-foreground dark:mix-blend-screen select-none text-center relative"
                         >
                             Let&apos;s
@@ -108,7 +60,7 @@ const Contacts: React.FC = () => {
 
                         {/* Main headline - Urbanist bold for "TALK" */}
                         <motion.span
-                            variants={wordVariants}
+                            variants={blurRevealVariants}
                             className="font-sans font-black text-[22vw] md:text-[12vw] leading-[0.8] text-gradient-primary tracking-tighter select-none text-center relative"
                         >
                             TALK
@@ -124,13 +76,13 @@ const Contacts: React.FC = () => {
                         className="flex flex-col items-center gap-8"
                     >
                         <motion.p
-                            variants={itemVariants}
+                            variants={springItemVariants}
                             className="text-base md:text-xl font-light text-muted-foreground font-sans text-center max-w-md px-4"
                         >
                             Have a cool idea? Want to geek out over AI, or just want to say hi? Drop a line.
                         </motion.p>
 
-                        <motion.div variants={itemVariants}>
+                        <motion.div variants={springItemVariants}>
                             <Dock className="mx-auto">
                                 {contactLinks.map(({ href, ariaLabel, icon }) => (
                                     <DockIconLink key={ariaLabel} href={href} ariaLabel={ariaLabel} icon={icon} />

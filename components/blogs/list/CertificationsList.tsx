@@ -2,6 +2,7 @@
 
 import { CertificationCard, Certification } from './CertificationCard';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
+import { ListSkeleton, EmptyState, ListFooter } from '@/components/shared';
 
 const PAGE_SIZE = 9;
 
@@ -18,23 +19,11 @@ export default function CertificationsList() {
     });
 
     if (loading) {
-        return (
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {[...Array(PAGE_SIZE)].map((_, i) => (
-                    <div key={i} className="h-64 bg-muted/20 animate-pulse rounded-xl" />
-                ))}
-            </div>
-        );
+        return <ListSkeleton count={PAGE_SIZE} height="h-64" gap="gap-6 md:gap-8" />;
     }
 
     if (certifications.length === 0) {
-        return (
-            <div className="w-full flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-muted-foreground font-mono text-sm uppercase tracking-widest">
-                    No certifications found
-                </p>
-            </div>
-        );
+        return <EmptyState message="No certifications found" />;
     }
 
     return (
@@ -51,10 +40,8 @@ export default function CertificationsList() {
 
             {/* Loading more indicator */}
             {loadingMore && (
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-6 md:mt-8">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={`loading-${i}`} className="h-64 bg-muted/20 animate-pulse rounded-xl" />
-                    ))}
+                <div className="mt-6 md:mt-8">
+                    <ListSkeleton count={3} height="h-64" gap="gap-6 md:gap-8" />
                 </div>
             )}
 
@@ -63,11 +50,7 @@ export default function CertificationsList() {
 
             {/* End of list indicator */}
             {!pagination.hasMore && certifications.length > 0 && (
-                <div className="w-full flex justify-center py-8">
-                    <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">
-                        Showing all {pagination.total} {pagination.total === 1 ? 'certification' : 'certifications'}
-                    </p>
-                </div>
+                <ListFooter total={pagination.total} itemName="certification" />
             )}
         </div>
     );

@@ -6,6 +6,10 @@ import Image from 'next/image';
 import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';
+import { cn } from '@/lib/utils';
+import { formStyles } from './shared/formStyles';
+import { FormField } from './shared/FormField';
+import { useImageUpload } from '@/lib/hooks/useImageUpload';
 
 interface BlogFormProps {
   initialData?: Blog;
@@ -20,7 +24,6 @@ interface PendingImage {
 
 export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState<Partial<Blog>>({
     title: initialData?.title || '',
     description: initialData?.description || '',
@@ -36,6 +39,10 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const { uploading, upload: uploadCoverImage } = useImageUpload({
+    onSuccess: (url) => setFormData(prev => ({ ...prev, imageUrl: url })),
+  });
 
   // Cleanup object URLs on unmount
   useEffect(() => {
@@ -60,32 +67,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
-
-    setUploading(true);
-    const file = e.target.files[0];
-
-    try {
-      const { contentHash, body } = await buildUploadPayload(file);
-
-      const filename = formData.title 
-        ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${file.name}`
-        : file.name;
-
-      const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}&contentHash=${contentHash}`, {
-        method: 'POST',
-        body,
-      });
-
-      if (!response.ok) throw new Error('Upload failed');
-
-      const newBlob = await response.json();
-      setFormData(prev => ({ ...prev, imageUrl: newBlob.url }));
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to upload image');
-    } finally {
-      setUploading(false);
-    }
+    await uploadCoverImage(e.target.files[0]);
   };
 
   const addLink = () => {
@@ -268,46 +250,43 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     }
   };
 
-  const inputClasses = "w-full p-3 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none";
-  const labelClasses = "block text-sm font-medium text-muted-foreground mb-1.5";
-
   return (
-    <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-2xl border border-border/50 space-y-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className={cn(formStyles.panel, "space-y-8 max-w-4xl")}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-6">
           <div>
-            <label className={labelClasses}>Title</label>
+            <label className={formStyles.label}>Title</label>
             <input
               type="text"
               name="title"
               required
               value={formData.title}
               onChange={handleChange}
-              className={inputClasses}
+              className={formStyles.input}
               placeholder="Enter a catchy title..."
             />
           </div>
 
           <div>
-            <label className={labelClasses}>Slug (Optional)</label>
+            <label className={formStyles.label}>Slug (Optional)</label>
             <input
               type="text"
               name="slug"
               value={formData.slug ?? ''}
               onChange={handleChange}
               placeholder="auto-generated-from-title"
-              className={`${inputClasses} font-mono text-sm`}
+              className={`${formStyles.input} font-mono text-sm`}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelClasses}>Type</label>
+              <label className={formStyles.label}>Type</label>
               <select
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className={inputClasses}
+                className={formStyles.input}
               >
                 <option value="blog">Blog Post</option>
                 <option value="project">Project</option>
@@ -315,26 +294,26 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
             </div>
 
             <div>
-              <label className={labelClasses}>Date</label>
+              <label className={formStyles.label}>Date</label>
               <input
                 type="date"
                 name="date"
                 required
                 value={formData.date}
                 onChange={handleChange}
-                className={inputClasses}
+                className={formStyles.input}
               />
             </div>
           </div>
           <div>
-            <label className={labelClasses}>Description</label>
+            <label className={formStyles.label}>Description</label>
             <textarea
               name="description"
               required
               rows={3}
               value={formData.description}
               onChange={handleChange}
-              className={inputClasses}
+              className={formStyles.input}
               placeholder="Short summary for preview cards..."
             />
           </div>
@@ -342,7 +321,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
 
         <div className="space-y-6">
           <div>
-            <label className={labelClasses}>Cover Image</label>
+            <label className={formStyles.label}>Cover Image</label>
             <div className="space-y-3">
               <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border border-border">
                 {formData.imageUrl ? (
@@ -374,7 +353,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                   value={formData.imageUrl ?? ''}
                   onChange={handleChange}
                   placeholder="Paste image URL..."
-                  className={`${inputClasses} text-xs font-mono`}
+                  className={`${formStyles.input} text-xs font-mono`}
                 />
                 <label
                   className={`flex items-center justify-center px-4 bg-secondary text-secondary-foreground rounded-lg cursor-pointer hover:bg-secondary/80 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
@@ -393,7 +372,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           </div>
 
           <div>
-            <label className={labelClasses}>Related Links</label>
+            <label className={formStyles.label}>Related Links</label>
             <div className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border/50">
               <div className="flex gap-2">
                 <input
@@ -401,14 +380,14 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                   placeholder="Label (e.g. GitHub)"
                   value={linkInput.text}
                   onChange={e => setLinkInput(prev => ({ ...prev, text: e.target.value }))}
-                  className={`${inputClasses} py-2 text-sm`}
+                  className={`${formStyles.input} py-2 text-sm`}
                 />
                 <input
                   type="text"
                   placeholder="https://..."
                   value={linkInput.url}
                   onChange={e => setLinkInput(prev => ({ ...prev, url: e.target.value }))}
-                  className={`${inputClasses} py-2 text-sm`}
+                  className={`${formStyles.input} py-2 text-sm`}
                 />
                 <button
                   type="button"
@@ -444,7 +423,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className={labelClasses}>Content (Markdown)</label>
+          <label className={formStyles.label}>Content (Markdown)</label>
           <label className="flex items-center gap-2 text-xs text-primary cursor-pointer hover:underline">
             <DocumentPlusIcon className="w-4 h-4" />
             <span>Add Image</span>
@@ -468,7 +447,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
-            className={`${inputClasses} font-mono text-sm leading-relaxed resize-none overflow-hidden min-h-[500px] ${dragActive ? 'border-primary ring-2 ring-primary/20' : ''}`}
+            className={`${formStyles.input} font-mono text-sm leading-relaxed resize-none overflow-hidden min-h-[500px] ${dragActive ? 'border-primary ring-2 ring-primary/20' : ''}`}
             placeholder="# Write your masterpiece here... (Drag & drop images supported)"
           />
           <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none">

@@ -1,7 +1,7 @@
 import { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
-import { ContentCard } from '@/components/shared';
+import { ContentCard, ListSkeleton, EmptyState, ListFooter } from '@/components/shared';
 import type { PaginationResult } from '@/lib/data/blogs';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
 import { useMemo } from 'react';
@@ -42,23 +42,12 @@ export default function ProjectsList({
     });
 
     if (loading) {
-        return (
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                {[...Array(PAGE_SIZE)].map((_, i) => (
-                    <div key={i} className="h-96 bg-muted/20 animate-pulse rounded-xl" />
-                ))}
-            </div>
-        );
+        return <ListSkeleton count={PAGE_SIZE} />;
     }
 
+    const emptyMessage = type === 'all' ? 'No content found' : type === 'blog' ? 'No articles found' : 'No projects found';
     if (projects.length === 0) {
-        return (
-            <div className="w-full flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-muted-foreground font-mono text-sm uppercase tracking-widest">
-                    No {type === 'all' ? 'content' : type === 'blog' ? 'articles' : 'projects'} found
-                </p>
-            </div>
-        );
+        return <EmptyState message={emptyMessage} />;
     }
 
     return (
@@ -82,10 +71,8 @@ export default function ProjectsList({
 
             {/* Loading more indicator */}
             {loadingMore && (
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mt-8 md:mt-10">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={`loading-${i}`} className="h-96 bg-muted/20 animate-pulse rounded-xl" />
-                    ))}
+                <div className="mt-8 md:mt-10">
+                    <ListSkeleton count={3} />
                 </div>
             )}
 
@@ -94,11 +81,7 @@ export default function ProjectsList({
 
             {/* End of list indicator */}
             {!pagination.hasMore && projects.length > 0 && (
-                <div className="w-full flex justify-center py-8">
-                    <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">
-                        Showing all {pagination.total} {pagination.total === 1 ? 'item' : 'items'}
-                    </p>
-                </div>
+                <ListFooter total={pagination.total} itemName="item" />
             )}
         </div>
     );

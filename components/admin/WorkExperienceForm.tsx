@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   ArrowPathIcon,
@@ -10,7 +9,11 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
-import { buildUploadPayload } from "@/lib/utils/blobUpload";
+import { formStyles } from "./shared/formStyles";
+import { FormActions } from "./shared/FormActions";
+import { FormField } from "./shared/FormField";
+import { useImageUpload } from "@/lib/hooks/useImageUpload";
+import { cn } from "@/lib/utils";
 
 interface WorkExperience {
   id?: string;
@@ -31,9 +34,7 @@ export default function WorkExperienceForm({
   initialData,
   onSubmit,
 }: WorkExperienceFormProps) {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState<WorkExperience>(
     initialData || {
       title: "",
@@ -45,43 +46,20 @@ export default function WorkExperienceForm({
     }
   );
 
+  const { uploading, upload } = useImageUpload({
+    folder: "work",
+    onSuccess: (url) => setFormData((prev) => ({ ...prev, imageSrc: url })),
+  });
+
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
-
-    setUploading(true);
-    const file = e.target.files[0];
-
-    try {
-      const { contentHash, body } = await buildUploadPayload(file);
-
-      const params = new URLSearchParams({
-        filename: `work/${file.name}`,
-        contentHash,
-      });
-      const response = await fetch(`/api/upload?${params.toString()}`, {
-        method: "POST",
-        body,
-      });
-
-      const newBlob = await response.json();
-      if (newBlob.url) {
-        setFormData((prev) => ({ ...prev, imageSrc: newBlob.url }));
-      } else {
-        toast.error("Upload failed");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to upload image");
-    } finally {
-      setUploading(false);
-    }
+    await upload(e.target.files[0]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Filter out empty responsibilities
     const cleanedData = {
       ...formData,
       responsibilities: formData.responsibilities.filter((r) => r.trim() !== ""),
@@ -118,18 +96,14 @@ export default function WorkExperienceForm({
     setFormData({ ...formData, responsibilities: updated });
   };
 
-  const inputClasses =
-    "w-full p-3 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none";
-  const labelClasses = "block text-sm font-medium text-muted-foreground mb-1.5";
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="glass-panel p-8 rounded-2xl border border-border/50 space-y-6 max-w-3xl"
+      className={cn(formStyles.panel, "space-y-6 max-w-3xl")}
     >
       {/* Company Logo */}
       <div>
-        <label className={labelClasses}>Company Logo</label>
+        <label className={formStyles.label}>Company Logo</label>
         <div className="flex items-start gap-6">
           <div className="relative group">
             <div className="w-24 h-24 rounded-xl border-2 border-dashed border-border bg-muted/30 flex items-center justify-center overflow-hidden">
@@ -168,7 +142,7 @@ export default function WorkExperienceForm({
           <div className="flex-1">
             <input
               type="text"
-              className={inputClasses}
+              className={formStyles.input}
               placeholder="Or enter image URL directly..."
               value={formData.imageSrc}
               onChange={(e) =>
@@ -183,71 +157,64 @@ export default function WorkExperienceForm({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className={labelClasses}>Job Title</label>
+        <FormField label="Job Title">
           <input
             type="text"
             required
-            className={inputClasses}
+            className={formStyles.input}
             placeholder="e.g. AI/ML Engineer"
             value={formData.title}
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label className={labelClasses}>Company</label>
+        <FormField label="Company">
           <input
             type="text"
             required
-            className={inputClasses}
+            className={formStyles.input}
             placeholder="e.g. Sinar Mas Land"
             value={formData.company}
             onChange={(e) =>
               setFormData({ ...formData, company: e.target.value })
             }
           />
-        </div>
+        </FormField>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className={labelClasses}>Date Range</label>
+        <FormField label="Date Range">
           <input
             type="text"
             required
-            className={inputClasses}
+            className={formStyles.input}
             placeholder="e.g. February 2024 - Now"
             value={formData.date}
             onChange={(e) =>
               setFormData({ ...formData, date: e.target.value })
             }
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label className={labelClasses}>Display Order</label>
+        <FormField label="Display Order" hint="Lower numbers appear first">
           <input
             type="number"
-            className={inputClasses}
+            className={formStyles.input}
             placeholder="0"
             value={formData.order}
             onChange={(e) =>
               setFormData({ ...formData, order: parseInt(e.target.value) || 0 })
             }
           />
-          <p className="text-xs text-muted-foreground mt-1">
-            Lower numbers appear first
-          </p>
-        </div>
+        </FormField>
       </div>
 
       {/* Responsibilities */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <label className={labelClasses}>Responsibilities</label>
+          <label className={formStyles.label}>Responsibilities</label>
           <button
             type="button"
             onClick={addResponsibility}
@@ -264,7 +231,7 @@ export default function WorkExperienceForm({
                 {index + 1}.
               </span>
               <textarea
-                className={`${inputClasses} resize-none`}
+                className={cn(formStyles.input, "resize-none")}
                 rows={2}
                 placeholder="Describe a responsibility or achievement..."
                 value={resp}
@@ -284,22 +251,10 @@ export default function WorkExperienceForm({
         </div>
       </div>
 
-      <div className="flex gap-4 pt-4 border-t border-border/50 justify-end">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="px-6 py-2.5 rounded-lg border border-border hover:bg-muted transition-colors font-medium text-sm"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
-        >
-          {loading ? "Saving..." : initialData ? "Update Record" : "Create Record"}
-        </button>
-      </div>
+      <FormActions
+        loading={loading}
+        submitLabel={initialData ? "Update Record" : "Create Record"}
+      />
     </form>
   );
 }
