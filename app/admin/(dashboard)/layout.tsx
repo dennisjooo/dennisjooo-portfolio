@@ -16,10 +16,10 @@ export default async function AdminDashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-noise relative flex">
+    <div className="min-h-screen bg-background text-foreground bg-noise relative flex overflow-x-hidden">
       <AdminSidebar />
-      <main className="flex-1 lg:ml-64 relative z-10 p-8 md:p-12 min-h-screen">
-        <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
+      <main className="flex-1 lg:ml-64 relative z-10 p-4 md:p-8 lg:p-12 min-h-screen min-w-0">
+        <div className="max-w-6xl mx-auto space-y-8 animate-fade-in w-full">
           <AdminMobileMenu />
 
           {children}

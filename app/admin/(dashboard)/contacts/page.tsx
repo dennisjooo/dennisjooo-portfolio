@@ -64,6 +64,7 @@ export default function AdminContactsList() {
     },
     {
       header: "Label",
+      primary: true,
       cell: (row: Contact) => (
         <span className="font-semibold text-foreground">{row.label}</span>
       ),

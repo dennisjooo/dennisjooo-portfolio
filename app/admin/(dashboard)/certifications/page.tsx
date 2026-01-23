@@ -30,6 +30,7 @@ export default function AdminCertificationsList() {
   const columns: Column<Certification>[] = [
     {
       header: "Title",
+      primary: true,
       cell: (row: Certification) => <span className="font-semibold text-foreground">{row.title}</span>
     },
     {

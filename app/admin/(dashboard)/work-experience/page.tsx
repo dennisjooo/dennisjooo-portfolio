@@ -48,6 +48,7 @@ export default function AdminWorkExperienceList() {
     },
     {
       header: "Position",
+      primary: true,
       cell: (row: WorkExperience) => (
         <div>
           <span className="font-semibold text-foreground block">

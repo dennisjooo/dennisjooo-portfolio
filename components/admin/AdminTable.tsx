@@ -12,6 +12,8 @@ export interface Column<T> {
   accessorKey?: keyof T;
   cell?: (row: T) => ReactNode;
   className?: string;
+  hideOnMobile?: boolean;
+  primary?: boolean;
 }
 
 interface AdminTableProps<T> {
@@ -47,21 +49,15 @@ export function AdminTable<T extends { id?: string | number }>({
     if (!enableReorder) return;
     setDragIndex(index);
 
-    // Set ghost image to the row
-    const row = (event.target as HTMLElement).closest("tr");
+    const row = (event.target as HTMLElement).closest("tr, [data-card]");
     if (row && event.dataTransfer) {
-      // Set the drag image to the row, centered horizontally on the cursor if possible
-      // or just at the click point.
-      // 0,0 puts the top-left of the row at the cursor.
-      // Let's try to center it vertically relative to the row height?
-      // For now, standard behavior is fine.
       event.dataTransfer.setDragImage(row, 0, 0);
       event.dataTransfer.effectAllowed = "move";
     }
   };
 
   const handleDragOver = (
-    event: React.DragEvent<HTMLTableRowElement>,
+    event: React.DragEvent,
     index: number
   ) => {
     if (!enableReorder || dragIndex === null) return;
@@ -85,6 +81,13 @@ export function AdminTable<T extends { id?: string | number }>({
     setDragOverIndex(null);
     onReorder?.(next);
   };
+
+  const getCellValue = (row: T, col: Column<T>) => {
+    if (col.cell) return col.cell(row);
+    if (col.accessorKey) return String(row[col.accessorKey] ?? "");
+    return "";
+  };
+
   if (isLoading) {
     return (
       <div className="w-full h-64 flex items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm animate-pulse">
@@ -101,9 +104,75 @@ export function AdminTable<T extends { id?: string | number }>({
     );
   }
 
+  const primaryColumn = columns.find(col => col.primary) || columns[0];
+  const actionsColumn = columns.find(col => col.header.toLowerCase() === "actions");
+  const detailColumns = columns.filter(col => col !== primaryColumn && col !== actionsColumn);
+
   return (
-    <div className="space-y-4">
-      <div className="overflow-hidden rounded-xl border border-border bg-card/30 backdrop-blur-sm shadow-sm">
+    <div className="space-y-4 w-full max-w-full">
+      {/* Mobile Card Layout */}
+      <div className="md:hidden space-y-3">
+        {localData.map((row, rowIdx) => {
+          const isDragging = dragIndex === rowIdx;
+          const isDragOver = dragOverIndex === rowIdx && dragIndex !== null && dragIndex !== rowIdx;
+
+          return (
+            <div
+              key={row.id || rowIdx}
+              data-card
+              className={`rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4 transition-all duration-200 ${
+                isDragging ? "opacity-50 bg-muted/50" : ""
+              } ${isDragOver ? "ring-2 ring-primary" : ""}`}
+              onDragOver={(e) => handleDragOver(e, rowIdx)}
+              onDrop={() => handleDrop(rowIdx)}
+            >
+              {/* Card Header: Primary content + Actions */}
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {enableReorder && (
+                    <button
+                      type="button"
+                      className="flex-shrink-0 inline-flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-grab active:cursor-grabbing transition-colors"
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, rowIdx)}
+                      title="Drag to reorder"
+                    >
+                      <GripVertical className="w-4 h-4" />
+                    </button>
+                  )}
+                  <div className="flex-1 min-w-0 text-sm font-urbanist text-foreground">
+                    {getCellValue(row, primaryColumn)}
+                  </div>
+                </div>
+                {actionsColumn && (
+                  <div className="flex-shrink-0">
+                    {getCellValue(row, actionsColumn)}
+                  </div>
+                )}
+              </div>
+
+              {/* Card Details */}
+              {detailColumns.length > 0 && (
+                <div className="space-y-2 pt-3 border-t border-border/30">
+                  {detailColumns.map((col, colIdx) => (
+                    <div key={colIdx} className="flex items-center justify-between gap-4 text-sm">
+                      <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
+                        {col.header}
+                      </span>
+                      <div className="text-right font-urbanist text-foreground">
+                        {getCellValue(row, col)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden md:block overflow-hidden rounded-xl border border-border bg-card/30 backdrop-blur-sm shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
@@ -135,14 +204,10 @@ export function AdminTable<T extends { id?: string | number }>({
                   rowClass += "hover:bg-muted/30 ";
                 }
 
-                // Visual indicator for drop target
                 if (isDragOver) {
                   if (dragIndex! < rowIdx) {
-                    // Dragging down - insert after (bottom indicator)
-                    // Using shadow to avoid layout shift
                     rowClass += "shadow-[inset_0_-2px_0_0_hsl(var(--primary))] ";
                   } else {
-                    // Dragging up - insert before (top indicator)
                     rowClass += "shadow-[inset_0_2px_0_0_hsl(var(--primary))] ";
                   }
                 }
@@ -172,11 +237,7 @@ export function AdminTable<T extends { id?: string | number }>({
                         key={colIdx}
                         className="px-6 py-4 text-sm font-urbanist text-foreground"
                       >
-                        {col.cell
-                          ? col.cell(row)
-                          : col.accessorKey
-                          ? String(row[col.accessorKey] ?? "")
-                          : ""}
+                        {getCellValue(row, col)}
                       </td>
                     ))}
                   </tr>

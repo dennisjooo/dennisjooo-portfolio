@@ -31,6 +31,7 @@ export default function AdminBlogsList() {
   const columns: Column<Blog>[] = [
     {
       header: "Title",
+      primary: true,
       cell: (row: Blog) => <span className="font-semibold text-foreground">{row.title}</span>
     },
     {
