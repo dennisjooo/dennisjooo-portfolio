@@ -20,13 +20,13 @@ export const MobileView: React.FC<MobileViewProps> = ({ contentSections, profile
     <div className="md:hidden w-full h-full overflow-hidden touch-pan-y">
         <div className="mobile-scroll-container flex w-[500%] h-full transform-gpu backface-hidden">
             {/* Card 1: Profile */}
-            <div className="w-screen h-full flex flex-col justify-center items-center px-8 relative">
-                <span className="absolute top-32 font-mono text-xs uppercase tracking-widest opacity-50 text-muted-foreground">
+            <div className="w-screen h-full flex flex-col justify-center items-center px-8 gap-6">
+                <span className="font-mono text-xs uppercase tracking-widest opacity-50 text-muted-foreground">
                     Swipe to Explore
                 </span>
                 <ProfileImage imageUrl={profileImageUrl} />
                 <motion.div
-                    className="mt-8 text-center space-y-2"
+                    className="text-center space-y-2"
                     variants={fadeInUpVariants}
                     initial="hidden"
                     animate="visible"
