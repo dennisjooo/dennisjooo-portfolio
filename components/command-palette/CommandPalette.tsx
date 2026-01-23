@@ -1,5 +1,7 @@
 "use client";
 
+import { useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { SearchX } from "lucide-react";
 import {
     CommandDialog,
@@ -7,6 +9,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { useCommandPalette } from "@/lib/hooks/useCommandPalette";
+import { scrollToTop } from "@/lib/utils/scrollHelpers";
 
 import { NavigationGroup } from "./groups/NavigationGroup";
 import { ProjectsGroup } from "./groups/ProjectsGroup";
@@ -18,6 +21,7 @@ import { SecretGroup } from "./groups/SecretGroup";
 import { SearchOptionsBar } from "./groups/SearchOptionsBar";
 
 export function CommandPalette() {
+    const pathname = usePathname() ?? "/";
     const {
         open,
         setOpen,
@@ -37,6 +41,24 @@ export function CommandPalette() {
         copyUrl,
         router,
     } = useCommandPalette();
+
+    const handleNavigate = useCallback((path: string) => {
+        // Check if it's a hash navigation to the homepage
+        if (path.startsWith("/#")) {
+            const sectionId = path.slice(2); // Remove "/#"
+            if (pathname === "/") {
+                // Already on homepage, scroll directly
+                if (sectionId === "home") {
+                    scrollToTop(true);
+                } else {
+                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
+                }
+                return;
+            }
+        }
+        // For other paths or when not on homepage, use router
+        router.push(path);
+    }, [pathname, router]);
 
     const hasSearchResults = filteredProjects.length > 0 || filteredWorkExperience.length > 0;
 
@@ -72,7 +94,7 @@ export function CommandPalette() {
 
                 <NavigationGroup
                     onSelect={runCommand}
-                    onNavigate={(path) => router.push(path)}
+                    onNavigate={handleNavigate}
                 />
 
                 {search.trim() && (
@@ -81,13 +103,13 @@ export function CommandPalette() {
                             projects={filteredProjects}
                             searchTerm={search.trim()}
                             onSelect={runCommand}
-                            onNavigate={(path) => router.push(path)}
+                            onNavigate={handleNavigate}
                         />
                         <WorkExperienceGroup
                             workExperience={filteredWorkExperience}
                             searchTerm={search.trim()}
                             onSelect={runCommand}
-                            onNavigate={(path) => router.push(path)}
+                            onNavigate={handleNavigate}
                         />
                     </>
                 )}
