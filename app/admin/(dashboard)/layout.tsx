@@ -1,4 +1,5 @@
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminMobileMenu } from "@/components/admin/AdminMobileMenu";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -19,11 +20,7 @@ export default async function AdminDashboardLayout({
       <AdminSidebar />
       <main className="flex-1 lg:ml-64 relative z-10 p-8 md:p-12 min-h-screen">
         <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-          {/* Mobile Header (visible only on small screens) */}
-          <div className="lg:hidden flex items-center justify-between mb-8 pb-4 border-b border-border">
-            <h1 className="font-playfair italic text-xl">Mission Control</h1>
-            {/* Add mobile menu toggle here if needed, for now keeping it simple */}
-          </div>
+          <AdminMobileMenu />
 
           {children}
         </div>
