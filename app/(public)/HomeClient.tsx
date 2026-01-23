@@ -21,46 +21,63 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
 
     // Handle hash navigation after page load
     useEffect(() => {
-        if (window.location.hash) {
-            const hash = window.location.hash.substring(1);
+        // Always disable browser's scroll restoration
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
 
-            // Clear hash from URL immediately to prevent browser's native hash scrolling
+        const hash = window.location.hash ? window.location.hash.substring(1) : '';
+
+        // Clear hash from URL immediately to prevent browser's native hash scrolling
+        if (hash) {
             window.history.replaceState({}, '', window.location.pathname);
+        }
 
-            // Special case for "home" - handle immediately to avoid race conditions
-            if (hash === 'home') {
-                // Immediately force scroll to top - don't wait for delay
-                forceScrollToTop();
-                return;
+        // Special case for "home" or no hash - scroll to top immediately
+        if (hash === 'home' || hash === '') {
+            // Stop Lenis, force scroll to 0, then resume
+            if (window.lenis) {
+                window.lenis.stop();
             }
-
-            // For other sections, use delayed scroll to ensure content is rendered
-            const scrollToHash = () => {
-                const element = document.getElementById(hash);
-                if (element) {
-                    // Stop Lenis temporarily to prevent interference during hash scroll
-                    if (window.lenis) {
-                        window.lenis.stop();
-                    }
-                    // First scroll to top instantly to reset scroll state
-                    window.scrollTo(0, 0);
-                    // Then scroll to the target element
+            window.scrollTo(0, 0);
+            requestAnimationFrame(() => {
+                window.scrollTo(0, 0); // Double-tap to ensure
+                if (window.lenis) {
+                    window.lenis.scrollTo(0, { immediate: true });
                     requestAnimationFrame(() => {
-                        element.scrollIntoView({ behavior: 'auto' });
-                        // Resume Lenis after scroll completes
-                        if (window.lenis) {
-                            requestAnimationFrame(() => {
-                                window.lenis?.start();
-                            });
-                        }
+                        window.lenis?.start();
                     });
                 }
-            };
-            // Use requestAnimationFrame to ensure DOM is ready
-            requestAnimationFrame(() => {
-                setTimeout(scrollToHash, 100);
             });
+            return;
         }
+
+        // For other sections, use delayed scroll to ensure content is rendered
+        const scrollToHash = () => {
+            const element = document.getElementById(hash);
+            if (element) {
+                // Stop Lenis temporarily to prevent interference during hash scroll
+                if (window.lenis) {
+                    window.lenis.stop();
+                }
+                // First scroll to top instantly to reset scroll state
+                window.scrollTo(0, 0);
+                // Then scroll to the target element
+                requestAnimationFrame(() => {
+                    element.scrollIntoView({ behavior: 'auto' });
+                    // Resume Lenis after scroll completes
+                    if (window.lenis) {
+                        requestAnimationFrame(() => {
+                            window.lenis?.start();
+                        });
+                    }
+                });
+            }
+        };
+        // Use requestAnimationFrame to ensure DOM is ready
+        requestAnimationFrame(() => {
+            setTimeout(scrollToHash, 100);
+        });
     }, []);
 
     useEffect(() => {

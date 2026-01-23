@@ -11,6 +11,11 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
     const isMounted = useRef(false);
 
     useEffect(() => {
+        // Disable browser scroll restoration immediately on mount
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
         isMounted.current = true;
         // Check if mobile - skip smooth scroll on mobile for better performance
         const checkMobile = () => {
