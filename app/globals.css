@@ -223,3 +223,52 @@ html {
   animation: fade-in-down 0.7s ease-out forwards;
   opacity: 0;
 }
+
+/* Contacts section animations */
+@keyframes contacts-blur-reveal {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes contacts-spring-item {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  70% {
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.contacts-blur-reveal {
+  animation: contacts-blur-reveal 0.6s ease-out forwards;
+}
+
+.contacts-stagger-item {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.contacts-spring-item {
+  animation: contacts-spring-item 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Stagger delays for headline group (0.1s between items) */
+.contacts-stagger-0 { animation-delay: 0s; }
+.contacts-stagger-1 { animation-delay: 0.1s; }
+.contacts-stagger-2 { animation-delay: 0.2s; }
+
+/* Bottom group delays (0.6s base delay + 0.1s stagger) */
+.contacts-bottom-0 { animation-delay: 0.6s; }
+.contacts-bottom-1 { animation-delay: 0.7s; }

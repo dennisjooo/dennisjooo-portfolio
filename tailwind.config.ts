@@ -31,6 +31,13 @@ const config: Config = {
 					'0%': { opacity: '0' },
 					'100%': { opacity: '1' },
 				},
+				'scale-x-in': {
+					'0%': { transform: 'scaleX(0)' },
+					'100%': { transform: 'scaleX(1)' },
+				},
+			},
+			animation: {
+				'scale-x-in': 'scale-x-in 0.8s ease-out forwards',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
