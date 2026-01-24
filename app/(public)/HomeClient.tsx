@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useEffect, useState, type ReactNode } from 'react';
-import { forceScrollToTop } from '@/lib/utils/scrollHelpers';
 
 interface HomeClientProps {
     heroContent: ReactNode;
