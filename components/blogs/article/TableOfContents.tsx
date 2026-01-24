@@ -46,7 +46,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                 onMouseLeave={() => setIsHovered(false)}
                 className={`relative p-3 rounded-2xl transition-all duration-300 ${
                     isHovered 
-                        ? 'bg-muted/80 backdrop-blur-md border border-border shadow-lg' 
+                        ? 'bg-muted/80 backdrop-blur-md border border-border shadow-lg w-[280px]' 
                         : 'bg-transparent border border-transparent'
                 }`}
             >
@@ -109,7 +109,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                                             : 'text-muted-foreground group-hover:text-foreground'
                                             }`}
                                         style={{
-                                            maxWidth: isHovered ? '250px' : '0px',
+                                            width: isHovered ? '200px' : '0px',
                                             opacity: isHovered ? 1 : 0,
                                         }}
                                     >
