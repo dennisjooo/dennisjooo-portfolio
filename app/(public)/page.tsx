@@ -6,7 +6,6 @@ import { desc, asc } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
 import { getFeaturedProjects } from '@/lib/data/blogs';
-import FeaturedProjects from '@/components/landing/featured-projects';
 
 // Enable ISR - page will be statically generated and revalidated every 60 seconds
 export const revalidate = 60;
@@ -26,8 +25,9 @@ const About = dynamic(() => import('@/components/landing/about'), {
 const WorkExperience = dynamic(() => import('@/components/landing/work-experience'), {
     loading: () => <SectionSkeleton />
 });
-// FeaturedProjects is now a regular import since it receives server-fetched data
-// and needs to be available immediately for hash navigation (#projects)
+const FeaturedProjects = dynamic(() => import('@/components/landing/featured-projects'), {
+    loading: () => <SectionSkeleton />
+});
 const Skills = dynamic(() => import('@/components/landing/skills'), {
     loading: () => <SectionSkeleton height="min-h-[50vh]" />
 });
