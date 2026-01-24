@@ -53,6 +53,7 @@ export const useAboutAnimations = ({
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         pin: true,
+                        pinSpacing: false, // Disable auto spacing - we handle it in CSS
                         scrub: 0.3, // Reduced from 1 for faster touch response
                         snap: {
                             snapTo: 1 / (totalSections - 1),
@@ -98,6 +99,7 @@ export const useAboutAnimations = ({
                         start: "top top",
                         end: "+=3000",
                         pin: true,
+                        pinSpacing: false, // Disable auto spacing - we handle it in CSS
                         scrub: 1,
                         anticipatePin: 1,
                     }

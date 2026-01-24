@@ -178,6 +178,7 @@ html {
 }
 
 /* CSS-based animations for better LCP (no JS blocking) */
+/* Note: These use opacity-only or transform with will-change to avoid CLS */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -210,18 +211,23 @@ html {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.7s ease-out forwards;
-  opacity: 0;
+  animation: fade-in 0.7s ease-out both;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.7s ease-out forwards;
-  opacity: 0;
+  animation: fade-in-up 0.7s ease-out both;
+  will-change: transform, opacity;
 }
 
 .animate-fade-in-down {
-  animation: fade-in-down 0.7s ease-out forwards;
-  opacity: 0;
+  animation: fade-in-down 0.7s ease-out both;
+  will-change: transform, opacity;
+}
+
+/* Content visibility for below-fold sections - prevents layout work until needed */
+.below-fold-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100vh;
 }
 
 /* Contacts section animations */
