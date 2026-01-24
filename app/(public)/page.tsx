@@ -8,6 +8,9 @@ import { CACHE_CONFIG } from '@/lib/constants/cache';
 import { getFeaturedProjects } from '@/lib/data/blogs';
 import FeaturedProjects from '@/components/landing/featured-projects';
 
+// Enable ISR - page will be statically generated and revalidated every 60 seconds
+export const revalidate = 60;
+
 // Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
     <div className={`${height} bg-background`} />

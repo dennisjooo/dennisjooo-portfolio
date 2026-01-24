@@ -1,11 +1,8 @@
-import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
 import { Urbanist, Roboto_Mono, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
-import "react-photo-view/dist/react-photo-view.css";
 import "./globals.css";
 import { Providers } from "./providers";
-import { ClerkProvider } from '@clerk/nextjs';
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -30,14 +27,16 @@ const robotoMono = Roboto_Mono({
     subsets: ["latin"],
     display: "swap",
     variable: "--font-roboto-mono",
+    preload: false,
 });
 
-// Playfair is used for LCP element - prioritize loading
+// Playfair is used for LCP element - prioritize loading (italic only for hero)
 const playfair = Playfair_Display({
     subsets: ["latin"],
     display: "swap",
     variable: "--font-playfair",
-    style: ["normal", "italic"],
+    style: "italic",
+    weight: "400",
     preload: true,
 });
 
@@ -89,16 +88,14 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
-        <ClerkProvider>
-            <html lang="en" suppressHydrationWarning>
-                <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
-                    <Providers>
-                        {children}
-                    </Providers>
-                    <Analytics />
-                    <SpeedInsights />
-                </body>
-            </html>
-        </ClerkProvider>
+        <html lang="en" suppressHydrationWarning>
+            <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
+                <Providers>
+                    {children}
+                </Providers>
+                <Analytics />
+                <SpeedInsights />
+            </body>
+        </html>
     );
 }

@@ -3,6 +3,9 @@ import { BackToTop } from '@/components/shared';
 import { BlogsTabs } from '@/components/blogs/list/BlogsTabs';
 import { getBlogs } from '@/lib/data/blogs';
 
+// Enable ISR for blogs listing
+export const revalidate = 60;
+
 export const metadata: Metadata = {
     title: "Blog & Certifications | Dennis' Portfolio",
     description: "Explore Dennis' projects, blog posts, and professional certifications.",
