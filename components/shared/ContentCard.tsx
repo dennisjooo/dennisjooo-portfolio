@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
@@ -30,33 +30,46 @@ export const ContentCard = ({
     variant = 'standard',
 }: ContentCardProps) => {
     const isFeatured = variant === 'featured';
+    const articleRef = useRef<HTMLElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
 
-    // Animation configurations
-    const animations = isFeatured
-        ? {
-            initial: { opacity: 0, y: 50, scale: 0.95 },
-            whileInView: { opacity: 1, y: 0, scale: 1 },
-            transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-                delay: index * 0.2
+    useEffect(() => {
+        const element = articleRef.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.unobserve(element);
+                }
             },
-            viewport: { once: true, margin: "-100px" },
-            whileHover: { y: -12 }
-        }
-        : {
-            initial: { opacity: 0, y: 30 },
-            whileInView: { opacity: 1, y: 0 },
-            transition: { duration: 0.4, delay: Math.min(index * 0.05, 0.3) },
-            viewport: { once: true, margin: "-50px" }
-        };
+            {
+                rootMargin: isFeatured ? '-100px' : '-50px',
+                threshold: 0,
+            }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [isFeatured]);
+
+    const animationDelay = isFeatured ? index * 0.2 : Math.min(index * 0.05, 0.3);
 
     return (
         <Link href={`/blogs/${slug}`} className="block group w-full cursor-pointer h-full">
-            <motion.article
-                className="flex flex-col gap-4 h-full"
-                {...animations}
+            <article
+                ref={articleRef}
+                className={cn(
+                    "flex flex-col gap-4 h-full",
+                    isFeatured
+                        ? "opacity-0 translate-y-[50px] scale-95 transition-[opacity,transform] duration-700 ease-out hover:-translate-y-3"
+                        : "opacity-0 translate-y-[30px] transition-[opacity,transform] duration-400 ease-out",
+                    isVisible && (isFeatured
+                        ? "opacity-100 translate-y-0 scale-100 hover:-translate-y-3"
+                        : "opacity-100 translate-y-0")
+                )}
+                style={{ transitionDelay: isVisible ? '0s' : `${animationDelay}s`, animationDelay: `${animationDelay}s` }}
             >
                 {/* Card Wrapper for Glow */}
                 <div className="relative w-full aspect-[4/3]">
@@ -150,7 +163,7 @@ export const ContentCard = ({
                         {description}
                     </p>
                 </div>
-            </motion.article>
+            </article>
         </Link>
     );
 };
