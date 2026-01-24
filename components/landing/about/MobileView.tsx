@@ -1,8 +1,4 @@
-'use client';
-
 import React from 'react';
-import { motion } from 'framer-motion';
-import { fadeInUpVariants } from '@/lib/animations/variants';
 import { ProfileImage } from './ProfileImage';
 
 interface ContentSection {
@@ -25,18 +21,15 @@ export const MobileView: React.FC<MobileViewProps> = ({ contentSections, profile
                     Swipe to Explore
                 </span>
                 <ProfileImage imageUrl={profileImageUrl} />
-                <motion.div
-                    className="text-center space-y-2"
-                    variants={fadeInUpVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ duration: 0.6, delay: 0.6 }}
+                <div
+                    className="text-center space-y-2 animate-fade-in-up"
+                    style={{ animationDelay: '0.6s' }}
                 >
                     <p className="font-playfair italic text-4xl text-foreground">Dennis Jonathan</p>
                     <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                         Developer & Problem Solver
                     </p>
-                </motion.div>
+                </div>
             </div>
 
             {/* Cards 2-5: Content */}

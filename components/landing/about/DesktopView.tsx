@@ -1,8 +1,4 @@
-'use client';
-
 import React, { Ref } from 'react';
-import { motion } from 'framer-motion';
-import { fadeInUpVariants } from '@/lib/animations/variants';
 import { ProfileImage } from './ProfileImage';
 
 interface ContentSection {
@@ -27,29 +23,23 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
             <div className="w-full max-w-md flex flex-col items-center">
                 <ProfileImage imageUrl={profileImageUrl} />
 
-                <motion.div
-                    className="mt-8 text-center space-y-2"
-                    variants={fadeInUpVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ duration: 0.6, delay: 0.6 }}
+                <div
+                    className="mt-8 text-center space-y-2 animate-fade-in-up"
+                    style={{ animationDelay: '0.6s' }}
                 >
                     <p className="font-playfair italic text-3xl text-foreground">Dennis Jonathan</p>
                     <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                         Developer & Problem Solver
                     </p>
-                </motion.div>
+                </div>
             </div>
         </div>
 
         {/* Col 2: The 3D Scroll Container (60%) */}
-        <motion.div
+        <div
             ref={scrollContentRef}
-            className="w-[60%] h-full flex items-center relative pl-16"
-            variants={fadeInUpVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.6, delay: 0.4 }}
+            className="w-[60%] h-full flex items-center relative pl-16 animate-fade-in-up"
+            style={{ animationDelay: '0.4s' }}
         >
             {contentSections.map((section) => (
                 <div
@@ -71,6 +61,6 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
                     </div>
                 </div>
             ))}
-        </motion.div>
+        </div>
     </div>
 );
