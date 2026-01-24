@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { skillCategories } from '@/data/skillContent';
-import { SectionHeader } from '@/components/shared/SectionHeader';
+import { SectionHeaderAnimated } from '@/components/shared/SectionHeaderAnimated';
 import { ParallaxText } from './ParallaxText';
 import { getIconSlug } from './utils';
 
@@ -11,7 +11,7 @@ const Skills: React.FC = () => {
         <section id="skills" className="py-24 w-full bg-background text-foreground overflow-hidden">
             <div className="w-full">
                 <div className="container mx-auto px-6 max-w-7xl mb-10">
-                    <SectionHeader
+                    <SectionHeaderAnimated
                         number="05."
                         title="Skills & Stacks"
                     />

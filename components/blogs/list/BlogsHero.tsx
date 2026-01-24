@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SectionHeader } from '@/components/shared/SectionHeader';
+import { SectionHeaderAnimated } from '@/components/shared/SectionHeaderAnimated';
 
 interface BlogsHeroProps {
     activeTab: 'blog' | 'certifications';
@@ -15,7 +15,7 @@ const tabCaptions: Record<'blog' | 'certifications', string> = {
 export const BlogsHero = ({ activeTab }: BlogsHeroProps) => (
     <div className="w-full mb-10">
         {/* Standard Section Header */}
-        <SectionHeader 
+        <SectionHeaderAnimated 
             number="" 
             title="Blog & Certifications" 
             className="mb-12"

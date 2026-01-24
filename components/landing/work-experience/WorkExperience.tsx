@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { DesktopTimeline, MobileTimeline } from './Timeline';
-import { SectionHeader } from '@/components/shared/SectionHeader';
+import { SectionHeaderAnimated } from '@/components/shared/SectionHeaderAnimated';
 
 export interface TimelineItemData {
     id?: string;
@@ -31,7 +31,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ workExperience }) => {
         >
             <div className="container mx-auto px-6 max-w-7xl">
                 {/* Header - Matching About Section Style */}
-                <SectionHeader
+                <SectionHeaderAnimated
                     number="03."
                     title="Work Experience"
                     className="mb-16"
