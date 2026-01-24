@@ -89,6 +89,11 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                {/* Preconnect to external domains for faster resource loading */}
+                <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
+                <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
+            </head>
             <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
                 <Providers>
                     {children}
