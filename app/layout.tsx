@@ -21,6 +21,7 @@ const urbanist = Urbanist({
     display: "swap",
     variable: "--font-urbanist",
     preload: true,
+    adjustFontFallback: true, // Reduces CLS by sizing fallback font to match
 });
 
 const robotoMono = Roboto_Mono({
@@ -28,6 +29,7 @@ const robotoMono = Roboto_Mono({
     display: "swap",
     variable: "--font-roboto-mono",
     preload: false,
+    adjustFontFallback: true,
 });
 
 // Playfair is used for LCP element - prioritize loading (italic only for hero)
@@ -38,6 +40,7 @@ const playfair = Playfair_Display({
     style: "italic",
     weight: "400",
     preload: true,
+    adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
