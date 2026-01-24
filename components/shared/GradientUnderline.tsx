@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface GradientUnderlineProps {
@@ -18,22 +17,40 @@ const GradientUnderline: React.FC<GradientUnderlineProps> = ({
     trigger = 'visible'
 }) => {
     const isHover = trigger === 'hover';
+    const underlineRef = useRef<HTMLSpanElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        if (isHover || !underlineRef.current) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsVisible(true);
+                        observer.disconnect();
+                    }
+                });
+            },
+            { threshold: 0 }
+        );
+
+        observer.observe(underlineRef.current);
+
+        return () => observer.disconnect();
+    }, [isHover]);
 
     return (
         <span className={cn("relative inline-block", className)}>
             <span className="relative z-[1]">{children}</span>
-            <motion.span
+            <span
+                ref={underlineRef}
                 className={cn(
-                    "absolute left-0 right-0 bottom-0 h-1 bg-gradient-accent rounded-full drop-shadow-[0_0_10px_var(--accent-shadow)] z-0",
-                    isHover && "scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
+                    "absolute left-0 right-0 bottom-0 h-1 bg-gradient-accent rounded-full drop-shadow-[0_0_10px_var(--accent-shadow)] z-0 origin-left",
+                    isHover && "scale-x-0 group-hover:scale-x-100 transition-transform duration-300",
+                    !isHover && (isVisible ? "animate-scale-x-in" : "scale-x-0")
                 )}
-                {...(!isHover ? {
-                    initial: { scaleX: 0 },
-                    whileInView: { scaleX: 1 },
-                    viewport: { once: true },
-                    transition: { duration: 0.8, delay }
-                } : {})}
-                style={{ transformOrigin: "left" }}
+                style={!isHover ? { animationDelay: `${delay}s` } : undefined}
             />
         </span>
     );
