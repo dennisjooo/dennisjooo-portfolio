@@ -4,7 +4,6 @@ export { default as ReadingProgress } from './ReadingProgress';
 export { BlinkingCursor } from './BlinkingCursor';
 export { SmoothScroll } from './SmoothScroll';
 export * from './SectionHeader';
-export * from './SectionHeaderAnimated';
 export * from './ContentCard';
 export * from './ListSkeleton';
 export * from './EmptyState';

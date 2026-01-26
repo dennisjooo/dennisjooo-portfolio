@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
+import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 
 interface ContentCardProps {
     title: string;
@@ -30,46 +30,41 @@ export const ContentCard = ({
     variant = 'standard',
 }: ContentCardProps) => {
     const isFeatured = variant === 'featured';
-    const articleRef = useRef<HTMLElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const prefersReducedMotion = useReducedMotion();
+    
+    // Stagger delay: featured cards get more time between reveals
+    const animationDelay = isFeatured ? index * 0.15 : Math.min(index * 0.08, 0.24);
 
-    useEffect(() => {
-        const element = articleRef.current;
-        if (!element) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(element);
-                }
-            },
-            {
-                rootMargin: isFeatured ? '-100px' : '-50px',
-                threshold: 0,
+    // Animation variants
+    const cardVariants = {
+        hidden: { 
+            opacity: 0, 
+            y: isFeatured ? 50 : 30, 
+            scale: isFeatured ? 0.95 : 1 
+        },
+        visible: { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            transition: {
+                ...springConfigs.smooth,
+                delay: animationDelay,
             }
-        );
+        },
+    };
 
-        observer.observe(element);
-        return () => observer.disconnect();
-    }, [isFeatured]);
-
-    const animationDelay = isFeatured ? index * 0.2 : Math.min(index * 0.05, 0.3);
+    // Hover lift amounts
+    const hoverY = isFeatured ? -12 : -6;
 
     return (
         <Link href={`/blogs/${slug}`} className="block group w-full cursor-pointer h-full">
-            <article
-                ref={articleRef}
-                className={cn(
-                    "flex flex-col gap-4 h-full",
-                    isFeatured
-                        ? "opacity-0 translate-y-[50px] scale-95 transition-[opacity,transform] duration-700 ease-out hover:-translate-y-3"
-                        : "opacity-0 translate-y-[30px] transition-[opacity,transform] duration-400 ease-out",
-                    isVisible && (isFeatured
-                        ? "opacity-100 translate-y-0 scale-100 hover:-translate-y-3"
-                        : "opacity-100 translate-y-0")
-                )}
-                style={{ transitionDelay: isVisible ? '0s' : `${animationDelay}s`, animationDelay: `${animationDelay}s` }}
+            <m.article
+                variants={prefersReducedMotion ? undefined : cardVariants}
+                initial={prefersReducedMotion ? undefined : "hidden"}
+                whileInView={prefersReducedMotion ? undefined : "visible"}
+                viewport={isFeatured ? viewportSettings.onceDeep : viewportSettings.once}
+                whileHover={prefersReducedMotion ? undefined : { y: hoverY, transition: springConfigs.snappy }}
+                className="flex flex-col gap-4 h-full"
             >
                 {/* Card Wrapper for Glow */}
                 <div className="relative w-full aspect-[4/3]">
@@ -163,7 +158,7 @@ export const ContentCard = ({
                         {description}
                     </p>
                 </div>
-            </article>
+            </m.article>
         </Link>
     );
 };
