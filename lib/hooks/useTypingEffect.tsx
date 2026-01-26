@@ -35,10 +35,25 @@ export const useTypingEffect = (descriptions: string[], initialDelay: number = 5
     const [isReady, setIsReady] = useState(false);
 
     // Delay start of typing to allow LCP to complete
+    // Use requestIdleCallback for better scheduling if available
     useEffect(() => {
-        const timer = setTimeout(() => setIsReady(true), initialDelay);
-        return () => clearTimeout(timer);
-    }, [initialDelay]);
+        const start = () => setIsReady(true);
+        
+        if ('requestIdleCallback' in window) {
+            const id = window.requestIdleCallback(start, { timeout: initialDelay + 500 });
+            const timer = setTimeout(() => {
+                // Fallback: force start after delay even if idle callback hasn't fired
+                if (!isReady) start();
+            }, initialDelay);
+            return () => {
+                window.cancelIdleCallback(id);
+                clearTimeout(timer);
+            };
+        } else {
+            const timer = setTimeout(start, initialDelay);
+            return () => clearTimeout(timer);
+        }
+    }, [initialDelay, isReady]);
 
     const handleTyping = useCallback(() => {
         if (!isReady) return;
