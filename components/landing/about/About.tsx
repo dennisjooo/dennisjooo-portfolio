@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useMemo } from 'react';
-import { SectionHeaderAnimated } from '@/components/shared/SectionHeaderAnimated';
+import { SectionHeader } from '@/components/shared/SectionHeader';
 import { MobileView } from './MobileView';
 import { DesktopView } from './DesktopView';
 import { useAboutAnimations } from '@/lib/hooks/useAboutAnimations';
@@ -42,7 +42,7 @@ const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
             >
                 {/* Header */}
                 <div className="w-full px-6 md:px-0 mb-8">
-                    <SectionHeaderAnimated
+                    <SectionHeader
                         number="02."
                         title="About Me"
                     />

@@ -5,6 +5,8 @@ import { HeroScrollEffect } from './HeroScrollEffect';
 /**
  * Hero section - Server component for optimal LCP
  * The main heading text renders immediately without JavaScript
+ * Client components (HeroBackground, HeroTypingRole, HeroScrollEffect) 
+ * hydrate after initial paint
  */
 const Hero: React.FC = () => {
     return (
