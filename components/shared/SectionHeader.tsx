@@ -9,15 +9,6 @@ interface SectionHeaderProps {
     className?: string;
 }
 
-const headerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-        opacity: 1, 
-        y: 0,
-        transition: springConfigs.smooth
-    },
-};
-
 export const SectionHeader = ({ 
     number, 
     title, 
@@ -25,12 +16,27 @@ export const SectionHeader = ({
 }: SectionHeaderProps) => {
     const prefersReducedMotion = useReducedMotion();
 
+    // If reduced motion is enabled, skip animations entirely
+    if (prefersReducedMotion) {
+        return (
+            <div 
+                className={cn(
+                    "w-full flex justify-between items-end border-b border-border pb-4",
+                    className
+                )}
+            >
+                <span className="font-playfair italic text-3xl md:text-4xl text-foreground">{number}</span>
+                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-50 text-muted-foreground">{title}</span>
+            </div>
+        );
+    }
+
     return (
         <m.div 
-            variants={prefersReducedMotion ? undefined : headerVariants}
-            initial={prefersReducedMotion ? undefined : "hidden"}
-            whileInView={prefersReducedMotion ? undefined : "visible"}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportSettings.once}
+            transition={springConfigs.smooth}
             className={cn(
                 "w-full flex justify-between items-end border-b border-border pb-4",
                 className
