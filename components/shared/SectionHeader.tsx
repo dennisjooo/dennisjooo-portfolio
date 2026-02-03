@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
+import { m, useReducedMotion, springConfigs } from '@/components/motion';
 
 interface SectionHeaderProps {
     number: string;
@@ -30,7 +30,7 @@ export const SectionHeader = ({
             variants={prefersReducedMotion ? undefined : headerVariants}
             initial={prefersReducedMotion ? undefined : "hidden"}
             whileInView={prefersReducedMotion ? undefined : "visible"}
-            viewport={viewportSettings.once}
+            viewport={{ once: false, margin: "-20px" }}
             className={cn(
                 "w-full flex justify-between items-end border-b border-border pb-4",
                 className
