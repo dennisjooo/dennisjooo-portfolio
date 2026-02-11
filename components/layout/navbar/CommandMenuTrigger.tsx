@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface CommandMenuTriggerProps {
     textColorClass: string;
@@ -8,6 +9,15 @@ interface CommandMenuTriggerProps {
 }
 
 export const CommandMenuTrigger = ({ textColorClass, scrolled }: CommandMenuTriggerProps) => {
+    const [shortcut, setShortcut] = useState("⌘K");
+
+    useEffect(() => {
+        const isWindows = typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent);
+        if (isWindows) {
+            setShortcut("Ctrl K");
+        }
+    }, []);
+
     const handleClick = () => {
         const event = new CustomEvent("openCommandPalette");
         document.dispatchEvent(event);
@@ -23,11 +33,11 @@ export const CommandMenuTrigger = ({ textColorClass, scrolled }: CommandMenuTrig
         <button
             onClick={handleClick}
             className={`${BASE_CLASSES} ${textColorClass} ${hoverClass}`}
-            aria-label="Open command menu (Ctrl+K)"
+            aria-label={`Open command menu (${shortcut})`}
         >
             <Search className="w-4 h-4" />
-            <kbd className="pointer-events-none hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted/30 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                <span className="text-xs">K</span>
+            <kbd className="pointer-events-none hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted/30 px-1.5 font-mono text-[10px] font-medium text-muted-foreground whitespace-nowrap">
+                <span className="text-xs">{shortcut}</span>
             </kbd>
         </button>
     );
