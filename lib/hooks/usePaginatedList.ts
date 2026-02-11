@@ -37,9 +37,12 @@ export function usePaginatedList<T>({
     paginationKey = 'pagination'
 }: UsePaginatedListOptions<T>) {
     // Stabilize queryParams reference - serialize to detect actual changes
+    const serializedParams = queryParams ? JSON.stringify(queryParams) : '';
+
+    // Stabilize queryParams reference - serialize to detect actual changes
     const stableQueryParams = useMemo(() => {
-        return queryParams ?? EMPTY_QUERY_PARAMS;
-    }, [queryParams ? JSON.stringify(queryParams) : '']);
+        return serializedParams ? JSON.parse(serializedParams) : EMPTY_QUERY_PARAMS;
+    }, [serializedParams]);
 
     // Track if we have server-provided initial data
     const hasInitialData = initialData && initialData.length > 0;

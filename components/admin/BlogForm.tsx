@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';
 import { cn } from '@/lib/utils';
 import { formStyles } from './shared/formStyles';
-import { FormField } from './shared/FormField';
+
 import { useImageUpload } from '@/lib/hooks/useImageUpload';
 
 interface BlogFormProps {
@@ -176,7 +176,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           try {
             const { contentHash, body } = await buildUploadPayload(pendingImage.file);
 
-            const filename = formData.title 
+            const filename = formData.title
               ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${pendingImage.file.name}`
               : pendingImage.file.name;
 
