@@ -24,9 +24,13 @@ const Command = React.forwardRef<
 ))
 Command.displayName = CommandPrimitive.displayName
 
-const CommandDialog = ({ children, ...props }: DialogProps) => {
+const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
+  const handleClose = () => {
+    onOpenChange?.(false)
+  }
+
   return (
-    <DialogPrimitive.Root {...props}>
+    <DialogPrimitive.Root onOpenChange={onOpenChange} {...props}>
       <DialogPrimitive.Portal>
         {/* Custom overlay - using inset-0 and flex to center content */}
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
@@ -52,9 +56,12 @@ const CommandDialog = ({ children, ...props }: DialogProps) => {
                 <CommandIcon className="h-3.5 w-3.5" />
                 <span>Command Palette</span>
               </div>
-              <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
+              <button
+                onClick={handleClose}
+                className="pointer-events-auto hidden sm:flex h-5 select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+              >
                 <span className="text-xs">Esc</span>
-              </kbd>
+              </button>
             </div>
 
             <Command className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-2.5 [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4">
