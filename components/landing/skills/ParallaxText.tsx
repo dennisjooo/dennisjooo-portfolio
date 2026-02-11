@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import {
-  motion,
+  m,
   useScroll,
   useSpring,
   useTransform,
@@ -98,7 +98,7 @@ export function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <motion.div
+      <m.div
         className="flex whitespace-nowrap gap-8 md:gap-16 flex-nowrap transform-gpu backface-hidden"
         style={{ x, willChange: isInView ? 'transform' : 'auto' }}
       >
@@ -107,7 +107,7 @@ export function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps
         <span className="block flex-shrink-0">{children}</span>
         <span className="block flex-shrink-0">{children}</span>
         <span className="block flex-shrink-0">{children}</span>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

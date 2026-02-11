@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowUpRightIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 
 export interface Certification {
@@ -21,7 +21,7 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
     const { title, issuer, date, description, link } = certification;
 
     return (
-        <motion.a
+        <m.a
             href={link}
             target="_blank"
             rel="noopener noreferrer"
@@ -72,6 +72,6 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
                     </span>
                 </div>
             </article>
-        </motion.a>
+        </m.a>
     );
 };

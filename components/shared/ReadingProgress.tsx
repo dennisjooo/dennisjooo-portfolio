@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, useSpring } from 'framer-motion';
+import { m, useSpring } from 'framer-motion';
 
 export default function ReadingProgress() {
     const [progress, setProgress] = useState(0);
@@ -24,7 +24,7 @@ export default function ReadingProgress() {
 
     return (
         <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-muted/30">
-            <motion.div
+            <m.div
                 className="h-full origin-left bg-gradient-accent"
                 style={{
                     scaleX,

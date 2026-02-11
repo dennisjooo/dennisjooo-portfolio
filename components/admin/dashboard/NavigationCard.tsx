@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { itemVariants } from './constants';
 
@@ -16,7 +16,7 @@ interface NavigationCardProps {
 
 export function NavigationCard({ title, description, href, icon: Icon, stat, color }: NavigationCardProps) {
   return (
-    <motion.div variants={itemVariants}>
+    <m.div variants={itemVariants}>
       <Link
         href={href}
         className="group relative block h-full overflow-hidden rounded-2xl border border-border bg-card/30 hover:bg-card/50 backdrop-blur-sm transition-all duration-500 hover:shadow-2xl hover:shadow-accent/10 hover:border-accent/50"
@@ -45,6 +45,6 @@ export function NavigationCard({ title, description, href, icon: Icon, stat, col
           </div>
         </div>
       </Link>
-    </motion.div>
+    </m.div>
   );
 }

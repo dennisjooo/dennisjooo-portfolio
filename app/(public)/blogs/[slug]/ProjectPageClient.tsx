@@ -7,7 +7,7 @@ import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
 import { formatProjectDate } from '@/lib/utils/projectFormatting';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { PhotoProvider } from 'react-photo-view';
 import { Heading } from '@/lib/utils/markdownHelpers';
 
@@ -40,24 +40,24 @@ export default function ProjectPageClient({ project, headings, children }: Proje
                         />
 
                         {/* Article Content */}
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             className="mb-16"
                         >
                             {children}
-                        </motion.div>
+                        </m.div>
 
                         {/* Project Links */}
                         {project.links && project.links.length > 0 && (
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.2 }}
                             >
                                 <ProjectLinks links={project.links} />
-                            </motion.div>
+                            </m.div>
                         )}
                     </article>
                 </main>

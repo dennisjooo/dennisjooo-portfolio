@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion, useMotionValue } from "framer-motion";
+import { m, useMotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DEFAULT_DISTANCE, DEFAULT_MAGNIFICATION } from "./constants";
 import type { DockIconProps } from "./DockIcon";
@@ -34,7 +34,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
         const mouseX = useMotionValue(Infinity);
 
         return (
-            <motion.div
+            <m.div
                 ref={ref}
                 onMouseMove={(e) => mouseX.set(e.pageX)}
                 onMouseEnter={(e) => {
@@ -66,7 +66,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
                         })
                         : child
                 )}
-            </motion.div>
+            </m.div>
         );
     }
 );

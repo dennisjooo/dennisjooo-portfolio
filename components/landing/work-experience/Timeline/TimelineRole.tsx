@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { TimelineItemData } from '../WorkExperience';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 interface TimelineRoleProps {
     role: TimelineItemData;
@@ -17,7 +17,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
     const hasMore = role.responsibilities.length > INITIAL_COUNT;
 
     return (
-        <motion.div
+        <m.div
             className="relative pl-8 md:pl-0 border-l border-foreground/10 md:border-none ml-4 md:ml-0 py-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +41,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
             <ul className="space-y-4 mb-4">
                 {/* Initial Items - Static */}
                 {initialItems.map((resp, idx) => (
-                    <li 
+                    <li
                         key={idx}
                         className="flex items-start text-lg md:text-xl font-light text-muted-foreground leading-relaxed group/item"
                     >
@@ -53,7 +53,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
                 {/* Expanded Items - Animate Entry/Exit */}
                 <AnimatePresence>
                     {isExpanded && expandedItems.map((resp, idx) => (
-                        <motion.li
+                        <m.li
                             key={`expanded-${idx}`}
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
@@ -63,7 +63,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
                         >
                             <span className="mr-4 mt-[0.7em] w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0 group-hover/item:bg-foreground transition-colors" />
                             <span>{resp}</span>
-                        </motion.li>
+                        </m.li>
                     ))}
                 </AnimatePresence>
             </ul>
@@ -80,7 +80,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
                     </span>
                 </button>
             )}
-        </motion.div>
+        </m.div>
     );
 };
 

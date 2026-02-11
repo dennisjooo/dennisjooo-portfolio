@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import {
-    motion,
+    m,
     useMotionValue,
     useSpring,
     useTransform,
@@ -44,7 +44,7 @@ export const DockIcon = ({
     );
 
     return (
-        <motion.div
+        <m.div
             ref={iconRef}
             style={{ width }}
             className={cn(
@@ -54,7 +54,7 @@ export const DockIcon = ({
             {...props}
         >
             {children}
-        </motion.div>
+        </m.div>
     );
 };
 

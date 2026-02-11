@@ -5,7 +5,7 @@ import ProjectsList from "./ProjectsList";
 import TabSwitcher from "./TabSwitcher";
 import { tabContentVariants } from "@/lib/animations/variants";
 import { useTabState } from "@/lib/hooks/useTabState";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";
 import { useMemo, useEffect } from "react";
@@ -19,10 +19,10 @@ interface BlogsTabsProps {
 
 export function BlogsTabs({ initialProjects, initialPagination }: BlogsTabsProps) {
     const { activeTab, setActiveTab, mounted } = useTabState();
-    
+
     // Always show certifications tab for now as it's database driven
     const availableTabs: TabType[] = useMemo(() => [
-        'blog', 
+        'blog',
         'certifications'
     ], []);
 
@@ -51,27 +51,27 @@ export function BlogsTabs({ initialProjects, initialPagination }: BlogsTabsProps
                     {mounted ? (
                         <AnimatePresence mode="wait">
                             {activeTab === "blog" ? (
-                                <motion.div key="blog" {...tabContentVariants}>
-                                    <ProjectsList 
-                                        type="all" 
+                                <m.div key="blog" {...tabContentVariants}>
+                                    <ProjectsList
+                                        type="all"
                                         initialData={initialProjects}
                                         initialPagination={initialPagination}
                                     />
-                                </motion.div>
+                                </m.div>
                             ) : (
-                                <motion.div key="certifications" {...tabContentVariants}>
+                                <m.div key="certifications" {...tabContentVariants}>
                                     <CertificationsList />
-                                </motion.div>
+                                </m.div>
                             )}
                         </AnimatePresence>
                     ) : (
-                        <motion.div key="blog" {...tabContentVariants}>
-                            <ProjectsList 
-                                type="all" 
+                        <m.div key="blog" {...tabContentVariants}>
+                            <ProjectsList
+                                type="all"
                                 initialData={initialProjects}
                                 initialPagination={initialPagination}
                             />
-                        </motion.div>
+                        </m.div>
                     )}
                 </div>
             )}

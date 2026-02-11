@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Heading } from '@/lib/utils/markdownHelpers';
 import { useActiveHeading } from '@/lib/hooks/useActiveHeading';
 import { getDisplayActiveId, handleTocClick } from '@/lib/utils/tableOfContents';
@@ -38,20 +38,19 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
     return (
         <div className="fixed right-6 inset-y-0 z-10 hidden lg:flex items-center">
-            <motion.nav
+            <m.nav
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className={`relative p-3 rounded-2xl transition-all duration-300 ${
-                    isHovered 
-                        ? 'bg-muted/80 backdrop-blur-md border border-border shadow-lg w-[280px]' 
+                className={`relative p-3 rounded-2xl transition-all duration-300 ${isHovered
+                        ? 'bg-muted/80 backdrop-blur-md border border-border shadow-lg w-[280px]'
                         : 'bg-transparent border border-transparent'
-                }`}
+                    }`}
             >
                 {/* Label */}
-                <motion.span
+                <m.span
                     className="absolute -top-8 left-0 font-mono text-[10px] uppercase tracking-widest text-muted-foreground pl-3"
                     style={{
                         opacity: isHovered ? 1 : 0,
@@ -59,7 +58,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                     }}
                 >
                     On this page
-                </motion.span>
+                </m.span>
 
                 <ul className="relative">
                     {headings.map((heading, index) => {
@@ -120,7 +119,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                         );
                     })}
                 </ul>
-            </motion.nav>
+            </m.nav>
         </div>
     );
 }

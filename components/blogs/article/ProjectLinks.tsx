@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import { BsGithub } from 'react-icons/bs';
 
@@ -38,7 +38,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
     const isGitHubLink = url.toLowerCase().includes('github.com');
 
     return (
-        <motion.a
+        <m.a
             href={url}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -49,7 +49,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
         >
             {/* Gradient Glow on Hover */}
             <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300 -z-10" />
-            
+
             {/* Icon */}
             <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
                 {isGitHubLink ? (
@@ -63,9 +63,9 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
             <span className="font-urbanist font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
                 {text}
             </span>
-            
+
             {/* Arrow */}
             <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-        </motion.a>
+        </m.a>
     );
 }
