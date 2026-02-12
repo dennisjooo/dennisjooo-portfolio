@@ -1,4 +1,11 @@
 import { ClerkProvider } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
+
+// MotionProvider wraps content that needs framer-motion
+// SSR enabled for consistent hydration, but LazyMotion defers feature loading
+const MotionProvider = dynamic(
+  () => import("@/components/motion/MotionProvider").then(m => ({ default: m.MotionProvider }))
+);
 
 // This is a minimal layout for all /admin routes
 // The authenticated dashboard layout with sidebar is in (dashboard)/layout.tsx
@@ -10,5 +17,9 @@ export default function AdminRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      <MotionProvider>{children}</MotionProvider>
+    </ClerkProvider>
+  );
 }
