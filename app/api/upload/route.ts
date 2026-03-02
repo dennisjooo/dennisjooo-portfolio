@@ -11,6 +11,7 @@ export async function POST(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const originalFilename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
+  const folder = searchParams.get('folder');
   const contentHashParam = searchParams.get('contentHash');
   const normalizedHash = contentHashParam
     ? contentHashParam.toLowerCase().replace(/[^a-f0-9]/g, '').slice(0, 32)
@@ -44,7 +45,9 @@ export async function POST(request: Request) {
       webpFilename = `${baseName}-${uniqueId}.webp`;
     }
 
-    const blob = await put(webpFilename, optimizedBuffer, {
+    const pathname = folder ? `${folder}/${webpFilename}` : webpFilename;
+
+    const blob = await put(pathname, optimizedBuffer, {
       access: 'public',
       addRandomSuffix: webpFilename !== 'profile.webp' && !normalizedHash,
     });

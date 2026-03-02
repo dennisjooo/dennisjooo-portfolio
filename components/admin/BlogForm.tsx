@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Blog } from '@/lib/db';
 import Image from 'next/image';
-import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon, EyeIcon, PencilSquareIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,9 @@ import { formStyles } from './shared/formStyles';
 
 import { useImageUpload } from '@/lib/hooks/useImageUpload';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
+import { MarkdownPreview } from './MarkdownPreview';
+
+type EditorMode = 'write' | 'preview' | 'split';
 
 interface BlogFormProps {
   initialData?: Blog;
@@ -42,6 +45,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     ? new Date(formData.publishAt).toISOString().slice(0, 16)
     : '';
 
+  const [editorMode, setEditorMode] = useState<EditorMode>('write');
   const [linkInput, setLinkInput] = useState({ text: '', url: '' });
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -58,14 +62,14 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     };
   }, [pendingImages]);
 
-  // Auto-resize textarea
   useEffect(() => {
+    if (editorMode === 'split') return;
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 'px';
     }
-  }, [formData.blogPost]);
+  }, [formData.blogPost, editorMode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -262,7 +266,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn(formStyles.panel, "space-y-8 max-w-4xl")}>
+    <form onSubmit={handleSubmit} className={cn(formStyles.panel, "space-y-8", editorMode === 'split' ? "max-w-7xl" : "max-w-4xl")}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-6">
           <div>
@@ -467,40 +471,119 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       </div>
 
       <div>
+        {/* Editor toolbar */}
         <div className="flex items-center justify-between mb-2">
-          <label className={formStyles.label}>Content (Markdown)</label>
-          <label className="flex items-center gap-2 text-xs text-primary cursor-pointer hover:underline">
-            <DocumentPlusIcon className="w-4 h-4" />
-            <span>Add Image</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleMarkdownImageUpload}
-              className="hidden"
-            />
-          </label>
-        </div>
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            name="blogPost"
-            required
-            value={formData.blogPost}
-            onChange={handleChange}
-            onPaste={handlePaste}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            className={`${formStyles.input} font-mono text-sm leading-relaxed resize-none overflow-hidden min-h-[500px] ${dragActive ? 'border-primary ring-2 ring-primary/20' : ''}`}
-            placeholder="# Write your masterpiece here... (Drag & drop images supported)"
-          />
-          <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none">
-            Markdown Supported • Drag & Drop Images
+          <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/30">
+            <button
+              type="button"
+              onClick={() => setEditorMode('write')}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                editorMode === 'write'
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <PencilSquareIcon className="w-3.5 h-3.5" />
+              Write
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditorMode('preview')}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                editorMode === 'preview'
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <EyeIcon className="w-3.5 h-3.5" />
+              Preview
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditorMode('split')}
+              className={cn(
+                "hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                editorMode === 'split'
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <ViewColumnsIcon className="w-3.5 h-3.5" />
+              Split
+            </button>
           </div>
-          {dragActive && (
-            <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px] border-2 border-primary border-dashed rounded-lg flex items-center justify-center pointer-events-none">
-              <span className="text-primary font-medium">Drop image to insert</span>
+
+          {editorMode !== 'preview' && (
+            <label className="flex items-center gap-2 text-xs text-primary cursor-pointer hover:underline">
+              <DocumentPlusIcon className="w-4 h-4" />
+              <span>Add Image</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleMarkdownImageUpload}
+                className="hidden"
+              />
+            </label>
+          )}
+        </div>
+
+        {/* Editor content area */}
+        <div className={cn(
+          editorMode === 'split' && "grid grid-cols-2 gap-4"
+        )}>
+          {/* Textarea (Write / Split) */}
+          {editorMode !== 'preview' && (
+            <div className="relative">
+              <textarea
+                ref={textareaRef}
+                name="blogPost"
+                required={editorMode === 'write'}
+                value={formData.blogPost}
+                onChange={handleChange}
+                onPaste={handlePaste}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                className={cn(
+                  formStyles.input,
+                  "font-mono text-sm leading-relaxed",
+                  editorMode === 'split'
+                    ? "h-[700px] resize-y overflow-auto"
+                    : "resize-none overflow-hidden min-h-[500px]",
+                  dragActive && "border-primary ring-2 ring-primary/20"
+                )}
+                placeholder="# Write your masterpiece here... (Drag & drop images supported)"
+              />
+              {editorMode === 'write' && (
+                <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none">
+                  Markdown Supported • Drag & Drop Images
+                </div>
+              )}
+              {dragActive && (
+                <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px] border-2 border-primary border-dashed rounded-lg flex items-center justify-center pointer-events-none">
+                  <span className="text-primary font-medium">Drop image to insert</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Hidden input to preserve required validation when textarea is unmounted */}
+          {editorMode === 'preview' && (
+            <input type="hidden" name="blogPost" value={formData.blogPost || ''} />
+          )}
+
+          {/* Preview (Preview / Split) */}
+          {editorMode !== 'write' && (
+            <div className={cn(
+              "rounded-lg border border-border bg-background p-6",
+              editorMode === 'split'
+                ? "h-[700px] overflow-auto"
+                : "min-h-[500px]"
+            )}>
+              <MarkdownPreview content={formData.blogPost || ''} />
             </div>
           )}
         </div>
