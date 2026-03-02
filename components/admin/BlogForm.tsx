@@ -558,7 +558,10 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                 placeholder="# Write your masterpiece here... (Drag & drop images supported)"
               />
               {editorMode === 'write' && (
-                <div className="absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none">
+                <div className={cn(
+                  "absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none transition-opacity duration-300",
+                  formData.blogPost ? "opacity-20" : "opacity-100"
+                )}>
                   Markdown Supported • Drag & Drop Images
                 </div>
               )}
