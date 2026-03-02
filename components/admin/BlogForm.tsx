@@ -3,13 +3,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { Blog } from '@/lib/db';
 import Image from 'next/image';
-import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, LinkIcon, XMarkIcon, ArrowUpTrayIcon, DocumentPlusIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';
 import { cn } from '@/lib/utils';
 import { formStyles } from './shared/formStyles';
 
 import { useImageUpload } from '@/lib/hooks/useImageUpload';
+import { createUrlSlug } from '@/lib/utils/urlHelpers';
 
 interface BlogFormProps {
   initialData?: Blog;
@@ -33,7 +34,13 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     blogPost: initialData?.blogPost || '',
     links: initialData?.links || [],
     slug: initialData?.slug || '',
+    status: initialData?.status || 'draft',
+    publishAt: initialData?.publishAt || null,
   });
+
+  const publishAtString = formData.publishAt
+    ? new Date(formData.publishAt).toISOString().slice(0, 16)
+    : '';
 
   const [linkInput, setLinkInput] = useState({ text: '', url: '' });
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
@@ -241,7 +248,11 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         }
       }
 
-      await onSubmit({ ...formData, blogPost: finalContent });
+      const submitData = { ...formData, blogPost: finalContent };
+      if (submitData.status !== 'scheduled') {
+        submitData.publishAt = null;
+      }
+      await onSubmit(submitData);
     } catch (error) {
       console.error(error);
       toast.error('Failed to save blog post');
@@ -294,6 +305,22 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
             </div>
 
             <div>
+              <label className={formStyles.label}>Status</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className={formStyles.input}
+              >
+                <option value="draft">Draft</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+          </div>
+
+          <div className={`grid gap-4 ${formData.status === 'scheduled' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            <div>
               <label className={formStyles.label}>Date</label>
               <input
                 type="date"
@@ -304,6 +331,24 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                 className={formStyles.input}
               />
             </div>
+
+            {formData.status === 'scheduled' && (
+              <div>
+                <label className={formStyles.label}>Publish At</label>
+                <input
+                  type="datetime-local"
+                  value={publishAtString}
+                  onChange={(e) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      publishAt: e.target.value ? new Date(e.target.value) : null,
+                    }));
+                  }}
+                  required
+                  className={formStyles.input}
+                />
+              </div>
+            )}
           </div>
           <div>
             <label className={formStyles.label}>Description</label>
@@ -461,13 +506,32 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         </div>
       </div>
 
-      <div className="flex justify-end pt-4 border-t border-border/50">
+      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+        <div>
+          {initialData && (
+            <a
+              href={`/blogs/${initialData.slug || createUrlSlug(initialData.title)}?preview=true`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <EyeIcon className="w-4 h-4" />
+              Preview
+            </a>
+          )}
+        </div>
         <button
           type="submit"
           disabled={loading || uploading}
           className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
-          {loading ? 'Uploading & Saving...' : 'Publish Content'}
+          {loading
+            ? 'Uploading & Saving...'
+            : formData.status === 'draft'
+              ? 'Save Draft'
+              : formData.status === 'scheduled'
+                ? 'Schedule Post'
+                : 'Publish Content'}
         </button>
       </div>
     </form>

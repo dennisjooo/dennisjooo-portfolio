@@ -10,6 +10,11 @@ import {
 
 // Enums
 export const blogTypeEnum = pgEnum("blog_type", ["project", "blog"]);
+export const blogStatusEnum = pgEnum("blog_status", [
+  "draft",
+  "scheduled",
+  "published",
+]);
 export const contactIconEnum = pgEnum("contact_icon", [
   "mail",
   "github",
@@ -33,6 +38,8 @@ export const blogs = pgTable("blogs", {
   readTime: integer("read_time"),
   links: json("links").$type<Array<{ text: string; url: string }>>(),
   slug: text("slug").unique(),
+  status: blogStatusEnum("status").default("draft").notNull(),
+  publishAt: timestamp("publish_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -39,7 +39,6 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
-    // Allowlist of mutable fields - reject any unexpected keys
     const allowedFields = [
       "title",
       "description",
@@ -51,9 +50,10 @@ export async function PUT(
       "readTime",
       "links",
       "slug",
+      "status",
+      "publishAt",
     ] as const;
 
-    // Build sanitized update object with only allowed fields
     const updateData: Record<string, unknown> = {};
     for (const field of allowedFields) {
       if (field in body) {
@@ -61,7 +61,6 @@ export async function PUT(
       }
     }
 
-    // Check for unexpected keys
     const unexpectedKeys = Object.keys(body).filter(
       (key) => !allowedFields.includes(key as (typeof allowedFields)[number])
     );
@@ -72,7 +71,6 @@ export async function PUT(
       );
     }
 
-    // Require at least one field to update
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
         { error: "No valid fields to update" },
@@ -80,7 +78,25 @@ export async function PUT(
       );
     }
 
-    // Set updatedAt explicitly
+    if (updateData.status === "scheduled") {
+      if (!updateData.publishAt) {
+        return NextResponse.json(
+          { error: "publishAt is required for scheduled posts" },
+          { status: 400 }
+        );
+      }
+      if (new Date(updateData.publishAt as string) <= new Date()) {
+        return NextResponse.json(
+          { error: "publishAt must be a future date" },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (updateData.publishAt) {
+      updateData.publishAt = new Date(updateData.publishAt as string);
+    }
+
     updateData.updatedAt = new Date();
 
     const [blog] = await db

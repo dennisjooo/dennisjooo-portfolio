@@ -10,6 +10,8 @@ interface Blog {
   title: string;
   type: string;
   date: string;
+  status: 'draft' | 'scheduled' | 'published';
+  publishAt: string | null;
 }
 
 export default function AdminBlogsList() {
@@ -44,6 +46,28 @@ export default function AdminBlogsList() {
           {row.type}
         </span>
       )
+    },
+    {
+      header: "Status",
+      cell: (row: Blog) => {
+        const styles = {
+          draft: 'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300',
+          scheduled: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+          published: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+        };
+        return (
+          <div className="flex flex-col gap-1">
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize w-fit ${styles[row.status] ?? styles.draft}`}>
+              {row.status}
+            </span>
+            {row.status === 'scheduled' && row.publishAt && (
+              <span className="text-[10px] text-muted-foreground">
+                {new Date(row.publishAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+          </div>
+        );
+      }
     },
     {
       header: "Date",

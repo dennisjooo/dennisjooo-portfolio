@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache';
 import { db, blogs, type Blog } from '@/lib/db';
-import { eq, desc, count } from 'drizzle-orm';
+import { eq, desc, count, or, and, lte, type SQL } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
 
 export interface PaginationResult {
@@ -17,6 +18,16 @@ export interface BlogsResult {
 }
 
 /**
+ * Reusable filter: only posts that are published or scheduled with publishAt in the past.
+ */
+export function visibleBlogsFilter(): SQL {
+    return or(
+        eq(blogs.status, 'published'),
+        and(eq(blogs.status, 'scheduled'), lte(blogs.publishAt, sql`now()`))
+    )!;
+}
+
+/**
  * Get featured projects for home page (3 most recent projects)
  */
 export const getFeaturedProjects = unstable_cache(
@@ -25,7 +36,7 @@ export const getFeaturedProjects = unstable_cache(
             const projects = await db
                 .select()
                 .from(blogs)
-                .where(eq(blogs.type, 'project'))
+                .where(and(eq(blogs.type, 'project'), visibleBlogsFilter()))
                 .orderBy(desc(blogs.date))
                 .limit(3);
             return projects;
@@ -52,16 +63,13 @@ export const getBlogs = unstable_cache(
             const offset = (page - 1) * limit;
             const effectiveType = type === 'all' ? null : type;
 
-            // Build queries with optional type filter
-            const baseQuery = effectiveType
-                ? db.select().from(blogs).where(eq(blogs.type, effectiveType))
-                : db.select().from(blogs);
+            const whereClause = effectiveType
+                ? and(eq(blogs.type, effectiveType), visibleBlogsFilter())
+                : visibleBlogsFilter();
 
-            const countQuery = effectiveType
-                ? db.select({ count: count() }).from(blogs).where(eq(blogs.type, effectiveType))
-                : db.select({ count: count() }).from(blogs);
+            const baseQuery = db.select().from(blogs).where(whereClause);
+            const countQuery = db.select({ count: count() }).from(blogs).where(whereClause);
 
-            // Execute queries in parallel
             const [blogResults, totalResult] = await Promise.all([
                 baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
                 countQuery,

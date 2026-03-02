@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { db, blogs } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
+import { visibleBlogsFilter } from '@/lib/data/blogs';
 
-export const dynamic = 'force-dynamic'; // Changed to force-dynamic since we fetch from DB
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://dennisjooo.github.io';
@@ -16,7 +17,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 date: blogs.date,
                 slug: blogs.slug,
             })
-            .from(blogs);
+            .from(blogs)
+            .where(visibleBlogsFilter());
 
         projectPages = projects.map((project) => ({
             url: `${baseUrl}/blogs/${project.slug || createUrlSlug(project.title)}`,

@@ -1,34 +1,50 @@
 import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
-import { desc, count, eq } from "drizzle-orm";
+import { desc, count, eq, and } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
+import { visibleBlogsFilter } from "@/lib/data/blogs";
 
 export async function GET(request: Request) {
   try {
-    // Parse query params
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const typeParam = searchParams.get("type");
+    const statusParam = searchParams.get("status");
     const offset = (page - 1) * limit;
 
-    // Validate type parameter
     const validTypes = ["blog", "project"] as const;
     const type = typeParam && validTypes.includes(typeParam as typeof validTypes[number])
       ? (typeParam as "blog" | "project")
       : null;
 
-    // Build query with optional type filter
-    const baseQuery = type 
-      ? db.select().from(blogs).where(eq(blogs.type, type))
+    // Admin can filter by status; public requests always get visibility filter
+    const { userId } = await auth();
+    const validStatuses = ["draft", "scheduled", "published"] as const;
+    const adminStatus = userId && statusParam && validStatuses.includes(statusParam as typeof validStatuses[number])
+      ? (statusParam as "draft" | "scheduled" | "published")
+      : null;
+
+    const conditions = [];
+    if (type) conditions.push(eq(blogs.type, type));
+
+    if (adminStatus) {
+      conditions.push(eq(blogs.status, adminStatus));
+    } else if (!userId) {
+      conditions.push(visibleBlogsFilter());
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const baseQuery = whereClause
+      ? db.select().from(blogs).where(whereClause)
       : db.select().from(blogs);
-    
-    const countQuery = type
-      ? db.select({ count: count() }).from(blogs).where(eq(blogs.type, type))
+
+    const countQuery = whereClause
+      ? db.select({ count: count() }).from(blogs).where(whereClause)
       : db.select({ count: count() }).from(blogs);
 
-    // Execute queries in parallel
     const [blogResults, totalResult] = await Promise.all([
       baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
       countQuery,
@@ -65,6 +81,30 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
+
+    if (!body.status) {
+      body.status = "draft";
+    }
+
+    if (body.status === "scheduled") {
+      if (!body.publishAt) {
+        return NextResponse.json(
+          { error: "publishAt is required for scheduled posts" },
+          { status: 400 }
+        );
+      }
+      if (new Date(body.publishAt) <= new Date()) {
+        return NextResponse.json(
+          { error: "publishAt must be a future date" },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (body.publishAt) {
+      body.publishAt = new Date(body.publishAt);
+    }
+
     const [blog] = await db.insert(blogs).values(body).returning();
     return NextResponse.json(blog, { status: 201 });
   } catch (error) {
