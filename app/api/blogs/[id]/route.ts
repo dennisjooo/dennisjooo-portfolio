@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
 import { auth } from "@clerk/nextjs/server";
+import { createUrlSlug } from "@/lib/utils/urlHelpers";
 
 export async function GET(
   request: Request,
@@ -95,6 +96,10 @@ export async function PUT(
 
     if (updateData.publishAt) {
       updateData.publishAt = new Date(updateData.publishAt as string);
+    }
+
+    if (!updateData.slug && updateData.title) {
+      updateData.slug = createUrlSlug(updateData.title as string);
     }
 
     updateData.updatedAt = new Date();

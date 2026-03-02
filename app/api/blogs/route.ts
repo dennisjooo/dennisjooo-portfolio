@@ -4,6 +4,7 @@ import { desc, count, eq, and } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
 import { visibleBlogsFilter } from "@/lib/data/blogs";
+import { createUrlSlug } from "@/lib/utils/urlHelpers";
 
 export async function GET(request: Request) {
   try {
@@ -103,6 +104,10 @@ export async function POST(request: Request) {
 
     if (body.publishAt) {
       body.publishAt = new Date(body.publishAt);
+    }
+
+    if (!body.slug && body.title) {
+      body.slug = createUrlSlug(body.title);
     }
 
     const [blog] = await db.insert(blogs).values(body).returning();
