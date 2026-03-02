@@ -3,6 +3,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { Components } from "react-markdown";
 import { CodeBlock, type CodeProps } from "./CodeBlock";
+import { MermaidBlock } from "./MermaidBlock";
 import { PhotoView } from "react-photo-view";
 
 export const markdownComponents: Components = {
@@ -29,7 +30,13 @@ export const markdownComponents: Components = {
     ),
 
     // Text elements
-    p: ({ children }) => {
+    p: ({ children, node }) => {
+        const hasImage = node?.children?.some(
+            (child) => child.type === 'element' && child.tagName === 'img'
+        );
+        if (hasImage) {
+            return <div className="mb-5">{children}</div>;
+        }
         return <p className="mb-5 text-muted-foreground leading-relaxed">{children}</p>;
     },
     strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
@@ -52,6 +59,12 @@ export const markdownComponents: Components = {
     // Code
     code: ({ inline, children, className }: CodeProps) => {
         const codeString = String(children);
+        const match = /language-(\w+)/.exec(className || "");
+        const language = match ? match[1] : "";
+
+        if (language === "mermaid") {
+            return <MermaidBlock>{codeString}</MermaidBlock>;
+        }
 
         const isInlineCode =
             inline === true ||
@@ -99,32 +112,51 @@ export const markdownComponents: Components = {
             return null;
         }
 
+        let cleanSrc = src as string;
+        let imgWidth: number | undefined;
+        let imgHeight: number | undefined;
+
+        const dimMatch = cleanSrc.match(/#dim=(\d*)x(\d*)$/);
+        if (dimMatch) {
+            cleanSrc = cleanSrc.replace(/#dim=\d*x\d*$/, '');
+            if (dimMatch[1]) imgWidth = parseInt(dimMatch[1], 10);
+            if (dimMatch[2]) imgHeight = parseInt(dimMatch[2], 10);
+        }
+
+        const hasDimensions = imgWidth || imgHeight;
+
         return (
-            <span className="block my-8 group">
-                <PhotoView src={src as string}>
-                    <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in">
-                        {/* Noise Overlay */}
-                        <span
-                            className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
-                            style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-                            }}
-                        />
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src={src}
-                            alt={alt ?? ''}
-                            loading="lazy"
-                            className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.02]"
-                            {...rest}
-                        />
-                    </span>
-                </PhotoView>
-                {title ? (
-                    <span className="block mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                        {title}
-                    </span>
-                ) : null}
+            <span className="flex justify-center my-8 group">
+                <span className={hasDimensions ? "inline-block" : "block w-full"}>
+                    <PhotoView src={cleanSrc}>
+                        <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in">
+                            {/* Noise Overlay */}
+                            <span
+                                className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
+                                style={{
+                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+                                }}
+                            />
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src={cleanSrc}
+                                alt={alt ?? ''}
+                                loading="lazy"
+                                className="h-auto transition-transform duration-500 group-hover:scale-[1.02]"
+                                style={{
+                                    width: imgWidth ? `${imgWidth}px` : '100%',
+                                    ...(imgHeight ? { height: `${imgHeight}px` } : {}),
+                                }}
+                                {...rest}
+                            />
+                        </span>
+                    </PhotoView>
+                    {title ? (
+                        <span className="block mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                            {title}
+                        </span>
+                    ) : null}
+                </span>
             </span>
         );
     },
