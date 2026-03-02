@@ -1,6 +1,6 @@
 /**
  * Migration script to reorganize blog images in Vercel Blob storage
- * from flat root paths to blog/{id}/{filename} structure.
+ * from blog/{id}/{filename} to blog/{slug}/{filename} structure.
  *
  * Usage:
  *   npx tsx scripts/migrate-blog-images.ts
@@ -34,26 +34,38 @@ const db = drizzle(sql);
 
 const BLOB_URL_PATTERN = /https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/[^\s)]+/g;
 
+/** Simple slug generator matching createUrlSlug behavior */
+function createSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 function extractBlobFilename(blobUrl: string): string {
   const url = new URL(blobUrl);
   const segments = url.pathname.split("/");
   return segments[segments.length - 1];
 }
 
-function isAlreadyMigrated(blobUrl: string, blogId: string): boolean {
+function isAlreadyMigrated(blobUrl: string, slug: string): boolean {
   const url = new URL(blobUrl);
-  const prefix = `/blog/${blogId}/`;
+  const prefix = `/blog/${slug}/`;
   if (!url.pathname.startsWith(prefix)) return false;
+  // Ensure the file is directly under blog/{slug}/ (no subfolders)
   const rest = url.pathname.slice(prefix.length);
   return !rest.includes("/");
 }
 
 async function migrateBlobUrl(
   oldUrl: string,
-  blogId: string
+  slug: string
 ): Promise<string> {
   const filename = extractBlobFilename(oldUrl);
-  const newPath = `blog/${blogId}/${filename}`;
+  const newPath = `blog/${slug}/${filename}`;
 
   const newBlob = await copy(oldUrl, newPath, {
     access: "public",
@@ -74,6 +86,7 @@ async function main() {
   let totalSkipped = 0;
 
   for (const blog of allBlogs) {
+    const slug = blog.slug || createSlug(blog.title);
     const urlMap = new Map<string, string>();
     const blobUrls = new Set<string>();
 
@@ -87,7 +100,7 @@ async function main() {
     }
 
     const urlsToMigrate = [...blobUrls].filter(
-      (url) => !isAlreadyMigrated(url, blog.id)
+      (url) => !isAlreadyMigrated(url, slug)
     );
 
     if (urlsToMigrate.length === 0) {
@@ -96,12 +109,12 @@ async function main() {
     }
 
     console.log(
-      `Blog "${blog.title}" (${blog.id}): ${urlsToMigrate.length} image(s) to migrate`
+      `Blog "${blog.title}" (slug: ${slug}): ${urlsToMigrate.length} image(s) to migrate`
     );
 
     for (const oldUrl of urlsToMigrate) {
       try {
-        const newUrl = await migrateBlobUrl(oldUrl, blog.id);
+        const newUrl = await migrateBlobUrl(oldUrl, slug);
         urlMap.set(oldUrl, newUrl);
         console.log(`  OK: ${extractBlobFilename(oldUrl)}`);
         totalMigrated++;

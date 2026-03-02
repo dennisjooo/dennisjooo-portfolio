@@ -116,9 +116,10 @@ export const markdownComponents: Components = {
         let imgWidth: number | undefined;
         let imgHeight: number | undefined;
 
-        const dimMatch = cleanSrc.match(/#dim=(\d*)x(\d*)$/);
+        // Support "#dim=WxH" (fragment) and " =WxH" (inline) dimension syntax
+        const dimMatch = cleanSrc.match(/#dim=(\d*)x(\d*)$/) || cleanSrc.match(/\s+=(\d*)x(\d*)$/);
         if (dimMatch) {
-            cleanSrc = cleanSrc.replace(/#dim=\d*x\d*$/, '');
+            cleanSrc = cleanSrc.replace(/#dim=\d*x\d*$/, '').replace(/\s+=\d*x\d*$/, '');
             if (dimMatch[1]) imgWidth = parseInt(dimMatch[1], 10);
             if (dimMatch[2]) imgHeight = parseInt(dimMatch[2], 10);
         }

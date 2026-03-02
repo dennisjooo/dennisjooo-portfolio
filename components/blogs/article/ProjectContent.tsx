@@ -1,3 +1,5 @@
+"use client";
+
 import ReactMarkdown from 'react-markdown';
 import 'katex/dist/katex.min.css';
 import remarkMath from 'remark-math';
@@ -25,7 +27,7 @@ export default function ProjectContent({ content }: ProjectContentProps) {
     const processed = preprocessImageSizes(content);
 
     return (
-        <article className="prose prose-sm sm:prose-base md:prose-lg max-w-none prose-gray dark:prose-invert">
+        <article className="prose prose-sm sm:prose-base md:prose-lg max-w-none prose-gray dark:prose-invert prose-img:my-0 prose-picture:my-0">
             <ReactMarkdown
                 components={markdownComponents}
                 remarkPlugins={[remarkMath, remarkGfm]}

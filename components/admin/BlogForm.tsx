@@ -51,7 +51,11 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [dragActive, setDragActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const effectiveSlug = formData.slug || createUrlSlug(formData.title || '');
+  const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
+
   const { uploading, upload: uploadCoverImage } = useImageUpload({
+    folder: imageFolder,
     onSuccess: (url) => setFormData(prev => ({ ...prev, imageUrl: url })),
   });
 
@@ -181,7 +185,9 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     const uniqueUrls = Array.from(new Set(matches.map(m => m.url)));
 
     for (const url of uniqueUrls) {
-      const pendingImage = pendingImages.find(img => img.previewUrl === url);
+      // Strip optional dimension suffix (e.g. " =200x200" or "#dim=200x200") before matching
+      const cleanBlobUrl = url.replace(/\s+=\d*x\d*$/, '').replace(/#dim=\d*x\d*$/, '');
+      const pendingImage = pendingImages.find(img => img.previewUrl === cleanBlobUrl);
       if (pendingImage) {
         const uploadPromise = (async () => {
           try {
@@ -191,18 +197,29 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
               ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${pendingImage.file.name}`
               : pendingImage.file.name;
 
-            const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}&contentHash=${contentHash}`, {
+            const effectiveSlug = formData.slug || createUrlSlug(formData.title || '');
+            const folder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
+            const params = new URLSearchParams({
+              filename: filename,
+              contentHash,
+            });
+            if (folder) params.set('folder', folder);
+
+            const response = await fetch(`/api/upload?${params.toString()}`, {
               method: 'POST',
               body,
             });
             if (!response.ok) throw new Error('Upload failed');
             const blob = await response.json();
 
+            // Preserve dimension info as "#dim=WxH" on the uploaded URL
+            const dimInfo = url.match(/\s+=(\d*x\d*)$/) || url.match(/#dim=(\d*x\d*)$/);
+            const uploadedUrl = dimInfo ? `${blob.url}#dim=${dimInfo[1]}` : blob.url;
+
             // Replace ALL occurrences of this blob URL in the content
-            processedContent = processedContent.split(url).join(blob.url);
+            processedContent = processedContent.split(url).join(uploadedUrl);
           } catch (error) {
             console.error('Failed to upload image:', pendingImage.file.name, error);
-            // Optionally handle error (e.g., leave blob URL or show alert)
           }
         })();
         uploadPromises.push(uploadPromise);
@@ -218,7 +235,9 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     const matches = [];
     let match;
     while ((match = regex.exec(content)) !== null) {
-      matches.push(match[1]);
+      // Strip dimension suffixes (#dim=WxH or =WxH) to get the base blob URL
+      const cleanUrl = match[1].replace(/#dim=\d*x\d*$/, '').replace(/\s+=\d*x\d*$/, '');
+      matches.push(cleanUrl);
     }
     return matches;
   };
