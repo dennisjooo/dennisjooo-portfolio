@@ -35,7 +35,7 @@ export default function CertificationForm({
             className={formStyles.input}
             placeholder="e.g. Advanced Machine Learning Specialization"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
           />
         </FormField>
 
@@ -48,7 +48,7 @@ export default function CertificationForm({
               placeholder="e.g. Coursera / Stanford"
               value={formData.issuer}
               onChange={(e) =>
-                setFormData({ ...formData, issuer: e.target.value })
+                setFormData(prev => ({ ...prev, issuer: e.target.value }))
               }
             />
           </FormField>
@@ -60,7 +60,7 @@ export default function CertificationForm({
               className={formStyles.input}
               placeholder="YYYY"
               value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
             />
           </FormField>
         </div>
@@ -72,7 +72,7 @@ export default function CertificationForm({
             className={formStyles.input}
             placeholder="https://..."
             value={formData.link}
-            onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+            onChange={(e) => setFormData(prev => ({ ...prev, link: e.target.value }))}
           />
         </FormField>
 
@@ -84,7 +84,7 @@ export default function CertificationForm({
             placeholder="Brief summary of what was covered..."
             value={formData.description}
             onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
+              setFormData(prev => ({ ...prev, description: e.target.value }))
             }
           />
         </FormField>

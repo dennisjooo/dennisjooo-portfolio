@@ -39,7 +39,7 @@ export default function ContactForm({
             placeholder="e.g. Email, GitHub, LinkedIn"
             value={formData.label}
             onChange={(e) =>
-              setFormData({ ...formData, label: e.target.value })
+              setFormData(prev => ({ ...prev, label: e.target.value }))
             }
           />
         </FormField>
@@ -52,7 +52,7 @@ export default function ContactForm({
             placeholder="e.g. mailto:email@example.com or https://github.com/username"
             value={formData.href}
             onChange={(e) =>
-              setFormData({ ...formData, href: e.target.value })
+              setFormData(prev => ({ ...prev, href: e.target.value }))
             }
           />
         </FormField>
@@ -64,7 +64,7 @@ export default function ContactForm({
               className={formStyles.input}
               value={formData.icon}
               onChange={(e) =>
-                setFormData({ ...formData, icon: e.target.value as typeof formData.icon })
+                setFormData(prev => ({ ...prev, icon: e.target.value as typeof formData.icon }))
               }
             >
               {CONTACT_ICON_OPTIONS.map((option) => (
@@ -82,7 +82,7 @@ export default function ContactForm({
               placeholder="0"
               value={formData.order}
               onChange={(e) =>
-                setFormData({ ...formData, order: parseInt(e.target.value) || 0 })
+                setFormData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))
               }
             />
           </FormField>

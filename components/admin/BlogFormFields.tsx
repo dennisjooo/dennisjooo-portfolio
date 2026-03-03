@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { PhotoIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { formStyles } from './shared/formStyles';
+import { FormField } from './shared/FormField';
 
 interface BlogFormFieldsProps {
   formData: Partial<Blog>;
@@ -28,8 +29,7 @@ export function BlogFormFields({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-6">
-        <div>
-          <label className={formStyles.label}>Title</label>
+        <FormField label="Title">
           <input
             type="text"
             name="title"
@@ -39,10 +39,9 @@ export function BlogFormFields({
             className={formStyles.input}
             placeholder="Enter a catchy title..."
           />
-        </div>
+        </FormField>
 
-        <div>
-          <label className={formStyles.label}>Slug (Optional)</label>
+        <FormField label="Slug (Optional)">
           <input
             type="text"
             name="slug"
@@ -51,11 +50,10 @@ export function BlogFormFields({
             placeholder="auto-generated-from-title"
             className={`${formStyles.input} font-mono text-sm`}
           />
-        </div>
+        </FormField>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className={formStyles.label}>Type</label>
+          <FormField label="Type">
             <select
               name="type"
               value={formData.type}
@@ -65,10 +63,9 @@ export function BlogFormFields({
               <option value="blog">Blog Post</option>
               <option value="project">Project</option>
             </select>
-          </div>
+          </FormField>
 
-          <div>
-            <label className={formStyles.label}>Status</label>
+          <FormField label="Status">
             <select
               name="status"
               value={formData.status}
@@ -79,12 +76,11 @@ export function BlogFormFields({
               <option value="scheduled">Scheduled</option>
               <option value="published">Published</option>
             </select>
-          </div>
+          </FormField>
         </div>
 
         <div className={`grid gap-4 ${formData.status === 'scheduled' ? 'grid-cols-2' : 'grid-cols-1'}`}>
-          <div>
-            <label className={formStyles.label}>Date</label>
+          <FormField label="Date">
             <input
               type="date"
               name="date"
@@ -93,11 +89,10 @@ export function BlogFormFields({
               onChange={onChange}
               className={formStyles.input}
             />
-          </div>
+          </FormField>
 
           {formData.status === 'scheduled' && (
-            <div>
-              <label className={formStyles.label}>Publish At</label>
+            <FormField label="Publish At">
               <input
                 type="datetime-local"
                 value={publishAtString}
@@ -110,12 +105,11 @@ export function BlogFormFields({
                 required
                 className={formStyles.input}
               />
-            </div>
+            </FormField>
           )}
         </div>
 
-        <div>
-          <label className={formStyles.label}>Description</label>
+        <FormField label="Description">
           <textarea
             name="description"
             required
@@ -125,12 +119,11 @@ export function BlogFormFields({
             className={formStyles.input}
             placeholder="Short summary for preview cards..."
           />
-        </div>
+        </FormField>
       </div>
 
       <div className="space-y-6">
-        <div>
-          <label className={formStyles.label}>Cover Image</label>
+        <FormField label="Cover Image">
           <div className="space-y-3">
             <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border border-border">
               {formData.imageUrl ? (
@@ -186,7 +179,7 @@ export function BlogFormFields({
               </label>
             </div>
           </div>
-        </div>
+        </FormField>
       </div>
     </div>
   );

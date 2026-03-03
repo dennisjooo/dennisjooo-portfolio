@@ -61,23 +61,25 @@ export default function WorkExperienceForm({
   };
 
   const addResponsibility = () => {
-    setFormData({
-      ...formData,
-      responsibilities: [...formData.responsibilities, ""],
-    });
+    setFormData(prev => ({
+      ...prev,
+      responsibilities: [...prev.responsibilities, ""],
+    }));
   };
 
   const removeResponsibility = (index: number) => {
-    setFormData({
-      ...formData,
-      responsibilities: formData.responsibilities.filter((_, i) => i !== index),
-    });
+    setFormData(prev => ({
+      ...prev,
+      responsibilities: prev.responsibilities.filter((_, i) => i !== index),
+    }));
   };
 
   const updateResponsibility = (index: number, value: string) => {
-    const updated = [...formData.responsibilities];
-    updated[index] = value;
-    setFormData({ ...formData, responsibilities: updated });
+    setFormData(prev => {
+      const updated = [...prev.responsibilities];
+      updated[index] = value;
+      return { ...prev, responsibilities: updated };
+    });
   };
 
   return (
@@ -85,9 +87,7 @@ export default function WorkExperienceForm({
       onSubmit={(e) => handleSubmit(e, submitWorkExperience)}
       className={cn(formStyles.panel, "space-y-6 max-w-3xl")}
     >
-      {/* Company Logo */}
-      <div>
-        <label className={formStyles.label}>Company Logo</label>
+      <FormField label="Company Logo">
         <div className="flex items-start gap-6">
           <div className="relative group">
             <div className="w-24 h-24 rounded-xl border-2 border-dashed border-border bg-muted/30 flex items-center justify-center overflow-hidden">
@@ -130,7 +130,7 @@ export default function WorkExperienceForm({
               placeholder="Or enter image URL directly..."
               value={formData.imageSrc}
               onChange={(e) =>
-                setFormData({ ...formData, imageSrc: e.target.value })
+                setFormData(prev => ({ ...prev, imageSrc: e.target.value }))
               }
             />
             <p className="text-xs text-muted-foreground mt-2">
@@ -138,7 +138,7 @@ export default function WorkExperienceForm({
             </p>
           </div>
         </div>
-      </div>
+      </FormField>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Job Title">
@@ -149,7 +149,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. AI/ML Engineer"
             value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              setFormData(prev => ({ ...prev, title: e.target.value }))
             }
           />
         </FormField>
@@ -162,7 +162,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. Sinar Mas Land"
             value={formData.company}
             onChange={(e) =>
-              setFormData({ ...formData, company: e.target.value })
+              setFormData(prev => ({ ...prev, company: e.target.value }))
             }
           />
         </FormField>
@@ -177,7 +177,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. February 2024 - Now"
             value={formData.date}
             onChange={(e) =>
-              setFormData({ ...formData, date: e.target.value })
+              setFormData(prev => ({ ...prev, date: e.target.value }))
             }
           />
         </FormField>
@@ -189,13 +189,12 @@ export default function WorkExperienceForm({
             placeholder="0"
             value={formData.order}
             onChange={(e) =>
-              setFormData({ ...formData, order: parseInt(e.target.value) || 0 })
+              setFormData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))
             }
           />
         </FormField>
       </div>
 
-      {/* Responsibilities */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className={formStyles.label}>Responsibilities</label>
