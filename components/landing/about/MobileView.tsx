@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProfileImage } from './ProfileImage';
+import { ProfileMetadata } from './ProfileMetadata';
 
 interface ContentSection {
     title: string;
@@ -21,15 +22,7 @@ export const MobileView: React.FC<MobileViewProps> = ({ contentSections, profile
                     Swipe to Explore
                 </span>
                 <ProfileImage imageUrl={profileImageUrl} />
-                <div
-                    className="text-center space-y-2 animate-fade-in-up"
-                    style={{ animationDelay: '0.6s' }}
-                >
-                    <p className="font-playfair italic text-4xl text-foreground">Dennis Jonathan</p>
-                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                        Developer & Problem Solver
-                    </p>
-                </div>
+                <ProfileMetadata nameClassName="text-4xl" />
             </div>
 
             {/* Cards 2-5: Content */}

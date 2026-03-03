@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TimelineItemData } from '../WorkExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { TimelineGroup } from './TimelineGroup';
@@ -10,7 +10,7 @@ interface DesktopTimelineProps {
 }
 
 export const DesktopTimeline: React.FC<DesktopTimelineProps> = ({ items }) => {
-    const groupedItems = groupItemsByCompany(items);
+    const groupedItems = useMemo(() => groupItemsByCompany(items), [items]);
 
     return (
         <div className="hidden md:flex flex-col w-full relative">

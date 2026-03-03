@@ -1,5 +1,6 @@
 import React, { Ref } from 'react';
 import { ProfileImage } from './ProfileImage';
+import { ProfileMetadata } from './ProfileMetadata';
 
 interface ContentSection {
     title: string;
@@ -22,16 +23,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
 
             <div className="w-full max-w-md flex flex-col items-center">
                 <ProfileImage imageUrl={profileImageUrl} />
-
-                <div
-                    className="mt-8 text-center space-y-2 animate-fade-in-up"
-                    style={{ animationDelay: '0.6s' }}
-                >
-                    <p className="font-playfair italic text-3xl text-foreground">Dennis Jonathan</p>
-                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                        Developer & Problem Solver
-                    </p>
-                </div>
+                <ProfileMetadata className="mt-8" />
             </div>
         </div>
 
