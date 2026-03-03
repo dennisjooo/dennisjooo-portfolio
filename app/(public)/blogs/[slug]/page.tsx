@@ -42,10 +42,23 @@ export async function generateMetadata(
         title: `${project.title} | Dennis' Portfolio`,
         description: project.description,
         openGraph: {
-            title: `${project.title}`,
+            title: project.title,
             description: project.description,
-            type: 'article',
+            type: "article",
             url: `https://dennisjooo.github.io/blogs/${slug}`,
+            ...(project.imageUrl && {
+                images: [
+                    {
+                        url: project.imageUrl,
+                    },
+                ],
+            }),
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: project.title,
+            description: project.description,
+            ...(project.imageUrl && { images: [project.imageUrl] }),
         },
     };
 }
