@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState, type ReactNode } from 'react';
+import { useRef, useEffect, type ReactNode } from 'react';
 
 interface HomeClientProps {
     heroContent: ReactNode;
@@ -15,8 +15,6 @@ interface HomeClientProps {
 export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientProps) {
     const heroRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
-    void isMobile; // Suppress unused var warning
 
     // Handle hash navigation after page load
     useEffect(() => {
@@ -76,11 +74,9 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
 
     useEffect(() => {
         // Check if mobile
-        const checkMobile = window.innerWidth < 768;
-        setIsMobile(checkMobile);
+        const isMobile = window.innerWidth < 768;
 
-        // On mobile, use simpler CSS-based approach instead of GSAP for better performance
-        if (checkMobile) {
+        if (isMobile) {
             // Mobile: Skip GSAP animations entirely - CSS handles the sticky behavior
             return;
         }

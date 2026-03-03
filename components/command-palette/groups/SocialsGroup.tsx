@@ -14,9 +14,9 @@ export function SocialsGroup({ onSelect }: SocialsGroupProps) {
             <CommandGroup heading="Socials">
                 {contactLinks.map((link) => {
                     let Icon = Globe;
-                    if (link.icon === 'github') Icon = Github;
-                    if (link.icon === 'linkedin') Icon = Linkedin;
-                    if (link.icon === 'envelope') Icon = Mail;
+                    if (link.ariaLabel === 'GitHub') Icon = Github;
+                    if (link.ariaLabel === 'LinkedIn') Icon = Linkedin;
+                    if (link.ariaLabel === 'Email') Icon = Mail;
 
                     return (
                         <CommandItem
