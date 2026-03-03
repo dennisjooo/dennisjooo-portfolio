@@ -3,13 +3,7 @@
 import { AdminTable, Column } from '@/components/admin/AdminTable';
 import { AdminPageHeader, AdminActionCell } from '@/components/admin/shared';
 import { useAdminList } from '@/components/admin/hooks';
-
-interface Certification {
-  id: string;
-  title: string;
-  issuer: string;
-  date: string;
-}
+import type { Certification } from '@/lib/db';
 
 export default function AdminCertificationsList() {
   const {

@@ -3,16 +3,7 @@
 import WorkExperienceForm from "@/components/admin/WorkExperienceForm";
 import { AdminFormLayout } from "@/components/admin/shared";
 import { useAdminForm } from "@/components/admin/hooks";
-
-interface WorkExperience {
-  id?: string;
-  title: string;
-  company: string;
-  date: string;
-  imageSrc: string;
-  responsibilities: string[];
-  order: number;
-}
+import type { WorkExperience } from "@/lib/db";
 
 export default function NewWorkExperiencePage() {
   const { handleSubmit } = useAdminForm<WorkExperience>({

@@ -9,21 +9,13 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
+import type { WorkExperience } from "@/lib/db";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
 import { useImageUpload } from "@/lib/hooks/useImageUpload";
+import { useFormSubmit } from "./hooks/useFormSubmit";
 import { cn } from "@/lib/utils";
-
-interface WorkExperience {
-  id?: string;
-  title: string;
-  company: string;
-  date: string;
-  imageSrc: string;
-  responsibilities: string[];
-  order: number;
-}
 
 interface WorkExperienceFormProps {
   initialData?: WorkExperience;
@@ -34,17 +26,15 @@ export default function WorkExperienceForm({
   initialData,
   onSubmit,
 }: WorkExperienceFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<WorkExperience>(
-    initialData || {
-      title: "",
-      company: "",
-      date: "",
-      imageSrc: "",
-      responsibilities: [""],
-      order: 0,
-    }
-  );
+  const { loading, handleSubmit } = useFormSubmit();
+  const [formData, setFormData] = useState({
+    title: initialData?.title ?? "",
+    company: initialData?.company ?? "",
+    date: initialData?.date ?? "",
+    imageSrc: initialData?.imageSrc ?? "",
+    responsibilities: initialData?.responsibilities ?? [""],
+    order: initialData?.order ?? 0,
+  });
 
   const { uploading, upload } = useImageUpload({
     folder: "work",
@@ -56,23 +46,17 @@ export default function WorkExperienceForm({
     await upload(e.target.files[0]);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const submitWorkExperience = async () => {
     const cleanedData = {
       ...formData,
       responsibilities: formData.responsibilities.filter((r) => r.trim() !== ""),
     };
-
     try {
       await onSubmit(cleanedData);
     } catch (error) {
-      console.error(error);
       const message = error instanceof Error ? error.message : "Unknown error";
       toast.error(`Failed to save work experience: ${message}`);
-    } finally {
-      setLoading(false);
+      throw error;
     }
   };
 
@@ -98,7 +82,7 @@ export default function WorkExperienceForm({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e, submitWorkExperience)}
       className={cn(formStyles.panel, "space-y-6 max-w-3xl")}
     >
       {/* Company Logo */}

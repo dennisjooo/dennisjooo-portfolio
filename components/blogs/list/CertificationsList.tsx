@@ -1,6 +1,7 @@
 'use client';
 
-import { CertificationCard, Certification } from './CertificationCard';
+import { CertificationCard } from './CertificationCard';
+import type { Certification } from '@/lib/db';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
 import { ListSkeleton, EmptyState, ListFooter } from '@/components/shared';
 

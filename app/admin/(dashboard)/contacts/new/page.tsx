@@ -3,14 +3,7 @@
 import ContactForm from "@/components/admin/ContactForm";
 import { AdminFormLayout } from "@/components/admin/shared";
 import { useAdminForm } from "@/components/admin/hooks";
-
-interface Contact {
-  id?: string;
-  label: string;
-  href: string;
-  icon: string;
-  order: number;
-}
+import type { Contact } from "@/lib/db";
 
 export default function NewContactPage() {
   const { handleSubmit } = useAdminForm<Contact>({

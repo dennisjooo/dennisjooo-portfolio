@@ -2,15 +2,7 @@
 
 import { m } from 'framer-motion';
 import { ArrowUpRightIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
-
-export interface Certification {
-    id?: string;
-    title: string;
-    issuer: string;
-    date: string;
-    description: string;
-    link: string;
-}
+import type { Certification } from '@/lib/db';
 
 interface CertificationCardProps {
     certification: Certification;

@@ -1,63 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import type { Contact } from "@/lib/db";
+import { CONTACT_ICON_OPTIONS } from "@/lib/constants/contactIcons";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
-
-interface Contact {
-  id?: string;
-  label: string;
-  href: string;
-  icon: string;
-  order: number;
-}
+import { useFormSubmit } from "./hooks/useFormSubmit";
 
 interface ContactFormProps {
   initialData?: Contact;
   onSubmit: (data: Partial<Contact>) => Promise<void>;
 }
 
-const iconOptions = [
-  { value: "mail", label: "Email" },
-  { value: "github", label: "GitHub" },
-  { value: "linkedin", label: "LinkedIn" },
-  { value: "twitter", label: "Twitter/X" },
-  { value: "instagram", label: "Instagram" },
-  { value: "youtube", label: "YouTube" },
-  { value: "website", label: "Website" },
-];
-
 export default function ContactForm({
   initialData,
   onSubmit,
 }: ContactFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Contact>(
-    initialData || {
-      label: "",
-      href: "",
-      icon: "mail",
-      order: 0,
-    }
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await onSubmit(formData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { loading, handleSubmit } = useFormSubmit();
+  const [formData, setFormData] = useState({
+    label: initialData?.label ?? "",
+    href: initialData?.href ?? "",
+    icon: initialData?.icon ?? "mail",
+    order: initialData?.order ?? 0,
+  });
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
       className={`${formStyles.panel} space-y-6 max-w-3xl`}
     >
       <div className="space-y-4">
@@ -94,10 +64,10 @@ export default function ContactForm({
               className={formStyles.input}
               value={formData.icon}
               onChange={(e) =>
-                setFormData({ ...formData, icon: e.target.value })
+                setFormData({ ...formData, icon: e.target.value as typeof formData.icon })
               }
             >
-              {iconOptions.map((option) => (
+              {CONTACT_ICON_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

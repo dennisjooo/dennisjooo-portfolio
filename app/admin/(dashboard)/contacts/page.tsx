@@ -3,33 +3,9 @@
 import { AdminTable, Column } from "@/components/admin/AdminTable";
 import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
-import {
-  Mail,
-  Github,
-  Linkedin,
-  Twitter,
-  Instagram,
-  Youtube,
-  Globe,
-} from "lucide-react";
-
-interface Contact {
-  id: string;
-  label: string;
-  href: string;
-  icon: string;
-  order: number;
-}
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  mail: Mail,
-  github: Github,
-  linkedin: Linkedin,
-  twitter: Twitter,
-  instagram: Instagram,
-  youtube: Youtube,
-  website: Globe,
-};
+import type { Contact } from "@/lib/db";
+import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
+import { Globe } from "lucide-react";
 
 export default function AdminContactsList() {
   const {
@@ -54,7 +30,7 @@ export default function AdminContactsList() {
     {
       header: "Icon",
       cell: (row: Contact) => {
-        const IconComponent = iconMap[row.icon] || Globe;
+        const IconComponent = CONTACT_ICON_MAP[row.icon] || Globe;
         return (
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50">
             <IconComponent className="w-4 h-4" />

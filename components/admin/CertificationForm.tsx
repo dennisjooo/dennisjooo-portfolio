@@ -1,18 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { Certification } from "@/lib/db";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
-
-interface Certification {
-  id?: string;
-  title: string;
-  issuer: string;
-  date: string;
-  description: string;
-  link: string;
-}
+import { useFormSubmit } from "./hooks/useFormSubmit";
 
 interface CertificationFormProps {
   initialData?: Certification;
@@ -23,32 +16,17 @@ export default function CertificationForm({
   initialData,
   onSubmit,
 }: CertificationFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Certification>(
-    initialData || {
-      title: "",
-      issuer: "",
-      date: new Date().getFullYear().toString(),
-      description: "",
-      link: "",
-    }
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await onSubmit(formData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { loading, handleSubmit } = useFormSubmit();
+  const [formData, setFormData] = useState({
+    title: initialData?.title ?? "",
+    issuer: initialData?.issuer ?? "",
+    date: initialData?.date ?? new Date().getFullYear().toString(),
+    description: initialData?.description ?? "",
+    link: initialData?.link ?? "",
+  });
 
   return (
-    <form onSubmit={handleSubmit} className={`${formStyles.panel} space-y-6 max-w-3xl`}>
+    <form onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))} className={`${formStyles.panel} space-y-6 max-w-3xl`}>
       <div className="space-y-4">
         <FormField label="Title">
           <input

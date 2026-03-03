@@ -4,14 +4,7 @@ import ContactForm from "@/components/admin/ContactForm";
 import { AdminFormLayout, LoadingSpinner } from "@/components/admin/shared";
 import { useAdminForm } from "@/components/admin/hooks";
 import { useParams } from "next/navigation";
-
-interface Contact {
-  id: string;
-  label: string;
-  href: string;
-  icon: string;
-  order: number;
-}
+import type { Contact } from "@/lib/db";
 
 export default function EditContactPage() {
   const params = useParams();

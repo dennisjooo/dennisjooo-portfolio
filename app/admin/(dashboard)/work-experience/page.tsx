@@ -4,15 +4,7 @@ import Image from "next/image";
 import { AdminTable, Column } from "@/components/admin/AdminTable";
 import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
-
-interface WorkExperience {
-  id: string;
-  title: string;
-  company: string;
-  date: string;
-  imageSrc: string;
-  order: number;
-}
+import type { WorkExperience } from "@/lib/db";
 
 export default function AdminWorkExperienceList() {
   const {

@@ -29,7 +29,7 @@ interface UseAdminListReturn<T> {
   refresh: (showLoading?: boolean) => Promise<void>;
 }
 
-export function useAdminList<T extends { id: string; order?: number }>({
+export function useAdminList<T extends { id: string; order?: number | null }>({
   endpoint,
   pageSize = 10,
   enableReorder = false,
