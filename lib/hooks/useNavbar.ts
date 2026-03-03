@@ -3,19 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { scrollToTop } from "@/lib/utils/scrollHelpers";
+import { useMounted } from "@/lib/hooks/useMounted";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
 
-export const useClientReady = (): boolean => {
-    const [isClientReady, setIsClientReady] = useState(false);
-
-    useEffect(() => {
-        setIsClientReady(true);
-    }, []);
-
-    return isClientReady;
-};
+export const useClientReady = useMounted;
 
 interface HeroSectionState {
     isHeroSection: boolean;

@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useMotionValue, useSpring, useTransform, MotionValue } from 'framer-motion';
+import { useMounted } from '@/lib/hooks/useMounted';
 
 interface ParallaxConfig {
     damping?: number;
@@ -52,7 +53,7 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
     const bgX = useTransform(springX, [-0.5, 0.5], backgroundRange);
     const bgY = useTransform(springY, [-0.5, 0.5], backgroundRange);
 
-    const [mounted, setMounted] = useState(false);
+    const mounted = useMounted();
     const rafId = useRef<number | null>(null);
     const lastMousePos = useRef({ x: 0, y: 0 });
 
@@ -64,8 +65,6 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
     }, [mouseX, mouseY]);
 
     useEffect(() => {
-        setMounted(true);
-
         // Disable parallax on touch devices for better performance
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (isTouchDevice) return;

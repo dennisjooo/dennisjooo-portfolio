@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import { useTheme } from 'next-themes';
+import { useMounted } from '@/lib/hooks/useMounted';
 
 interface ThemeTransitionConfig {
     duration?: number;
@@ -18,12 +19,8 @@ interface ThemeTransitionResult {
 export function useThemeTransition(config: ThemeTransitionConfig = {}): ThemeTransitionResult {
     const { duration = 400 } = config;
     const { theme, setTheme, systemTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    const buttonRef = useRef<HTMLButtonElement>(null!)
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useMounted();
+    const buttonRef = useRef<HTMLButtonElement>(null!);
 
     const currentTheme = theme === 'system' ? systemTheme : theme;
     const isDark = mounted ? currentTheme === 'dark' : false;
