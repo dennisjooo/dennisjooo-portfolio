@@ -3,6 +3,7 @@ import { db, blogs, type Blog } from '@/lib/db';
 import { eq, desc, count, or, and, lte, type SQL } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
+import { createUrlSlug } from '@/lib/utils/urlHelpers';
 
 export interface PaginationResult {
     total: number;
@@ -25,6 +26,31 @@ export function visibleBlogsFilter(): SQL {
         eq(blogs.status, 'published'),
         and(eq(blogs.status, 'scheduled'), lte(blogs.publishAt, sql`now()`))
     )!;
+}
+
+/**
+ * Shared slug-lookup with optional visibility filter.
+ * Tries exact slug match first, then falls back to title-derived slug matching.
+ */
+export async function findBlogBySlug(slug: string, filter?: SQL): Promise<Blog | null> {
+    const whereClause = filter ? and(eq(blogs.slug, slug), filter) : eq(blogs.slug, slug);
+
+    const [project] = await db.select().from(blogs).where(whereClause);
+    if (project) return project;
+
+    const allSlugs = await db
+        .select({ id: blogs.id, title: blogs.title, slug: blogs.slug })
+        .from(blogs)
+        .where(filter);
+
+    const match = allSlugs.find(p => createUrlSlug(p.title) === slug || p.slug === slug);
+
+    if (match) {
+        const [fullProject] = await db.select().from(blogs).where(eq(blogs.id, match.id));
+        return fullProject ?? null;
+    }
+
+    return null;
 }
 
 /**

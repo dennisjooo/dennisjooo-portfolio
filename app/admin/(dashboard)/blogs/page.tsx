@@ -1,9 +1,9 @@
 "use client";
 
 import { AdminTable, Column } from '@/components/admin/AdminTable';
-import { AdminPageHeader } from '@/components/admin/shared';
-import { AdminActionCell } from '@/components/admin/shared';
+import { AdminPageHeader, AdminActionCell } from '@/components/admin/shared';
 import { useAdminList } from '@/components/admin/hooks';
+import { BLOG_STATUS_STYLES } from '@/lib/constants/blogStatus';
 
 interface Blog {
   id: string;
@@ -50,14 +50,9 @@ export default function AdminBlogsList() {
     {
       header: "Status",
       cell: (row: Blog) => {
-        const styles = {
-          draft: 'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300',
-          scheduled: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-          published: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-        };
         return (
           <div className="flex flex-col gap-1">
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize w-fit ${styles[row.status] ?? styles.draft}`}>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize w-fit ${BLOG_STATUS_STYLES[row.status] ?? BLOG_STATUS_STYLES.draft}`}>
               {row.status}
             </span>
             {row.status === 'scheduled' && row.publishAt && (

@@ -1,12 +1,7 @@
 "use client";
 
 import { EyeIcon } from "@heroicons/react/24/outline";
-
-const statusLabels: Record<string, string> = {
-  draft: "Draft",
-  scheduled: "Scheduled",
-  published: "Published",
-};
+import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
 
 export function PreviewBanner({ status }: { status: string }) {
   return (
@@ -14,7 +9,7 @@ export function PreviewBanner({ status }: { status: string }) {
       <EyeIcon className="h-4 w-4" />
       <span>
         Preview mode — this post is currently{" "}
-        <strong>{statusLabels[status] ?? status}</strong> and not visible to the
+        <strong>{BLOG_STATUS_LABELS[status] ?? status}</strong> and not visible to the
         public.
       </span>
     </div>
