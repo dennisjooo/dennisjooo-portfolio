@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { scrollToTop } from "@/lib/utils/scrollHelpers";
-import { useMounted } from "@/lib/hooks/useMounted";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
