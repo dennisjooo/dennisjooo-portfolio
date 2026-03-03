@@ -4,6 +4,7 @@ import { eq, desc, count, or, and, lte, type SQL } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
+import { buildPagination } from '@/lib/api/apiHelpers';
 
 export interface PaginationResult {
     total: number;
@@ -102,17 +103,10 @@ export const getBlogs = unstable_cache(
             ]);
 
             const total = totalResult[0]?.count ?? 0;
-            const totalPages = Math.ceil(total / limit);
 
             return {
                 data: blogResults,
-                pagination: {
-                    total,
-                    page,
-                    limit,
-                    totalPages,
-                    hasMore: page < totalPages,
-                },
+                pagination: buildPagination(total, page, limit),
             };
         } catch (error) {
             console.error('Failed to fetch blogs', error);

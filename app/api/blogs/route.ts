@@ -4,7 +4,7 @@ import { desc, count, eq, and } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
 import { visibleBlogsFilter } from "@/lib/data/blogs";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { validateAndPrepareBlogBody } from "@/lib/api/blogHelpers";
 import {
   requireAuth,
   isAuthError,
@@ -78,26 +78,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.status) {
-      body.status = "draft";
-    }
-
-    if (body.status === "scheduled") {
-      if (!body.publishAt) {
-        return errorResponse("publishAt is required for scheduled posts");
-      }
-      if (new Date(body.publishAt) <= new Date()) {
-        return errorResponse("publishAt must be a future date");
-      }
-    }
-
-    if (body.publishAt) {
-      body.publishAt = new Date(body.publishAt);
-    }
-
-    if (!body.slug && body.title) {
-      body.slug = createUrlSlug(body.title);
-    }
+    const validationError = validateAndPrepareBlogBody(body, { defaultStatus: "draft" });
+    if (validationError) return validationError;
 
     const [blog] = await db.insert(blogs).values(body).returning();
     return successResponse(blog, 201);

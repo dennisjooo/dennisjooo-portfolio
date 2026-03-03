@@ -1,11 +1,10 @@
-import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { migrateAllBlogImages } from "@/lib/utils/blobMigration";
-import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
+import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
+import { validateAndPrepareBlogBody } from "@/lib/api/blogHelpers";
 
 export async function GET(
   request: Request,
@@ -62,41 +61,15 @@ export async function PUT(
       (key) => !allowedFields.includes(key as (typeof allowedFields)[number])
     );
     if (unexpectedKeys.length > 0) {
-      return NextResponse.json(
-        { error: `Unexpected fields: ${unexpectedKeys.join(", ")}` },
-        { status: 400 }
-      );
+      return errorResponse(`Unexpected fields: ${unexpectedKeys.join(", ")}`);
     }
 
     if (Object.keys(updateData).length === 0) {
-      return NextResponse.json(
-        { error: "No valid fields to update" },
-        { status: 400 }
-      );
+      return errorResponse("No valid fields to update");
     }
 
-    if (updateData.status === "scheduled") {
-      if (!updateData.publishAt) {
-        return NextResponse.json(
-          { error: "publishAt is required for scheduled posts" },
-          { status: 400 }
-        );
-      }
-      if (new Date(updateData.publishAt as string) <= new Date()) {
-        return NextResponse.json(
-          { error: "publishAt must be a future date" },
-          { status: 400 }
-        );
-      }
-    }
-
-    if (updateData.publishAt) {
-      updateData.publishAt = new Date(updateData.publishAt as string);
-    }
-
-    if (!updateData.slug && updateData.title) {
-      updateData.slug = createUrlSlug(updateData.title as string);
-    }
+    const validationError = validateAndPrepareBlogBody(updateData);
+    if (validationError) return validationError;
 
     // Migrate blob images when slug changes
     const [existingBlog] = await db
@@ -105,7 +78,7 @@ export async function PUT(
       .where(eq(blogs.id, id));
 
     if (!existingBlog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return errorResponse("Blog not found", 404);
     }
 
     const newSlug =
@@ -143,15 +116,12 @@ export async function PUT(
       .returning();
 
     if (!blog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return errorResponse("Blog not found", 404);
     }
-    return NextResponse.json(blog);
+    return successResponse(blog);
   } catch (error) {
     console.error("Error updating blog:", error);
-    return NextResponse.json(
-      { error: "Failed to update blog" },
-      { status: 500 }
-    );
+    return errorResponse("Failed to update blog", 500);
   }
 }
 
@@ -168,7 +138,7 @@ export async function DELETE(
     // Fetch blog first to get image URLs for cleanup
     const [blog] = await db.select().from(blogs).where(eq(blogs.id, id));
     if (!blog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return errorResponse("Blog not found", 404);
     }
 
     // Collect all Vercel Blob images to delete
@@ -194,13 +164,10 @@ export async function DELETE(
       del(imagesToDelete).catch(err => console.error('Failed to delete blobs:', err));
     }
 
-    return NextResponse.json({ message: "Blog deleted successfully" });
+    return successResponse({ message: "Blog deleted successfully" });
   } catch (error) {
     console.error("Error deleting blog:", error);
-    return NextResponse.json(
-      { error: "Failed to delete blog" },
-      { status: 500 }
-    );
+    return errorResponse("Failed to delete blog", 500);
   }
 }
 
