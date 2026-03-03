@@ -43,7 +43,7 @@ export const markdownComponents: Components = {
     strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
     em: ({ children }) => <em className="italic text-muted-foreground">{children}</em>,
     blockquote: ({ children }) => (
-        <blockquote className="border-l-2 border-accent pl-6 my-6 italic text-muted-foreground bg-muted/30 py-4 pr-4 rounded-r-lg">
+        <blockquote className="border-l-2 border-accent pl-6 my-6 italic text-muted-foreground bg-muted/30 py-4 pr-4 rounded-r-lg [&>p]:before:content-none [&>p]:after:content-none">
             {children}
         </blockquote>
     ),
