@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
+import { NOISE_OVERLAY_LIGHT } from '@/lib/constants/noiseOverlay';
 
 interface ContentCardProps {
     title: string;
@@ -79,9 +80,7 @@ export const ContentCard = ({
                         {/* Noise Overlay */}
                         <div 
                             className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
-                            style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-                            }}
+                            style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
                         />
                         
                         {imageUrl ? (

@@ -6,6 +6,7 @@ export { SmoothScroll } from './SmoothScroll';
 export * from './SectionHeader';
 export * from './ContentCard';
 export * from './CopyButton';
+export * from './PaginatedList';
 export * from './ListSkeleton';
 export * from './EmptyState';
 export * from './ListFooter';
