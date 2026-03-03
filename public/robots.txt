@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dennisjooo.github.io/sitemap.xml
+Sitemap: https://dennisjooo.vercel.app/sitemap.xml
 
 # LLM-friendly content
 # See https://llmstxt.org for specification

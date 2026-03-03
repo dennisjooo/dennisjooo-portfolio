@@ -6,7 +6,7 @@ import { visibleBlogsFilter } from '@/lib/data/blogs';
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://dennisjooo.github.io';
+    const baseUrl = 'https://dennisjooo.vercel.app';
 
     let projectPages: MetadataRoute.Sitemap = [];
 

@@ -45,7 +45,7 @@ export async function generateMetadata(
             title: project.title,
             description: project.description,
             type: "article",
-            url: `https://dennisjooo.github.io/blogs/${slug}`,
+            url: `https://dennisjooo.vercel.app/blogs/${slug}`,
             ...(project.imageUrl && {
                 images: [
                     {

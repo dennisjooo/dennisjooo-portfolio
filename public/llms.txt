@@ -188,9 +188,9 @@ Machine learning models forecasting All-NBA team selections using three decades 
 - **GitHub:** https://github.com/dennisjooo
 - **LinkedIn:** https://linkedin.com/in/dennisjooo
 - **Email:** dennisjonathan12@gmail.com
-- **Portfolio:** https://dennisjooo.github.io
+- **Portfolio:** https://dennisjooo.vercel.app
 
 ## Optional
 
-- [Skills Visualization](https://dennisjooo.github.io/#skills): Interactive 3D skill cloud with icons for all technologies
-- [Certifications Section](https://dennisjooo.github.io/#certifications): Detailed certification cards with links to credentials
+- [Skills Visualization](https://dennisjooo.vercel.app/#skills): Interactive 3D skill cloud with icons for all technologies
+- [Certifications Section](https://dennisjooo.vercel.app/#certifications): Detailed certification cards with links to credentials
