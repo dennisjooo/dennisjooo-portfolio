@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_OPTIONS } from "@/lib/constants/contactIcons";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
 import { useFormSubmit } from "./hooks/useFormSubmit";
+import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
 
 interface ContactFormProps {
   initialData?: Contact;
@@ -18,12 +20,16 @@ export default function ContactForm({
   onSubmit,
 }: ContactFormProps) {
   const { loading, handleSubmit } = useFormSubmit();
+  const router = useRouter();
+  const { requestNavigation } = useUnsavedChanges();
   const [formData, setFormData] = useState({
     label: initialData?.label ?? "",
     href: initialData?.href ?? "",
     icon: initialData?.icon ?? "mail",
     order: initialData?.order ?? 0,
   });
+
+  useFormDirty(formData);
 
   return (
     <form
@@ -92,6 +98,7 @@ export default function ContactForm({
       <FormActions
         loading={loading}
         submitLabel={initialData ? "Update Contact" : "Create Contact"}
+        onCancel={() => requestNavigation(() => router.back())}
       />
     </form>
   );

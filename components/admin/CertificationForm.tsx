@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Certification } from "@/lib/db";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
 import { useFormSubmit } from "./hooks/useFormSubmit";
+import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
 
 interface CertificationFormProps {
   initialData?: Certification;
@@ -17,6 +19,8 @@ export default function CertificationForm({
   onSubmit,
 }: CertificationFormProps) {
   const { loading, handleSubmit } = useFormSubmit();
+  const router = useRouter();
+  const { requestNavigation } = useUnsavedChanges();
   const [formData, setFormData] = useState({
     title: initialData?.title ?? "",
     issuer: initialData?.issuer ?? "",
@@ -24,6 +28,8 @@ export default function CertificationForm({
     description: initialData?.description ?? "",
     link: initialData?.link ?? "",
   });
+
+  useFormDirty(formData);
 
   return (
     <form onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))} className={`${formStyles.panel} space-y-6 max-w-3xl`}>
@@ -90,7 +96,11 @@ export default function CertificationForm({
         </FormField>
       </div>
 
-      <FormActions loading={loading} submitLabel={initialData ? "Update Record" : "Create Record"} />
+      <FormActions
+        loading={loading}
+        submitLabel={initialData ? "Update Record" : "Create Record"}
+        onCancel={() => requestNavigation(() => router.back())}
+      />
     </form>
   );
 }

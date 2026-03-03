@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
 import { LoadingSpinner } from "@/components/admin/shared";
 import { formStyles } from "@/components/admin/shared/formStyles";
+import { useFormDirty } from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
 
 const sections = [
@@ -29,6 +30,8 @@ export default function AboutAdminPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const { reset } = useFormDirty(content, initialized);
+
   useEffect(() => {
     if (!loading && config && !initialized) {
       setContent({
@@ -45,6 +48,7 @@ export default function AboutAdminPage() {
     setSaving(true);
     try {
       await updateConfig(content);
+      reset(content);
       setSaved(true);
       toast.success("Changes saved successfully");
       setTimeout(() => setSaved(false), 2000);

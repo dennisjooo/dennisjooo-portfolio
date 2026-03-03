@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { formStyles } from './shared/formStyles';
 import { useImageUpload } from '@/lib/hooks/useImageUpload';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
+import { useFormDirty } from './hooks/useUnsavedChanges';
 import { BlogFormFields } from './BlogFormFields';
 import { LinkManager } from './LinkManager';
 import { MarkdownEditor, EditorMode } from './MarkdownEditor';
@@ -43,6 +44,8 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  useFormDirty(formData);
+
   const effectiveSlug = formData.slug || createUrlSlug(formData.title || '');
   const canUploadImages = Boolean(effectiveSlug);
   const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
@@ -57,6 +60,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       pendingImages.forEach(img => URL.revokeObjectURL(img.previewUrl));
     };
   }, [pendingImages]);
+
 
   useEffect(() => {
     if (editorMode === 'split') return;

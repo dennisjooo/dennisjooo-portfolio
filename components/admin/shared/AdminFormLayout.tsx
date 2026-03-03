@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { useUnsavedChanges } from '@/components/admin/hooks';
 
 interface AdminFormLayoutProps {
   title: string;
@@ -17,13 +18,14 @@ export function AdminFormLayout({
   children,
 }: AdminFormLayoutProps) {
   const router = useRouter();
+  const { requestNavigation } = useUnsavedChanges();
 
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={() => requestNavigation(() => router.back())}
           className="p-2 rounded-full hover:bg-muted/50 transition-colors"
           aria-label="Go back"
         >

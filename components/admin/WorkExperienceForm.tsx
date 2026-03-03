@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   ArrowPathIcon,
   PlusIcon,
@@ -15,6 +16,7 @@ import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
 import { useImageUpload } from "@/lib/hooks/useImageUpload";
 import { useFormSubmit } from "./hooks/useFormSubmit";
+import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
 import { cn } from "@/lib/utils";
 
 interface WorkExperienceFormProps {
@@ -27,6 +29,8 @@ export default function WorkExperienceForm({
   onSubmit,
 }: WorkExperienceFormProps) {
   const { loading, handleSubmit } = useFormSubmit();
+  const router = useRouter();
+  const { requestNavigation } = useUnsavedChanges();
   const [formData, setFormData] = useState({
     title: initialData?.title ?? "",
     company: initialData?.company ?? "",
@@ -35,6 +39,8 @@ export default function WorkExperienceForm({
     responsibilities: initialData?.responsibilities ?? [""],
     order: initialData?.order ?? 0,
   });
+
+  useFormDirty(formData);
 
   const { uploading, upload } = useImageUpload({
     folder: "work",
@@ -237,6 +243,7 @@ export default function WorkExperienceForm({
       <FormActions
         loading={loading}
         submitLabel={initialData ? "Update Record" : "Create Record"}
+        onCancel={() => requestNavigation(() => router.back())}
       />
     </form>
   );
