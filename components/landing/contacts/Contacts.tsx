@@ -5,6 +5,7 @@ import { Dock } from './Dock/Dock';
 import { DockIconLink } from './Dock/DockIconLink';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 import { contactLinks } from '@/data/contactContent';
+import { CONTACT_ICON_MAP } from '@/lib/constants/contactIcons';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 
 // Staggered container for children
@@ -42,8 +43,28 @@ const headlineVariants = {
     },
 };
 
-const Contacts: React.FC = () => {
+interface ContactItem {
+    href: string;
+    ariaLabel: string;
+    icon: string;
+}
+
+interface ContactsProps {
+    contacts?: ContactItem[];
+}
+
+const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
     const prefersReducedMotion = useReducedMotion();
+    const dockLinks = contacts?.length
+        ? contacts.map((contact) => {
+            const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
+            return {
+                href: contact.href,
+                ariaLabel: contact.ariaLabel,
+                icon: <Icon className="size-6" />,
+            };
+        })
+        : contactLinks;
 
     return (
         <section
@@ -108,7 +129,7 @@ const Contacts: React.FC = () => {
 
                         <m.div variants={prefersReducedMotion ? undefined : itemVariants}>
                             <Dock className="mx-auto">
-                                {contactLinks.map(({ href, ariaLabel, icon }) => (
+                                {dockLinks.map(({ href, ariaLabel, icon }) => (
                                     <DockIconLink key={ariaLabel} href={href} ariaLabel={ariaLabel} icon={icon} />
                                 ))}
                             </Dock>

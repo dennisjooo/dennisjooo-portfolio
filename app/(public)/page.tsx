@@ -1,7 +1,7 @@
 import Hero from '@/components/landing/hero';
 import dynamic from 'next/dynamic';
 import { HomeClient } from './HomeClient';
-import { db, siteConfig, workExperiences, type SiteConfig } from '@/lib/db';
+import { db, siteConfig, workExperiences, contacts, type SiteConfig } from '@/lib/db';
 import { desc, asc } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
@@ -74,11 +74,34 @@ const getWorkExperience = unstable_cache(
     { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['work-experience'] }
 );
 
+const getContacts = unstable_cache(
+    async () => {
+        try {
+            const contactItems = await db
+                .select()
+                .from(contacts)
+                .orderBy(asc(contacts.order), desc(contacts.createdAt));
+
+            return contactItems.map((contact) => ({
+                href: contact.href,
+                ariaLabel: contact.label,
+                icon: contact.icon,
+            }));
+        } catch (error) {
+            console.error('Failed to fetch contacts', error);
+            return [];
+        }
+    },
+    ['contacts'],
+    { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['contacts'] }
+);
+
 export default async function Home() {
-    const [projects, config, workExperience] = await Promise.all([
+    const [projects, config, workExperience, contactLinks] = await Promise.all([
         getFeaturedProjects(),
         getSiteConfig(),
-        getWorkExperience()
+        getWorkExperience(),
+        getContacts()
     ]);
 
     const profileImageUrl = config?.profileImageUrl ?? undefined;
@@ -98,7 +121,7 @@ export default async function Home() {
                     <WorkExperience workExperience={workExperience} />
                     <FeaturedProjects projects={projects} />
                     <Skills />
-                    <Contacts />
+                    <Contacts contacts={contactLinks} />
                 </>
             }
             backToTop={<BackToTop />}
