@@ -1,6 +1,16 @@
 import { NAVBAR_OFFSET } from '@/lib/constants/scrolling';
 
 /**
+ * Disables the browser's automatic scroll restoration.
+ * Called once on app mount (SmoothScroll); no need to repeat elsewhere.
+ */
+export function disableScrollRestoration(): void {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+}
+
+/**
  * Calculates the scroll position to center an element in the viewport
  * @param element - The element to center
  * @returns The scroll position to center the element
@@ -51,10 +61,6 @@ export function scrollToTop(instant: boolean = false): void {
  * Used when navigating between pages to ensure scroll position is reset
  */
 export function forceScrollToTop(): void {
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
     // Always use native scroll for immediate, reliable scrolling
     window.scrollTo(0, 0);
 
@@ -80,4 +86,15 @@ export async function refreshScrollTrigger(): Promise<void> {
     } catch {
         // ScrollTrigger not loaded yet, ignore
     }
+}
+
+/**
+ * Combines forceScrollToTop with a ScrollTrigger refresh on the next frame.
+ * Used by BackToTop button and route-change scroll restoration.
+ */
+export function scrollToTopWithRefresh(): void {
+    forceScrollToTop();
+    requestAnimationFrame(() => {
+        refreshScrollTrigger();
+    });
 }

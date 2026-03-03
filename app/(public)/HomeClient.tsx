@@ -20,11 +20,6 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
 
     // Handle hash navigation after page load
     useEffect(() => {
-        // Always disable browser's scroll restoration
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-
         const hash = window.location.hash ? window.location.hash.substring(1) : '';
 
         // Clear hash from URL immediately to prevent browser's native hash scrolling
