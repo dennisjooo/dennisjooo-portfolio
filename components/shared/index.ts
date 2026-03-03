@@ -5,6 +5,7 @@ export { BlinkingCursor } from './BlinkingCursor';
 export { SmoothScroll } from './SmoothScroll';
 export * from './SectionHeader';
 export * from './ContentCard';
+export * from './CopyButton';
 export * from './ListSkeleton';
 export * from './EmptyState';
 export * from './ListFooter';
