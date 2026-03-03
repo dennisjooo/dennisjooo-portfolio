@@ -64,5 +64,14 @@ export function useConsoleEasterEgg() {
             "color: #c4b5a0; font-size: 10px; font-family: monospace;",
             "color: #888; font-style: italic; font-size: 11px;"
         );
+
+        // Log build version
+        const version = process.env.NEXT_PUBLIC_BUILD_VERSION;
+        if (version) {
+            console.log(
+                `%cv${version}`,
+                "color: #555; font-size: 10px; font-family: monospace; font-style: italic;"
+            );
+        }
     }, []);
 }

@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import bundleAnalyzer from '@next/bundle-analyzer';
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -54,8 +55,12 @@ const createConfig = (phase) => {
         { source: '/contacts', destination: '/#contact' },
     ].map(r => ({ ...r, permanent: true }));
 
+    const { version } = JSON.parse(readFileSync('./package.json', 'utf8'));
+
     return {
-        // Remove output: 'export' and distDir: 'out' for standard server rendering
+        env: {
+            NEXT_PUBLIC_BUILD_VERSION: version,
+        },
         reactStrictMode: true,
         poweredByHeader: false,
         compress: true,
