@@ -53,12 +53,12 @@ export default function ProjectsList({
     return (
         <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                {projects.map(({ title, description, date, imageUrl, blogPost, type: itemType }, index) => (
+                {projects.map(({ title, description, date, imageUrl, blogPost, type: itemType, slug }, index) => (
                     <ContentCard
                         key={`${title}_${date}`}
                         title={title}
                         description={description}
-                        slug={createUrlSlug(title)}
+                        slug={slug || createUrlSlug(title)}
                         date={formatProjectDate(date, true)}
                         imageUrl={imageUrl ?? undefined}
                         index={index}

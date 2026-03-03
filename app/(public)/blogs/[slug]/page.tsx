@@ -97,7 +97,7 @@ export async function generateMetadata(
             title: `${project.title}`,
             description: project.description,
             type: 'article',
-            url: `https://dennisjooo.github.io/projects/${slug}`,
+            url: `https://dennisjooo.github.io/blogs/${slug}`,
         },
     };
 }

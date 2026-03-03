@@ -11,7 +11,7 @@ interface FeaturedProjectsGridProps {
 
 export const FeaturedProjectsGrid: React.FC<FeaturedProjectsGridProps> = ({ projects }) => (
     <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-        {projects.map(({ title, description, date, imageUrl }, index) => (
+        {projects.map(({ title, description, date, imageUrl, slug }, index) => (
             <div 
                 key={`${title}_${date}`}
                 className="w-full"
@@ -19,7 +19,7 @@ export const FeaturedProjectsGrid: React.FC<FeaturedProjectsGridProps> = ({ proj
                 <ContentCard
                     title={title}
                     description={description}
-                    slug={createUrlSlug(title)}
+                    slug={slug || createUrlSlug(title)}
                     date={formatProjectDate(date, true)}
                     imageUrl={imageUrl ?? undefined}
                     index={index}
