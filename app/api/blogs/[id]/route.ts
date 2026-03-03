@@ -5,6 +5,7 @@ import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
 import { auth } from "@clerk/nextjs/server";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { migrateAllBlogImages } from "@/lib/utils/blobMigration";
 
 export async function GET(
   request: Request,
@@ -100,6 +101,42 @@ export async function PUT(
 
     if (!updateData.slug && updateData.title) {
       updateData.slug = createUrlSlug(updateData.title as string);
+    }
+
+    // Migrate blob images when slug changes
+    const [existingBlog] = await db
+      .select()
+      .from(blogs)
+      .where(eq(blogs.id, id));
+
+    if (!existingBlog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    const newSlug =
+      (updateData.slug as string | undefined) || existingBlog.slug;
+    const oldSlug = existingBlog.slug;
+
+    if (newSlug && newSlug !== oldSlug) {
+      const currentImageUrl =
+        (updateData.imageUrl as string | undefined) ?? existingBlog.imageUrl;
+      const currentBlogPost =
+        (updateData.blogPost as string | undefined) ?? existingBlog.blogPost;
+
+      try {
+        const migrated = await migrateAllBlogImages(
+          newSlug,
+          currentImageUrl,
+          currentBlogPost
+        );
+
+        if (migrated.migrated > 0) {
+          updateData.imageUrl = migrated.imageUrl;
+          updateData.blogPost = migrated.blogPost;
+        }
+      } catch (err) {
+        console.error("Image migration failed (saving anyway):", err);
+      }
     }
 
     updateData.updatedAt = new Date();

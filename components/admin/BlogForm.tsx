@@ -52,6 +52,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const effectiveSlug = formData.slug || createUrlSlug(formData.title || '');
+  const canUploadImages = Boolean(effectiveSlug);
   const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
 
   const { uploading, upload: uploadCoverImage } = useImageUpload({
@@ -130,6 +131,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
+    if (!canUploadImages) return;
     const items = e.clipboardData.items;
     for (const item of items) {
       if (item.type.indexOf('image') !== -1) {
@@ -154,6 +156,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
+    if (!canUploadImages) return;
 
     const files = e.dataTransfer.files;
     if (files.length > 0 && files[0].type.startsWith('image/')) {
@@ -404,7 +407,9 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground/50">
                     <PhotoIcon className="w-12 h-12 mb-2" />
-                    <span className="text-xs uppercase tracking-widest">No Image Selected</span>
+                    <span className="text-xs uppercase tracking-widest">
+                      {canUploadImages ? 'No Image Selected' : 'Add a title to upload images'}
+                    </span>
                   </div>
                 )}
                 {uploading && (
@@ -424,14 +429,20 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
                   className={`${formStyles.input} text-xs font-mono`}
                 />
                 <label
-                  className={`flex items-center justify-center px-4 bg-secondary text-secondary-foreground rounded-lg cursor-pointer hover:bg-secondary/80 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+                  title={!canUploadImages ? 'Add a title to enable image uploads' : undefined}
+                  className={cn(
+                    "flex items-center justify-center px-4 bg-secondary text-secondary-foreground rounded-lg transition-colors",
+                    !canUploadImages || uploading
+                      ? "opacity-50 pointer-events-none"
+                      : "cursor-pointer hover:bg-secondary/80"
+                  )}
                 >
                   <ArrowUpTrayIcon className="w-5 h-5" />
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleUpload}
-                    disabled={uploading}
+                    disabled={!canUploadImages || uploading}
                     className="hidden"
                   />
                 </label>
@@ -535,13 +546,22 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           </div>
 
           {editorMode !== 'preview' && (
-            <label className="flex items-center gap-2 text-xs text-primary cursor-pointer hover:underline">
+            <label
+              title={!canUploadImages ? 'Add a title to enable image uploads' : undefined}
+              className={cn(
+                "flex items-center gap-2 text-xs",
+                canUploadImages
+                  ? "text-primary cursor-pointer hover:underline"
+                  : "text-muted-foreground/50 pointer-events-none"
+              )}
+            >
               <DocumentPlusIcon className="w-4 h-4" />
               <span>Add Image</span>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleMarkdownImageUpload}
+                disabled={!canUploadImages}
                 className="hidden"
               />
             </label>
