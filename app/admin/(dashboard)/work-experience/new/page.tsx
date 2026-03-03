@@ -1,24 +1,13 @@
 "use client";
 
-import WorkExperienceForm from "@/components/admin/WorkExperienceForm";
-import { AdminFormLayout } from "@/components/admin/shared";
-import { useAdminForm } from "@/components/admin/hooks";
-import type { WorkExperience } from "@/lib/db";
+import WorkExperienceForm from '@/components/admin/WorkExperienceForm';
+import { createAdminNewPage } from '@/components/admin/factories';
+import type { WorkExperience } from '@/lib/db';
 
-export default function NewWorkExperiencePage() {
-  const { handleSubmit } = useAdminForm<WorkExperience>({
-    endpoint: '/api/work-experience',
-    redirectTo: '/admin/work-experience',
-    itemName: 'work experience',
-  });
-
-  return (
-    <AdminFormLayout
-      title="New"
-      titleAccent="Experience"
-      subtitle="Add a new position or education entry"
-    >
-      <WorkExperienceForm onSubmit={handleSubmit} />
-    </AdminFormLayout>
-  );
-}
+export default createAdminNewPage<WorkExperience>({
+  endpoint: '/api/work-experience',
+  redirectTo: '/admin/work-experience',
+  itemName: 'work experience',
+  FormComponent: WorkExperienceForm,
+  title: { accent: 'Experience', subtitle: 'Add a new position or education entry' },
+});

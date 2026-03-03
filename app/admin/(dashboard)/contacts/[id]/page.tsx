@@ -1,32 +1,13 @@
 "use client";
 
-import ContactForm from "@/components/admin/ContactForm";
-import { AdminFormLayout, LoadingSpinner } from "@/components/admin/shared";
-import { useAdminForm } from "@/components/admin/hooks";
-import { useParams } from "next/navigation";
-import type { Contact } from "@/lib/db";
+import ContactForm from '@/components/admin/ContactForm';
+import { createAdminEditPage } from '@/components/admin/factories';
+import type { Contact } from '@/lib/db';
 
-export default function EditContactPage() {
-  const params = useParams();
-  const id = params.id as string;
-
-  const { data: contact, loading, handleSubmit } = useAdminForm<Contact>({
-    endpoint: '/api/contacts',
-    id,
-    redirectTo: '/admin/contacts',
-    itemName: 'contact',
-  });
-
-  if (loading) return <LoadingSpinner />;
-  if (!contact) return null;
-
-  return (
-    <AdminFormLayout
-      title="Edit"
-      titleAccent="Contact"
-      subtitle="Update contact details"
-    >
-      <ContactForm initialData={contact} onSubmit={handleSubmit} />
-    </AdminFormLayout>
-  );
-}
+export default createAdminEditPage<Contact>({
+  endpoint: '/api/contacts',
+  redirectTo: '/admin/contacts',
+  itemName: 'contact',
+  FormComponent: ContactForm,
+  title: { accent: 'Contact', subtitle: 'Update contact details' },
+});

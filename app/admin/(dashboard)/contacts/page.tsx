@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
+import { AdminPageHeader, AdminActionCell, AdminReorderHint } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
@@ -90,9 +90,7 @@ export default function AdminContactsList() {
         enableReorder
         onReorder={handleReorder}
       />
-      <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-        Drag the grip in the Order column to reorder. Lower numbers appear first.
-      </p>
+      <AdminReorderHint />
     </div>
   );
 }

@@ -1,32 +1,13 @@
 "use client";
 
-import WorkExperienceForm from "@/components/admin/WorkExperienceForm";
-import { AdminFormLayout, LoadingSpinner } from "@/components/admin/shared";
-import { useAdminForm } from "@/components/admin/hooks";
-import { useParams } from "next/navigation";
-import type { WorkExperience } from "@/lib/db";
+import WorkExperienceForm from '@/components/admin/WorkExperienceForm';
+import { createAdminEditPage } from '@/components/admin/factories';
+import type { WorkExperience } from '@/lib/db';
 
-export default function EditWorkExperiencePage() {
-  const params = useParams();
-  const id = params.id as string;
-
-  const { data, loading, handleSubmit } = useAdminForm<WorkExperience>({
-    endpoint: '/api/work-experience',
-    id,
-    redirectTo: '/admin/work-experience',
-    itemName: 'work experience',
-  });
-
-  if (loading) return <LoadingSpinner />;
-  if (!data) return null;
-
-  return (
-    <AdminFormLayout
-      title="Edit"
-      titleAccent="Experience"
-      subtitle="Update position details"
-    >
-      <WorkExperienceForm initialData={data} onSubmit={handleSubmit} />
-    </AdminFormLayout>
-  );
-}
+export default createAdminEditPage<WorkExperience>({
+  endpoint: '/api/work-experience',
+  redirectTo: '/admin/work-experience',
+  itemName: 'work experience',
+  FormComponent: WorkExperienceForm,
+  title: { accent: 'Experience', subtitle: 'Update position details' },
+});

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell } from "@/components/admin/shared";
+import { AdminPageHeader, AdminActionCell, AdminReorderHint } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { WorkExperience } from "@/lib/db";
 
@@ -90,9 +90,7 @@ export default function AdminWorkExperienceList() {
         enableReorder
         onReorder={handleReorder}
       />
-      <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-        Drag the grip in the Order column to reorder. Lower numbers appear first.
-      </p>
+      <AdminReorderHint />
     </div>
   );
 }
