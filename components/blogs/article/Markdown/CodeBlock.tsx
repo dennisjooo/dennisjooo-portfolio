@@ -42,20 +42,11 @@ export const CodeBlock = ({ children, className }: CodeProps) => {
 
     return (
         <div className="not-prose my-6">
-            <div className="code-block-wrapper">
-                <div className="code-block-header">
-                    <div className="flex items-center space-x-3">
-                        <div className="flex space-x-2">
-                            <div className="w-3 h-3 bg-red-500 rounded-full" />
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                            <div className="w-3 h-3 bg-green-500 rounded-full" />
-                        </div>
-                        {language && (
-                            <span className="text-xs text-muted-foreground font-mono">
-                                {language}
-                            </span>
-                        )}
-                    </div>
+            <div className="rounded-xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
+                    <span className="text-xs text-muted-foreground font-mono">
+                        {language || "code"}
+                    </span>
                     <CopyButton text={codeString} title="Copy code" />
                 </div>
                 <div className="overflow-x-auto">
