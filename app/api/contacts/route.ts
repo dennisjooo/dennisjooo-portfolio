@@ -1,14 +1,18 @@
 import { db, contacts } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { asc, desc, count } from "drizzle-orm";
+import {
+  requireAuth,
+  isAuthError,
+  successResponse,
+  errorResponse,
+  parsePagination,
+} from "@/lib/api/apiHelpers";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "10");
-    const offset = (page - 1) * limit;
+    const { page, limit, offset } = parsePagination(searchParams);
 
     const [contactResults, totalResult] = await Promise.all([
       db
@@ -34,31 +38,20 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Failed to fetch contacts:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch contacts" },
-      { status: 400 }
-    );
+    return errorResponse("Failed to fetch contacts");
   }
 }
 
 export async function POST(request: Request) {
-  const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   try {
     const body = await request.json();
     const [contact] = await db.insert(contacts).values(body).returning();
-    return NextResponse.json({ success: true, data: contact }, { status: 201 });
+    return successResponse(contact, 201);
   } catch (error) {
     console.error("Failed to create contact:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to create contact" },
-      { status: 400 }
-    );
+    return errorResponse("Failed to create contact");
   }
 }
