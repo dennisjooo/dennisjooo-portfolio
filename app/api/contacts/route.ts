@@ -7,6 +7,7 @@ import {
   successResponse,
   errorResponse,
   parsePagination,
+  buildPagination,
 } from "@/lib/api/apiHelpers";
 
 export async function GET(request: Request) {
@@ -29,12 +30,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       data: contactResults,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      },
+      pagination: buildPagination(total, page, limit),
     });
   } catch (error) {
     console.error("Failed to fetch contacts:", error);

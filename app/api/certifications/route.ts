@@ -8,6 +8,7 @@ import {
   successResponse,
   errorResponse,
   parsePagination,
+  buildPagination,
 } from "@/lib/api/apiHelpers";
 
 export async function GET(request: Request) {
@@ -26,19 +27,12 @@ export async function GET(request: Request) {
     ]);
 
     const total = totalResult[0]?.count ?? 0;
-    const totalPages = Math.ceil(total / limit);
 
     return withCacheHeaders(
       NextResponse.json({
         success: true,
         data: certs,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages,
-          hasMore: page < totalPages,
-        },
+        pagination: buildPagination(total, page, limit),
       })
     );
   } catch (error) {

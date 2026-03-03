@@ -1,11 +1,6 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
-
-interface PaginationResult {
-    page: number;
-    hasMore: boolean;
-    total: number;
-}
+import type { PaginationResult } from '@/lib/data/blogs';
 
 interface PaginationState {
     page: number;

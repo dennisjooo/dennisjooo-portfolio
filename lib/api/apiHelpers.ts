@@ -31,3 +31,8 @@ export function parsePagination(searchParams: URLSearchParams) {
   const offset = (page - 1) * limit;
   return { page, limit, offset };
 }
+
+export function buildPagination(total: number, page: number, limit: number) {
+  const totalPages = Math.ceil(total / limit);
+  return { total, page, limit, totalPages, hasMore: page < totalPages };
+}
