@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
 import { db, siteConfig } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
+import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
+import { NextResponse } from "next/server";
 
 const defaultAboutContent = {
   intro: `Hey, I'm Dennis. I like taking ideas apart, figuring out how they tick, and putting them back together in a way that feels a little smarter. I studied Business Mathematics, but these days my curiosity leans more toward data, AI, and building systems that make life flow a bit smoother. I like when logic meets intuition, when something just clicks and works better than it has any right to.`,
@@ -32,16 +32,13 @@ export async function GET() {
     return NextResponse.json(config);
   } catch (error) {
     console.error("Failed to fetch site config:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch site config" },
-      { status: 500 }
-    );
+    return errorResponse("Failed to fetch site config", 500);
   }
 }
 
 export async function PUT(request: Request) {
-  const { userId } = await auth();
-  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   try {
     const body = await request.json();
@@ -72,9 +69,6 @@ export async function PUT(request: Request) {
     return NextResponse.json(config);
   } catch (error) {
     console.error("Failed to update site config:", error);
-    return NextResponse.json(
-      { error: "Failed to update site config" },
-      { status: 500 }
-    );
+    return errorResponse("Failed to update site config", 500);
   }
 }

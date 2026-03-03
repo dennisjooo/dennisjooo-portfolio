@@ -1,13 +1,11 @@
 import { put, del } from '@vercel/blob';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import sharp from 'sharp';
+import { requireAuth, isAuthError, errorResponse } from '@/lib/api/apiHelpers';
 
 export async function POST(request: Request) {
-  const { userId } = await auth();
-  if (!userId) {
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   const { searchParams } = new URL(request.url);
   const originalFilename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
@@ -18,7 +16,7 @@ export async function POST(request: Request) {
     : null;
 
   if (!request.body) {
-    return new NextResponse('No body', { status: 400 });
+    return errorResponse('No body', 400);
   }
 
   try {
@@ -55,33 +53,30 @@ export async function POST(request: Request) {
     return NextResponse.json(blob);
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return errorResponse('Upload failed', 500);
   }
 }
 
 export async function DELETE(request: Request) {
-  const { userId } = await auth();
-  if (!userId) {
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   try {
     const { urls } = await request.json();
     if (!urls || !Array.isArray(urls)) {
-      return new NextResponse('Invalid body', { status: 400 });
+      return errorResponse('Invalid body', 400);
     }
 
-    // Validate that all URLs are valid Vercel Blob URLs
     const validUrlPattern = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/.+$/;
-    const invalidUrls = urls.filter(url => typeof url !== 'string' || !validUrlPattern.test(url));
+    const invalidUrls = urls.filter((url: string) => typeof url !== 'string' || !validUrlPattern.test(url));
     if (invalidUrls.length > 0) {
-      return new NextResponse('Invalid blob URLs provided', { status: 400 });
+      return errorResponse('Invalid blob URLs provided', 400);
     }
 
     await del(urls);
-    return new NextResponse('Deleted', { status: 200 });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete error:', error);
-    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
+    return errorResponse('Delete failed', 500);
   }
 }

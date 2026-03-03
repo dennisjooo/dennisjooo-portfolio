@@ -3,9 +3,9 @@ import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
-import { auth } from "@clerk/nextjs/server";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { migrateAllBlogImages } from "@/lib/utils/blobMigration";
+import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
 
 export async function GET(
   request: Request,
@@ -15,16 +15,13 @@ export async function GET(
     const { id } = await params;
     const [blog] = await db.select().from(blogs).where(eq(blogs.id, id));
     if (!blog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return errorResponse("Blog not found", 404);
     }
 
-    return cachedJsonResponse(blog);
+    return cachedJsonResponse({ success: true, data: blog });
   } catch (error) {
     console.error("Error fetching blog:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch blog" },
-      { status: 500 }
-    );
+    return errorResponse("Failed to fetch blog", 500);
   }
 }
 
@@ -32,10 +29,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   try {
     const { id } = await params;
@@ -164,10 +159,8 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const authResult = await requireAuth();
+  if (isAuthError(authResult)) return authResult;
 
   try {
     const { id } = await params;
