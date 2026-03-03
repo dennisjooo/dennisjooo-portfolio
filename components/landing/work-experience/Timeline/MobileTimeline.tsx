@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useCallback, useRef, useLayoutEffect, useEffect } from 'react';
-import { TimelineItemData } from '../WorkExperience';
+import { TimelineItemData } from '@/lib/types/workExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { MobileWorkCard } from './MobileWorkCard';
 

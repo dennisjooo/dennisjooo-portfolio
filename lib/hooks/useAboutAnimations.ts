@@ -1,12 +1,7 @@
 'use client';
 
 import { RefObject, useEffect } from 'react';
-
-interface ContentSection {
-    title: string;
-    body: string;
-    id: string;
-}
+import { ContentSection } from '@/components/landing/about/contentSections';
 
 interface UseAboutAnimationsProps {
     sectionRef: RefObject<HTMLDivElement | null>;

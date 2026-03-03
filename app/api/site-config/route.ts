@@ -1,14 +1,7 @@
 import { db, siteConfig } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
-import { NextResponse } from "next/server";
-
-const defaultAboutContent = {
-  intro: `Hey, I'm Dennis. I like taking ideas apart, figuring out how they tick, and putting them back together in a way that feels a little smarter. I studied Business Mathematics, but these days my curiosity leans more toward data, AI, and building systems that make life flow a bit smoother. I like when logic meets intuition, when something just clicks and works better than it has any right to.`,
-  experience: `I've built and shipped ML apps, orchestrated chatbots, and pieced together tools that turn chaos into clarity. I'm drawn to projects that live in the messy space between idea and execution, where a rough sketch becomes something people actually use. I care less about chasing hype and more about quiet, useful progress: automations that save time, systems that scale well, and ideas that grow legs on their own.`,
-  personal: `Outside of work, I'm usually buried in ML papers I only half understand (for now), sketching side projects that may or may not see daylight, or running laps in a sim rig like there's a trophy at stake. I love comics, science books, and strange ideas that don't fit anywhere yet. For me, building isn't just about utility, it's about curiosity, rhythm, and play.`,
-  outro: `If you're into AI, design, or building things that make people pause and go "oh, that's clever," let's talk. I'm always down to share ideas, trade experiments, or spin up something new, half for the fun of it, half to see what it might become.`,
-};
+import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
+import { defaultAboutContent } from "@/components/landing/about/contentSections";
 
 export async function GET() {
   try {
@@ -26,10 +19,10 @@ export async function GET() {
           aboutOutro: defaultAboutContent.outro,
         })
         .returning();
-      return NextResponse.json(newConfig);
+      return successResponse(newConfig);
     }
 
-    return NextResponse.json(config);
+    return successResponse(config);
   } catch (error) {
     console.error("Failed to fetch site config:", error);
     return errorResponse("Failed to fetch site config", 500);
@@ -66,7 +59,7 @@ export async function PUT(request: Request) {
         .returning();
     }
 
-    return NextResponse.json(config);
+    return successResponse(config);
   } catch (error) {
     console.error("Failed to update site config:", error);
     return errorResponse("Failed to update site config", 500);

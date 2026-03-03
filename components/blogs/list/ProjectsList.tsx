@@ -1,6 +1,6 @@
 import { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
-import { formatProjectDate } from '@/lib/utils/projectFormatting';
+import { formatProjectDate, calculateReadTime } from '@/lib/utils/projectFormatting';
 import { ContentCard, PaginatedList } from '@/components/shared';
 import type { PaginationResult } from '@/lib/data/blogs';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
@@ -52,7 +52,7 @@ export default function ProjectsList({
                     imageUrl={imageUrl ?? undefined}
                     index={index}
                     type={itemType}
-                    readTime={`${Math.ceil(blogPost.split(/\s+/).length / 200)} min`}
+                    readTime={`${calculateReadTime(blogPost)} min`}
                     variant="standard"
                 />
             )}

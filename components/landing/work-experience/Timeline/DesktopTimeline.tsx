@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import { TimelineItemData } from '../WorkExperience';
+import { TimelineItemData } from '@/lib/types/workExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { TimelineGroup } from './TimelineGroup';
 

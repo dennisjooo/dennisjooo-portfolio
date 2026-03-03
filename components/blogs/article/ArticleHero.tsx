@@ -7,6 +7,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { PhotoView } from 'react-photo-view';
 import { useState } from 'react';
 import { NOISE_OVERLAY_HEAVY } from '@/lib/constants/noiseOverlay';
+import { getBlogTypeLabel } from '@/lib/utils/projectFormatting';
 
 interface ArticleHeroProps {
     title: string;
@@ -53,7 +54,7 @@ export const ArticleHero = ({
                 className="flex flex-wrap items-center gap-3 md:gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground mb-6"
             >
                 <span className="px-2 py-1 rounded border border-border">
-                    {type === 'project' ? 'Project' : 'Article'}
+                    {getBlogTypeLabel(type)}
                 </span>
                 <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
                 <time dateTime={date}>{date}</time>

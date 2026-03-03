@@ -6,6 +6,7 @@ import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 import { NOISE_OVERLAY_LIGHT } from '@/lib/constants/noiseOverlay';
+import { getBlogTypeLabel } from '@/lib/utils/projectFormatting';
 
 interface ContentCardProps {
     title: string;
@@ -109,7 +110,7 @@ export const ContentCard = ({
                         {type && (
                             <div className="absolute top-3 left-3 z-20">
                                 <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest bg-background/80 backdrop-blur-sm rounded border border-border text-muted-foreground">
-                                    {type === 'project' ? 'Project' : 'Article'}
+                                    {getBlogTypeLabel(type)}
                                 </span>
                             </div>
                         )}

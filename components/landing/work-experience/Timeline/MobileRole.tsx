@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, memo } from 'react';
-import { TimelineItemData } from '../WorkExperience';
+import React, { memo } from 'react';
+import { TimelineItemData } from '@/lib/types/workExperience';
+import { useExpandableList } from '@/lib/hooks/useExpandableList';
 
 interface MobileRoleProps {
     role: TimelineItemData;
@@ -9,11 +10,7 @@ interface MobileRoleProps {
 }
 
 export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const INITIAL_COUNT = 2;
-    const initialItems = role.responsibilities.slice(0, INITIAL_COUNT);
-    const expandedItems = role.responsibilities.slice(INITIAL_COUNT);
-    const hasMore = role.responsibilities.length > INITIAL_COUNT;
+    const { isExpanded, toggle, initialItems, expandedItems, hasMore } = useExpandableList(role.responsibilities, 2);
 
     return (
         <div className="space-y-4">
@@ -69,7 +66,7 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        setIsExpanded(!isExpanded);
+                        toggle();
                     }}
                     className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors pt-1"
                 >

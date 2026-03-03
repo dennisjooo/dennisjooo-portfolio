@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
-import { TimelineItemData } from '../WorkExperience';
+import React from 'react';
+import { TimelineItemData } from '@/lib/types/workExperience';
 import { m, AnimatePresence } from 'framer-motion';
+import { useExpandableList } from '@/lib/hooks/useExpandableList';
 
 interface TimelineRoleProps {
     role: TimelineItemData;
@@ -10,11 +11,7 @@ interface TimelineRoleProps {
 }
 
 export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const INITIAL_COUNT = 3;
-    const initialItems = role.responsibilities.slice(0, INITIAL_COUNT);
-    const expandedItems = role.responsibilities.slice(INITIAL_COUNT);
-    const hasMore = role.responsibilities.length > INITIAL_COUNT;
+    const { isExpanded, toggle, initialItems, expandedItems, hasMore } = useExpandableList(role.responsibilities, 3);
 
     return (
         <m.div
@@ -71,7 +68,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
             {/* Read More Button */}
             {hasMore && (
                 <button
-                    onClick={() => setIsExpanded(!isExpanded)}
+                    onClick={toggle}
                     className="group flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
                 >
                     <span>{isExpanded ? 'Read Less' : 'Read More'}</span>

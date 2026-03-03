@@ -13,8 +13,9 @@ export function useSiteConfig() {
   useEffect(() => {
     fetch("/api/site-config", { cache: "no-store" })
       .then((res) => res.json())
-      .then((data: SiteConfigData) => {
-        setConfig(data);
+      .then((res) => {
+        const config = res.data ?? res;
+        setConfig(config as SiteConfigData);
         setLoading(false);
       })
       .catch((error) => {

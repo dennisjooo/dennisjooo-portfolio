@@ -1,4 +1,4 @@
-import { TimelineItemData } from '@/components/landing/work-experience/WorkExperience';
+import { TimelineItemData } from '@/lib/types/workExperience';
 
 export interface CompanyGroup {
     companyName: string;

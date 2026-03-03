@@ -3,16 +3,9 @@
 import React from 'react';
 import { DesktopTimeline, MobileTimeline } from './Timeline';
 import { SectionHeader } from '@/components/shared/SectionHeader';
+import { TimelineItemData } from '@/lib/types/workExperience';
 
-export interface TimelineItemData {
-    id?: string;
-    date: string;
-    title: string;
-    company: string;
-    imageSrc: string;
-    responsibilities: string[];
-    order?: number;
-}
+export type { TimelineItemData };
 
 // Default data for fallback
 const defaultWorkExperienceData: TimelineItemData[] = [];
