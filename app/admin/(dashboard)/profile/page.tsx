@@ -1,24 +1,18 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { CameraIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';
+import { useSiteConfig } from '@/lib/hooks/useSiteConfig';
+import { LoadingSpinner } from '@/components/admin/shared';
 
 export default function ProfileAdminPage() {
-  const [imageUrl, setImageUrl] = useState('');
+  const { config, loading, updateConfig } = useSiteConfig();
   const [uploading, setUploading] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('/api/site-config', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        setImageUrl(data.profileImageUrl || '/images/profile.webp');
-        setLoading(false);
-      });
-  }, []);
+  const imageUrl = config?.profileImageUrl || '/images/profile.webp';
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
@@ -29,7 +23,6 @@ export default function ProfileAdminPage() {
     try {
       const { contentHash, body } = await buildUploadPayload(file);
 
-      // 1. Upload to Blob
       const response = await fetch(`/api/upload?filename=profile.webp&contentHash=${contentHash}`, {
         method: 'POST',
         body,
@@ -37,15 +30,7 @@ export default function ProfileAdminPage() {
 
       const newBlob = await response.json();
 
-      // 2. Update DB
-      await fetch('/api/site-config', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileImageUrl: newBlob.url }),
-      });
-
-      setImageUrl(newBlob.url);
-      // Optional: Add a toast notification here
+      await updateConfig({ profileImageUrl: newBlob.url });
       toast.success('Profile updated!');
     } catch (error) {
       console.error(error);
@@ -55,11 +40,7 @@ export default function ProfileAdminPage() {
     }
   };
 
-  if (loading) return (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-    </div>
-  );
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="space-y-8">
@@ -74,7 +55,6 @@ export default function ProfileAdminPage() {
 
       <div className="glass-panel p-8 rounded-2xl max-w-2xl border border-border/50">
         <div className="flex flex-col md:flex-row gap-8 items-start">
-          {/* Image Preview */}
           <div className="relative group">
             <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-background shadow-xl">
               {imageUrl && (
@@ -93,7 +73,6 @@ export default function ProfileAdminPage() {
               )}
             </div>
 
-            {/* Upload Button Overlay */}
             <label
               htmlFor="profile-upload"
               className="absolute bottom-0 right-0 p-3 bg-primary text-primary-foreground rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors group-hover:scale-110"

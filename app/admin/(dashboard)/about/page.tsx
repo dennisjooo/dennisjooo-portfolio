@@ -1,15 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
-
-interface AboutContent {
-  aboutIntro: string;
-  aboutExperience: string;
-  aboutPersonal: string;
-  aboutOutro: string;
-}
+import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
+import { LoadingSpinner } from "@/components/admin/shared";
 
 const sections = [
   { key: "aboutIntro", title: "The Logic", description: "Introduction - Who you are" },
@@ -18,47 +13,37 @@ const sections = [
   { key: "aboutOutro", title: "The Connection", description: "Call to action and contact" },
 ] as const;
 
+type SectionKey = (typeof sections)[number]["key"];
+
 export default function AboutAdminPage() {
-  const [content, setContent] = useState<AboutContent>({
+  const { config, loading, updateConfig } = useSiteConfig();
+  const [content, setContent] = useState<Record<SectionKey, string>>({
     aboutIntro: "",
     aboutExperience: "",
     aboutPersonal: "",
     aboutOutro: "",
   });
-  const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/site-config", { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data) => {
-        setContent({
-          aboutIntro: data.aboutIntro || "",
-          aboutExperience: data.aboutExperience || "",
-          aboutPersonal: data.aboutPersonal || "",
-          aboutOutro: data.aboutOutro || "",
-        });
-        setLoading(false);
-      });
-  }, []);
+  if (!loading && config && !initialized) {
+    setContent({
+      aboutIntro: config.aboutIntro || "",
+      aboutExperience: config.aboutExperience || "",
+      aboutPersonal: config.aboutPersonal || "",
+      aboutOutro: config.aboutOutro || "",
+    });
+    setInitialized(true);
+  }
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch("/api/site-config", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(content),
-      });
-
-      if (res.ok) {
-        setSaved(true);
-        toast.success("Changes saved successfully");
-        setTimeout(() => setSaved(false), 2000);
-      } else {
-        toast.error("Failed to save");
-      }
+      await updateConfig(content);
+      setSaved(true);
+      toast.success("Changes saved successfully");
+      setTimeout(() => setSaved(false), 2000);
     } catch (error) {
       console.error(error);
       toast.error("Failed to save");
@@ -67,13 +52,7 @@ export default function AboutAdminPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="space-y-8">
