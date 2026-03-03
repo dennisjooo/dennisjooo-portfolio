@@ -3,7 +3,12 @@
 import CertificationsList from "./CertificationsList";
 import ProjectsList from "./ProjectsList";
 import TabSwitcher from "./TabSwitcher";
-import { tabContentVariants } from "@/lib/animations/variants";
+const tabContentVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+    transition: { duration: 0.3 },
+};
 import { useTabState } from "@/lib/hooks/useTabState";
 import { AnimatePresence, m } from "framer-motion";
 import { BlogsHero } from "./BlogsHero";

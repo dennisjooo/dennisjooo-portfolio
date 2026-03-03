@@ -17,7 +17,3 @@ export function getSessionItem(key: string) {
 export function setSessionItem(key: string, value: string) {
     session()?.setItem(key, value);
 }
-
-export function removeSessionItem(key: string) {
-    session()?.removeItem(key);
-}

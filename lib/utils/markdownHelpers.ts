@@ -1,8 +1,3 @@
-/**
- * Extracts headings from markdown content
- * @param markdown The markdown content
- * @returns Array of headings with id, text, and level
- */
 import GithubSlugger from 'github-slugger';
 
 export interface Heading {

@@ -1,11 +1,3 @@
-import { Blog } from "@/lib/db";
-
-export const sortProjectsByDate = (projects: Blog[]): Blog[] =>
-    [...projects].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-
-
 function getOrdinalSuffix(day: number): string {
     if (day > 3 && day < 21) return 'th';
     switch (day % 10) {
@@ -30,8 +22,3 @@ export const formatProjectDate = (dateString: string, shortFormat?: boolean): st
             return `${ weekday }, ${ month } ${ day }${ ordinal }, ${ year } `;
         }
     }
-
-export const truncateProjectDescription = (description: string, maxLength = 120): string =>
-    description.length <= maxLength
-        ? description
-        : `${ description.slice(0, maxLength).trim() }...`;
