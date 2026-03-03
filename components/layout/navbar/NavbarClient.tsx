@@ -9,16 +9,16 @@ import { MobileMenu } from "./MobileMenu";
 import { ThemeToggle } from "@/components/theme";
 import { navItems } from "@/data/navbarContent";
 import {
-    useClientReady,
     useHeroSectionState,
     useNavbarStyles,
     useSectionNavigation,
 } from "@/lib/hooks/useNavbar";
+import { useMounted } from "@/lib/hooks/useMounted";
 
 export const NavbarClient = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname() ?? "/";
-    const isClientReady = useClientReady();
+    const isClientReady = useMounted();
     const { scrolled, isHeroSection } = useHeroSectionState(isClientReady, pathname);
 
     const handleNavigation = useSectionNavigation({

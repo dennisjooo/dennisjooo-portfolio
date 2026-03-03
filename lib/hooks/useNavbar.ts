@@ -8,8 +8,6 @@ import { useMounted } from "@/lib/hooks/useMounted";
 // Constants
 const SCROLL_THRESHOLD = 20;
 
-export const useClientReady = useMounted;
-
 interface HeroSectionState {
     isHeroSection: boolean;
     scrolled: boolean;

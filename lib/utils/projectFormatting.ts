@@ -8,6 +8,14 @@ function getOrdinalSuffix(day: number): string {
     }
 }
 
+export function calculateReadTime(text: string): number {
+    return Math.ceil(text.split(/\s+/).length / 200);
+}
+
+export function getBlogTypeLabel(type: string): string {
+    return type === 'project' ? 'Project' : 'Article';
+}
+
 export const formatProjectDate = (dateString: string, shortFormat?: boolean): string =>
     {
         const date = new Date(dateString);
@@ -17,8 +25,8 @@ export const formatProjectDate = (dateString: string, shortFormat?: boolean): st
         const year = date.getFullYear();
         const ordinal = getOrdinalSuffix(day);
         if (shortFormat) {
-            return `${ day } ${ month } ${ year } `;
+            return `${day} ${month} ${year}`;
         } else {
-            return `${ weekday }, ${ month } ${ day }${ ordinal }, ${ year } `;
+            return `${weekday}, ${month} ${day}${ordinal}, ${year}`;
         }
     }

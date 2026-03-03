@@ -26,6 +26,3 @@ export const SectionHeader = ({
         </div>
     );
 };
-
-// Alias for backward compatibility during migration
-export const SectionHeaderAnimated = SectionHeader;
