@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-background text-foreground">
             <article className="w-full max-w-4xl mx-auto px-6 py-24 md:py-28 animate-pulse">
                 {/* Back Navigation */}
                 <div className="mb-8">
@@ -54,6 +54,6 @@ export default function Loading() {
                     </div>
                 </div>
             </article>
-        </main>
+        </div>
     );
 }

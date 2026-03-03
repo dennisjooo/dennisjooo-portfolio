@@ -6,7 +6,7 @@ import { ReadingProgress } from '@/components/shared';
 import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
-import { formatProjectDate } from '@/lib/utils/projectFormatting';
+import { formatProjectDate, calculateReadTime } from '@/lib/utils/projectFormatting';
 import { m } from 'framer-motion';
 import { PhotoProvider } from 'react-photo-view';
 import { Heading } from '@/lib/utils/markdownHelpers';
@@ -19,14 +19,14 @@ interface ProjectPageClientProps {
 
 export default function ProjectPageClient({ project, headings, children }: ProjectPageClientProps) {
     const wordCount = project.blogPost.split(/\s+/).length;
-    const readTime = Math.ceil(wordCount / 200);
+    const readTime = calculateReadTime(project.blogPost);
 
     return (
         <>
             <ReadingProgress />
             <TableOfContents headings={headings} />
             <PhotoProvider maskOpacity={PHOTO_VIEWER_CONFIG.maskOpacity} speed={() => PHOTO_VIEWER_CONFIG.speed}>
-                <main className="min-h-screen bg-background text-foreground">
+                <div className="min-h-screen bg-background text-foreground">
                     <article className="w-full max-w-4xl mx-auto px-6 py-24 md:py-28">
                         {/* Editorial Hero */}
                         <ArticleHero
@@ -60,7 +60,7 @@ export default function ProjectPageClient({ project, headings, children }: Proje
                             </m.div>
                         )}
                     </article>
-                </main>
+                </div>
             </PhotoProvider>
         </>
     );

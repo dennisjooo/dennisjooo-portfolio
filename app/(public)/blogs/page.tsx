@@ -16,7 +16,7 @@ export default async function ProjectsAndCertificationsPage() {
     const initialBlogsData = await getBlogs(1, 9, 'all');
 
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-background text-foreground">
             <section
                 id='projects-and-certifications'
                 className='flex flex-col py-8 md:py-12'
@@ -28,6 +28,6 @@ export default async function ProjectsAndCertificationsPage() {
             </section>
             
             <BackToTop />
-        </main>
+        </div>
     );
 }

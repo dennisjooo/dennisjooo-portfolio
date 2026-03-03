@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
 import { LoadingSpinner } from "@/components/admin/shared";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { cn } from "@/lib/utils";
 
 const sections = [
   { key: "aboutIntro", title: "The Logic", description: "Introduction - Who you are" },
@@ -27,15 +29,17 @@ export default function AboutAdminPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  if (!loading && config && !initialized) {
-    setContent({
-      aboutIntro: config.aboutIntro || "",
-      aboutExperience: config.aboutExperience || "",
-      aboutPersonal: config.aboutPersonal || "",
-      aboutOutro: config.aboutOutro || "",
-    });
-    setInitialized(true);
-  }
+  useEffect(() => {
+    if (!loading && config && !initialized) {
+      setContent({
+        aboutIntro: config.aboutIntro || "",
+        aboutExperience: config.aboutExperience || "",
+        aboutPersonal: config.aboutPersonal || "",
+        aboutOutro: config.aboutOutro || "",
+      });
+      setInitialized(true);
+    }
+  }, [loading, config, initialized]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -98,7 +102,7 @@ export default function AboutAdminPage() {
                 setContent({ ...content, [section.key]: e.target.value })
               }
               rows={5}
-              className="w-full p-4 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none resize-none font-urbanist"
+              className={cn(formStyles.input, "resize-none")}
               placeholder={`Enter content for ${section.title}...`}
             />
             <div className="mt-2 text-right">
