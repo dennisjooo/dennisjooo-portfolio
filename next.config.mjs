@@ -53,6 +53,7 @@ const createConfig = (phase) => {
         { source: '/skill', destination: '/#skills' },
         { source: '/contact', destination: '/#contact' },
         { source: '/contacts', destination: '/#contact' },
+        { source: '/sitemap', destination: '/sitemap.xml' },
     ].map(r => ({ ...r, permanent: true }));
 
     const { version } = JSON.parse(readFileSync('./package.json', 'utf8'));

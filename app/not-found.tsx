@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { m } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import { useParallax } from '@/lib/hooks/useParallax';
+import Navbar from '@/components/layout/navbar/Navbar';
 
 export default function NotFound() {
     const { mounted, foreground, background } = useParallax();
@@ -10,6 +11,8 @@ export default function NotFound() {
     if (!mounted) return null;
 
     return (
+        <LazyMotion features={domAnimation}>
+        <Navbar />
         <main className="relative h-screen w-full overflow-hidden bg-background text-foreground bg-noise selection:bg-accent selection:text-accent-foreground">
 
             {/* 1. Abstract Grid Background */}
@@ -104,5 +107,6 @@ export default function NotFound() {
             <div className="absolute top-0 left-12 w-px h-32 bg-gradient-to-b from-foreground/20 to-transparent hidden md:block" />
 
         </main>
+        </LazyMotion>
     );
 }
