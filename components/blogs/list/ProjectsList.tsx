@@ -7,7 +7,7 @@ import type { PaginationResult } from '@/lib/data/blogs';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
 import { useMemo } from 'react';
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 7;
 
 interface ProjectsListProps {
     type?: 'project' | 'blog' | 'all';
