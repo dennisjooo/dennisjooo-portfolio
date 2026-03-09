@@ -1,19 +1,55 @@
-interface DashboardHeaderProps {
-  userName?: string | null;
+import { StatusData } from './types';
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
 }
 
-export function DashboardHeader({ userName }: DashboardHeaderProps) {
+function getOverallStatus(statusData: StatusData | null, isLoading: boolean): { label: string; color: string } {
+  if (isLoading || !statusData) return { label: 'Checking...', color: 'text-muted-foreground' };
+  const statuses = [statusData.database, statusData.auth, statusData.blobStorage];
+  if (statuses.some(s => s?.status === 'down')) return { label: 'Degraded', color: 'text-red-500' };
+  if (statuses.some(s => s?.status === 'degraded')) return { label: 'Partial', color: 'text-yellow-500' };
+  if (statuses.every(s => s?.status === 'operational')) return { label: 'All Systems Go', color: 'text-emerald-500' };
+  return { label: 'Checking...', color: 'text-muted-foreground' };
+}
+
+interface DashboardHeaderProps {
+  userName?: string | null;
+  statusData?: StatusData | null;
+  statusLoading?: boolean;
+}
+
+export function DashboardHeader({ userName, statusData = null, statusLoading = true }: DashboardHeaderProps) {
+  const greeting = getGreeting();
+  const status = getOverallStatus(statusData, statusLoading);
+  const isPending = statusLoading || !statusData;
+
   return (
-    <div className="space-y-2">
-      <h1 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl text-foreground">
-        Welcome back,{' '}
-        <span className="not-italic font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-600">
-          {userName || 'Admin'}.
-        </span>
-      </h1>
-      <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest max-w-xl">
-        System Status: Operational {/* Ready for content injection */}
-      </p>
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="space-y-2">
+        <h1 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl text-foreground">
+          {greeting},{' '}
+          <span className="not-italic font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-600">
+            {userName || 'Admin'}.
+          </span>
+        </h1>
+        <div className="flex items-center gap-3">
+          <span className={`inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest ${status.color}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${status.color.replace('text-', 'bg-')} ${isPending ? 'animate-pulse' : ''}`} />
+            {status.label}
+          </span>
+          <span className="text-border">|</span>
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-border bg-muted/50 font-mono text-[10px] text-muted-foreground">
+            Ctrl K
+          </kbd>
+          <span className="hidden sm:inline font-mono text-xs text-muted-foreground">
+            to jump anywhere
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
