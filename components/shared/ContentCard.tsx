@@ -60,19 +60,18 @@ export const ContentCard = ({
 
     return (
         <Link href={`/blogs/${slug}`} className="block group w-full cursor-pointer h-full">
-            <m.article
+            <m.div
                 variants={prefersReducedMotion ? undefined : cardVariants}
                 initial={prefersReducedMotion ? undefined : "hidden"}
                 whileInView={prefersReducedMotion ? undefined : "visible"}
                 viewport={isFeatured ? viewportSettings.onceDeep : viewportSettings.once}
                 whileHover={prefersReducedMotion ? undefined : { y: hoverY, transition: springConfigs.snappy }}
-                className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden"
+                className="relative h-full"
             >
-                {/* Gradient glow on hover */}
-                <div className={cn(
-                    "absolute -inset-1 bg-gradient-accent rounded-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10",
-                    isFeatured ? "blur-lg" : "blur-md"
-                )} />
+                {/* Gradient border glow - outside the card */}
+                <div className="absolute -inset-px bg-gradient-accent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <article className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden">
 
                 {/* Image Container */}
                 <div className="relative w-full aspect-[16/9] bg-muted overflow-hidden">
@@ -135,7 +134,8 @@ export const ContentCard = ({
                         <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                     </div>
                 </div>
-            </m.article>
+                </article>
+            </m.div>
         </Link>
     );
 };

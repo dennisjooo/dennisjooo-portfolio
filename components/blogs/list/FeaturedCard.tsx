@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { cn } from '@/lib/utils';
 import { m, useReducedMotion, springConfigs } from '@/components/motion';
 import { NOISE_OVERLAY_LIGHT } from '@/lib/constants/noiseOverlay';
 import { getBlogTypeLabel } from '@/lib/utils/projectFormatting';
@@ -31,15 +30,17 @@ export const FeaturedCard = ({
 
     return (
         <Link href={`/blogs/${slug}`} className="block group w-full cursor-pointer mb-12 md:mb-16">
-            <m.article
+            <m.div
                 initial={prefersReducedMotion ? undefined : { opacity: 0, y: 40 }}
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={springConfigs.smooth}
-                className="relative grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-10 rounded-2xl border border-border bg-card p-4 md:p-6 overflow-hidden"
+                className="relative"
             >
-                {/* Gradient glow on hover */}
-                <div className="absolute -inset-1 bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-40 blur-2xl transition-opacity duration-700 -z-10" />
+                {/* Gradient border glow - outside the card */}
+                <div className="absolute -inset-px bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <article className="relative grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-10 rounded-2xl border border-border bg-card p-4 md:p-6 overflow-hidden">
 
                 {/* Image - 3 columns on desktop */}
                 <div className="relative md:col-span-3 w-full aspect-[16/9] md:aspect-auto md:min-h-[320px] rounded-xl overflow-hidden bg-muted">
@@ -96,7 +97,8 @@ export const FeaturedCard = ({
                         <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </div>
                 </div>
-            </m.article>
+                </article>
+            </m.div>
         </Link>
     );
 };
