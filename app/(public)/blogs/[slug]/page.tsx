@@ -86,7 +86,7 @@ export default async function Page({ params, searchParams }: ProjectPageProps) {
 
     return (
         <>
-            {isPreview && <PreviewBanner status={project.status} />}
+            {isPreview && <PreviewBanner status={project.status} slug={slug} />}
             <ProjectPageClient project={project} headings={headings}>
                 <ProjectContent content={project.blogPost} />
             </ProjectPageClient>

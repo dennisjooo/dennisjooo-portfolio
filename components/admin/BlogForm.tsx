@@ -61,6 +61,17 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     };
   }, [pendingImages]);
 
+  // Clean up any leftover preview entry for this slug on mount
+  useEffect(() => {
+    if (!effectiveSlug) return;
+    const previewSlug = `${effectiveSlug}-preview`;
+    fetch('/api/blogs/preview', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: previewSlug }),
+    }).catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   useEffect(() => {
     if (editorMode === 'split') return;
@@ -186,6 +197,34 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     return matches;
   };
 
+  const [previewing, setPreviewing] = useState(false);
+
+  const handlePreview = async () => {
+    if (!formData.title) {
+      toast.error('Add a title before previewing');
+      return;
+    }
+
+    setPreviewing(true);
+    try {
+      const previewContent = await processContent(formData.blogPost || '');
+      const response = await fetch('/api/blogs/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, blogPost: previewContent }),
+      });
+
+      if (!response.ok) throw new Error('Failed to create preview');
+      const { data } = await response.json();
+      window.open(`/blogs/${data.slug}?preview=true`, '_blank');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to create preview');
+    } finally {
+      setPreviewing(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -247,6 +286,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       <MarkdownEditor
         content={formData.blogPost || ''}
         onChange={handleChange}
+        onContentChange={(content) => setFormData(prev => ({ ...prev, blogPost: content }))}
         editorMode={editorMode}
         onEditorModeChange={setEditorMode}
         canUploadImages={canUploadImages}
@@ -255,19 +295,15 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       />
 
       <div className="flex items-center justify-between pt-4 border-t border-border/50">
-        <div>
-          {initialData && (
-            <a
-              href={`/blogs/${initialData.slug || createUrlSlug(initialData.title)}?preview=true`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <EyeIcon className="w-4 h-4" />
-              Preview
-            </a>
-          )}
-        </div>
+        <button
+          type="button"
+          onClick={handlePreview}
+          disabled={previewing || !formData.title}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+        >
+          <EyeIcon className="w-4 h-4" />
+          {previewing ? 'Creating Preview...' : 'Preview'}
+        </button>
         <button
           type="submit"
           disabled={loading || uploading}
