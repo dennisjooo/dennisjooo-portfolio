@@ -129,7 +129,7 @@ export const markdownComponents: Components = {
         const isFullWidth = !hasDimensions;
 
         return (
-            <span className={`flex justify-center my-10 group ${isFullWidth ? '-mx-6 md:-mx-12 lg:-mx-16' : ''}`}>
+            <span className="flex justify-center my-10 group">
                 <span className={hasDimensions ? "inline-block" : "block w-full"}>
                     <PhotoView src={cleanSrc}>
                         <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in shadow-md">

@@ -106,7 +106,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="relative cursor-zoom-in group -mx-6 md:-mx-16 lg:-mx-24"
+                className="relative cursor-zoom-in group"
             >
                 {/* Gradient Glow */}
                 <div className="absolute -inset-2 bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
