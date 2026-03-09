@@ -2,6 +2,7 @@ import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { del } from "@vercel/blob";
 import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
+import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
 
 /**
  * Cleanup endpoint for preview entries, designed to work with navigator.sendBeacon.
@@ -28,15 +29,11 @@ export async function POST(request: Request) {
       return successResponse({ message: "No preview to delete" });
     }
 
-    const imagesToDelete: string[] = [];
-    if (preview.imageUrl?.includes("vercel-storage.com")) {
-      imagesToDelete.push(preview.imageUrl);
-    }
-    const imgRegex = /!\[.*?\]\((https:\/\/[^)]+vercel-storage\.com[^)]+)\)/g;
-    let match;
-    while ((match = imgRegex.exec(preview.blogPost || "")) !== null) {
-      imagesToDelete.push(match[1]);
-    }
+    const imagesToDelete = await getPreviewExclusiveBlobUrls(
+      preview.imageUrl,
+      preview.blogPost,
+      slug
+    );
 
     await db.delete(blogs).where(eq(blogs.id, preview.id));
 
