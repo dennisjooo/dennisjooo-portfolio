@@ -9,60 +9,42 @@ interface SystemAnalyticsProps {
 
 export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalyticsProps) {
   return (
-    <div className="p-8 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
-      <div className="flex items-center justify-between mb-6">
+    <div className="rounded-2xl border border-border bg-card/20 backdrop-blur-sm overflow-hidden">
+      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
         <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          System Analytics
+          System Status
         </h3>
         <div className="flex items-center gap-3">
           {statusData?.timestamp && (
-            <span className="font-mono text-xs text-muted-foreground">
-              Updated: {new Date(statusData.timestamp).toLocaleTimeString()}
+            <span className="font-mono text-[11px] text-muted-foreground/60">
+              {new Date(statusData.timestamp).toLocaleTimeString()}
             </span>
           )}
           {statusData?.cached && (
-            <span className="font-mono text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
-              Cached
+            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-muted/50 text-muted-foreground">
+              cached
             </span>
           )}
           {isLoading && (
-            <span className="font-mono text-xs text-muted-foreground animate-pulse">
-              Checking...
+            <span className="font-mono text-[11px] text-muted-foreground animate-pulse">
+              polling...
             </span>
           )}
           {error && (
-            <span className="font-mono text-xs text-red-500">Error: {error}</span>
+            <span className="font-mono text-[11px] text-red-500">{error}</span>
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div className="space-y-1">
-          <StatusIndicator status={statusData?.database} />
-          <div className="text-sm text-muted-foreground">Database Status</div>
-          {statusData?.database?.latency != null && (
-            <div className="text-xs text-muted-foreground/60">
-              {statusData.database.latency}ms
-            </div>
-          )}
-        </div>
-        <div className="space-y-1">
-          <StatusIndicator status={statusData?.auth} />
-          <div className="text-sm text-muted-foreground">Auth System</div>
-          {statusData?.auth?.latency != null && (
-            <div className="text-xs text-muted-foreground/60">
-              {statusData.auth.latency}ms
-            </div>
-          )}
-        </div>
-        <div className="space-y-1">
-          <StatusIndicator status={statusData?.blobStorage} />
-          <div className="text-sm text-muted-foreground">Blob Storage</div>
-        </div>
-        <div className="space-y-1">
-          <div className="text-3xl font-bold font-urbanist">
+
+      <div className="px-6 py-2 divide-y divide-border/30">
+        <StatusIndicator status={statusData?.database} label="Database" />
+        <StatusIndicator status={statusData?.auth} label="Authentication" />
+        <StatusIndicator status={statusData?.blobStorage} label="Blob Storage" />
+        <div className="flex items-center justify-between py-2">
+          <span className="text-sm text-foreground">Build Version</span>
+          <span className="font-mono text-xs text-muted-foreground">
             {statusData?.version ? `v${statusData.version}` : '...'}
-          </div>
-          <div className="text-sm text-muted-foreground">Current Build</div>
+          </span>
         </div>
       </div>
     </div>
