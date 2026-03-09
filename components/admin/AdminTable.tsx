@@ -25,6 +25,10 @@ interface AdminTableProps<T> {
   onPageChange: (page: number) => void;
   enableReorder?: boolean;
   onReorder?: (rows: T[]) => void | Promise<void>;
+  enableSelect?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
+  onToggleSelectAll?: () => void;
 }
 
 export function AdminTable<T extends { id?: string | number }>({
@@ -36,6 +40,10 @@ export function AdminTable<T extends { id?: string | number }>({
   onPageChange,
   enableReorder = false,
   onReorder,
+  enableSelect,
+  selectedIds,
+  onToggleSelect,
+  onToggleSelectAll,
 }: AdminTableProps<T>) {
   const [localData, setLocalData] = useState<T[]>(data || []);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -129,6 +137,14 @@ export function AdminTable<T extends { id?: string | number }>({
               {/* Card Header: Primary content + Actions */}
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {enableSelect && (
+                    <input
+                      type="checkbox"
+                      checked={selectedIds?.has(String(row.id)) ?? false}
+                      onChange={() => onToggleSelect?.(String(row.id))}
+                      className="flex-shrink-0 mt-1 rounded border-border accent-primary"
+                    />
+                  )}
                   {enableReorder && (
                     <button
                       type="button"
@@ -177,6 +193,16 @@ export function AdminTable<T extends { id?: string | number }>({
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border/50 bg-muted/20">
+                {enableSelect && (
+                  <th className="px-4 py-4 w-[40px]">
+                    <input
+                      type="checkbox"
+                      checked={localData.length > 0 && selectedIds?.size === localData.length}
+                      onChange={() => onToggleSelectAll?.()}
+                      className="rounded border-border accent-primary"
+                    />
+                  </th>
+                )}
                 {enableReorder && (
                   <th className="px-4 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground">
                     Order
@@ -219,6 +245,16 @@ export function AdminTable<T extends { id?: string | number }>({
                     onDragOver={(event) => handleDragOver(event, rowIdx)}
                     onDrop={() => handleDrop(rowIdx)}
                   >
+                    {enableSelect && (
+                      <td className="px-4 py-4 w-[40px]">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds?.has(String(row.id)) ?? false}
+                          onChange={() => onToggleSelect?.(String(row.id))}
+                          className="rounded border-border accent-primary"
+                        />
+                      </td>
+                    )}
                     {enableReorder && (
                       <td className="px-4 py-4 text-sm font-urbanist text-foreground w-[50px]">
                         <button
