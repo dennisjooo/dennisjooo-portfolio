@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell, AdminReorderHint } from "@/components/admin/shared";
+import { AdminPageHeader, AdminActionCell, AdminReorderHint, ConfirmDialog } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { WorkExperience } from "@/lib/db";
 
@@ -12,12 +12,14 @@ export default function AdminWorkExperienceList() {
     loading,
     handleDelete,
     handleReorder,
+    deleteDialog,
+    confirmDelete,
+    cancelDelete,
   } = useAdminList<WorkExperience>({
     endpoint: "/api/work-experience",
     enableReorder: true,
     reorderEndpoint: "/api/work-experience/reorder",
     itemName: "work experience",
-    deleteConfirmMessage: "Are you sure you want to delete this work experience?",
     deleteSuccessMessage: "Item deleted successfully",
   });
 
@@ -91,6 +93,16 @@ export default function AdminWorkExperienceList() {
         onReorder={handleReorder}
       />
       <AdminReorderHint />
+      <ConfirmDialog
+        open={deleteDialog.open}
+        title="Delete Work Experience"
+        description="Are you sure you want to delete this work experience? This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        loading={deleteDialog.loading}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </div>
   );
 }

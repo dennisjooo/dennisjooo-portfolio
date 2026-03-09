@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell, AdminReorderHint } from "@/components/admin/shared";
+import { AdminPageHeader, AdminActionCell, AdminReorderHint, ConfirmDialog } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
@@ -16,13 +16,15 @@ export default function AdminContactsList() {
     handlePageChange,
     handleDelete,
     handleReorder,
+    deleteDialog,
+    confirmDelete,
+    cancelDelete,
   } = useAdminList<Contact>({
     endpoint: "/api/contacts",
     pageSize: 10,
     enableReorder: true,
     reorderEndpoint: "/api/contacts/reorder",
     itemName: "contact",
-    deleteConfirmMessage: "Are you sure you want to delete this contact?",
     deleteSuccessMessage: "Contact deleted successfully",
   });
 
@@ -91,6 +93,16 @@ export default function AdminContactsList() {
         onReorder={handleReorder}
       />
       <AdminReorderHint />
+      <ConfirmDialog
+        open={deleteDialog.open}
+        title="Delete Contact"
+        description="Are you sure you want to delete this contact? This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        loading={deleteDialog.loading}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </div>
   );
 }

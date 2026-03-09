@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminTable, Column } from '@/components/admin/AdminTable';
-import { AdminPageHeader, AdminActionCell } from '@/components/admin/shared';
+import { AdminPageHeader, AdminActionCell, ConfirmDialog } from '@/components/admin/shared';
 import { useAdminList } from '@/components/admin/hooks';
 import type { Certification } from '@/lib/db';
 
@@ -13,11 +13,13 @@ export default function AdminCertificationsList() {
     totalPages,
     handlePageChange,
     handleDelete,
+    deleteDialog,
+    confirmDelete,
+    cancelDelete,
   } = useAdminList<Certification>({
     endpoint: '/api/certifications',
     pageSize: 10,
     itemName: 'certification',
-    deleteConfirmMessage: 'Are you sure you want to delete this certification?',
     deleteSuccessMessage: 'Certification deleted successfully',
   });
 
@@ -64,6 +66,16 @@ export default function AdminCertificationsList() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+      />
+      <ConfirmDialog
+        open={deleteDialog.open}
+        title="Delete Certification"
+        description="Are you sure you want to delete this certification? This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        loading={deleteDialog.loading}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
       />
     </div>
   );
