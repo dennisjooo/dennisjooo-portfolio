@@ -6,19 +6,24 @@ import { navigationCards, containerVariants } from './constants';
 
 interface NavigationCardsProps {
   counts?: Record<string, number>;
+  countsLoading?: boolean;
 }
 
-export function NavigationCards({ counts }: NavigationCardsProps) {
+export function NavigationCards({ counts, countsLoading }: NavigationCardsProps) {
   return (
     <m.div
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
     >
       {navigationCards.map((card) => {
         const count = counts?.[card.href];
-        const stat = count !== undefined ? `${count} Items` : card.stat;
+        const stat = countsLoading
+          ? undefined
+          : count !== undefined
+            ? `${count} Items`
+            : card.stat;
         return (
           <NavigationCard
             key={card.href}
