@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
-import { desc, count, eq, and } from "drizzle-orm";
+import { desc, count, eq, and, ilike, not, like } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
 import { visibleBlogsFilter } from "@/lib/data/blogs";
@@ -20,6 +20,7 @@ export async function GET(request: Request) {
     const { page, limit, offset } = parsePagination(searchParams);
     const typeParam = searchParams.get("type");
     const statusParam = searchParams.get("status");
+    const searchQuery = searchParams.get("q");
 
     const validTypes = ["blog", "project"] as const;
     const type = typeParam && validTypes.includes(typeParam as typeof validTypes[number])
@@ -34,6 +35,8 @@ export async function GET(request: Request) {
 
     const conditions = [];
     if (type) conditions.push(eq(blogs.type, type));
+    if (searchQuery) conditions.push(ilike(blogs.title, `%${searchQuery}%`));
+    conditions.push(not(like(blogs.slug, '%-preview')));
 
     if (adminStatus) {
       conditions.push(eq(blogs.status, adminStatus));
