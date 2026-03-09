@@ -160,6 +160,19 @@ html {
 }
 
 
+/* Article drop cap - targets the first paragraph's first letter */
+.article-content > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-playfair);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 3.5em;
+  line-height: 0.8;
+  margin-right: 0.1em;
+  margin-top: 0.05em;
+  color: hsl(var(--accent));
+}
+
 /* Noise Overlay */
 .bg-noise {
   position: relative;

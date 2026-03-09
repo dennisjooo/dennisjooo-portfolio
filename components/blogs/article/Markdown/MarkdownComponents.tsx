@@ -8,14 +8,14 @@ import { PhotoView } from "react-photo-view";
 import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 
 export const markdownComponents: Components = {
-    // Headings - Editorial Typography
     h1: ({ children, ...props }) => (
         <h1 className="font-urbanist font-black text-3xl md:text-4xl mb-6 text-foreground border-b border-border pb-4 tracking-tight" {...props}>
             {children}
         </h1>
     ),
     h2: ({ children, ...props }) => (
-        <h2 className="font-urbanist font-bold text-2xl md:text-3xl mb-4 mt-12 text-foreground tracking-tight" {...props}>
+        <h2 className="font-playfair italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4" {...props}>
+            <span className="w-[2px] h-8 bg-accent rounded-full shrink-0" />
             {children}
         </h2>
     ),
@@ -30,7 +30,6 @@ export const markdownComponents: Components = {
         </h4>
     ),
 
-    // Text elements
     p: ({ children, node }) => {
         const hasImage = node?.children?.some(
             (child) => child.type === 'element' && child.tagName === 'img'
@@ -43,8 +42,10 @@ export const markdownComponents: Components = {
     strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
     em: ({ children }) => <em className="italic text-muted-foreground">{children}</em>,
     blockquote: ({ children }) => (
-        <blockquote className="border-l-2 border-accent pl-6 my-6 italic text-muted-foreground bg-muted/30 py-4 pr-4 rounded-r-lg [&>p]:before:content-none [&>p]:after:content-none">
+        <blockquote className="relative my-10 mx-auto max-w-2xl py-8 px-6 md:px-10 border-none bg-transparent text-center [&>p]:before:content-none [&>p]:after:content-none [&>p]:mb-0 [&>p]:text-foreground [&>p]:font-playfair [&>p]:italic [&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed">
+            <div className="mx-auto w-8 h-px bg-accent/60 mb-6" />
             {children}
+            <div className="mx-auto w-8 h-px bg-accent/60 mt-6" />
         </blockquote>
     ),
 
@@ -117,7 +118,6 @@ export const markdownComponents: Components = {
         let imgWidth: number | undefined;
         let imgHeight: number | undefined;
 
-        // Support "#dim=WxH" (fragment) and " =WxH" (inline) dimension syntax
         const dimMatch = cleanSrc.match(/#dim=(\d*)x(\d*)$/) || cleanSrc.match(/\s+=(\d*)x(\d*)$/);
         if (dimMatch) {
             cleanSrc = cleanSrc.replace(/#dim=\d*x\d*$/, '').replace(/\s+=\d*x\d*$/, '');
@@ -126,13 +126,13 @@ export const markdownComponents: Components = {
         }
 
         const hasDimensions = imgWidth || imgHeight;
+        const isFullWidth = !hasDimensions;
 
         return (
-            <span className="flex justify-center my-8 group">
+            <span className={`flex justify-center my-10 group ${isFullWidth ? '-mx-6 md:-mx-12 lg:-mx-16' : ''}`}>
                 <span className={hasDimensions ? "inline-block" : "block w-full"}>
                     <PhotoView src={cleanSrc}>
-                        <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in">
-                            {/* Noise Overlay */}
+                        <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in shadow-md">
                             <span
                                 className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
                                 style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}

@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import ProjectLinks from '@/components/blogs/article/ProjectLinks';
 import TableOfContents from '@/components/blogs/article/TableOfContents';
 import { ReadingProgress } from '@/components/shared';
@@ -59,6 +61,22 @@ export default function ProjectPageClient({ project, headings, children }: Proje
                                 <ProjectLinks links={project.links} />
                             </m.div>
                         )}
+
+                        {/* Back to all posts footer */}
+                        <m.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            className="mt-16 pt-8 border-t border-border flex justify-center"
+                        >
+                            <Link
+                                href="/blogs"
+                                className="group inline-flex items-center gap-3 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-accent transition-colors duration-300"
+                            >
+                                <ArrowLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                                Back to all posts
+                            </Link>
+                        </m.div>
                     </article>
                 </div>
             </PhotoProvider>

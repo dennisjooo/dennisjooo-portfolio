@@ -84,7 +84,7 @@ export const ArticleHero = ({
                 {description}
             </m.p>
 
-            {/* Hero Image */}
+            {/* Hero Image - Full Bleed */}
             {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} />}
         </header>
     );
@@ -106,21 +106,21 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="relative w-full cursor-zoom-in group"
+                className="relative cursor-zoom-in group -mx-6 md:-mx-16 lg:-mx-24"
             >
                 {/* Gradient Glow */}
                 <div className="absolute -inset-2 bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
 
-                {/* Image Container */}
+                {/* Image Container - wider than content column */}
                 <div
-                    className="relative w-full overflow-hidden rounded-xl border border-border bg-muted"
+                    className="relative w-full overflow-hidden rounded-xl border border-border bg-muted shadow-lg"
                     style={
                         aspectRatio
                             ? {
                                 aspectRatio: `${aspectRatio}`,
-                                maxHeight: '65vh',
+                                maxHeight: '70vh',
                             }
-                            : { minHeight: '300px', maxHeight: '65vh' }
+                            : { minHeight: '300px', maxHeight: '70vh' }
                     }
                 >
                     {/* Noise Overlay */}
@@ -135,7 +135,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                         fill
                         style={{ objectFit: 'contain' }}
                         className="transition-transform duration-700 group-hover:scale-[1.02]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                         priority
                         onLoad={handleImageLoad}
                     />

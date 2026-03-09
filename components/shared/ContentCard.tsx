@@ -66,85 +66,47 @@ export const ContentCard = ({
                 whileInView={prefersReducedMotion ? undefined : "visible"}
                 viewport={isFeatured ? viewportSettings.onceDeep : viewportSettings.once}
                 whileHover={prefersReducedMotion ? undefined : { y: hoverY, transition: springConfigs.snappy }}
-                className="flex flex-col gap-4 h-full"
+                className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden"
             >
-                {/* Card Wrapper for Glow */}
-                <div className="relative w-full aspect-[4/3]">
-                    {/* Gradient Glow */}
-                    <div className={cn(
-                        "absolute -inset-1 bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                        isFeatured ? "blur-lg" : "blur-md"
-                    )} />
+                {/* Gradient glow on hover */}
+                <div className={cn(
+                    "absolute -inset-1 bg-gradient-accent rounded-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10",
+                    isFeatured ? "blur-lg" : "blur-md"
+                )} />
+
+                {/* Image Container */}
+                <div className="relative w-full aspect-[16/9] bg-muted overflow-hidden">
+                    <div 
+                        className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
+                        style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
+                    />
                     
-                    {/* Image Container - Poster Style */}
-                    <div className="relative w-full h-full bg-muted overflow-hidden rounded-md border border-border">
-                        {/* Noise Overlay */}
-                        <div 
-                            className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
-                            style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
+                    {imageUrl ? (
+                        <Image
+                            src={imageUrl}
+                            alt={title}
+                            fill
+                            loading="lazy"
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
-                        
-                        {imageUrl ? (
-                            <Image
-                                src={imageUrl}
-                                alt={title}
-                                fill
-                                loading="lazy"
-                                className={cn(
-                                    "object-cover transition-transform duration-700 ease-out",
-                                    isFeatured ? "group-hover:scale-110" : "group-hover:scale-105"
-                                )}
-                                sizes={isFeatured 
-                                    ? "(max-width: 768px) 100vw, 33vw"
-                                    : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                }
-                            />
-                        ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
-                        )}
-                        
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10" />
-                        
-                        {/* Type Badge - Only if type is provided */}
-                        {type && (
-                            <div className="absolute top-3 left-3 z-20">
-                                <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest bg-background/80 backdrop-blur-sm rounded border border-border text-muted-foreground">
-                                    {getBlogTypeLabel(type)}
-                                </span>
-                            </div>
-                        )}
-                    </div>
+                    ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
+                    )}
+                    
+                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10" />
+                    
+                    {type && (
+                        <div className="absolute top-3 left-3 z-20">
+                            <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest bg-background/80 backdrop-blur-sm rounded border border-border text-muted-foreground">
+                                {getBlogTypeLabel(type)}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
-                {/* Content - Editorial Layout */}
-                <div className="flex flex-col gap-2 relative flex-1">
-                    {/* Header Line */}
-                    <div className="flex items-baseline justify-between border-b border-border pb-2 mb-2">
-                        {isFeatured ? (
-                             <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
-                                0{index + 1} — {date}
-                            </span>
-                        ) : (
-                            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase tracking-widest">
-                                <span>0{(index % 9) + 1}</span>
-                                <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-                                <span>{date}</span>
-                                {readTime && (
-                                    <>
-                                        <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-                                        <span>{readTime}</span>
-                                    </>
-                                )}
-                            </div>
-                        )}
-                        
-                        <ArrowUpRightIcon className={cn(
-                            "w-4 h-4 text-muted-foreground group-hover:text-foreground transition-all duration-300",
-                            !isFeatured && "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                        )} />
-                    </div>
-
+                {/* Content */}
+                <div className="flex flex-col gap-3 p-4 md:p-5 flex-1">
                     <h3 className={cn(
                         "font-playfair italic tracking-tight text-foreground group-hover:text-accent transition-colors duration-300",
                         isFeatured 
@@ -154,9 +116,24 @@ export const ContentCard = ({
                         {title}
                     </h3>
 
-                    <p className="font-urbanist text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                    <p className="font-urbanist text-muted-foreground text-sm leading-relaxed line-clamp-2 flex-1">
                         {description}
                     </p>
+
+                    {/* Meta footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
+                        <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase tracking-widest">
+                            <span>{date}</span>
+                            {readTime && (
+                                <>
+                                    <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+                                    <span>{readTime}</span>
+                                </>
+                            )}
+                        </div>
+                        
+                        <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                    </div>
                 </div>
             </m.article>
         </Link>
