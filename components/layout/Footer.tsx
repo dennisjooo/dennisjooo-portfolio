@@ -9,6 +9,7 @@ const Footer = () => {
         <footer className="relative w-full py-8 px-8 bg-background overflow-hidden border-t border-border z-40 bg-noise flex justify-center items-center">
             {/* Gradient Glow Interpretation - Ambient Bottom Light */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[200px] bg-gradient-accent opacity-15 blur-[80px] rounded-full pointer-events-none mix-blend-screen" />
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-accent/20 to-transparent pointer-events-none" />
             
             <div 
                 className="text-[10px] md:text-xs font-mono text-muted-foreground uppercase tracking-widest relative z-10 animate-fade-in-up"

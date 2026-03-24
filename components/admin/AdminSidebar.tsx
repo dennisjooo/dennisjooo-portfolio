@@ -64,7 +64,7 @@ export function AdminSidebar() {
 
         {/* Sign Out */}
         <SignOutButton>
-          <button className="w-full flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors">
+          <button className="w-full flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors">
             <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
             <span className="font-mono text-xs uppercase tracking-widest">Sign Out</span>
           </button>

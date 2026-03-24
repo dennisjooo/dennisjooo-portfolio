@@ -8,7 +8,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-background text-foreground bg-noise relative flex items-center justify-center">
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-background to-blue-500/10" />
+      <div className="absolute inset-0 bg-gradient-primary opacity-30" />
       
       <div className="relative z-10 w-full max-w-md mx-auto px-4">
         {/* Header */}
@@ -53,8 +53,8 @@ export default function AdminLoginPage() {
                 identityPreviewText: "text-foreground font-urbanist",
                 identityPreviewEditButton: "text-accent hover:text-accent/80",
                 formFieldInputShowPasswordButton: "text-muted-foreground hover:text-foreground",
-                alert: "bg-red-500/10 border-red-500/20 text-red-500",
-                alertText: "text-red-500 font-urbanist",
+                alert: "bg-destructive/10 border-destructive/20 text-destructive",
+                alertText: "text-destructive font-urbanist",
               },
               layout: {
                 socialButtonsPlacement: "bottom",

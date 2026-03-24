@@ -10,9 +10,9 @@ function getGreeting(): string {
 function getOverallStatus(statusData: StatusData | null, isLoading: boolean): { label: string; color: string } {
   if (isLoading || !statusData) return { label: 'Checking...', color: 'text-muted-foreground' };
   const statuses = [statusData.database, statusData.auth, statusData.blobStorage];
-  if (statuses.some(s => s?.status === 'down')) return { label: 'Degraded', color: 'text-red-500' };
-  if (statuses.some(s => s?.status === 'degraded')) return { label: 'Partial', color: 'text-yellow-500' };
-  if (statuses.every(s => s?.status === 'operational')) return { label: 'All Systems Go', color: 'text-emerald-500' };
+  if (statuses.some(s => s?.status === 'down')) return { label: 'Degraded', color: 'text-foreground' };
+  if (statuses.some(s => s?.status === 'degraded')) return { label: 'Partial', color: 'text-muted-foreground' };
+  if (statuses.every(s => s?.status === 'operational')) return { label: 'All Systems Go', color: 'text-accent' };
   return { label: 'Checking...', color: 'text-muted-foreground' };
 }
 
@@ -32,7 +32,7 @@ export function DashboardHeader({ userName, statusData = null, statusLoading = t
       <div className="space-y-2">
         <h1 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl text-foreground">
           {greeting},{' '}
-          <span className="not-italic font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-600">
+          <span className="not-italic font-sans font-bold text-gradient-primary">
             {userName || 'Admin'}.
           </span>
         </h1>

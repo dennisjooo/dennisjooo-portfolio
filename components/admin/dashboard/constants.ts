@@ -14,7 +14,6 @@ export const navigationCards = [
     href: "/admin/blogs",
     icon: DocumentTextIcon,
     stat: "Manage Posts",
-    color: "from-purple-500/20 to-blue-500/20",
   },
   {
     title: "Work Experience",
@@ -22,7 +21,6 @@ export const navigationCards = [
     href: "/admin/work-experience",
     icon: BriefcaseIcon,
     stat: "View All",
-    color: "from-sky-500/20 to-indigo-500/20",
   },
   {
     title: "Certifications",
@@ -30,7 +28,6 @@ export const navigationCards = [
     href: "/admin/certifications",
     icon: AcademicCapIcon,
     stat: "View All",
-    color: "from-emerald-500/20 to-teal-500/20",
   },
   {
     title: "Contacts",
@@ -38,7 +35,6 @@ export const navigationCards = [
     href: "/admin/contacts",
     icon: LinkIcon,
     stat: "View All",
-    color: "from-rose-500/20 to-pink-500/20",
   },
   {
     title: "About",
@@ -46,7 +42,6 @@ export const navigationCards = [
     href: "/admin/about",
     icon: IdentificationIcon,
     stat: "Edit",
-    color: "from-amber-500/20 to-yellow-500/20",
   },
   {
     title: "Profile Config",
@@ -54,7 +49,6 @@ export const navigationCards = [
     href: "/admin/profile",
     icon: UserCircleIcon,
     stat: "Settings",
-    color: "from-orange-500/20 to-red-500/20",
   },
 ];
 

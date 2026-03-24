@@ -19,7 +19,7 @@ export function AdminActionCell({ editHref, onDelete }: AdminActionCellProps) {
       <button
         type="button"
         onClick={onDelete}
-        className="p-2 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+        className="p-2 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
         aria-label="Delete"
       >
         <TrashIcon className="w-4 h-4" />

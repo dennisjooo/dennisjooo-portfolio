@@ -24,11 +24,11 @@ const typeConfig: Record<
   ActivityItem["type"],
   { icon: typeof DocumentTextIcon; label: string; color: string }
 > = {
-  blog: { icon: DocumentTextIcon, label: "Blog", color: "text-purple-500" },
-  project: { icon: DocumentTextIcon, label: "Project", color: "text-blue-500" },
-  "work-experience": { icon: BriefcaseIcon, label: "Experience", color: "text-sky-500" },
-  certification: { icon: AcademicCapIcon, label: "Cert", color: "text-emerald-500" },
-  contact: { icon: LinkIcon, label: "Contact", color: "text-rose-500" },
+  blog: { icon: DocumentTextIcon, label: "Blog", color: "text-accent" },
+  project: { icon: DocumentTextIcon, label: "Project", color: "text-foreground" },
+  "work-experience": { icon: BriefcaseIcon, label: "Experience", color: "text-muted-foreground" },
+  certification: { icon: AcademicCapIcon, label: "Cert", color: "text-foreground/70" },
+  contact: { icon: LinkIcon, label: "Contact", color: "text-accent/80" },
 };
 
 function SkeletonRow() {
@@ -73,7 +73,7 @@ export function RecentActivity() {
         </h3>
       </div>
 
-      <div className="divide-y divide-border/30">
+        <div className="divide-y divide-border/30 max-h-[240px] overflow-y-auto scrollbar-thin scrollbar-thumb-border/40 scrollbar-track-transparent">
         {loading && (
           <>
             <SkeletonRow />

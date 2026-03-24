@@ -230,7 +230,7 @@ export default function WorkExperienceForm({
                 <button
                   type="button"
                   onClick={() => removeResponsibility(index)}
-                  className="p-3 text-muted-foreground hover:text-red-500 transition-colors"
+                  className="p-3 text-muted-foreground hover:text-destructive transition-colors"
                 >
                   <TrashIcon className="w-4 h-4" />
                 </button>

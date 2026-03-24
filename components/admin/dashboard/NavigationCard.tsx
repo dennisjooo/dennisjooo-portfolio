@@ -11,17 +11,16 @@ interface NavigationCardProps {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   stat?: string;
-  color: string;
 }
 
-export function NavigationCard({ title, description, href, icon: Icon, stat, color }: NavigationCardProps) {
+export function NavigationCard({ title, description, href, icon: Icon, stat }: NavigationCardProps) {
   return (
     <m.div variants={itemVariants}>
       <Link
         href={href}
         className="group relative block h-full overflow-hidden rounded-2xl border border-border bg-card/30 hover:bg-card/50 backdrop-blur-sm transition-all duration-500 hover:shadow-2xl hover:shadow-accent/10 hover:border-accent/50"
       >
-        <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+        <div className="absolute inset-0 bg-gradient-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="relative p-6 h-full flex flex-col">
           <div className="flex items-start justify-between mb-4">
@@ -31,11 +30,11 @@ export function NavigationCard({ title, description, href, icon: Icon, stat, col
             <ArrowRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all mt-1" />
           </div>
 
-          <h2 className="text-lg font-bold font-urbanist mb-1.5 group-hover:text-accent transition-colors">
+          <h2 className="text-lg font-bold font-urbanist mb-1.5 group-hover:text-background transition-colors">
             {title}
           </h2>
 
-          <p className="text-sm text-muted-foreground flex-1 leading-relaxed">
+          <p className="text-sm text-muted-foreground flex-1 leading-relaxed group-hover:text-background/80 transition-colors">
             {description}
           </p>
 
@@ -43,7 +42,7 @@ export function NavigationCard({ title, description, href, icon: Icon, stat, col
             {stat === undefined ? (
               <div className="h-3 w-16 rounded bg-muted/40 animate-pulse" />
             ) : (
-              <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-accent transition-colors">
+              <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-background/85 transition-colors">
                 {stat}
               </span>
             )}

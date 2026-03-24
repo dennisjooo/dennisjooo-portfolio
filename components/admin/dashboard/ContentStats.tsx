@@ -83,21 +83,21 @@ export function ContentStats() {
           label="Drafts"
           count={counts.draft}
           href="/admin/blogs?status=draft"
-          color="bg-yellow-500"
+          color="bg-muted-foreground"
           loading={loading}
         />
         <StatPill
           label="Scheduled"
           count={counts.scheduled}
           href="/admin/blogs?status=scheduled"
-          color="bg-blue-500"
+          color="bg-accent"
           loading={loading}
         />
         <StatPill
           label="Published"
           count={counts.published}
           href="/admin/blogs?status=published"
-          color="bg-emerald-500"
+          color="bg-foreground"
           loading={loading}
         />
       </div>

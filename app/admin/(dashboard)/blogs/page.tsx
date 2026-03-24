@@ -107,8 +107,8 @@ export default function AdminBlogsList() {
       header: "Type",
       cell: (row: Blog) => (
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${row.type === 'project'
-          ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-          : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+          ? 'bg-secondary text-foreground dark:bg-secondary/40 dark:text-foreground'
+          : 'bg-accent/20 text-foreground dark:bg-accent/25 dark:text-foreground'
           }`}>
           {row.type}
         </span>
@@ -237,7 +237,7 @@ export default function AdminBlogsList() {
           <button
             type="button"
             onClick={handleBulkDelete}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-500/10 rounded-md transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
           >
             <TrashIcon className="w-3.5 h-3.5" />
             Delete Selected

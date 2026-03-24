@@ -103,7 +103,7 @@ export function AdminMobileMenu() {
             <SignOutButton>
               <button
                 onClick={closeMenu}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 group"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 group"
               >
                 <ArrowRightStartOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span className="font-mono text-xs uppercase tracking-widest">Sign Out</span>

@@ -54,7 +54,7 @@ export function LinkManager({ links, onAdd, onRemove }: LinkManagerProps) {
               <button
                 type="button"
                 onClick={() => onRemove(index)}
-                className="text-muted-foreground hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
               >
                 <XMarkIcon className="w-4 h-4" />
               </button>

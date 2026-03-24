@@ -6,15 +6,30 @@ interface StatusIndicatorProps {
 }
 
 const statusConfig = {
-  operational: { dot: 'bg-emerald-500', text: 'Operational', textColor: 'text-emerald-600 dark:text-emerald-400' },
-  degraded: { dot: 'bg-yellow-500', text: 'Degraded', textColor: 'text-yellow-600 dark:text-yellow-400' },
-  down: { dot: 'bg-red-500', text: 'Down', textColor: 'text-red-600 dark:text-red-400' },
+  operational: {
+    dot: 'bg-accent',
+    text: 'Operational',
+    textColor: 'text-foreground',
+    pill: 'bg-accent/20 border-accent/30'
+  },
+  degraded: {
+    dot: 'bg-foreground/40',
+    text: 'Degraded',
+    textColor: 'text-muted-foreground',
+    pill: 'bg-muted/40 border-border/60'
+  },
+  down: {
+    dot: 'bg-foreground',
+    text: 'Down',
+    textColor: 'text-foreground',
+    pill: 'bg-foreground/10 border-border'
+  },
 };
 
 export function StatusIndicator({ status, label }: StatusIndicatorProps) {
   if (!status) {
     return (
-      <div className="flex items-center justify-between py-2">
+      <div className="flex items-center justify-between py-3">
         <span className="text-sm text-foreground">{label}</span>
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
@@ -27,16 +42,16 @@ export function StatusIndicator({ status, label }: StatusIndicatorProps) {
   const config = statusConfig[status.status];
 
   return (
-    <div className="flex items-center justify-between py-2">
+    <div className="flex items-center justify-between py-3">
       <span className="text-sm text-foreground">{label}</span>
       <div className="flex items-center gap-2">
         {status.latency != null && (
-          <span className="font-mono text-[11px] text-muted-foreground/60">
+          <span className="font-mono text-[11px] text-muted-foreground/60 tabular-nums">
             {status.latency}ms
           </span>
         )}
-        <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
-        <span className={`text-xs font-medium ${config.textColor}`}>
+        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest ${config.pill} ${config.textColor}`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
           {config.text}
         </span>
       </div>

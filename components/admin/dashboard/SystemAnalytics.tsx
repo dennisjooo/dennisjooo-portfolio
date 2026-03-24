@@ -1,3 +1,4 @@
+import { CircleStackIcon } from '@heroicons/react/24/outline';
 import { StatusIndicator } from './StatusIndicator';
 import { StatusData } from './types';
 
@@ -11,12 +12,13 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
   return (
     <div className="rounded-2xl border border-border bg-card/20 backdrop-blur-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
-        <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <h3 className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          <CircleStackIcon className="w-4 h-4" />
           System Status
         </h3>
         <div className="flex items-center gap-3">
           {statusData?.timestamp && (
-            <span className="font-mono text-[11px] text-muted-foreground/60">
+            <span className="font-mono text-[11px] text-muted-foreground/60 tabular-nums">
               {new Date(statusData.timestamp).toLocaleTimeString()}
             </span>
           )}
@@ -31,7 +33,7 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
             </span>
           )}
           {error && (
-            <span className="font-mono text-[11px] text-red-500">{error}</span>
+            <span className="font-mono text-[11px] text-destructive">{error}</span>
           )}
         </div>
       </div>
@@ -40,7 +42,7 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
         <StatusIndicator status={statusData?.database} label="Database" />
         <StatusIndicator status={statusData?.auth} label="Authentication" />
         <StatusIndicator status={statusData?.blobStorage} label="Blob Storage" />
-        <div className="flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-3">
           <span className="text-sm text-foreground">Build Version</span>
           <span className="font-mono text-xs text-muted-foreground">
             {statusData?.version ? `v${statusData.version}` : '...'}

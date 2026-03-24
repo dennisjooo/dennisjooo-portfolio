@@ -32,7 +32,6 @@ export function NavigationCards({ counts, countsLoading }: NavigationCardsProps)
             href={card.href}
             icon={card.icon}
             stat={stat}
-            color={card.color}
           />
         );
       })}
