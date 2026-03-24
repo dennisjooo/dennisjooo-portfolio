@@ -126,7 +126,6 @@ export const markdownComponents: Components = {
         }
 
         const hasDimensions = imgWidth || imgHeight;
-        const isFullWidth = !hasDimensions;
 
         return (
             <span className="flex justify-center my-10 group">
