@@ -35,7 +35,7 @@ function SearchOptionButton({
 }: {
     active: boolean;
     onClick: () => void;
-    icon: React.ElementType;
+    icon: React.ComponentType<{ className?: string }>;
     label: string;
     title: string;
     variant?: keyof typeof variantStyles;
