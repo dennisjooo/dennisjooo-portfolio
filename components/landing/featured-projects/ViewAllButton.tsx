@@ -26,7 +26,7 @@ export const ViewAllButton = () => {
             initial={prefersReducedMotion ? undefined : "hidden"}
             whileInView={prefersReducedMotion ? undefined : "visible"}
             viewport={viewportSettings.once}
-            className="w-full flex justify-center mt-20 md:mt-32"
+            className="w-full flex justify-center mt-20 md:mt-10"
         >
             <Link
                 href="/blogs"

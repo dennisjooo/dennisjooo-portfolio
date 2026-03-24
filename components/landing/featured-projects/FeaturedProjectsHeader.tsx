@@ -10,9 +10,10 @@ export const FeaturedProjectsHeader = () => (
         headlineText="WORK"
         alignment="start"
         trigger="whileInView"
-        accentClassName="text-7xl md:text-9xl ml-2 md:ml-12 mb-[-3vw] md:mb-[-4vw]"
-        headlineClassName="text-[15vw] md:text-[12vw]"
-        className="mb-16 md:mb-24"
-        innerClassName="pt-12"
+        accentClassName="text-7xl md:text-7xl ml-2 md:ml-12 mb-[-3vw] md:mb-[-2vw]"
+        headlineClassName="text-[15vw] md:text-[8vw]"
+        className="mb-16 md:mb-10"
+        innerClassName="pt-6"
+        headerClassName="mb-6"
     />
 );
