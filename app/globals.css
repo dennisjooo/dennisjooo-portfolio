@@ -50,11 +50,6 @@ html {
   /* purple-200 with opacity */
   --default-border: rgb(229, 231, 235);
   /* gray-200 */
-  --hero-dither-color: rgba(0, 0, 0, 0.2);
-  --hero-vignette: rgba(0, 0, 0, 0.26);
-  --hero-edge-burn: rgba(95, 70, 120, 0.28);
-  --hero-shine-bright: rgba(0, 200, 215, 0.38);
-  --hero-shine-shadow: rgba(0, 140, 160, 0.22);
 
   /* Fonts */
   /* These are now handled via Tailwind config and Next.js font variables */
@@ -101,21 +96,6 @@ html {
   /* purple-500 with opacity */
   --default-border: rgb(31, 41, 55);
   /* gray-800 */
-  --hero-dither-color: rgba(255, 255, 255, 0.12);
-  --hero-vignette: rgba(0, 0, 0, 0.45);
-  --hero-edge-burn: rgba(24, 10, 45, 0.6);
-  --hero-shine-bright: rgba(255, 255, 255, 0.75);
-  --hero-shine-shadow: rgba(255, 255, 255, 0.4);
-}
-
-.light {
-  --hero-shine-bright: rgba(0, 200, 215, 0.38);
-  --hero-shine-shadow: rgba(0, 140, 160, 0.22);
-}
-
-.dark {
-  --hero-shine-bright: rgba(80, 240, 255, 0.28);
-  --hero-shine-shadow: rgba(40, 170, 190, 0.2);
 }
 
 @layer base {
@@ -145,44 +125,6 @@ html {
 
   .bg-gradient-accent {
     background: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
-  }
-
-  .hero-dithered-gradient {
-    background-color: hsl(var(--background));
-    background-image:
-      linear-gradient(130deg, var(--gradient-from), var(--gradient-via), var(--gradient-to)),
-      radial-gradient(circle at 1px 1px, var(--hero-dither-color) 0.6px, transparent 0.7px),
-      radial-gradient(circle at 3px 3px, var(--hero-dither-color) 0.6px, transparent 0.7px),
-      radial-gradient(80% 70% at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.08) 65%, var(--hero-vignette) 100%),
-      radial-gradient(140% 90% at 50% 20%, transparent 0%, var(--hero-edge-burn) 100%);
-    background-size: 200% 200%, 4px 4px, 4px 4px, 100% 100%, 100% 100%;
-    background-position: 0% 0%, 0 0, 2px 2px, center, center;
-    animation: hero-gradient-pan 1.8s ease-out both, hero-dither-drift 22s ease-in-out 1.8s infinite;
-  }
-
-  .hero-dithered-gradient::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    mix-blend-mode: multiply;
-    filter: blur(10px);
-    background-image: radial-gradient(
-      120% 60% at 50% 50%,
-      transparent 0%,
-      var(--hero-shine-shadow) 34%,
-      var(--hero-shine-bright) 48%,
-      var(--hero-shine-shadow) 62%,
-      transparent 78%
-    );
-    background-size: 220% 220%;
-    background-position: -60% 20%;
-    opacity: 0;
-    animation: hero-shimmer-drift 18s linear 1.8s infinite;
-  }
-
-  .dark .hero-dithered-gradient::after {
-    mix-blend-mode: screen;
   }
 
   /* Border and shadow utilities */
@@ -285,62 +227,6 @@ html {
   }
 }
 
-@keyframes hero-gradient-pan {
-  from {
-    background-position: 0% 0%, 0 0, 2px 2px, center, center;
-  }
-  to {
-    background-position: 55% 40%, 1px 1px, 3px 3px, center, center;
-  }
-}
-
-@keyframes hero-dither-drift {
-  0% {
-    background-position: 55% 40%, 1px 1px, 3px 3px, center, center;
-  }
-  50% {
-    background-position: 60% 45%, 3px 3px, 1px 1px, center, center;
-  }
-  100% {
-    background-position: 55% 40%, 1px 1px, 3px 3px, center, center;
-  }
-}
-
-@keyframes hero-shimmer-drift {
-  0% {
-    opacity: 0;
-    background-position: 140% 12%;
-  }
-  14% {
-    opacity: 0.35;
-    background-position: 120% 10%;
-  }
-  28% {
-    opacity: 0.5;
-    background-position: 100% 16%;
-  }
-  42% {
-    opacity: 0.4;
-    background-position: 84% 12%;
-  }
-  56% {
-    opacity: 0.48;
-    background-position: 68% 20%;
-  }
-  70% {
-    opacity: 0.36;
-    background-position: 52% 14%;
-  }
-  84% {
-    opacity: 0.44;
-    background-position: 40% 22%;
-  }
-  100% {
-    opacity: 0;
-    background-position: 30% 16%;
-  }
-}
-
 .animate-fade-in {
   animation: fade-in 0.7s ease-out both;
 }
@@ -353,12 +239,6 @@ html {
 .animate-fade-in-down {
   animation: fade-in-down 0.7s ease-out both;
   will-change: transform, opacity;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-dithered-gradient {
-    animation: none;
-  }
 }
 
 /* Content visibility for below-fold sections - prevents layout work until needed */

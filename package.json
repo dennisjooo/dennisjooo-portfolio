@@ -1,6 +1,6 @@
 {
   "name": "profile-page",
-  "version": "2026.03.24",
+  "version": "2026.03.24-b",
   "private": true,
   "scripts": {
     "dev": "next dev",
