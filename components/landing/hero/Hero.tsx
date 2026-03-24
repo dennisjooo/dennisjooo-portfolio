@@ -12,9 +12,9 @@ const Hero: React.FC = () => {
     return (
         <section
             id="home"
-            className="h-screen w-full relative overflow-hidden bg-gradient-primary bg-noise"
+            className="h-screen w-full relative overflow-hidden"
         >
-            {/* Background effect - client component, deferred loading */}
+            {/* Background effect - CSS-only dithered gradient */}
             <HeroBackground />
             
             {/* Scroll effect tracker - client component */}

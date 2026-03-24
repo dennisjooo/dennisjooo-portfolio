@@ -16,38 +16,43 @@ html {
   --popover-foreground: 0 0% 3.9%;
   --primary: 0 0% 9%;
   --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96.1%;
+  --secondary: 260 40% 96%;
   --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 270 95% 80%;
+  --muted: 250 25% 95%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 268 85% 70%;
   --accent-foreground: 0 0% 9%;
-  --border: 0 0% 89.8%;
-  --input: 0 0% 89.8%;
-  --ring: 0 0% 3.9%;
+  --border: 260 25% 88%;
+  --input: 260 25% 88%;
+  --ring: 268 90% 60%;
+  --destructive: 0 80% 56%;
+  --destructive-foreground: 0 0% 98%;
 
   /* Custom variables */
   --radius: 0.5rem;
 
   /* Light mode specific custom colors */
-  --gradient-from: rgba(221, 214, 254, 0.4);
+  --gradient-from: rgba(167, 139, 250, 0.6);
   /* purple-200/40 */
-  --gradient-via: rgba(233, 213, 255, 0.5);
+  --gradient-via: rgba(221, 214, 254, 0.75);
   /* purple-200 lighter/50 */
-  --gradient-to: rgba(243, 232, 255, 0.4);
+  --gradient-to: rgba(129, 140, 248, 0.6);
   /* purple-100/40 */
-  --gradient-accent-from: rgb(196, 181, 253);
+  --gradient-accent-from: rgb(139, 92, 246);
   /* purple-300 */
-  --gradient-accent-via: rgb(221, 214, 254);
+  --gradient-accent-via: rgb(167, 139, 250);
   /* purple-200 */
-  --gradient-accent-to: rgb(233, 213, 255);
+  --gradient-accent-to: rgb(99, 102, 241);
   /* purple-200 lighter */
   --accent-border: rgb(196, 181, 253);
-  /* purple-300 */
+  /* purple-200 */
   --accent-shadow: rgba(196, 181, 253, 0.5);
-  /* purple-300 with opacity */
+  /* purple-200 with opacity */
   --default-border: rgb(229, 231, 235);
   /* gray-200 */
+  --hero-dither-color: rgba(0, 0, 0, 0.2);
+  --hero-vignette: rgba(0, 0, 0, 0.26);
+  --hero-edge-burn: rgba(95, 70, 120, 0.28);
 
   /* Fonts */
   /* These are now handled via Tailwind config and Next.js font variables */
@@ -72,6 +77,8 @@ html {
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
+  --destructive: 0 62% 45%;
+  --destructive-foreground: 0 0% 98%;
 
   /* Dark mode specific custom colors */
   --gradient-from: rgba(99, 102, 241, 0.3);
@@ -92,6 +99,9 @@ html {
   /* purple-500 with opacity */
   --default-border: rgb(31, 41, 55);
   /* gray-800 */
+  --hero-dither-color: rgba(255, 255, 255, 0.12);
+  --hero-vignette: rgba(0, 0, 0, 0.45);
+  --hero-edge-burn: rgba(24, 10, 45, 0.6);
 }
 
 @layer base {
@@ -112,15 +122,40 @@ html {
   }
 
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r;
-    @apply from-purple-700 via-indigo-700 to-violet-700;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
   }
   .dark .text-gradient-primary {
-    @apply from-indigo-400 via-purple-400 to-pink-400;
+    background-image: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
   }
 
   .bg-gradient-accent {
     background: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
+  }
+
+  .hero-dithered-gradient {
+    background-color: hsl(var(--background));
+    background-image:
+      linear-gradient(130deg, var(--gradient-from), var(--gradient-via), var(--gradient-to)),
+      radial-gradient(circle at 1px 1px, var(--hero-dither-color) 0.6px, transparent 0.7px),
+      radial-gradient(circle at 3px 3px, var(--hero-dither-color) 0.6px, transparent 0.7px),
+      radial-gradient(80% 70% at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.08) 65%, var(--hero-vignette) 100%),
+      radial-gradient(140% 90% at 50% 20%, transparent 0%, var(--hero-edge-burn) 100%);
+    background-size: 200% 200%, 4px 4px, 4px 4px, 100% 100%, 100% 100%;
+    background-position: 0% 0%, 0 0, 2px 2px, center, center;
+    animation: hero-gradient-pan 1.8s ease-out both;
+  }
+
+  .hero-dithered-gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.38) 48%, transparent 56%);
+    background-size: 180% 180%;
+    background-position: -60% 20%;
+    opacity: 0;
+    animation: hero-shimmer-sweep 1.2s ease-out 0.35s both;
   }
 
   /* Border and shadow utilities */
@@ -223,6 +258,29 @@ html {
   }
 }
 
+@keyframes hero-gradient-pan {
+  from {
+    background-position: 0% 0%, 0 0, 2px 2px, center, center;
+  }
+  to {
+    background-position: 55% 40%, 1px 1px, 3px 3px, center, center;
+  }
+}
+
+@keyframes hero-shimmer-sweep {
+  0% {
+    opacity: 0;
+    background-position: -60% 20%;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    background-position: 140% 10%;
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.7s ease-out both;
 }
@@ -235,6 +293,12 @@ html {
 .animate-fade-in-down {
   animation: fade-in-down 0.7s ease-out both;
   will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-dithered-gradient {
+    animation: none;
+  }
 }
 
 /* Content visibility for below-fold sections - prevents layout work until needed */
