@@ -21,9 +21,10 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => (
         alignment="end"
         trigger="animate"
         HeadlineTag="h1"
-        accentClassName="text-3xl md:text-5xl lg:text-6xl mr-2 md:mr-12 mb-[-2vw] md:mb-[-2.5vw]"
-        headlineClassName="text-[14vw] md:text-[11vw]"
-        className="mb-10"
-        innerClassName="pt-8 md:pt-12"
+        accentClassName="text-3xl md:text-5xl lg:text-5xl mr-2 md:mr-12 mb-[-2vw] md:mb-[-1.5vw]"
+        headlineClassName="text-[14vw] md:text-[8vw]"
+        className="mb-6"
+        innerClassName="pt-4 md:pt-6"
+        headerClassName="mb-6"
     />
 );

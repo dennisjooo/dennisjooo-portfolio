@@ -52,7 +52,7 @@ export function BlogsTabs({ initialProjects, initialPagination }: BlogsTabsProps
 
             {/* Content Grid */}
             {availableTabs.length > 0 && (
-                <div className="w-full min-h-[50vh] mt-12">
+                <div className="w-full min-h-[50vh] mt-8">
                     {mounted ? (
                         <AnimatePresence mode="wait">
                             {activeTab === "blog" ? (

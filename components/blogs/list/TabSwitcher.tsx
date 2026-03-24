@@ -12,7 +12,7 @@ interface TabSwitcherProps {
 }
 
 const tabLabels: Record<TabType, string> = {
-    blog: 'Projects',
+    blog: 'Blogs',
     certifications: 'Certifications'
 };
 

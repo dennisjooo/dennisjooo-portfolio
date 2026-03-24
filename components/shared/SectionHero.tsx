@@ -49,6 +49,7 @@ interface SectionHeroProps {
     HeadlineTag?: 'h1' | 'h2';
     className?: string;
     innerClassName?: string;
+    headerClassName?: string;
 }
 
 export const SectionHero = ({
@@ -64,6 +65,7 @@ export const SectionHero = ({
     HeadlineTag = 'h2',
     className,
     innerClassName,
+    headerClassName,
 }: SectionHeroProps) => {
     const prefersReducedMotion = useReducedMotion();
     const isStart = alignment === 'start';
@@ -105,7 +107,7 @@ export const SectionHero = ({
             <SectionHeader
                 number={sectionNumber}
                 title={sectionTitle}
-                className="mb-12"
+                className={headerClassName ?? "mb-12"}
             />
 
             <m.div
