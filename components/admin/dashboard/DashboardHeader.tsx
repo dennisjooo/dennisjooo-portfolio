@@ -29,10 +29,10 @@ export function DashboardHeader({ userName, statusData = null, statusLoading = t
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div className="space-y-2 pb-2">
+      <div className="space-y-2">
         <h1 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl text-foreground">
           {greeting},{' '}
-          <span className="font-playfair font-bold text-gradient-primary">
+          <span className="not-italic font-sans font-bold text-gradient-primary">
             {userName || 'Admin'}.
           </span>
         </h1>
