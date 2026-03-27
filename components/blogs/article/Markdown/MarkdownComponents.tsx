@@ -14,14 +14,14 @@ export const markdownComponents: Components = {
         </h1>
     ),
     h2: ({ children, ...props }) => (
-        <h2 className="font-playfair italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4" {...props}>
+        <h2 className="font-playfair font-normal italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4" {...props}>
             <span className="w-[2px] h-8 bg-accent rounded-full shrink-0" />
             {children}
         </h2>
     ),
     h3: ({ children, ...props }) => (
         <h3 className="font-urbanist font-bold text-xl md:text-2xl mb-3 mt-8 text-foreground tracking-tight" {...props}>
-            {children}
+            {children} 
         </h3>
     ),
     h4: ({ children, ...props }) => (
