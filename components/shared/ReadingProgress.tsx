@@ -1,6 +1,7 @@
 'use client';
 
-import { m, useScroll, useSpring } from 'framer-motion';
+import { m } from '@/components/motion';
+import { useScroll, useSpring } from 'framer-motion';
 
 export default function ReadingProgress() {
     const { scrollYProgress } = useScroll();
