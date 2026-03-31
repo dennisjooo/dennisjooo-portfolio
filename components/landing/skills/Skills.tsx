@@ -5,8 +5,30 @@ import { skillCategories } from '@/data/skillContent';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 import { ParallaxText } from './ParallaxText';
 import { getIconSlug } from './utils';
+import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
+
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.15,
+        },
+    },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: springConfigs.smooth,
+    },
+};
 
 const Skills: React.FC = () => {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <section id="skills" className="py-24 w-full bg-background text-foreground overflow-hidden">
             <div className="w-full">
@@ -17,9 +39,19 @@ const Skills: React.FC = () => {
                     />
                 </div>
 
-                <div className="w-full flex flex-col border-t border-border/30">
+                <m.div
+                    variants={prefersReducedMotion ? undefined : containerVariants}
+                    initial={prefersReducedMotion ? undefined : 'hidden'}
+                    whileInView={prefersReducedMotion ? undefined : 'visible'}
+                    viewport={viewportSettings.once}
+                    className="w-full flex flex-col border-t border-border/30"
+                >
                     {skillCategories.map((category, index) => (
-                        <div key={category.title} className="relative group border-b border-border/30 overflow-hidden">
+                        <m.div
+                            key={category.title}
+                            variants={prefersReducedMotion ? undefined : itemVariants}
+                            className="relative group border-b border-border/30 overflow-hidden"
+                        >
                             {/* Category Label */}
                             <div className="absolute top-3 left-4 md:left-8 z-10 pointer-events-none">
                                 <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-muted-foreground">
@@ -60,9 +92,9 @@ const Skills: React.FC = () => {
                                     </div>
                                 </ParallaxText>
                             </div>
-                        </div>
+                        </m.div>
                     ))}
-                </div>
+                </m.div>
             </div>
         </section>
     );

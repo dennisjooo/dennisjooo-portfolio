@@ -4,12 +4,33 @@ import React, { useState, useMemo, useCallback, useRef, useLayoutEffect, useEffe
 import { TimelineItemData } from '@/lib/types/workExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
 import { MobileWorkCard } from './MobileWorkCard';
+import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
+
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.12,
+            delayChildren: 0.1,
+        },
+    },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: springConfigs.smooth,
+    },
+};
 
 interface MobileTimelineProps {
     items: TimelineItemData[];
 }
 
 export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
+    const prefersReducedMotion = useReducedMotion();
     // Memoize grouped items to avoid recalculation on every render
     const groupedItems = useMemo(() => groupItemsByCompany(items), [items]);
 
@@ -119,18 +140,26 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
     return (
         <div className="md:hidden w-full px-5 py-12">
             {/* Stacked Accordion Cards - overflow-anchor:none prevents browser scroll anchoring */}
-            <div className="relative space-y-6" style={{ overflowAnchor: 'none' }}>
+            <m.div
+                variants={prefersReducedMotion ? undefined : containerVariants}
+                initial={prefersReducedMotion ? undefined : 'hidden'}
+                whileInView={prefersReducedMotion ? undefined : 'visible'}
+                viewport={viewportSettings.once}
+                className="relative space-y-6"
+                style={{ overflowAnchor: 'none' }}
+            >
                 {groupedItems.map((group, index) => (
-                    <MobileWorkCard
-                        key={`${group.companyName}-${index}`}
-                        ref={el => { cardRefs.current[index] = el; }}
-                        group={group}
-                        index={index}
-                        isExpanded={expandedIndex === index}
-                        onToggle={() => handleToggle(index)}
-                    />
+                    <m.div key={`${group.companyName}-${index}`} variants={prefersReducedMotion ? undefined : itemVariants}>
+                        <MobileWorkCard
+                            ref={el => { cardRefs.current[index] = el; }}
+                            group={group}
+                            index={index}
+                            isExpanded={expandedIndex === index}
+                            onToggle={() => handleToggle(index)}
+                        />
+                    </m.div>
                 ))}
-            </div>
+            </m.div>
         </div>
     );
 };
