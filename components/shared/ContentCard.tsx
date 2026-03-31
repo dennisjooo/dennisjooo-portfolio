@@ -61,10 +61,10 @@ export const ContentCard = ({
     return (
         <Link href={`/blogs/${slug}`} className="block group w-full cursor-pointer h-full">
             <m.div
-                variants={prefersReducedMotion ? undefined : cardVariants}
-                initial={prefersReducedMotion ? undefined : "hidden"}
-                whileInView={prefersReducedMotion ? undefined : "visible"}
-                viewport={isFeatured ? viewportSettings.onceDeep : viewportSettings.once}
+                variants={prefersReducedMotion ? undefined : isFeatured ? undefined : cardVariants}
+                initial={prefersReducedMotion ? undefined : isFeatured ? undefined : "hidden"}
+                whileInView={prefersReducedMotion ? undefined : isFeatured ? undefined : "visible"}
+                viewport={isFeatured ? undefined : viewportSettings.once}
                 whileHover={prefersReducedMotion ? undefined : { y: hoverY, transition: springConfigs.snappy }}
                 className="relative h-full"
             >
