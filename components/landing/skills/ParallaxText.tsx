@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import {
   m,
   useScroll,
@@ -9,7 +9,8 @@ import {
   useMotionValue,
   useVelocity,
   useAnimationFrame,
-  useInView
+  useInView,
+  useReducedMotion
 } from "framer-motion";
 import { wrap } from "@/lib/utils/math";
 
@@ -23,20 +24,8 @@ export function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
 
-  // Check for reduced motion preference
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  // Pause animation on hover
+  const prefersReducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
 
   // Smoother spring settings for fluid motion
   const smoothVelocity = useSpring(scrollVelocity, {
