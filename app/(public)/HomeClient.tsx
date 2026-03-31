@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, type ReactNode } from 'react';
+import { useRef, useEffect, useState, type ReactNode } from 'react';
 
 interface HomeClientProps {
     heroContent: ReactNode;
@@ -8,67 +8,61 @@ interface HomeClientProps {
     backToTop: ReactNode;
 }
 
-/**
- * Minimal client wrapper for GSAP scroll animations
- * Defers GSAP loading significantly to after LCP for better mobile performance
- */
 export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientProps) {
     const heroRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
+    const initialHash = typeof window !== 'undefined' ? window.location.hash : '';
+    const [isReady, setIsReady] = useState(initialHash === '' || initialHash === '#home');
 
-    // Handle hash navigation after page load
     useEffect(() => {
         const hash = window.location.hash ? window.location.hash.substring(1) : '';
+        const isHashNav = hash !== '' && hash !== 'home';
 
-        // Clear hash from URL immediately to prevent browser's native hash scrolling
         if (hash) {
             window.history.replaceState({}, '', window.location.pathname);
         }
 
-        // Special case for "home" or no hash - scroll to top immediately
-        if (hash === 'home' || hash === '') {
-            // Stop Lenis, force scroll to 0, then resume
-            if (window.lenis) {
-                window.lenis.stop();
-            }
-            window.scrollTo(0, 0);
-            requestAnimationFrame(() => {
-                window.scrollTo(0, 0); // Double-tap to ensure
-                if (window.lenis) {
-                    window.lenis.scrollTo(0, { immediate: true });
-                    requestAnimationFrame(() => {
-                        window.lenis?.start();
-                    });
-                }
-            });
-            return;
-        }
-
-        // For other sections, use delayed scroll to ensure content is rendered
-        const scrollToHash = () => {
-            const element = document.getElementById(hash);
-            if (element) {
-                // Stop Lenis temporarily to prevent interference during hash scroll
+        if (!isHashNav) {
+            if (hash === 'home') {
                 if (window.lenis) {
                     window.lenis.stop();
                 }
-                // First scroll to top instantly to reset scroll state
                 window.scrollTo(0, 0);
-                // Then scroll to the target element
+                requestAnimationFrame(() => {
+                    window.scrollTo(0, 0);
+                    if (window.lenis) {
+                        window.lenis.scrollTo(0, { immediate: true });
+                        requestAnimationFrame(() => { window.lenis?.start(); });
+                    }
+                });
+            }
+            setIsReady(true);
+            return;
+        }
+
+        setIsReady(false);
+        const scrollToHash = () => {
+            const element = document.getElementById(hash);
+            if (element) {
+                if (window.lenis) {
+                    window.lenis.stop();
+                }
+                window.scrollTo(0, 0);
                 requestAnimationFrame(() => {
                     element.scrollIntoView({ behavior: 'auto' });
-                    // Resume Lenis after scroll completes
                     if (window.lenis) {
                         requestAnimationFrame(() => {
                             window.lenis?.start();
                         });
                     }
+                    setIsReady(true);
                 });
+            } else {
+                setIsReady(true);
             }
         };
-        // Use requestAnimationFrame to ensure DOM is ready
         requestAnimationFrame(() => {
-            setTimeout(scrollToHash, 100);
+            setTimeout(scrollToHash, 50);
         });
     }, []);
 
@@ -119,15 +113,14 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
 
     return (
         <>
-            {/* Sticky Hero Section - z-0 ensures it stays behind the content */}
-            <div ref={heroRef} className="sticky top-0 h-screen w-full z-0">
+            <div ref={heroRef} className="sticky top-0 h-screen w-full z-0" style={{ visibility: isReady ? 'visible' : 'hidden' }}>
                 {heroContent}
             </div>
 
-            {/* Main Content Stack - z-10 ensures it slides OVER the hero */}
             <div
                 ref={contentRef}
                 className="relative z-10 bg-white dark:bg-black shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+                style={{ visibility: isReady ? 'visible' : 'hidden' }}
             >
                 {mainContent}
             </div>
