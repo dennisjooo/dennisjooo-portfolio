@@ -10,7 +10,7 @@ const tabContentVariants = {
     transition: { duration: 0.3 },
 };
 import { useTabState } from "@/lib/hooks/useTabState";
-import { AnimatePresence, m } from "framer-motion";
+import { AnimatePresence, m } from "@/components/motion";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";
 import { useMemo, useEffect } from "react";

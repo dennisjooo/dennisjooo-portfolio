@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TimelineItemData } from '@/lib/types/workExperience';
-import { m, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from '@/components/motion';
 import { useExpandableList } from '@/lib/hooks/useExpandableList';
 
 interface TimelineRoleProps {

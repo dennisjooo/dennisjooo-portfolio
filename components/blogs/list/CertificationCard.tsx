@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { ArrowUpRightIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 import type { Certification } from '@/lib/db';
 
@@ -47,18 +47,18 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
 
                 {/* Content */}
                 <div className="flex-1 flex flex-col">
-                    <h3 className="font-urbanist font-bold text-lg md:text-xl tracking-tight leading-tight text-foreground group-hover:text-accent transition-colors duration-300 mb-3">
+                    <h3 className="font-sans font-bold text-lg md:text-xl tracking-tight leading-tight text-foreground group-hover:text-accent transition-colors duration-300 mb-3">
                         {title}
                     </h3>
 
-                    <p className="font-urbanist text-muted-foreground text-sm leading-relaxed flex-1">
+                    <p className="font-sans text-muted-foreground text-sm leading-relaxed flex-1">
                         {description}
                     </p>
                 </div>
 
                 {/* Footer */}
                 <div className="mt-4 pt-4 border-t border-border">
-                    <span className="font-urbanist font-bold text-sm text-foreground group-hover:text-accent transition-colors duration-300 inline-flex items-center gap-2">
+                    <span className="font-sans font-bold text-sm text-foreground group-hover:text-accent transition-colors duration-300 inline-flex items-center gap-2">
                         View Certificate
                         <ArrowUpRightIcon className="w-3.5 h-3.5" />
                     </span>

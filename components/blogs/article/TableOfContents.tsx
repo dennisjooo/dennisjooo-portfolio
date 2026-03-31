@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { Heading } from '@/lib/utils/markdownHelpers';
 import { useActiveHeading } from '@/lib/hooks/useActiveHeading';
 import { getDisplayActiveId, handleTocClick } from '@/lib/utils/tableOfContents';
@@ -103,7 +103,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
                                     {/* Text label (shown on hover) */}
                                     <span
-                                        className={`font-urbanist text-sm truncate transition-all duration-300 ease-in-out ${isActive
+                                        className={`font-sans text-sm truncate transition-all duration-300 ease-in-out ${isActive
                                             ? 'text-accent font-medium'
                                             : 'text-muted-foreground group-hover:text-foreground'
                                             }`}

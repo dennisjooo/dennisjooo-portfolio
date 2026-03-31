@@ -1,6 +1,6 @@
 "use client";
 
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { NavigationCard } from './NavigationCard';
 import { navigationCards, containerVariants } from './constants';
 

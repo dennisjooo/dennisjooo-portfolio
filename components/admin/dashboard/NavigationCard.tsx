@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { itemVariants } from './constants';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
@@ -79,7 +79,7 @@ export const ArticleHero = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="font-urbanist text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-10"
+                className="font-sans text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-10"
             >
                 {description}
             </m.p>

@@ -9,7 +9,7 @@ import { ArticleHero } from '@/components/blogs/article/ArticleHero';
 import { Blog } from '@/lib/db';
 import { PHOTO_VIEWER_CONFIG } from '@/lib/constants/photoViewer';
 import { formatProjectDate, calculateReadTime } from '@/lib/utils/projectFormatting';
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { PhotoProvider } from 'react-photo-view';
 import { Heading } from '@/lib/utils/markdownHelpers';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import { BsGithub } from 'react-icons/bs';
 
@@ -60,7 +60,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
             </div>
 
             {/* Text */}
-            <span className="font-urbanist font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
+            <span className="font-sans font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
                 {text}
             </span>
 
