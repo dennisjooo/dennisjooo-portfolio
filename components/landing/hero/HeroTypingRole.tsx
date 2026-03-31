@@ -18,7 +18,7 @@ export function HeroTypingRole() {
             className="max-w-md text-sm md:text-xl lg:text-2xl font-light leading-relaxed text-foreground/90 text-left animate-fade-in-up min-h-[4rem] md:min-h-[5rem]"
             style={{ animationDelay: '1000ms' }}
         >
-            <span className="font-mono text-[10px] md:text-xs lg:text-sm opacity-50 block mb-2 uppercase tracking-wider">
+            <span className="font-mono text-[10px] md:text-xs lg:text-sm opacity-30 block mb-2 uppercase tracking-widest">
                 Role
             </span>
             {description}<BlinkingCursor cursor="|" />

@@ -241,7 +241,25 @@ html {
   will-change: transform, opacity;
 }
 
-/* Content visibility for below-fold sections - prevents layout work until needed */
+@keyframes letter-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.25em);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-letter-reveal {
+  animation: letter-reveal 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  display: inline-block;
+}
+
+/* Content visibility for below-fold sections */
 .below-fold-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 100vh;

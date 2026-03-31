@@ -37,13 +37,31 @@ const Hero: React.FC = () => {
                 <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0">
                     <h1
                         className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen"
+                        aria-label="Dennis"
                     >
-                        Dennis
+                        {'Dennis'.split('').map((char, i) => (
+                            <span
+                                key={i}
+                                className="animate-letter-reveal"
+                                style={{ animationDelay: `${100 + i * 60}ms` }}
+                            >
+                                {char}
+                            </span>
+                        ))}
                     </h1>
                     <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-tighter text-foreground self-end text-right w-full"
+                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen"
+                        aria-label="JONATHAN"
                     >
-                        JONATHAN
+                        {'JONATHAN'.split('').map((char, i) => (
+                            <span
+                                key={i}
+                                className="animate-letter-reveal"
+                                style={{ animationDelay: `${300 + i * 50}ms` }}
+                            >
+                                {char}
+                            </span>
+                        ))}
                     </h1>
                 </div>
 
@@ -53,13 +71,16 @@ const Hero: React.FC = () => {
                     <HeroTypingRole />
 
                     <div
-                        className="hidden md:block font-mono text-xs lg:text-sm tracking-widest uppercase opacity-60 animate-fade-in"
+                        className="hidden lg:block font-mono text-xs lg:text-sm tracking-widest uppercase opacity-60 animate-fade-in"
                         style={{ writingMode: 'vertical-rl', animationDelay: '1200ms' }}
                     >
                         Scroll to Explore
                     </div>
                 </div>
             </div>
+
+            {/* Gradient accent line at content seam */}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent z-20" />
         </section>
     );
 };
