@@ -39,6 +39,7 @@ export default function ProjectPageClient({ project, headings, children }: Proje
                             readTime={readTime}
                             imageUrl={project.imageUrl ?? undefined}
                             type={project.type}
+                            slug={project.slug ?? ''}
                         />
 
                         {/* Article Content */}

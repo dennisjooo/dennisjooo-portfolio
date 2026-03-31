@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from '@/components/motion';
+import { m, useReducedMotion } from '@/components/motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
@@ -17,6 +17,7 @@ interface ArticleHeroProps {
     readTime: number;
     imageUrl?: string;
     type: 'project' | 'blog';
+    slug: string;
 }
 
 export const ArticleHero = ({
@@ -27,6 +28,7 @@ export const ArticleHero = ({
     readTime,
     imageUrl,
     type,
+    slug,
 }: ArticleHeroProps) => {
     return (
         <header className="w-full mb-12 md:mb-16">
@@ -85,12 +87,12 @@ export const ArticleHero = ({
             </m.p>
 
             {/* Hero Image - Full Bleed */}
-            {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} />}
+            {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} slug={slug} />}
         </header>
     );
 };
 
-function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
+function ArticleHeroImage({ src, alt, slug }: { src: string; alt: string; slug: string }) {
     const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
     const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -112,7 +114,8 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                 <div className="absolute -inset-2 bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
 
                 {/* Image Container - wider than content column */}
-                <div
+                <m.div
+                    layoutId={`hero-image-${slug}`}
                     className="relative w-full overflow-hidden rounded-xl border border-border bg-muted shadow-lg"
                     style={
                         aspectRatio
@@ -144,7 +147,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
                     <span className="absolute bottom-4 right-4 z-20 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Click to zoom
                     </span>
-                </div>
+                </m.div>
             </m.figure>
         </PhotoView>
     );

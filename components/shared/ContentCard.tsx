@@ -74,7 +74,10 @@ export const ContentCard = ({
                 <article className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden">
 
                 {/* Image Container */}
-                <div className="relative w-full aspect-[16/9] bg-muted overflow-hidden">
+                <m.div
+                    layoutId={`hero-image-${slug}`}
+                    className="relative w-full aspect-[16/9] bg-muted overflow-hidden"
+                >
                     <div 
                         className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
                         style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
@@ -102,7 +105,7 @@ export const ContentCard = ({
                             </span>
                         </div>
                     )}
-                </div>
+                </m.div>
 
                 {/* Content */}
                 <div className="flex flex-col gap-3 p-4 md:p-5 flex-1">

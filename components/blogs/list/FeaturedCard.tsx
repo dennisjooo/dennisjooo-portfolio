@@ -43,7 +43,10 @@ export const FeaturedCard = ({
                 <article className="relative grid grid-cols-1 md:grid-cols-5 md:gap-10 rounded-xl md:rounded-2xl border border-border bg-card md:p-6 overflow-hidden">
 
                 {/* Image */}
-                <div className="relative md:col-span-3 w-full aspect-[16/9] md:aspect-auto md:min-h-[320px] md:rounded-xl overflow-hidden bg-muted">
+                <m.div
+                    layoutId={`hero-image-${slug}`}
+                    className="relative md:col-span-3 w-full aspect-[16/9] md:aspect-auto md:min-h-[320px] md:rounded-xl overflow-hidden bg-muted"
+                >
                     <div
                         className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
                         style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
@@ -70,7 +73,7 @@ export const FeaturedCard = ({
                             </span>
                         </div>
                     )}
-                </div>
+                </m.div>
 
                 {/* Content */}
                 <div className="md:col-span-2 flex flex-col justify-center gap-3 md:gap-4 p-4 md:p-0 md:py-4">
