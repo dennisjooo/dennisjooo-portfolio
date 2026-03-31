@@ -34,15 +34,15 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Main Typography - LCP Element - Server rendered, no JS needed */}
-                <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0">
+                <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0 overflow-hidden">
                     <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen"
+                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen flex flex-nowrap"
                         aria-label="Dennis"
                     >
                         {'Dennis'.split('').map((char, i) => (
                             <span
                                 key={i}
-                                className="animate-letter-reveal"
+                                className="animate-letter-reveal shrink-0"
                                 style={{ animationDelay: `${100 + i * 60}ms` }}
                             >
                                 {char}
@@ -50,13 +50,13 @@ const Hero: React.FC = () => {
                         ))}
                     </h1>
                     <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen"
+                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen flex flex-nowrap justify-end"
                         aria-label="JONATHAN"
                     >
                         {'JONATHAN'.split('').map((char, i) => (
                             <span
                                 key={i}
-                                className="animate-letter-reveal"
+                                className="animate-letter-reveal shrink-0"
                                 style={{ animationDelay: `${300 + i * 50}ms` }}
                             >
                                 {char}
