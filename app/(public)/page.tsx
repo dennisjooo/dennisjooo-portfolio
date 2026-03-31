@@ -1,4 +1,7 @@
 import Hero from '@/components/landing/hero';
+import About from '@/components/landing/about';
+import WorkExperience from '@/components/landing/work-experience';
+import FeaturedProjects from '@/components/landing/featured-projects';
 import dynamic from 'next/dynamic';
 import { HomeClient } from './HomeClient';
 import { db, siteConfig, workExperiences, contacts, type SiteConfig } from '@/lib/db';
@@ -15,19 +18,7 @@ const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
     <div className={`${height} bg-background`} />
 );
 
-// Dynamic imports - prioritized by visibility order
-// About comes right after Hero, so we load it with higher priority
-const About = dynamic(() => import('@/components/landing/about'), {
-    loading: () => <SectionSkeleton />
-});
-
 // Below-the-fold content - lower priority
-const WorkExperience = dynamic(() => import('@/components/landing/work-experience'), {
-    loading: () => <SectionSkeleton />
-});
-const FeaturedProjects = dynamic(() => import('@/components/landing/featured-projects'), {
-    loading: () => <SectionSkeleton />
-});
 const Skills = dynamic(() => import('@/components/landing/skills'), {
     loading: () => <SectionSkeleton height="min-h-[50vh]" />
 });
