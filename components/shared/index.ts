@@ -10,3 +10,4 @@ export * from './PaginatedList';
 export * from './ListSkeleton';
 export * from './EmptyState';
 export * from './ListFooter';
+export { TransitionLoader } from './TransitionLoader';
