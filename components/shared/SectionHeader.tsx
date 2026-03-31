@@ -22,7 +22,7 @@ export const SectionHeader = ({
             )}
         >
             <span className="font-playfair italic text-3xl md:text-4xl text-foreground">{number}</span>
-            <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-50 text-muted-foreground">{title}</span>
+            <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-70 text-muted-foreground">{title}</span>
         </div>
     );
 };
