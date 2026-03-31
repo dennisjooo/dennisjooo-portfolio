@@ -96,7 +96,7 @@ export const FeaturedCard = ({
                     </h3>
 
                     {/* Description */}
-                    <p className="font-urbanist text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-4">
+                    <p className="font-sans text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-4">
                         {description}
                     </p>
 

@@ -77,7 +77,7 @@ export default function AboutAdminPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-all font-urbanist font-medium shadow-lg shadow-primary/20 disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-all font-sans font-medium shadow-lg shadow-primary/20 disabled:opacity-50"
         >
           {saving ? (
             <ArrowPathIcon className="w-5 h-5 animate-spin" />
@@ -95,7 +95,7 @@ export default function AboutAdminPage() {
             className="glass-panel p-6 rounded-2xl border border-border/50"
           >
             <div className="mb-4">
-              <h3 className="text-lg font-bold font-urbanist text-foreground">
+              <h3 className="text-lg font-bold font-sans text-foreground">
                 {section.title}
               </h3>
               <p className="text-sm text-muted-foreground">{section.description}</p>

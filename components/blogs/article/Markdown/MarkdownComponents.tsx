@@ -9,7 +9,7 @@ import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 
 export const markdownComponents: Components = {
     h1: ({ children, ...props }) => (
-        <h1 className="font-urbanist font-black text-3xl md:text-4xl mb-6 text-foreground border-b border-border pb-4 tracking-tight" {...props}>
+        <h1 className="font-sans font-black text-3xl md:text-4xl mb-6 text-foreground border-b border-border pb-4 tracking-tight" {...props}>
             {children}
         </h1>
     ),
@@ -20,12 +20,12 @@ export const markdownComponents: Components = {
         </h2>
     ),
     h3: ({ children, ...props }) => (
-        <h3 className="font-urbanist font-bold text-xl md:text-2xl mb-3 mt-8 text-foreground tracking-tight" {...props}>
+        <h3 className="font-sans font-bold text-xl md:text-2xl mb-3 mt-8 text-foreground tracking-tight" {...props}>
             {children} 
         </h3>
     ),
     h4: ({ children, ...props }) => (
-        <h4 className="font-urbanist font-bold text-lg md:text-xl mb-2 mt-6 text-foreground tracking-tight" {...props}>
+        <h4 className="font-sans font-bold text-lg md:text-xl mb-2 mt-6 text-foreground tracking-tight" {...props}>
             {children}
         </h4>
     ),
@@ -100,7 +100,7 @@ export const markdownComponents: Components = {
     ),
     tr: ({ children }) => <tr className="hover:bg-muted/50 transition-colors">{children}</tr>,
     th: ({ children }) => (
-        <th className="px-6 py-4 text-left font-urbanist font-bold text-foreground text-sm tracking-wide uppercase">
+        <th className="px-6 py-4 text-left font-sans font-bold text-foreground text-sm tracking-wide uppercase">
             {children}
         </th>
     ),

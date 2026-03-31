@@ -52,7 +52,7 @@ export function AdminSidebar() {
                 }`}
             >
               <item.icon className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`} />
-              <span className="font-urbanist font-medium tracking-wide">{item.name}</span>
+              <span className="font-sans font-medium tracking-wide">{item.name}</span>
             </Link>
           );
         })}

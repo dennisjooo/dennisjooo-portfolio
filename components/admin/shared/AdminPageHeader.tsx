@@ -30,7 +30,7 @@ export function AdminPageHeader({
       {actionHref && (
         <Link
           href={actionHref}
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-urbanist font-medium shadow-lg shadow-primary/20"
+          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-sans font-medium shadow-lg shadow-primary/20"
         >
           <PlusIcon className="w-5 h-5" />
           {actionLabel}

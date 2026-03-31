@@ -16,7 +16,7 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(({ role, isLast }) => 
         <div className="space-y-4">
             {/* Role Header */}
             <div className="space-y-1">
-                <h4 className="text-xl font-urbanist font-bold uppercase tracking-tight text-foreground">
+                <h4 className="text-xl font-sans font-bold uppercase tracking-tight text-foreground">
                     {role.title}
                 </h4>
                 <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground bg-foreground/5 px-2 py-1 rounded inline-block">

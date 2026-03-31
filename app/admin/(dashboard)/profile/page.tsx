@@ -90,7 +90,7 @@ export default function ProfileAdminPage() {
           </div>
 
           <div className="flex-1 space-y-4">
-            <h3 className="text-xl font-bold font-urbanist">Profile Picture</h3>
+            <h3 className="text-xl font-bold font-sans">Profile Picture</h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
               This image will be displayed on your homepage and navigation bar.
               Recommended size: 500x500px. JPG, PNG or WebP.

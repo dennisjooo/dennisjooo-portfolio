@@ -156,7 +156,7 @@ export function AdminTable<T extends { id?: string | number }>({
                       <GripVertical className="w-4 h-4" />
                     </button>
                   )}
-                  <div className="flex-1 min-w-0 text-sm font-urbanist text-foreground">
+                  <div className="flex-1 min-w-0 text-sm font-sans text-foreground">
                     {getCellValue(row, primaryColumn)}
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export function AdminTable<T extends { id?: string | number }>({
                       <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
                         {col.header}
                       </span>
-                      <div className="text-right font-urbanist text-foreground">
+                      <div className="text-right font-sans text-foreground">
                         {getCellValue(row, col)}
                       </div>
                     </div>
@@ -256,7 +256,7 @@ export function AdminTable<T extends { id?: string | number }>({
                       </td>
                     )}
                     {enableReorder && (
-                      <td className="px-4 py-4 text-sm font-urbanist text-foreground w-[50px]">
+                      <td className="px-4 py-4 text-sm font-sans text-foreground w-[50px]">
                         <button
                           type="button"
                           className="inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-grab active:cursor-grabbing transition-colors"
@@ -271,7 +271,7 @@ export function AdminTable<T extends { id?: string | number }>({
                     {columns.map((col, colIdx) => (
                       <td
                         key={colIdx}
-                        className="px-6 py-4 text-sm font-urbanist text-foreground"
+                        className="px-6 py-4 text-sm font-sans text-foreground"
                       >
                         {getCellValue(row, col)}
                       </td>

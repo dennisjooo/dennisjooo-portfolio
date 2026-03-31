@@ -132,7 +132,7 @@ export const SectionHero = ({
                         <m.span
                             {...headlineMotionProps}
                             className={cn(
-                                'font-urbanist font-black leading-[0.8] tracking-tighter text-background-layer z-10 select-none block',
+                                'font-sans font-black leading-[0.8] tracking-tighter text-background-layer z-10 select-none block',
                                 headlineClassName
                             )}
                         >
@@ -146,7 +146,7 @@ export const SectionHero = ({
                         initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
                         animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                         transition={{ ...springConfigs.smooth, delay: 0.4 }}
-                        className="font-urbanist text-muted-foreground text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mt-8 md:mt-12"
+                        className="font-sans text-muted-foreground text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mt-8 md:mt-12"
                     >
                         {caption}
                     </m.div>

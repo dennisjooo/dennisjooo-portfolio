@@ -39,22 +39,22 @@ export default function AdminLoginPage() {
                 card: "bg-card/80 backdrop-blur-xl border border-border shadow-2xl rounded-2xl",
                 header: "hidden",
                 socialButtonsBlockButton:
-                  "bg-secondary hover:bg-secondary/80 border-border text-foreground font-urbanist transition-all duration-300",
-                socialButtonsBlockButtonText: "font-urbanist",
+                  "bg-secondary hover:bg-secondary/80 border-border text-foreground font-sans transition-all duration-300",
+                socialButtonsBlockButtonText: "font-sans",
                 dividerLine: "bg-border",
                 dividerText: "text-muted-foreground font-mono text-xs uppercase",
-                formFieldLabel: "text-foreground font-urbanist",
+                formFieldLabel: "text-foreground font-sans",
                 formFieldInput:
-                  "bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-accent focus:border-accent rounded-lg font-urbanist",
+                  "bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-accent focus:border-accent rounded-lg font-sans",
                 formButtonPrimary:
-                  "bg-primary hover:bg-primary/90 text-primary-foreground font-urbanist font-medium transition-all duration-300 rounded-lg",
+                  "bg-primary hover:bg-primary/90 text-primary-foreground font-sans font-medium transition-all duration-300 rounded-lg",
                 footerActionLink:
-                  "text-accent hover:text-accent/80 font-urbanist transition-colors",
-                identityPreviewText: "text-foreground font-urbanist",
+                  "text-accent hover:text-accent/80 font-sans transition-colors",
+                identityPreviewText: "text-foreground font-sans",
                 identityPreviewEditButton: "text-accent hover:text-accent/80",
                 formFieldInputShowPasswordButton: "text-muted-foreground hover:text-foreground",
                 alert: "bg-destructive/10 border-destructive/20 text-destructive",
-                alertText: "text-destructive font-urbanist",
+                alertText: "text-destructive font-sans",
               },
               layout: {
                 socialButtonsPlacement: "bottom",

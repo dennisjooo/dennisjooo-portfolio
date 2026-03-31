@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m } from '@/components/motion';
 import React from 'react';
 
 export type TabType = 'blog' | 'certifications';
@@ -40,7 +40,7 @@ export default function TabSwitcher({ activeTab, onTabChange, tabs }: TabSwitche
 
                     {/* Tab Label */}
                     <span className={`
-                        font-urbanist font-bold text-lg md:text-xl uppercase tracking-wide
+                        font-sans font-bold text-lg md:text-xl uppercase tracking-wide
                         transition-colors duration-300
                         ${activeTab === tab
                             ? 'text-foreground'

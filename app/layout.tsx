@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 const urbanist = Urbanist({
     subsets: ["latin"],
     display: "swap",
-    variable: "--font-urbanist",
+    variable: "--font-sans",
     preload: true,
     adjustFontFallback: true, // Reduces CLS by sizing fallback font to match
 });

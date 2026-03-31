@@ -28,7 +28,7 @@ function StatPill({
       className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-card/20 hover:bg-card/40 hover:border-accent/30 transition-all group"
     >
       <span className={`w-2 h-2 rounded-full ${color}`} />
-      <span className="font-urbanist font-bold text-lg tabular-nums group-hover:text-accent transition-colors">
+      <span className="font-sans font-bold text-lg tabular-nums group-hover:text-accent transition-colors">
         {loading ? (
           <span className="inline-block w-5 h-5 rounded bg-muted/40 animate-pulse" />
         ) : (

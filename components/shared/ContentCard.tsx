@@ -115,7 +115,7 @@ export const ContentCard = ({
                         {title}
                     </h3>
 
-                    <p className="font-urbanist text-muted-foreground text-sm leading-relaxed line-clamp-2 flex-1">
+                    <p className="font-sans text-muted-foreground text-sm leading-relaxed line-clamp-2 flex-1">
                         {description}
                     </p>
 

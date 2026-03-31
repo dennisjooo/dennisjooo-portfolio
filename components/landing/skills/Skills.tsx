@@ -48,7 +48,7 @@ const Skills: React.FC = () => {
                                                 {/* Text */}
                                                 <span
                                                     className={`
-                                                        text-3xl md:text-5xl font-bold font-urbanist uppercase tracking-tight
+                                                        text-3xl md:text-5xl font-bold font-sans uppercase tracking-tight
                                                         text-foreground/20 group-hover/item:text-foreground
                                                         transition-colors duration-300
                                                     `}
