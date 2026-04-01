@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
                             <span
                                 key={i}
                                 className="animate-letter-reveal shrink-0"
-                                style={{ animationDelay: `${100 + i * 60}ms` }}
+                                style={{ animationDelay: `${i * 30}ms` }}
                             >
                                 {char}
                             </span>
@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
                             <span
                                 key={i}
                                 className="animate-letter-reveal shrink-0"
-                                style={{ animationDelay: `${300 + i * 50}ms` }}
+                                style={{ animationDelay: `${100 + i * 30}ms` }}
                             >
                                 {char}
                             </span>

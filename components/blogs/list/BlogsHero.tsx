@@ -7,8 +7,8 @@ interface BlogsHeroProps {
 }
 
 const tabCaptions: Record<'blog' | 'certifications', string> = {
-    blog: "Projects, tutorials, and experiments I've been building and writing about.",
-    certifications: "Professional certifications and credentials that validate my expertise."
+    blog: "Things I've built and written about (mostly coherent).",
+    certifications: "Stuff that (supposedly) validates my expertise."
 };
 
 export const BlogsHero = ({ activeTab }: BlogsHeroProps) => (
