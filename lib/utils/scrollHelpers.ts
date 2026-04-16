@@ -27,12 +27,17 @@ export function calculateCenteredScrollPosition(element: HTMLElement): number {
  * @param element - The element to scroll to
  * @param smooth - Whether to use smooth scrolling (default: true)
  */
-export function scrollToCentered(element: HTMLElement, smooth: boolean = true): void {
+export function scrollToCentered(element: HTMLElement, smooth: boolean = false): void {
     const scrollPosition = calculateCenteredScrollPosition(element);
-    window.scrollTo({
-        top: scrollPosition,
-        behavior: smooth ? 'smooth' : 'instant'
-    });
+
+    if (window.lenis) {
+        window.lenis.scrollTo(scrollPosition, { immediate: !smooth });
+    } else {
+        window.scrollTo({
+            top: scrollPosition,
+            behavior: smooth ? 'smooth' : 'instant'
+        });
+    }
 }
 
 /**
