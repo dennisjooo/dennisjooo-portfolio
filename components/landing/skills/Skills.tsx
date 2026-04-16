@@ -3,7 +3,7 @@
 import React from 'react';
 import { skillCategories } from '@/data/skillContent';
 import { SectionHeader } from '@/components/shared/SectionHeader';
-import { ParallaxText } from './ParallaxText';
+import { Marquee } from './Marquee';
 import { getIconSlug } from './utils';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 
@@ -25,6 +25,9 @@ const itemVariants = {
         transition: springConfigs.smooth,
     },
 };
+
+/** Speed per row (seconds) — stagger slightly for visual variety */
+const rowSpeeds = [45, 55, 50, 48];
 
 const Skills: React.FC = () => {
     const prefersReducedMotion = useReducedMotion();
@@ -59,9 +62,13 @@ const Skills: React.FC = () => {
                                 </span>
                             </div>
 
-                            {/* Kinetic Scroll Line */}
+                            {/* CSS Marquee Row */}
                             <div className="py-8 pt-12 w-full">
-                                <ParallaxText baseVelocity={index % 2 === 0 ? -1.5 : 1.5}>
+                                <Marquee
+                                    speed={prefersReducedMotion ? 0 : rowSpeeds[index % rowSpeeds.length]}
+                                    direction={index % 2 === 0 ? 'left' : 'right'}
+                                    pauseOnHover
+                                >
                                     <div className="flex items-center gap-12 md:gap-20 px-4 md:px-8">
                                         {category.skills.map((skill) => (
                                             <div key={skill} className="group/item flex items-center gap-3 md:gap-5 cursor-default">
@@ -90,7 +97,7 @@ const Skills: React.FC = () => {
                                             </div>
                                         ))}
                                     </div>
-                                </ParallaxText>
+                                </Marquee>
                             </div>
                         </m.div>
                     ))}

@@ -314,3 +314,58 @@ html {
 /* Bottom group delays (0.6s base delay + 0.1s stagger) */
 .contacts-bottom-0 { animation-delay: 0.6s; }
 .contacts-bottom-1 { animation-delay: 0.7s; }
+
+/* ─── CSS Marquee ─── */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+  animation-direction: var(--marquee-direction, normal);
+  transform: translateZ(0);       /* force GPU layer */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.marquee-content {
+  flex-shrink: 0;
+}
+
+/* Pause on hover — CSS-only, no React state needed */
+.marquee-pause-hover:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation-play-state: paused;
+  }
+}
