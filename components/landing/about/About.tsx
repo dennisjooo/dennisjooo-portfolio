@@ -34,7 +34,7 @@ const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
         <section
             ref={sectionRef}
             id="about"
-            className="relative bg-background text-foreground overflow-hidden min-h-[calc(100vh+4000px)] md:min-h-[calc(100vh+3000px)]"
+            className="relative bg-background text-foreground overflow-hidden min-h-[calc(100vh+2500px)] md:min-h-[calc(100vh+2000px)]"
         >
             <div
                 ref={containerRef}

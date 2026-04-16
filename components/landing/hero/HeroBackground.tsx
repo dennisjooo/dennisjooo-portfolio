@@ -2,15 +2,50 @@
 
 import { useTheme } from 'next-themes';
 import Grainient from './Grainient';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+
+interface GrainientControl {
+    startLoop: () => void;
+    stopLoop: () => void;
+}
+
+interface ContainerWithControl extends HTMLDivElement {
+    grainientControl?: GrainientControl;
+}
 
 export function HeroBackground() {
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleVisibilityChange = useCallback((entries: IntersectionObserverEntry[]) => {
+        const entry = entries[0];
+        
+        // Control Grainient animation - Grainient exposes control on its container
+        const grainientContainer = containerRef.current?.querySelector('.grainient-container') as ContainerWithControl | null;
+        if (grainientContainer?.grainientControl) {
+            if (entry.isIntersecting) {
+                grainientContainer.grainientControl.startLoop();
+            } else {
+                grainientContainer.grainientControl.stopLoop();
+            }
+        }
+    }, []);
 
     useEffect(() => {
         setMounted(true);
-    }, []);
+
+        const observer = new IntersectionObserver(handleVisibilityChange, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [handleVisibilityChange]);
 
     const themeReady = resolvedTheme === 'dark' || resolvedTheme === 'light';
     const isDark = resolvedTheme === 'dark';
@@ -34,6 +69,7 @@ export function HeroBackground() {
 
     return (
         <div
+            ref={containerRef}
             className={`absolute inset-0 z-0 mix-blend-normal transition-opacity duration-300 ${
                 isVisible ? 'opacity-90' : 'opacity-0'
             }`}
@@ -64,7 +100,6 @@ export function HeroBackground() {
                     zoom={0.9}
                 />
             )}
-            {/* Optional overlay to keep it feeling integrated if needed, but not strictly necessary */}
             <div className="absolute inset-0 bg-background/20 pointer-events-none mix-blend-overlay"></div>
         </div>
     );

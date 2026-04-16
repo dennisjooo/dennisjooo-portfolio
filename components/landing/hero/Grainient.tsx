@@ -152,15 +152,22 @@ const Grainient: React.FC<GrainientProps> = ({
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const isRunningRef = useRef(false);
+  const prefersReducedMotion = useRef(
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    const shouldReduceMotion = prefersReducedMotion.current;
 
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: shouldReduceMotion ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
     });
 
     const gl = renderer.gl;
@@ -219,17 +226,44 @@ const Grainient: React.FC<GrainientProps> = ({
     ro.observe(container);
     setSize();
 
-    let raf = 0;
     const t0 = performance.now();
     const loop = (t: number) => {
+      if (!isRunningRef.current) {
+        rafRef.current = null;
+        return;
+      }
       (program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001;
       renderer.render({ scene: mesh });
-      raf = requestAnimationFrame(loop);
+      rafRef.current = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+
+    const startLoop = () => {
+      if (!isRunningRef.current) {
+        isRunningRef.current = true;
+        rafRef.current = requestAnimationFrame(loop);
+      }
+    };
+
+    const stopLoop = () => {
+      isRunningRef.current = false;
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+
+    // Start paused if reduced motion
+    if (!shouldReduceMotion) {
+      startLoop();
+    }
+
+    // Expose visibility control via ref callback
+    if (containerRef.current) {
+      (containerRef.current as HTMLDivElement & { grainientControl?: { startLoop: () => void; stopLoop: () => void } }).grainientControl = { startLoop, stopLoop };
+    }
 
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
       ro.disconnect();
       try {
         container.removeChild(canvas);
@@ -262,7 +296,7 @@ const Grainient: React.FC<GrainientProps> = ({
     color3
   ]);
 
-  return <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className}`.trim()} />;
+  return <div ref={containerRef} className={`relative w-full h-full overflow-hidden grainient-container ${className}`.trim()} />;
 };
 
 export default Grainient;

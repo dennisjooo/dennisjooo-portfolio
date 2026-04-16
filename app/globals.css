@@ -368,4 +368,25 @@ html {
   .marquee-track {
     animation-play-state: paused;
   }
+
+  /* Hero animations - show immediately, no animation */
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-down,
+  .animate-letter-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .animate-letter-reveal span {
+    opacity: 1 !important;
+  }
+
+  /* About section - disable GSAP animations */
+  .about-title,
+  .about-body {
+    transition: none !important;
+    transform: none !important;
+  }
 }
