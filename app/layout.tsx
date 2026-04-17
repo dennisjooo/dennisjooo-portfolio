@@ -28,7 +28,7 @@ const robotoMono = Roboto_Mono({
     subsets: ["latin"],
     display: "swap",
     variable: "--font-roboto-mono",
-    preload: false,
+    preload: true,
     adjustFontFallback: true,
 });
 

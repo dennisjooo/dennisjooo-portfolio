@@ -1,6 +1,6 @@
 {
   "name": "profile-page",
-  "version": "2026.04.16-b",
+  "version": "2026.04.17-c",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -61,7 +61,13 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "browserslist": [
-    "defaults and supports es6-module"
+    "chrome >= 105",
+    "edge >= 105",
+    "firefox >= 104",
+    "safari >= 15.4",
+    "ios_saf >= 15.4",
+    "not dead",
+    "not op_mini all"
   ],
   "devDependencies": {
     "@next/bundle-analyzer": "^16.0.7",
