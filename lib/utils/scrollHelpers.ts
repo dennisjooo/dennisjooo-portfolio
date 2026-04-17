@@ -103,3 +103,23 @@ export function scrollToTopWithRefresh(): void {
         refreshScrollTrigger();
     });
 }
+
+/**
+ * Scrolls to a section by ID, accounting for GSAP pin-spacers.
+ * When GSAP pins an element, scrollIntoView on the element itself is unreliable
+ * because the element becomes position:fixed. Instead we resolve the pin-spacer
+ * wrapper and scroll to its document-flow position.
+ */
+export function scrollToSection(sectionId: string, instant = true): void {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+
+    const target = el.closest('.pin-spacer') as HTMLElement ?? el;
+    const top = target.getBoundingClientRect().top + window.scrollY;
+
+    if (window.lenis) {
+        window.lenis.scrollTo(top, { immediate: instant });
+    } else {
+        window.scrollTo({ top, behavior: instant ? 'instant' : 'smooth' });
+    }
+}

@@ -243,9 +243,9 @@ html {
 
 @keyframes letter-reveal {
   from {
-    opacity: 0;
-    transform: translateY(0.25em);
-    filter: blur(4px);
+    opacity: 0.35;
+    transform: translateY(0.15em);
+    filter: blur(3px);
   }
   to {
     opacity: 1;
@@ -255,7 +255,7 @@ html {
 }
 
 .animate-letter-reveal {
-  animation: letter-reveal 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: letter-reveal 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   display: inline-block;
   vertical-align: bottom;
 }
@@ -264,6 +264,24 @@ html {
 .below-fold-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 100vh;
+}
+
+/* CSS-only page transition (replaces framer-motion AnimatePresence).
+   Uses opacity only — transforms create a containing block that breaks
+   position:fixed descendants (GSAP ScrollTrigger pin). */
+@keyframes page-transition-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.page-transition-enter {
+  animation: page-transition-in 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-enter {
+    animation: none;
+  }
 }
 
 /* Contacts section animations */

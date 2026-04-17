@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { disableScrollRestoration } from '@/lib/utils/scrollHelpers';
 
 interface SmoothScrollProps {
@@ -8,21 +8,17 @@ interface SmoothScrollProps {
 }
 
 export const SmoothScroll = ({ children }: SmoothScrollProps) => {
-    const [isMobile, setIsMobile] = useState(false);
     const isMounted = useRef(false);
 
     useEffect(() => {
         disableScrollRestoration();
 
         isMounted.current = true;
-        // Check if mobile - skip smooth scroll on mobile for better performance
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
-        };
-        checkMobile();
 
-        // Don't initialize Lenis on mobile - native scroll is better for performance
-        if (isMobile) return;
+        const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (isMobile || prefersReducedMotion) return;
 
         // Defer Lenis initialization significantly to not block LCP
         // This prevents blocking the main thread during initial load
@@ -47,25 +43,14 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             // Expose Lenis globally for scroll-to-top functionality
             window.lenis = lenis;
 
-            // Sync Lenis with GSAP ScrollTrigger
             gsap.registerPlugin(ScrollTrigger);
 
             lenis.on('scroll', ScrollTrigger.update);
 
-            // Add Lenis's raf method to GSAP's ticker
             gsap.ticker.add((time) => {
                 lenis.raf(time * 1000);
             });
-
-            // Disable GSAP's lag smoothing to ensure smooth scrolling
             gsap.ticker.lagSmoothing(0);
-
-            function raf(time: number) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-
-            requestAnimationFrame(raf);
 
             // Store cleanup function
             return () => {
@@ -102,7 +87,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
                 cleanup?.();
             };
         }
-    }, [isMobile]);
+    }, []);
 
     return <>{children}</>;
 };

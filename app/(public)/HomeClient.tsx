@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, type ReactNode } from 'react';
+import { scrollToSection } from '@/lib/utils/scrollHelpers';
 
 interface HomeClientProps {
     heroContent: ReactNode;
@@ -41,28 +42,11 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
         }
 
         setIsReady(false);
-        const scrollToHash = () => {
-            const element = document.getElementById(hash);
-            if (element) {
-                if (window.lenis) {
-                    window.lenis.stop();
-                }
-                window.scrollTo(0, 0);
-                requestAnimationFrame(() => {
-                    element.scrollIntoView({ behavior: 'auto' });
-                    if (window.lenis) {
-                        requestAnimationFrame(() => {
-                            window.lenis?.start();
-                        });
-                    }
-                    setIsReady(true);
-                });
-            } else {
-                setIsReady(true);
-            }
-        };
         requestAnimationFrame(() => {
-            setTimeout(scrollToHash, 50);
+            setTimeout(() => {
+                scrollToSection(hash);
+                setIsReady(true);
+            }, 50);
         });
     }, []);
 

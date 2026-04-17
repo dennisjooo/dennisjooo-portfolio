@@ -9,7 +9,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { useCommandPalette } from "@/lib/hooks/useCommandPalette";
-import { scrollToTop } from "@/lib/utils/scrollHelpers";
+import { scrollToTop, scrollToSection } from "@/lib/utils/scrollHelpers";
 
 import { NavigationGroup } from "./groups/NavigationGroup";
 import { ProjectsGroup } from "./groups/ProjectsGroup";
@@ -51,7 +51,7 @@ export function CommandPalette() {
                 if (sectionId === "home") {
                     scrollToTop(true);
                 } else {
-                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
+                    scrollToSection(sectionId);
                 }
                 return;
             }

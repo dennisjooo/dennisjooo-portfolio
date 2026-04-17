@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { scrollToTop } from "@/lib/utils/scrollHelpers";
+import { scrollToTop, scrollToSection } from "@/lib/utils/scrollHelpers";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
@@ -76,9 +76,9 @@ export const useSectionNavigation = (
             if (pathname === "/") {
                 // On homepage: scroll to section instantly
                 if (sectionId === "home") {
-                    scrollToTop(true); // instant scroll
+                    scrollToTop(true);
                 } else {
-                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "auto" });
+                    scrollToSection(sectionId);
                 }
             } else {
                 router.push(`/#${sectionId}`);

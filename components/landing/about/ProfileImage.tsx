@@ -17,7 +17,8 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({ imageUrl = '/images/
             fill
             className="rounded-2xl object-cover shadow-2xl group-hover:grayscale-0 transition-all duration-500 relative z-10"
             priority
-            sizes="(max-width: 768px) 300px, 300px"
+            sizes="300px"
+            quality={70}
         />
     </div>
 );
