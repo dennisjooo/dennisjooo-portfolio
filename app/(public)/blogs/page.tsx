@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function ProjectsAndCertificationsPage() {
     // Fetch initial blog data server-side for faster initial load
-    const initialBlogsData = await getBlogs(1, 10, 'all');
+    const initialBlogsData = await getBlogs(1, 7, 'all');
 
     return (
         <div className="min-h-screen bg-background text-foreground">
