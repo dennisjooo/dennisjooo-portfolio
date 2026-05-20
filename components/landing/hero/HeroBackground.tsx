@@ -16,6 +16,7 @@ interface ContainerWithControl extends HTMLDivElement {
 export function HeroBackground() {
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [allowGrainient, setAllowGrainient] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const handleVisibilityChange = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -33,7 +34,32 @@ export function HeroBackground() {
     }, []);
 
     useEffect(() => {
+        const win = window as Window & {
+            requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+            cancelIdleCallback?: (handle: number) => void;
+        };
+
         setMounted(true);
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.innerWidth < 768;
+
+        if (prefersReducedMotion || isMobile) {
+            setAllowGrainient(false);
+        } else if (typeof win.requestIdleCallback === 'function') {
+            const idleId = win.requestIdleCallback(
+                () => setAllowGrainient(true),
+                { timeout: 1200 }
+            );
+            return () => win.cancelIdleCallback?.(idleId);
+        } else {
+            const timer = setTimeout(() => setAllowGrainient(true), 400);
+            return () => clearTimeout(timer);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!allowGrainient) return;
 
         const observer = new IntersectionObserver(handleVisibilityChange, {
             threshold: 0.1,
@@ -45,7 +71,7 @@ export function HeroBackground() {
         }
 
         return () => observer.disconnect();
-    }, [handleVisibilityChange]);
+    }, [allowGrainient, handleVisibilityChange]);
 
     const themeReady = resolvedTheme === 'dark' || resolvedTheme === 'light';
     const isDark = resolvedTheme === 'dark';
@@ -66,6 +92,7 @@ export function HeroBackground() {
 
     const activeColors = isDark ? darkColors : lightColors;
     const isVisible = mounted && themeReady;
+    const fallbackBackground = `linear-gradient(135deg, ${activeColors.color1} 0%, ${activeColors.color2} 45%, ${activeColors.color3} 100%)`;
 
     return (
         <div
@@ -74,7 +101,7 @@ export function HeroBackground() {
                 isVisible ? 'opacity-90' : 'opacity-0'
             }`}
         >
-            {isVisible && (
+            {isVisible && allowGrainient && (
                 <Grainient
                     color1={activeColors.color1}
                     color2={activeColors.color2}
@@ -98,6 +125,12 @@ export function HeroBackground() {
                     centerX={0}
                     centerY={0}
                     zoom={0.9}
+                />
+            )}
+            {isVisible && !allowGrainient && (
+                <div
+                    className="absolute inset-0"
+                    style={{ background: fallbackBackground }}
                 />
             )}
             <div className="absolute inset-0 bg-background/20 pointer-events-none mix-blend-overlay"></div>

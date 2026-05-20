@@ -3,7 +3,7 @@ import About from '@/components/landing/about';
 import WorkExperience from '@/components/landing/work-experience';
 import FeaturedProjects from '@/components/landing/featured-projects';
 import dynamic from 'next/dynamic';
-import { HomeClient } from './HomeClient';
+import { HomeEffects } from './HomeEffects';
 import { db, siteConfig, workExperiences, contacts, type SiteConfig } from '@/lib/db';
 import { desc, asc } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
@@ -104,18 +104,24 @@ export default async function Home() {
     } : undefined;
 
     return (
-        <HomeClient
-            heroContent={<Hero />}
-            mainContent={
-                <>
-                    <About profileImageUrl={profileImageUrl} aboutContent={aboutContent} />
-                    <WorkExperience workExperience={workExperience} />
-                    <FeaturedProjects projects={projects} />
-                    <Skills />
-                    <Contacts contacts={contactLinks} />
-                </>
-            }
-            backToTop={<BackToTop />}
-        />
+        <>
+            <div id="home-hero" className="sticky top-0 h-screen w-full z-0">
+                <Hero />
+            </div>
+
+            <div
+                id="home-content"
+                className="relative z-10 bg-white dark:bg-black shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+            >
+                <About profileImageUrl={profileImageUrl} aboutContent={aboutContent} />
+                <WorkExperience workExperience={workExperience} />
+                <FeaturedProjects projects={projects} />
+                <Skills />
+                <Contacts contacts={contactLinks} />
+            </div>
+
+            <BackToTop />
+            <HomeEffects />
+        </>
     );
 }

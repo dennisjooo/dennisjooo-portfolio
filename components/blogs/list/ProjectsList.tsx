@@ -1,4 +1,4 @@
-import { Blog } from '@/lib/db';
+import type { Blog } from '@/lib/db';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate, calculateReadTime } from '@/lib/utils/projectFormatting';
 import { ContentCard, PaginatedList } from '@/components/shared';

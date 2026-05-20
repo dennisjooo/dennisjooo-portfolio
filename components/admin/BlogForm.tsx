@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Blog } from '@/lib/db';
+import type { Blog } from '@/lib/db';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { buildUploadPayload } from '@/lib/utils/blobUpload';

@@ -97,23 +97,35 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     // Fetch projects and work experience when command palette opens
     React.useEffect(() => {
         if (open) {
-            if (processedProjects.length === 0) {
-                fetch('/api/blogs')
-                    .then(res => res.json())
-                    .then(data => {
-                        setProcessedProjects(data.data);
-                    })
-                    .catch(err => console.error("Failed to fetch projects for command palette", err));
-            }
-            if (processedWorkExperience.length === 0) {
-                fetch('/api/work-experience')
+            if (processedProjects.length === 0 || processedWorkExperience.length === 0) {
+                fetch('/api/search-index')
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            setProcessedWorkExperience(data.data);
+                            setProcessedProjects(data.data.projects);
+                            setProcessedWorkExperience(data.data.workExperience);
+                            return;
                         }
+                        throw new Error('Search index payload missing success flag');
                     })
-                    .catch(err => console.error("Failed to fetch work experience for command palette", err));
+                    .catch(err => {
+                        console.error("Failed to fetch search index for command palette", err);
+                        Promise.all([
+                            fetch('/api/blogs').then(res => res.json()),
+                            fetch('/api/work-experience').then(res => res.json()),
+                        ])
+                            .then(([blogsData, workData]) => {
+                                if (blogsData?.data) {
+                                    setProcessedProjects(blogsData.data);
+                                }
+                                if (workData?.success && workData?.data) {
+                                    setProcessedWorkExperience(workData.data);
+                                }
+                            })
+                            .catch((fallbackError) => {
+                                console.error("Failed to fetch fallback command palette data", fallbackError);
+                            });
+                    });
             }
         }
     }, [open]);

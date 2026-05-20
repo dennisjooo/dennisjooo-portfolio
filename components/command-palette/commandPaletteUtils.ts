@@ -1,7 +1,6 @@
 "use client";
 
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import { extractKeywords } from "@/lib/utils/extractKeywords";
 import {
     Home,
     User,
@@ -50,20 +49,18 @@ export function setProcessedProjects(projects: ProcessedProject[]) {
     processedProjects = projects.map(project => {
         const slug = project.slug || createUrlSlug(project.title);
         const path = `/blogs/${slug}`;
-
-        // Extract top keywords from blog post content
-        const contentKeywords = extractKeywords(project.blogPost || '', 50);
-        const descKeywords = extractKeywords(project.description || '', 20);
+        const bodySnippet = (project.blogPost || '').slice(0, 1200);
+        const rawContent = `${project.title} ${project.description} ${bodySnippet}`;
 
         return {
             ...project,
+            blogPost: bodySnippet,
             slug,
             path,
-            rawContent: `${project.title} ${project.description} ${project.blogPost}`,
+            rawContent,
             searchKeywords: [
                 project.title.toLowerCase(),
-                ...descKeywords,
-                ...contentKeywords,
+                project.description.toLowerCase(),
                 path,
                 slug,
                 project.type

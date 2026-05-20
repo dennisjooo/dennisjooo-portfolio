@@ -1,3 +1,4 @@
+import 'server-only';
 import { unstable_cache } from 'next/cache';
 import { db, blogs, type Blog } from '@/lib/db';
 import { eq, desc, count, or, and, lte, type SQL } from 'drizzle-orm';

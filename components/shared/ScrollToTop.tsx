@@ -31,7 +31,7 @@ export const ScrollToTop = () => {
     useEffect(() => {
         // Only scroll if pathname actually changed (not on initial mount)
         if (prevPathname.current !== null && prevPathname.current !== pathname) {
-            // Skip scroll-to-top if there's a hash - let HomeClient handle hash navigation
+            // Skip scroll-to-top if there's a hash - let home effects handle hash navigation
             const hasHash = typeof window !== 'undefined' && window.location.hash;
             if (!hasHash) {
                 // Immediate scroll attempt

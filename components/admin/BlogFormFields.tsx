@@ -1,4 +1,4 @@
-import { Blog } from '@/lib/db';
+import type { Blog } from '@/lib/db';
 import Image from 'next/image';
 import { PhotoIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';

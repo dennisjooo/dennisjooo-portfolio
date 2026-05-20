@@ -1,6 +1,4 @@
-"use client";
-
-import { Blog } from '@/lib/db';
+import type { Blog } from '@/lib/db';
 import { FeaturedProjectsHeader } from './FeaturedProjectsHeader';
 import { FeaturedProjectsGrid } from './FeaturedProjectsGrid';
 import { ViewAllButton } from './ViewAllButton';
