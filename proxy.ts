@@ -12,5 +12,12 @@ export default clerkMiddleware(async (auth, req) => {
 });
 
 export const config = {
-  matcher: ["/admin(.*)", "/api(.*)"],
+  matcher: [
+    "/admin(.*)",
+    "/api(.*)",
+    {
+      source: "/blogs/:path*",
+      has: [{ type: "query", key: "preview", value: "true" }],
+    },
+  ],
 };
