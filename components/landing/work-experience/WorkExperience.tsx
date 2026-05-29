@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { TimelineItemData } from '@/lib/types/workExperience';
 import { groupItemsByCompany } from '@/lib/utils/workExperience';
+import { RoleResponsibilitiesList } from './RoleResponsibilitiesList';
 import { WorkExperienceMobileClient } from './WorkExperienceMobileClient';
 
 export type { TimelineItemData };
@@ -64,17 +65,10 @@ export default function WorkExperience({ workExperience }: WorkExperienceProps) 
                                                     </span>
                                                 </div>
 
-                                                <ul className="space-y-3">
-                                                    {role.responsibilities.map((resp, idx) => (
-                                                        <li
-                                                            key={`${role.id ?? role.title}-${idx}`}
-                                                            className="flex items-start text-lg md:text-xl font-light text-muted-foreground leading-relaxed"
-                                                        >
-                                                            <span className="mr-4 mt-[0.7em] w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
-                                                            <span>{resp}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                                <RoleResponsibilitiesList
+                                                    responsibilities={role.responsibilities}
+                                                    itemKeyPrefix={role.id ?? role.title}
+                                                />
                                             </div>
                                         ))}
                                     </div>

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { TimelineItemData } from '@/lib/types/workExperience';
-import { m, AnimatePresence } from '@/components/motion';
-import { useExpandableList } from '@/lib/hooks/useExpandableList';
+import { m } from '@/components/motion';
+import { RoleResponsibilitiesList } from '../RoleResponsibilitiesList';
 
 interface TimelineRoleProps {
     role: TimelineItemData;
@@ -11,8 +11,6 @@ interface TimelineRoleProps {
 }
 
 export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
-    const { isExpanded, toggle, initialItems, expandedItems, hasMore } = useExpandableList(role.responsibilities, 3);
-
     return (
         <m.div
             className="relative pl-8 md:pl-0 border-l border-foreground/10 md:border-none ml-4 md:ml-0 py-4"
@@ -34,50 +32,10 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
                 </span>
             </div>
 
-            {/* Responsibilities */}
-            <ul className="space-y-4 mb-4">
-                {/* Initial Items - Static */}
-                {initialItems.map((resp, idx) => (
-                    <li
-                        key={idx}
-                        className="flex items-start text-lg md:text-xl font-light text-muted-foreground leading-relaxed group/item"
-                    >
-                        <span className="mr-4 mt-[0.7em] w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0 group-hover/item:bg-foreground transition-colors" />
-                        <span>{resp}</span>
-                    </li>
-                ))}
-
-                {/* Expanded Items - Animate Entry/Exit */}
-                <AnimatePresence>
-                    {isExpanded && expandedItems.map((resp, idx) => (
-                        <m.li
-                            key={`expanded-${idx}`}
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="flex items-start text-lg md:text-xl font-light text-muted-foreground leading-relaxed group/item overflow-hidden"
-                        >
-                            <span className="mr-4 mt-[0.7em] w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0 group-hover/item:bg-foreground transition-colors" />
-                            <span>{resp}</span>
-                        </m.li>
-                    ))}
-                </AnimatePresence>
-            </ul>
-
-            {/* Read More Button */}
-            {hasMore && (
-                <button
-                    onClick={toggle}
-                    className="group flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
-                >
-                    <span>{isExpanded ? 'Read Less' : 'Read More'}</span>
-                    <span className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                        ↓
-                    </span>
-                </button>
-            )}
+            <RoleResponsibilitiesList
+                responsibilities={role.responsibilities}
+                itemKeyPrefix={role.id ?? role.title}
+            />
         </m.div>
     );
 };
-
