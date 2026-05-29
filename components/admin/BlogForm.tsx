@@ -43,6 +43,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [editorMode, setEditorMode] = useState<EditorMode>('write');
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const slugManuallyEdited = useRef(Boolean(initialData?.slug));
 
   useFormDirty(formData);
 
@@ -84,6 +85,30 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
+    if (name === 'slug') {
+      if (value.length === 0) {
+        slugManuallyEdited.current = false;
+        setFormData(prev => ({
+          ...prev,
+          slug: createUrlSlug(prev.title || ''),
+        }));
+      } else {
+        slugManuallyEdited.current = true;
+        setFormData(prev => ({ ...prev, slug: value }));
+      }
+      return;
+    }
+
+    if (name === 'title' && !slugManuallyEdited.current) {
+      setFormData(prev => ({
+        ...prev,
+        title: value,
+        slug: createUrlSlug(value),
+      }));
+      return;
+    }
+
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
