@@ -5,7 +5,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import { GripVertical } from "lucide-react";
+import { DragGripHandle } from "./shared/DragGripHandle";
+import { cn } from "@/lib/utils";
 
 export interface Column<T> {
   header: string;
@@ -128,60 +129,56 @@ export function AdminTable<T extends { id?: string | number }>({
             <div
               key={row.id || rowIdx}
               data-card
-              className={`rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4 transition-all duration-200 ${
-                isDragging ? "opacity-50 bg-muted/50" : ""
-              } ${isDragOver ? "ring-2 ring-primary" : ""}`}
+              className={cn(
+                "flex items-stretch gap-2 rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4 transition-all duration-200",
+                isDragging && "opacity-50 bg-muted/50",
+                isDragOver && "ring-2 ring-primary"
+              )}
               onDragOver={(e) => handleDragOver(e, rowIdx)}
               onDrop={() => handleDrop(rowIdx)}
             >
-              {/* Card Header: Primary content + Actions */}
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  {enableSelect && (
-                    <input
-                      type="checkbox"
-                      checked={selectedIds?.has(String(row.id)) ?? false}
-                      onChange={() => onToggleSelect?.(String(row.id))}
-                      className="flex-shrink-0 mt-1 rounded border-border accent-primary"
-                    />
-                  )}
-                  {enableReorder && (
-                    <button
-                      type="button"
-                      className="flex-shrink-0 inline-flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-grab active:cursor-grabbing transition-colors"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, rowIdx)}
-                      title="Drag to reorder"
-                    >
-                      <GripVertical className="w-4 h-4" />
-                    </button>
-                  )}
-                  <div className="flex-1 min-w-0 text-sm font-sans text-foreground">
-                    {getCellValue(row, primaryColumn)}
+              {enableReorder && (
+                <DragGripHandle onDragStart={(e) => handleDragStart(e, rowIdx)} />
+              )}
+              <div className="flex-1 min-w-0">
+                {/* Card Header: Primary content + Actions */}
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    {enableSelect && (
+                      <input
+                        type="checkbox"
+                        checked={selectedIds?.has(String(row.id)) ?? false}
+                        onChange={() => onToggleSelect?.(String(row.id))}
+                        className="flex-shrink-0 self-center rounded border-border accent-primary"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0 text-sm font-sans text-foreground">
+                      {getCellValue(row, primaryColumn)}
+                    </div>
                   </div>
+                  {actionsColumn && (
+                    <div className="flex-shrink-0">
+                      {getCellValue(row, actionsColumn)}
+                    </div>
+                  )}
                 </div>
-                {actionsColumn && (
-                  <div className="flex-shrink-0">
-                    {getCellValue(row, actionsColumn)}
+
+                {/* Card Details */}
+                {detailColumns.length > 0 && (
+                  <div className="space-y-2 pt-3 border-t border-border/30">
+                    {detailColumns.map((col, colIdx) => (
+                      <div key={colIdx} className="flex items-center justify-between gap-4 text-sm">
+                        <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
+                          {col.header}
+                        </span>
+                        <div className="text-right font-sans text-foreground">
+                          {getCellValue(row, col)}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
-
-              {/* Card Details */}
-              {detailColumns.length > 0 && (
-                <div className="space-y-2 pt-3 border-t border-border/30">
-                  {detailColumns.map((col, colIdx) => (
-                    <div key={colIdx} className="flex items-center justify-between gap-4 text-sm">
-                      <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
-                        {col.header}
-                      </span>
-                      <div className="text-right font-sans text-foreground">
-                        {getCellValue(row, col)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           );
         })}
@@ -256,16 +253,11 @@ export function AdminTable<T extends { id?: string | number }>({
                       </td>
                     )}
                     {enableReorder && (
-                      <td className="px-4 py-4 text-sm font-sans text-foreground w-[50px]">
-                        <button
-                          type="button"
-                          className="inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-grab active:cursor-grabbing transition-colors"
-                          draggable
+                      <td className="p-0 w-11">
+                        <DragGripHandle
                           onDragStart={(e) => handleDragStart(e, rowIdx)}
-                          title="Drag to reorder"
-                        >
-                          <GripVertical className="w-4 h-4" />
-                        </button>
+                          className="h-full min-h-[3.5rem] w-full rounded-none"
+                        />
                       </td>
                     )}
                     {columns.map((col, colIdx) => (

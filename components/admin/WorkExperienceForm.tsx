@@ -14,6 +14,8 @@ import type { WorkExperience } from "@/lib/db";
 import { formStyles } from "./shared/formStyles";
 import { FormActions } from "./shared/FormActions";
 import { FormField } from "./shared/FormField";
+import { AutoResizeTextarea } from "./shared/AutoResizeTextarea";
+import { DragGripHandle } from "./shared/DragGripHandle";
 import { useImageUpload } from "@/lib/hooks/useImageUpload";
 import { useFormSubmit } from "./hooks/useFormSubmit";
 import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
@@ -39,6 +41,8 @@ export default function WorkExperienceForm({
     responsibilities: initialData?.responsibilities ?? [""],
     order: initialData?.order ?? 0,
   });
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   useFormDirty(formData);
 
@@ -86,6 +90,40 @@ export default function WorkExperienceForm({
       updated[index] = value;
       return { ...prev, responsibilities: updated };
     });
+  };
+
+  const handleDragStart = (event: React.DragEvent, index: number) => {
+    setDragIndex(index);
+    const row = (event.target as HTMLElement).closest("[data-responsibility-row]");
+    if (row && event.dataTransfer) {
+      event.dataTransfer.setDragImage(row, 0, 0);
+      event.dataTransfer.effectAllowed = "move";
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent, index: number) => {
+    if (dragIndex === null) return;
+    event.preventDefault();
+    setDragOverIndex(index);
+  };
+
+  const handleDrop = (index: number) => {
+    if (dragIndex === null) return;
+    if (dragIndex !== index) {
+      setFormData(prev => {
+        const next = [...prev.responsibilities];
+        const [moved] = next.splice(dragIndex, 1);
+        next.splice(index, 0, moved);
+        return { ...prev, responsibilities: next };
+      });
+    }
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDragIndex(null);
+    setDragOverIndex(null);
   };
 
   return (
@@ -202,7 +240,7 @@ export default function WorkExperienceForm({
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-1">
           <label className={formStyles.label}>Responsibilities</label>
           <button
             type="button"
@@ -213,30 +251,56 @@ export default function WorkExperienceForm({
             Add Item
           </button>
         </div>
+        {formData.responsibilities.length > 1 && (
+          <p className="text-xs text-muted-foreground mb-3">
+            Drag the grip to reorder items.
+          </p>
+        )}
         <div className="space-y-3">
-          {formData.responsibilities.map((resp, index) => (
-            <div key={index} className="flex items-start gap-2">
-              <span className="p-3 text-muted-foreground font-mono text-sm">
-                {index + 1}.
-              </span>
-              <textarea
-                className={cn(formStyles.input, "resize-none")}
-                rows={2}
-                placeholder="Describe a responsibility or achievement..."
-                value={resp}
-                onChange={(e) => updateResponsibility(index, e.target.value)}
-              />
-              {formData.responsibilities.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeResponsibility(index)}
-                  className="p-3 text-muted-foreground hover:text-destructive transition-colors"
-                >
-                  <TrashIcon className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          ))}
+          {formData.responsibilities.map((resp, index) => {
+            const isDragging = dragIndex === index;
+            const isDragOver =
+              dragOverIndex === index &&
+              dragIndex !== null &&
+              dragIndex !== index;
+
+            return (
+              <div
+                key={index}
+                data-responsibility-row
+                className={cn(
+                  "flex items-stretch gap-2 rounded-lg transition-all duration-200",
+                  isDragging && "opacity-50 bg-muted/50",
+                  isDragOver && "ring-2 ring-primary"
+                )}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDrop={() => handleDrop(index)}
+                onDragEnd={handleDragEnd}
+              >
+                {formData.responsibilities.length > 1 && (
+                  <DragGripHandle onDragStart={(e) => handleDragStart(e, index)} />
+                )}
+                <span className="self-center text-muted-foreground font-mono text-sm w-6 text-right shrink-0">
+                  {index + 1}.
+                </span>
+                <AutoResizeTextarea
+                  className={cn(formStyles.input, "min-h-[4.5rem]")}
+                  placeholder="Describe a responsibility or achievement..."
+                  value={resp}
+                  onValueChange={(value) => updateResponsibility(index, value)}
+                />
+                {formData.responsibilities.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeResponsibility(index)}
+                    className="self-center p-2 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

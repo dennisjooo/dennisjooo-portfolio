@@ -131,6 +131,18 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     }));
   };
 
+  const updateLink = (index: number, link: { text: string; url: string }) => {
+    setFormData(prev => {
+      const next = [...(prev.links || [])];
+      next[index] = link;
+      return { ...prev, links: next };
+    });
+  };
+
+  const reorderLinks = (links: { text: string; url: string }[]) => {
+    setFormData(prev => ({ ...prev, links }));
+  };
+
   const insertImageToMarkdown = (file: File) => {
     const id = Math.random().toString(36).substring(7);
     const previewUrl = URL.createObjectURL(file);
@@ -306,6 +318,8 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         links={formData.links || []}
         onAdd={addLink}
         onRemove={removeLink}
+        onUpdate={updateLink}
+        onReorder={reorderLinks}
       />
 
       <MarkdownEditor
