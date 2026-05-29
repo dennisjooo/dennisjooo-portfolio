@@ -5,6 +5,7 @@ import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
 import { LoadingSpinner } from "@/components/admin/shared";
+import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { useFormDirty } from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
@@ -100,13 +101,12 @@ export default function AboutAdminPage() {
               </h3>
               <p className="text-sm text-muted-foreground">{section.description}</p>
             </div>
-            <textarea
+            <AutoResizeTextarea
               value={content[section.key]}
-              onChange={(e) =>
-                setContent({ ...content, [section.key]: e.target.value })
+              onValueChange={(value) =>
+                setContent({ ...content, [section.key]: value })
               }
-              rows={5}
-              className={cn(formStyles.input, "resize-none")}
+              className={cn(formStyles.input, "min-h-[7.5rem]")}
               placeholder={`Enter content for ${section.title}...`}
             />
             <div className="mt-2 text-right">
