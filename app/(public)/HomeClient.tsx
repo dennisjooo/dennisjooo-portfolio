@@ -69,7 +69,10 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
             gsap.registerPlugin(ScrollTrigger);
 
             // Desktop: Full visual effect with blur
-            gsap.to(heroRef.current, {
+            const heroForeground =
+                heroRef.current?.querySelector('#home-hero-foreground') ?? heroRef.current;
+
+            gsap.to(heroForeground, {
                 scale: 0.95,
                 opacity: 0.8,
                 filter: "blur(5px)",

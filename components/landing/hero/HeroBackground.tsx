@@ -7,6 +7,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 interface GrainientControl {
     startLoop: () => void;
     stopLoop: () => void;
+    resize: () => void;
 }
 
 interface ContainerWithControl extends HTMLDivElement {
@@ -26,6 +27,7 @@ export function HeroBackground() {
         const grainientContainer = containerRef.current?.querySelector('.grainient-container') as ContainerWithControl | null;
         if (grainientContainer?.grainientControl) {
             if (entry.isIntersecting) {
+                grainientContainer.grainientControl.resize();
                 grainientContainer.grainientControl.startLoop();
             } else {
                 grainientContainer.grainientControl.stopLoop();
@@ -75,6 +77,20 @@ export function HeroBackground() {
 
     const themeReady = resolvedTheme === 'dark' || resolvedTheme === 'light';
     const isDark = resolvedTheme === 'dark';
+
+    useEffect(() => {
+        if (!allowGrainient || !themeReady) return;
+
+        const grainientContainer = containerRef.current?.querySelector(
+            '.grainient-container'
+        ) as ContainerWithControl | null;
+
+        const frame = requestAnimationFrame(() => {
+            grainientContainer?.grainientControl?.resize();
+        });
+
+        return () => cancelAnimationFrame(frame);
+    }, [allowGrainient, resolvedTheme, themeReady]);
 
     // Light Theme Colors
     const lightColors = {

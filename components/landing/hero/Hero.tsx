@@ -20,8 +20,11 @@ const Hero: React.FC = () => {
             {/* Scroll effect tracker - client component */}
             <HeroScrollEffect />
             
-            {/* Main content - Server-rendered for fast LCP */}
-            <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 lg:p-16 pointer-events-none">
+            {/* Foreground only — GSAP scroll effects target this, not the WebGL background */}
+            <div
+                id="home-hero-foreground"
+                className="absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 lg:p-16 pointer-events-none"
+            >
                 
                 {/* Top Meta Bar */}
                 <div className="flex justify-between items-start text-[10px] md:text-sm lg:text-base font-mono tracking-widest uppercase opacity-60 mt-16">

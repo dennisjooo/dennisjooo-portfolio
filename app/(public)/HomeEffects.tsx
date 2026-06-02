@@ -60,7 +60,9 @@ export function HomeEffects() {
             cancelIdleCallback?: (handle: number) => void;
         };
 
-        const heroElement = document.getElementById('home-hero');
+        const heroElement =
+            document.getElementById('home-hero-foreground') ??
+            document.getElementById('home-hero');
         const contentElement = document.getElementById('home-content');
         if (!heroElement || !contentElement) return;
 

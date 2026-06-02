@@ -154,9 +154,19 @@ const Grainient: React.FC<GrainientProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const isRunningRef = useRef(false);
+  const programRef = useRef<Program | null>(null);
   const prefersReducedMotion = useRef(
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
   );
+
+  useEffect(() => {
+    const program = programRef.current;
+    if (!program) return;
+
+    (program.uniforms.uColor1 as { value: Float32Array }).value = new Float32Array(hexToRgb(color1));
+    (program.uniforms.uColor2 as { value: Float32Array }).value = new Float32Array(hexToRgb(color2));
+    (program.uniforms.uColor3 as { value: Float32Array }).value = new Float32Array(hexToRgb(color3));
+  }, [color1, color2, color3]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -211,11 +221,11 @@ const Grainient: React.FC<GrainientProps> = ({
     });
 
     const mesh = new Mesh(gl, { geometry, program });
+    programRef.current = program;
 
     const setSize = () => {
-      const rect = container.getBoundingClientRect();
-      const width = Math.max(1, Math.floor(rect.width));
-      const height = Math.max(1, Math.floor(rect.height));
+      const width = Math.max(1, Math.floor(container.clientWidth));
+      const height = Math.max(1, Math.floor(container.clientHeight));
       renderer.setSize(width, height);
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
@@ -225,6 +235,17 @@ const Grainient: React.FC<GrainientProps> = ({
     const ro = new ResizeObserver(setSize);
     ro.observe(container);
     setSize();
+
+    let scrollRaf: number | null = null;
+    const scheduleResize = () => {
+      if (scrollRaf !== null) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null;
+        setSize();
+      });
+    };
+    window.addEventListener('scroll', scheduleResize, { passive: true });
+    window.addEventListener('resize', scheduleResize);
 
     const t0 = performance.now();
     const loop = (t: number) => {
@@ -259,12 +280,20 @@ const Grainient: React.FC<GrainientProps> = ({
 
     // Expose visibility control via ref callback
     if (containerRef.current) {
-      (containerRef.current as HTMLDivElement & { grainientControl?: { startLoop: () => void; stopLoop: () => void } }).grainientControl = { startLoop, stopLoop };
+      (containerRef.current as HTMLDivElement & {
+        grainientControl?: { startLoop: () => void; stopLoop: () => void; resize: () => void };
+      }).grainientControl = { startLoop, stopLoop, resize: setSize };
     }
 
     return () => {
       stopLoop();
       ro.disconnect();
+      window.removeEventListener('scroll', scheduleResize);
+      window.removeEventListener('resize', scheduleResize);
+      if (scrollRaf !== null) {
+        cancelAnimationFrame(scrollRaf);
+      }
+      programRef.current = null;
       try {
         container.removeChild(canvas);
       } catch {
@@ -290,10 +319,7 @@ const Grainient: React.FC<GrainientProps> = ({
     saturation,
     centerX,
     centerY,
-    zoom,
-    color1,
-    color2,
-    color3
+    zoom
   ]);
 
   return <div ref={containerRef} className={`relative w-full h-full overflow-hidden grainient-container ${className}`.trim()} />;
