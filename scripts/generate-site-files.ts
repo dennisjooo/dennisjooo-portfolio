@@ -13,6 +13,7 @@ import { writeFileSync } from 'fs';
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as dotenv from 'dotenv';
+import packageJson from '../package.json';
 import { SITE_DESCRIPTION } from '../lib/constants/site';
 import { fetchSiteData } from '../lib/site-manifest/fetchSiteData';
 import { buildLlmsTxt, buildSitemapEntries, buildSitemapXml } from '../lib/site-manifest/generate';
@@ -54,6 +55,7 @@ async function main() {
 
     console.log(`Wrote ${LLMS_PATH}`);
     console.log(`Wrote ${SITEMAP_PATH} (${urlCount} URLs)`);
+    console.log(`  Build version: ${packageJson.version}`);
     console.log(`  Projects: ${data.projects.length}`);
     console.log(`  Blog posts: ${data.blogPosts.length}`);
     console.log(`  Work entries: ${data.workExperiences.length}`);

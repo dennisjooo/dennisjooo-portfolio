@@ -1,3 +1,4 @@
+import packageJson from '@/package.json';
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from '@/lib/constants/site';
 import { defaultAboutContent } from '@/components/landing/about/contentSections';
 import { skillCategories } from '@/data/skillContent';
@@ -68,6 +69,7 @@ export function buildSitemapXml(entries: SitemapEntry[]): string {
         .join('\n');
 
     return `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Site build version: ${escapeXml(packageJson.version)} -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 </urlset>
@@ -189,6 +191,7 @@ export function buildLlmsTxt(data: SiteManifestData, siteDescription: string): s
     const sections = [
         `# ${SITE_NAME}'s Portfolio`,
         `> ${siteDescription}`,
+        `- **Build version:** v${packageJson.version}`,
         about.intro,
         about.experience,
         about.personal,
