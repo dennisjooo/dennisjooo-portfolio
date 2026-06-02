@@ -43,11 +43,9 @@ export function CommandPalette() {
     } = useCommandPalette();
 
     const handleNavigate = useCallback((path: string) => {
-        // Check if it's a hash navigation to the homepage
         if (path.startsWith("/#")) {
-            const sectionId = path.slice(2); // Remove "/#"
+            const sectionId = path.slice(2);
             if (pathname === "/") {
-                // Already on homepage, scroll directly
                 if (sectionId === "home") {
                     scrollToTop(true);
                 } else {
@@ -56,7 +54,6 @@ export function CommandPalette() {
                 return;
             }
         }
-        // For other paths or when not on homepage, use router
         router.push(path);
     }, [pathname, router]);
 

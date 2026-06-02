@@ -33,7 +33,6 @@ export const useAboutAnimations = ({
 
             const mm = gsap.matchMedia();
 
-            // Mobile Animation (Horizontal Scroll)
             mm.add("(max-width: 767px)", () => {
                 const mobileContainer = document.querySelector('.mobile-scroll-container') as HTMLElement;
                 if (!mobileContainer) return;
@@ -66,12 +65,10 @@ export const useAboutAnimations = ({
                 };
             });
 
-            // Desktop Animation (Simplified 2D Scroll - no 3D transforms)
             mm.add("(min-width: 768px)", () => {
                 const titles = gsap.utils.toArray<HTMLElement>(".about-title");
                 const bodies = gsap.utils.toArray<HTMLElement>(".about-body");
 
-                // Hide all except first using simple opacity/translate (no 3D)
                 titles.forEach((title, i) => {
                     if (i !== 0) gsap.set(title, { opacity: 0, y: -30 });
                     else gsap.set(title, { opacity: 1, y: 0 });
@@ -93,7 +90,6 @@ export const useAboutAnimations = ({
                     }
                 });
 
-                // Loop through sections - simplified transitions
                 contentSections.forEach((_, i) => {
                     if (i === contentSections.length - 1) return;
 
@@ -117,7 +113,6 @@ export const useAboutAnimations = ({
             };
         };
 
-        // Lazy load GSAP only when section enters viewport
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {

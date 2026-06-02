@@ -20,16 +20,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Read the image data into a buffer
     const arrayBuffer = await request.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Convert to WebP format with optimization
     const optimizedBuffer = await sharp(buffer)
       .webp({ quality: 80 })
       .toBuffer();
 
-    // Generate filename - force profile.webp for profile updates
     let webpFilename;
     if (originalFilename === 'profile.webp') {
       webpFilename = 'profile.webp';
@@ -37,7 +34,6 @@ export async function POST(request: Request) {
       const baseName = originalFilename.replace(/\.[^.]+$/, '');
       webpFilename = `${baseName}-${normalizedHash}.webp`;
     } else {
-      // Generate unique filename: basename-{timestamp}-{randomId}.webp
       const baseName = originalFilename.replace(/\.[^.]+$/, '');
       const uniqueId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
       webpFilename = `${baseName}-${uniqueId}.webp`;

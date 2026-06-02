@@ -6,7 +6,6 @@ import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Viewport configuration for mobile optimization
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
@@ -21,7 +20,7 @@ const urbanist = Urbanist({
     display: "swap",
     variable: "--font-sans",
     preload: true,
-    adjustFontFallback: true, // Reduces CLS by sizing fallback font to match
+    adjustFontFallback: true,
 });
 
 const robotoMono = Roboto_Mono({
@@ -32,7 +31,6 @@ const robotoMono = Roboto_Mono({
     adjustFontFallback: true,
 });
 
-// Playfair is used for LCP element - prioritize loading (italic only for hero)
 const playfair = Playfair_Display({
     subsets: ["latin"],
     display: "swap",
@@ -93,7 +91,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                {/* Preconnect to external domains for faster resource loading */}
                 <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
                 <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
             </head>

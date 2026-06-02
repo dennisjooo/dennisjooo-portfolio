@@ -20,9 +20,6 @@ export interface BlogsResult {
     pagination: PaginationResult;
 }
 
-/**
- * Reusable filter: only posts that are published or scheduled with publishAt in the past.
- */
 export function visibleBlogsFilter(): SQL {
     return or(
         eq(blogs.status, 'published'),
@@ -30,10 +27,6 @@ export function visibleBlogsFilter(): SQL {
     )!;
 }
 
-/**
- * Shared slug-lookup with optional visibility filter.
- * Tries exact slug match first, then falls back to title-derived slug matching.
- */
 export async function findBlogBySlug(slug: string, filter?: SQL): Promise<Blog | null> {
     const whereClause = filter ? and(eq(blogs.slug, slug), filter) : eq(blogs.slug, slug);
 
@@ -55,9 +48,6 @@ export async function findBlogBySlug(slug: string, filter?: SQL): Promise<Blog |
     return null;
 }
 
-/**
- * Get featured projects for home page (3 most recent projects)
- */
 export const getFeaturedProjects = unstable_cache(
     async (): Promise<Blog[]> => {
         try {
@@ -77,10 +67,6 @@ export const getFeaturedProjects = unstable_cache(
     { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['projects', 'blogs'] }
 );
 
-/**
- * Get paginated blogs/projects for /blogs page
- * Mirrors the /api/blogs endpoint logic but runs server-side
- */
 export const getBlogs = unstable_cache(
     async (
         page: number = 1,

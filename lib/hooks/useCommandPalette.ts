@@ -13,10 +13,6 @@ import {
 } from "@/components/command-palette/commandPaletteUtils";
 import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export type SearchScope = "all" | "projects" | "work";
 
 export interface FilteredProject extends ProcessedProject {
@@ -52,10 +48,6 @@ export interface UseCommandPaletteReturn {
     router: ReturnType<typeof useRouter>;
 }
 
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
 function escapeRegex(str: string): string {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -81,10 +73,6 @@ function createSearchMatcher(
     return (text: string) => text.toLowerCase().includes(lowerTerm);
 }
 
-// ============================================================================
-// Hook
-// ============================================================================
-
 export function useCommandPalette(): UseCommandPaletteReturn {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
@@ -94,7 +82,6 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     const router = useRouter();
     const { copied, copyToClipboard } = useCopyToClipboard();
 
-    // Fetch projects and work experience when command palette opens
     React.useEffect(() => {
         if (open) {
             if (processedProjects.length === 0 || processedWorkExperience.length === 0) {
@@ -130,7 +117,6 @@ export function useCommandPalette(): UseCommandPaletteReturn {
         }
     }, [open]);
 
-    // Keyboard shortcut (Ctrl/Cmd + K) and custom event listener
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
             if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -149,13 +135,11 @@ export function useCommandPalette(): UseCommandPaletteReturn {
         };
     }, []);
 
-    // Run command and close palette
     const runCommand = React.useCallback((command: () => unknown) => {
         setOpen(false);
         command();
     }, []);
 
-    // Check if search contains secret keywords for easter egg
     const showSecretCommand = React.useMemo(() => {
         const normalizedSearch = search.toLowerCase();
         return normalizedSearch.includes("rick") ||
@@ -163,7 +147,6 @@ export function useCommandPalette(): UseCommandPaletteReturn {
             normalizedSearch.includes("free");
     }, [search]);
 
-    // Copy current URL to clipboard
     const copyUrl = React.useCallback(() => {
         if (typeof window !== "undefined") {
             copyToClipboard(window.location.href);
@@ -171,13 +154,11 @@ export function useCommandPalette(): UseCommandPaletteReturn {
         }
     }, [copyToClipboard, runCommand]);
 
-    // Create matcher based on search options
     const matcher = React.useMemo(() => {
         if (!search.trim()) return null;
         return createSearchMatcher(search.trim(), { caseSensitive, exactMatch });
     }, [search, caseSensitive, exactMatch]);
 
-    // Filtered projects with context
     const filteredProjects = React.useMemo((): FilteredProject[] => {
         if (!search.trim() || !matcher || searchScope === "work") return [];
 
@@ -191,9 +172,8 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...project, context };
             })
             .filter((p): p is FilteredProject => p !== null);
-    }, [search, matcher, searchScope]); // Added open to trigger re-calc after fetch
+    }, [search, matcher, searchScope]);
 
-    // Filtered work experience with context
     const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
         if (!search.trim() || !matcher || searchScope === "projects") return [];
 
@@ -207,7 +187,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
                 return { ...work, context };
             })
             .filter((w): w is FilteredWorkExperience => w !== null);
-    }, [search, matcher, searchScope]); // Added open to trigger re-calc after fetch
+    }, [search, matcher, searchScope]);
 
     return {
         open,

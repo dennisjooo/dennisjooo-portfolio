@@ -23,7 +23,6 @@ export function HeroBackground() {
     const handleVisibilityChange = useCallback((entries: IntersectionObserverEntry[]) => {
         const entry = entries[0];
         
-        // Control Grainient animation - Grainient exposes control on its container
         const grainientContainer = containerRef.current?.querySelector('.grainient-container') as ContainerWithControl | null;
         if (grainientContainer?.grainientControl) {
             if (entry.isIntersecting) {
@@ -92,14 +91,12 @@ export function HeroBackground() {
         return () => cancelAnimationFrame(frame);
     }, [allowGrainient, resolvedTheme, themeReady]);
 
-    // Light Theme Colors
     const lightColors = {
         color1: '#B0B0B0',
         color2: '#D0D0D0',
         color3: '#A0A0A0',
     };
 
-    // Dark Theme Colors
     const darkColors = {
         color1: '#404040',
         color2: '#505050',

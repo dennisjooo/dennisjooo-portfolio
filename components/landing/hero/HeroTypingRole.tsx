@@ -4,13 +4,7 @@ import { HERO_CONTENT } from '@/data/heroContent';
 import { useTypingEffect } from '@/lib/hooks/useTypingEffect';
 import { BlinkingCursor } from '@/components/shared/BlinkingCursor';
 
-/**
- * Typing effect for hero role description
- * Client component - loads after LCP completes
- * Uses min-height to prevent CLS when text changes
- */
 export function HeroTypingRole() {
-    // Delay typing start by 800ms to ensure LCP completes first
     const description = useTypingEffect(HERO_CONTENT.descriptions, 800);
 
     return (

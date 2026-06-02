@@ -47,12 +47,6 @@ async function copyBlobToSlug(oldUrl: string, newSlug: string): Promise<string> 
   return newBlob.url;
 }
 
-/**
- * Migrate all blob images associated with a blog post to a new slug path.
- * Copies all blobs first, then deletes originals only after all copies succeed.
- * Returns updated imageUrl and blogPost with replaced URLs, or null values
- * if the originals were null (meaning no update needed for that field).
- */
 export async function migrateAllBlogImages(
   newSlug: string,
   imageUrl: string | null,
@@ -82,7 +76,6 @@ export async function migrateAllBlogImages(
     updatedBlogPost = updatedBlogPost.split(oldUrl).join(newUrl);
   }
 
-  // Only delete old blobs after all copies succeed
   const oldUrls = [...urlMap.keys()];
   await del(oldUrls);
 

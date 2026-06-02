@@ -65,7 +65,6 @@ export function ContentStats() {
           published: published?.pagination?.total ?? 0,
         });
       } catch {
-        // non-critical
       } finally {
         setLoading(false);
       }

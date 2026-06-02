@@ -18,8 +18,7 @@ interface StatusResponse {
   cached: boolean;
 }
 
-// Server-side cache
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL_MS = 5 * 60 * 1000;
 let cachedStatus: StatusResponse | null = null;
 let lastChecked: number = 0;
 
@@ -34,7 +33,6 @@ async function checkDatabase(): Promise<ServiceStatus> {
       };
     }
     const sql = neon(DATABASE_URL);
-    // Simple ping query
     await sql`SELECT 1`;
     return {
       status: 'operational',
@@ -68,7 +66,6 @@ async function checkBlobStorage(): Promise<ServiceStatus> {
     };
   } catch (error) {
     console.error('Blob storage check failed:', error);
-    // Check if it's a configuration issue vs actual downtime
     const message = error instanceof Error ? error.message : 'Check failed';
     const isConfigError = message.includes('BLOB_READ_WRITE_TOKEN');
     return {
@@ -81,7 +78,6 @@ async function checkBlobStorage(): Promise<ServiceStatus> {
 async function checkAuth(): Promise<ServiceStatus> {
   const start = Date.now();
   try {
-    // Verify Clerk is working by calling auth()
     await auth();
     return {
       status: 'operational',
@@ -97,7 +93,6 @@ async function checkAuth(): Promise<ServiceStatus> {
 }
 
 async function fetchFreshStatus(): Promise<StatusResponse> {
-  // Run all checks in parallel for speed
   const [database, blobStorage, authStatus] = await Promise.all([
     checkDatabase(),
     checkBlobStorage(),
@@ -119,16 +114,14 @@ export async function GET() {
     const now = Date.now();
     const cacheAge = now - lastChecked;
 
-    // Return cached response if still fresh
     if (cachedStatus && cacheAge < CACHE_TTL_MS) {
       return NextResponse.json({
         ...cachedStatus,
         cached: true,
-        cacheAge: Math.round(cacheAge / 1000), // seconds since last check
+        cacheAge: Math.round(cacheAge / 1000),
       });
     }
 
-    // Fetch fresh status and update cache
     const freshStatus = await fetchFreshStatus();
     cachedStatus = freshStatus;
     lastChecked = now;
@@ -137,7 +130,6 @@ export async function GET() {
   } catch (error) {
     console.error('Status check error:', error);
 
-    // If we have stale cache, return it rather than erroring
     if (cachedStatus) {
       return NextResponse.json({
         ...cachedStatus,

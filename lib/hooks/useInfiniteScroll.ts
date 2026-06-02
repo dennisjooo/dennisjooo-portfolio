@@ -1,22 +1,13 @@
 import { useRef, useCallback } from 'react';
 
 interface UseInfiniteScrollOptions {
-  /** Callback to load more items */
   onLoadMore: () => void;
-  /** Whether there are more items to load */
   hasMore: boolean;
-  /** Whether currently loading */
   isLoading: boolean;
-  /** Root margin for intersection observer */
   rootMargin?: string;
-  /** Threshold for intersection observer */
   threshold?: number;
 }
 
-/**
- * Hook for implementing infinite scroll pagination
- * Returns a ref to attach to the sentinel element at the bottom of the list
- */
 export function useInfiniteScroll({
   onLoadMore,
   hasMore,

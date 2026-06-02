@@ -273,12 +273,10 @@ const Grainient: React.FC<GrainientProps> = ({
       }
     };
 
-    // Start paused if reduced motion
     if (!shouldReduceMotion) {
       startLoop();
     }
 
-    // Expose visibility control via ref callback
     if (containerRef.current) {
       (containerRef.current as HTMLDivElement & {
         grainientControl?: { startLoop: () => void; stopLoop: () => void; resize: () => void };
@@ -300,6 +298,7 @@ const Grainient: React.FC<GrainientProps> = ({
         // Ignore
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- colors updated in separate effect
   }, [
     timeSpeed,
     colorBalance,

@@ -56,7 +56,6 @@ export function RecentActivity() {
         const data = await res.json();
         setItems(data.data ?? []);
       } catch {
-        // non-critical
       } finally {
         setLoading(false);
       }

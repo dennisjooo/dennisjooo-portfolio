@@ -12,10 +12,6 @@ interface ReorderItem {
   order: number;
 }
 
-/**
- * Creates a PUT handler for reordering items in a table.
- * The table must have `id` (uuid PK), `order` (integer), and `updatedAt` (timestamp) columns.
- */
 export function createReorderHandler(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: any,

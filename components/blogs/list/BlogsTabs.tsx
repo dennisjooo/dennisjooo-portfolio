@@ -25,7 +25,6 @@ interface BlogsTabsProps {
 export function BlogsTabs({ initialProjects, initialPagination }: BlogsTabsProps) {
     const { activeTab, setActiveTab, mounted } = useTabState();
 
-    // Always show certifications tab for now as it's database driven
     const availableTabs: TabType[] = useMemo(() => [
         'blog',
         'certifications'

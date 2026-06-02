@@ -16,7 +16,6 @@ export default function NotFound() {
         <Navbar />
         <main className="relative h-screen w-full overflow-hidden bg-background text-foreground bg-noise selection:bg-accent selection:text-accent-foreground">
 
-            {/* 1. Abstract Grid Background */}
             <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
                 style={{
                     backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
@@ -24,7 +23,6 @@ export default function NotFound() {
                 }}
             />
 
-            {/* 2. Massive Background Typography (Parallax) */}
             <m.div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden"
                 style={{ x: background.x, y: background.y }}
@@ -33,12 +31,10 @@ export default function NotFound() {
                     <h1 className="font-playfair italic text-[45vw] leading-none text-foreground/5 dark:text-foreground/10 select-none mix-blend-overlay">
                         404
                     </h1>
-                    {/* Decorative overlapping geometric shape */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vw] rounded-full border-[1px] border-foreground/5" />
                 </div>
             </m.div>
 
-            {/* 3. The "Content" Anchor - Bottom Left (Poster Style) */}
             <m.div
                 className="absolute bottom-12 left-6 md:bottom-24 md:left-24 z-10 max-w-xl"
                 style={{ x: foreground.x, y: foreground.y }}
@@ -85,7 +81,6 @@ export default function NotFound() {
                 </div>
             </m.div>
 
-            {/* 4. Technical Specs - Top Right (Editorial Balance) */}
             <m.div
                 className="absolute top-28 right-6 md:top-32 md:right-12 z-10 text-right hidden md:block"
                 initial={{ opacity: 0, x: 20 }}
@@ -103,7 +98,6 @@ export default function NotFound() {
                 </div>
             </m.div>
 
-            {/* 5. Decorative "Peel" Line or Bar */}
             <div className="absolute bottom-0 right-12 w-px h-32 bg-gradient-to-t from-foreground/20 to-transparent hidden md:block" />
             <div className="absolute top-0 left-12 w-px h-32 bg-gradient-to-b from-foreground/20 to-transparent hidden md:block" />
 

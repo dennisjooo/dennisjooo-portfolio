@@ -8,7 +8,6 @@ export async function GET() {
     const [config] = await db.select().from(siteConfig).limit(1);
 
     if (!config) {
-      // Create default config if none exists
       const [newConfig] = await db
         .insert(siteConfig)
         .values({
@@ -36,7 +35,6 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json();
 
-    // Get existing config or create new one
     const [existingConfig] = await db.select().from(siteConfig).limit(1);
 
     let config;

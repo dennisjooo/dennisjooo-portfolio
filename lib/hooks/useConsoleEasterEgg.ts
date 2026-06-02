@@ -2,12 +2,8 @@
 
 import { useEffect } from "react";
 
-/**
- * Console Easter Egg - Shows ASCII art and a message when developers open the console
- */
 export function useConsoleEasterEgg() {
     useEffect(() => {
-        // Only run in browser
         if (typeof window === "undefined") return;
 
         const asciiArt = `
@@ -46,26 +42,22 @@ export function useConsoleEasterEgg() {
 %cTip: This site runs best with coffee ☕
 `;
 
-        // Log ASCII art with gradient-like styling
         console.log(
             asciiArt,
             "background: linear-gradient(90deg, #888888, #666666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 10px; font-weight: bold; font-family: monospace;"
         );
 
-        // Log welcome message
         console.log(
             welcomeMessage,
             "color: #888888; font-size: 12px; font-family: monospace; line-height: 1.5;"
         );
 
-        // Log coffee art
         console.log(
             coffeeTip,
             "color: #c4b5a0; font-size: 10px; font-family: monospace;",
             "color: #888; font-style: italic; font-size: 11px;"
         );
 
-        // Log build version
         const version = process.env.NEXT_PUBLIC_BUILD_VERSION;
         if (version) {
             console.log(

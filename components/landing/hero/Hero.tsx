@@ -2,31 +2,20 @@ import { HeroBackground } from './HeroBackground';
 import { HeroTypingRole } from './HeroTypingRole';
 import { HeroScrollEffect } from './HeroScrollEffect';
 
-/**
- * Hero section - Server component for optimal LCP
- * The main heading text renders immediately without JavaScript
- * Client components (HeroBackground, HeroTypingRole, HeroScrollEffect) 
- * hydrate after initial paint
- */
 const Hero: React.FC = () => {
     return (
         <section
             id="home"
             className="h-screen w-full relative overflow-hidden"
         >
-            {/* Background effect - CSS-only dithered gradient */}
             <HeroBackground />
-            
-            {/* Scroll effect tracker - client component */}
             <HeroScrollEffect />
-            
-            {/* Foreground only — GSAP scroll effects target this, not the WebGL background */}
+
             <div
                 id="home-hero-foreground"
                 className="absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 lg:p-16 pointer-events-none"
             >
                 
-                {/* Top Meta Bar */}
                 <div className="flex justify-between items-start text-[10px] md:text-sm lg:text-base font-mono tracking-widest uppercase opacity-60 mt-16">
                     <div className="animate-fade-in-down" style={{ animationDelay: '200ms' }}>
                         A Portfolio 
@@ -36,7 +25,6 @@ const Hero: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Main Typography - LCP Element - Server rendered, no JS needed */}
                 <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0 overflow-hidden">
                     <h1
                         className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen flex flex-nowrap"
@@ -68,9 +56,7 @@ const Hero: React.FC = () => {
                     </h1>
                 </div>
 
-                {/* Bottom Bar */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pb-8 md:pb-0">
-                    {/* Typing effect - client component */}
                     <HeroTypingRole />
 
                     <div
@@ -82,7 +68,6 @@ const Hero: React.FC = () => {
                 </div>
             </div>
 
-            {/* Gradient accent line at content seam */}
             <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent z-20" />
         </section>
     );

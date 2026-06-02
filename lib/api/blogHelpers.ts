@@ -5,9 +5,6 @@ import { errorResponse } from "@/lib/api/apiHelpers";
 
 const BLOB_IMG_REGEX = /!\[.*?\]\((https:\/\/[^)]+vercel-storage\.com[^)]+)\)/g;
 
-/**
- * Extracts all Vercel Blob URLs from a blog entry's imageUrl and markdown body.
- */
 export function collectBlobUrls(imageUrl: string | null, blogPost: string | null): string[] {
   const urls: string[] = [];
   if (imageUrl?.includes("vercel-storage.com")) {
@@ -21,10 +18,6 @@ export function collectBlobUrls(imageUrl: string | null, blogPost: string | null
   return urls;
 }
 
-/**
- * Returns blob URLs from the preview that are NOT referenced by the original article.
- * Prevents preview cleanup from deleting images the original article still uses.
- */
 export async function getPreviewExclusiveBlobUrls(
   previewImageUrl: string | null,
   previewBlogPost: string | null,
@@ -57,10 +50,6 @@ interface PrepareOptions {
   defaultStatus?: string;
 }
 
-/**
- * Validates scheduled-post rules and normalises publishAt / slug.
- * Returns an error response if validation fails, or null on success (mutates body in-place).
- */
 export function validateAndPrepareBlogBody(body: BlogBody, options?: PrepareOptions) {
   if (!body.status && options?.defaultStatus) {
     body.status = options.defaultStatus;

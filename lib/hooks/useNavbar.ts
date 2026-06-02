@@ -39,7 +39,6 @@ export const useHeroSectionState = (isClientReady: boolean, pathname: string): H
 
         const handleScroll = () => {
             lastScrollY = window.scrollY;
-            // Throttle to one update per frame
             if (rafId === null) {
                 rafId = requestAnimationFrame(updateState);
             }
@@ -74,7 +73,6 @@ export const useSectionNavigation = (
             if (!isClientReady) return;
 
             if (pathname === "/") {
-                // On homepage: scroll to section instantly
                 if (sectionId === "home") {
                     scrollToTop(true);
                 } else {
@@ -107,16 +105,13 @@ export const useNavbarStyles = (
     { isHeroSection, scrolled, isMenuOpen, pathname }: NavbarStylesParams
 ): NavbarStyles =>
     useMemo(() => {
-        // Use glass-panel when scrolled, menu open, or not in hero section
         const bgClass = !isHeroSection || scrolled || isMenuOpen ? "glass-panel" : "bg-transparent";
 
-        // Wider navbar in hero section when not scrolled
         const navWidth =
             isHeroSection && !scrolled && pathname === "/"
                 ? "w-11/12 lg:w-5/6"
                 : "w-11/12 lg:w-3/4 xl:w-2/3";
 
-        // Consistent text color across all states
         const textColorClass = "text-foreground";
 
         return { bgClass, navWidth, textColorClass };

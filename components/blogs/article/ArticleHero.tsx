@@ -1,6 +1,6 @@
 'use client';
 
-import { m, useReducedMotion } from '@/components/motion';
+import { m } from '@/components/motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';

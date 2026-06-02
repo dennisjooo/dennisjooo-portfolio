@@ -9,10 +9,6 @@ import {
 
 type RouteParams = { params: Promise<{ id: string }> };
 
-/**
- * Creates standard GET/PUT/DELETE handlers for a simple CRUD resource.
- * The table must have `id` (uuid PK) and `updatedAt` (timestamp) columns.
- */
 export function createCrudHandlers(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: any,

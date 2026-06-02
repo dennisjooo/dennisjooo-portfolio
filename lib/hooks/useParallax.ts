@@ -45,11 +45,9 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    // Foreground transforms (inverted for depth effect)
     const fgX = useTransform(springX, [-0.5, 0.5], foregroundRange);
     const fgY = useTransform(springY, [-0.5, 0.5], foregroundRange);
 
-    // Background transforms (slower, opposite direction)
     const bgX = useTransform(springX, [-0.5, 0.5], backgroundRange);
     const bgY = useTransform(springY, [-0.5, 0.5], backgroundRange);
 
@@ -57,7 +55,6 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
     const rafId = useRef<number | null>(null);
     const lastMousePos = useRef({ x: 0, y: 0 });
 
-    // Throttled update using RAF for smoother performance on mid-tier devices
     const updateMousePosition = useCallback(() => {
         mouseX.set(lastMousePos.current.x);
         mouseY.set(lastMousePos.current.y);
@@ -65,7 +62,6 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
     }, [mouseX, mouseY]);
 
     useEffect(() => {
-        // Disable parallax on touch devices for better performance
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (isTouchDevice) return;
 
@@ -76,7 +72,6 @@ export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
                 y: e.clientY / innerHeight - 0.5
             };
 
-            // Throttle updates to once per frame
             if (rafId.current === null) {
                 rafId.current = requestAnimationFrame(updateMousePosition);
             }

@@ -27,9 +27,6 @@ const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
         contentSections
     });
 
-    // Pre-reserve scroll space to prevent CLS when GSAP creates pin-spacer
-    // Mobile: 4000px scroll distance, Desktop: 3000px scroll distance
-    // We use CSS with media queries in the className
     return (
         <section
             ref={sectionRef}

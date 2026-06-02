@@ -6,10 +6,6 @@ export interface CompanyGroup {
     roles: TimelineItemData[];
 }
 
-/**
- * Groups consecutive timeline items by company name.
- * Items from the same company appearing consecutively are grouped together.
- */
 export const groupItemsByCompany = (items: TimelineItemData[]): CompanyGroup[] => {
     const groups: CompanyGroup[] = [];
 

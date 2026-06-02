@@ -20,8 +20,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
 
         if (isMobile || prefersReducedMotion) return;
 
-        // Defer Lenis initialization significantly to not block LCP
-        // This prevents blocking the main thread during initial load
         const initLenis = async () => {
             if (!isMounted.current) return () => { };
 
@@ -31,7 +29,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
                 import('gsap/ScrollTrigger')
             ]);
 
-            // Initialize Lenis with reduced options for better performance
             const lenis = new Lenis({
                 duration: 1.2,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -40,7 +37,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
                 smoothWheel: true,
             });
 
-            // Expose Lenis globally for scroll-to-top functionality
             window.lenis = lenis;
 
             gsap.registerPlugin(ScrollTrigger);
@@ -52,7 +48,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             });
             gsap.ticker.lagSmoothing(0);
 
-            // Store cleanup function
             return () => {
                 lenis.destroy();
                 delete window.lenis;
@@ -60,7 +55,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             };
         };
 
-        // Use requestIdleCallback for better performance - defer until browser is idle
         let cleanup: (() => void) | undefined;
 
         const startInit = () => {
@@ -69,8 +63,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             });
         };
 
-        // Delay initialization significantly to let LCP complete
-        // Use requestIdleCallback if available for better timing
         if ('requestIdleCallback' in window) {
             const idleId = window.requestIdleCallback(startInit, { timeout: 3000 });
             return () => {
@@ -79,7 +71,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
                 cleanup?.();
             };
         } else {
-            // Fallback: 1.5 second delay
             const timeoutId = setTimeout(startInit, 1500);
             return () => {
                 clearTimeout(timeoutId);

@@ -31,29 +31,22 @@ interface MobileTimelineProps {
 
 export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
     const prefersReducedMotion = useReducedMotion();
-    // Memoize grouped items to avoid recalculation on every render
     const groupedItems = useMemo(() => groupItemsByCompany(items), [items]);
 
-    // Track which company card is expanded (default: first one)
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    // Store the card we want to "pin" during layout shifts
     const pinnedCard = useRef<{ index: number; viewportTop: number } | null>(null);
 
-    // Track if this is the initial mount - skip scroll behavior on mount to not interfere with hash navigation
     const isInitialMount = useRef(true);
     useEffect(() => {
-        // Mark as no longer initial mount after a delay to allow hash navigation to complete
         const timer = setTimeout(() => {
             isInitialMount.current = false;
         }, 500);
         return () => clearTimeout(timer);
     }, []);
 
-    // Use layoutEffect to adjust scroll BEFORE browser paints, then continue during animation
     useLayoutEffect(() => {
-        // Skip scroll behavior on initial mount to not interfere with hash navigation
         if (isInitialMount.current) return;
 
         const expandedElement = expandedIndex !== null ? cardRefs.current[expandedIndex] : null;
@@ -63,7 +56,6 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
             const element = cardRefs.current[index];
             if (!element) return;
 
-            // Immediate adjustment before first paint
             const adjustScroll = () => {
                 const currentTop = element.getBoundingClientRect().top;
                 const drift = currentTop - viewportTop;
@@ -74,7 +66,6 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
 
             adjustScroll();
 
-            // Continue adjusting during the CSS animation (150ms)
             let running = true;
             const startTime = performance.now();
 
@@ -82,7 +73,6 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
                 if (!running) return;
                 if (performance.now() - startTime > 200) {
                     pinnedCard.current = null;
-                    // After pinning animation, scroll into view if still obscured
                     const rect = element.getBoundingClientRect();
                     if (rect.top < 100) {
                         element.scrollIntoView({
@@ -100,7 +90,6 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
 
             return () => { running = false; };
         } else if (expandedElement) {
-            // No pinning needed - just scroll into view if the card header is obscured
             setTimeout(() => {
                 const rect = expandedElement.getBoundingClientRect();
                 if (rect.top < 100) {
@@ -117,13 +106,11 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
         const element = cardRefs.current[index];
 
         setExpandedIndex(prev => {
-            // If clicking the same card, just close it (no pinning needed)
             if (prev === index) {
                 pinnedCard.current = null;
                 return null;
             }
 
-            // Pin the clicked card's position if a card above will collapse
             if (prev !== null && prev < index && element) {
                 pinnedCard.current = {
                     index,
@@ -139,7 +126,6 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
 
     return (
         <div className="md:hidden w-full px-5 py-12">
-            {/* Stacked Accordion Cards - overflow-anchor:none prevents browser scroll anchoring */}
             <m.div
                 variants={prefersReducedMotion ? undefined : containerVariants}
                 initial={prefersReducedMotion ? undefined : 'hidden'}

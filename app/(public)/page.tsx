@@ -10,15 +10,12 @@ import { unstable_cache } from 'next/cache';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
 import { getFeaturedProjects } from '@/lib/data/blogs';
 
-// Enable ISR - page will be statically generated and revalidated every 60 seconds
 export const revalidate = 60;
 
-// Skeleton for loading states
 const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
     <div className={`${height} bg-background`} />
 );
 
-// Below-the-fold content - lower priority
 const Skills = dynamic(() => import('@/components/landing/skills'), {
     loading: () => <SectionSkeleton height="min-h-[50vh]" />
 });
@@ -26,7 +23,6 @@ const Contacts = dynamic(() => import('@/components/landing/contacts'), {
     loading: () => <SectionSkeleton height="min-h-[50vh]" />
 });
 
-// Non-critical UI - lazy loaded
 const BackToTop = dynamic(() => import('@/components/shared/BackToTop'));
 
 const getSiteConfig = unstable_cache(
@@ -50,7 +46,6 @@ const getWorkExperience = unstable_cache(
                 .select()
                 .from(workExperiences)
                 .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt));
-            // Ensure responsibilities is always an array and order is number | undefined
             return experiences.map(exp => ({
                 ...exp,
                 responsibilities: exp.responsibilities ?? [],

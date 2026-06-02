@@ -34,10 +34,8 @@ export const ContentCard = ({
     const isFeatured = variant === 'featured';
     const prefersReducedMotion = useReducedMotion();
     
-    // Stagger delay: featured cards get more time between reveals
     const animationDelay = isFeatured ? index * 0.15 : Math.min(index * 0.08, 0.24);
 
-    // Animation variants
     const cardVariants = {
         hidden: { 
             opacity: 0, 
@@ -68,12 +66,10 @@ export const ContentCard = ({
                 whileHover={prefersReducedMotion ? undefined : { y: hoverY, transition: springConfigs.snappy }}
                 className="relative h-full"
             >
-                {/* Gradient border glow - outside the card */}
                 <div className="absolute -inset-px bg-gradient-accent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <article className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden">
 
-                {/* Image Container */}
                 <m.div
                     layoutId={`hero-image-${slug}`}
                     className="relative w-full aspect-[16/9] bg-muted overflow-hidden"
@@ -107,7 +103,6 @@ export const ContentCard = ({
                     )}
                 </m.div>
 
-                {/* Content */}
                 <div className="flex flex-col gap-3 p-4 md:p-5 flex-1">
                     <h3 className={cn(
                         "font-playfair italic tracking-tight text-foreground group-hover:text-accent transition-colors duration-300",
@@ -122,7 +117,6 @@ export const ContentCard = ({
                         {description}
                     </p>
 
-                    {/* Meta footer */}
                     <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
                         <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase tracking-widest">
                             <span>{date}</span>

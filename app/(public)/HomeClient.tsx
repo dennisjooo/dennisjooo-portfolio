@@ -51,15 +51,12 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
     }, []);
 
     useEffect(() => {
-        // Check if mobile
         const isMobile = window.innerWidth < 768;
 
         if (isMobile) {
-            // Mobile: Skip GSAP animations entirely - CSS handles the sticky behavior
             return;
         }
 
-        // Desktop: Initialize GSAP animations after a delay
         const initAnimations = async () => {
             const [gsap, { ScrollTrigger }] = await Promise.all([
                 import('gsap').then(m => m.default),
@@ -68,7 +65,6 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
 
             gsap.registerPlugin(ScrollTrigger);
 
-            // Desktop: Full visual effect with blur
             const heroForeground =
                 heroRef.current?.querySelector('#home-hero-foreground') ?? heroRef.current;
 
@@ -88,7 +84,6 @@ export function HomeClient({ heroContent, mainContent, backToTop }: HomeClientPr
             return () => ScrollTrigger.killAll();
         };
 
-        // Use requestIdleCallback for better performance - longer timeout on desktop is fine
         if ('requestIdleCallback' in window) {
             const id = window.requestIdleCallback(() => initAnimations(), { timeout: 2000 });
             return () => window.cancelIdleCallback(id);

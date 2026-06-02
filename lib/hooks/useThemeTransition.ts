@@ -30,7 +30,6 @@ export function useThemeTransition(config: ThemeTransitionConfig = {}): ThemeTra
 
         const newTheme = isDark ? 'light' : 'dark';
 
-        // Check if View Transition API is supported
         if (!document.startViewTransition) {
             setTheme(newTheme);
             return;

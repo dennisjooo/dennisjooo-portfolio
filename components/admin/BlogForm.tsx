@@ -62,7 +62,6 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     };
   }, [pendingImages]);
 
-  // Clean up any leftover preview entry for this slug on mount
   useEffect(() => {
     if (!effectiveSlug) return;
     const previewSlug = `${effectiveSlug}-preview`;

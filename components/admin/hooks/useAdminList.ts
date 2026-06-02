@@ -146,7 +146,6 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     fetchItems(1);
   }, [fetchItems]);
 
-  // Clear selection when items change
   useEffect(() => {
     setSelectedIds(new Set());
   }, [items]);
@@ -185,7 +184,6 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     [fetchItems]
   );
 
-  // Dialog-based delete
   const handleDelete = useCallback(
     (id: string) => {
       setBulkDeleteMode(false);
@@ -222,7 +220,6 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     setBulkDeleteMode(false);
   }, []);
 
-  // Bulk delete
   const handleBulkDelete = useCallback(() => {
     if (selectedIds.size === 0) return;
     setBulkDeleteMode(true);
@@ -257,7 +254,6 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     }
   }, [selectedIds, endpoint, fetchItems, itemName]);
 
-  // Selection handlers
   const toggleSelect = useCallback((id: string) => {
     setSelectedIds(prev => {
       const next = new Set(prev);

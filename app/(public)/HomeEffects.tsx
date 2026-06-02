@@ -14,10 +14,6 @@ function setHomeVisibility(isVisible: boolean) {
 
 export function HomeEffects() {
     useEffect(() => {
-        const win = window as Window & {
-            requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
-            cancelIdleCallback?: (handle: number) => void;
-        };
         const hash = window.location.hash ? window.location.hash.substring(1) : '';
         const isHashNav = hash !== '' && hash !== 'home';
 

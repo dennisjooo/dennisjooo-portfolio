@@ -16,17 +16,13 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     const [isManualClick, setIsManualClick] = useState(false);
     const { activeId, setActiveId } = useActiveHeading(headings);
 
-    // Get the minimum heading level (e.g., if there are h2 and h3, min is 2)
     const minLevel = Math.min(...headings.map(h => h.level));
 
-    // During manual click, show the exact activeId, not the parent
     const displayActiveId = isManualClick ? activeId : getDisplayActiveId(activeId, headings, isHovered);
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-        // Set manual click flag
         setIsManualClick(true);
 
-        // Clear it after scroll animation completes
         setTimeout(() => {
             setIsManualClick(false);
         }, SCROLL_ANIMATION_DURATION);
@@ -49,7 +45,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                         : 'bg-transparent border border-transparent'
                     }`}
             >
-                {/* Label */}
                 <m.span
                     className="absolute -top-8 left-0 font-mono text-[10px] uppercase tracking-widest text-muted-foreground pl-3"
                     style={{
@@ -66,7 +61,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                         const indent = (heading.level - minLevel) * 12;
                         const isVisible = isHovered || heading.level === minLevel;
 
-                        // Find the index of the first item that is currently visible
                         const firstVisibleIndex = isHovered
                             ? 0
                             : headings.findIndex(h => h.level === minLevel);
@@ -90,7 +84,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                                     onClick={(e) => handleClick(e, heading.id)}
                                     className="group flex items-center gap-3"
                                 >
-                                    {/* Line indicator */}
                                     <div
                                         className={`h-px transition-all duration-300 ease-in-out ${isActive
                                             ? 'bg-accent'
@@ -101,7 +94,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                                         }}
                                     />
 
-                                    {/* Text label (shown on hover) */}
                                     <span
                                         className={`font-sans text-sm truncate transition-all duration-300 ease-in-out ${isActive
                                             ? 'text-accent font-medium'

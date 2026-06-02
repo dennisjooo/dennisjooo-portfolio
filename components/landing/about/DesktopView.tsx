@@ -11,9 +11,7 @@ interface DesktopViewProps {
 
 export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrollContentRef, profileImageUrl }) => (
     <div className="hidden md:flex w-full h-full">
-        {/* Col 1: Sticky Image & Metadata (40%) */}
         <div className="w-[40%] h-full flex flex-col justify-center items-center p-12 relative z-10">
-            {/* Decorative Line */}
             <div className="absolute right-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
 
             <div className="w-full max-w-md flex flex-col items-center">
@@ -22,7 +20,6 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
             </div>
         </div>
 
-        {/* Col 2: The 3D Scroll Container (60%) */}
         <div
             ref={scrollContentRef}
             className="w-[60%] h-full flex items-center relative pl-16 animate-fade-in-up"
@@ -33,14 +30,12 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
                     key={section.id}
                     className="absolute inset-x-16 top-1/2 -translate-y-1/2 flex flex-col justify-center"
                 >
-                    {/* Title Wrapper */}
                     <div className="about-title mb-8">
                         <h2 className="text-7xl xl:text-8xl font-playfair italic font-bold text-gradient-primary leading-tight pb-4">
                             {section.title}
                         </h2>
                     </div>
 
-                    {/* Body Wrapper */}
                     <div className="about-body max-w-xl">
                         <p className="text-xl xl:text-2xl font-light leading-relaxed text-muted-foreground">
                             {section.body}

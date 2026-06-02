@@ -8,7 +8,6 @@ import { contactLinks } from '@/data/contactContent';
 import { CONTACT_ICON_MAP } from '@/lib/constants/contactIcons';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 
-// Staggered container for children
 const containerVariants = {
     hidden: {},
     visible: {
@@ -19,7 +18,6 @@ const containerVariants = {
     },
 };
 
-// Individual item animations
 const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -29,7 +27,6 @@ const itemVariants = {
     },
 };
 
-// Headline reveal with slight scale for premium feel
 const headlineVariants = {
     hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: { 
@@ -72,14 +69,11 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
             className="relative min-h-[80vh] flex flex-col py-24 px-6 md:px-8 bg-background overflow-hidden"
         >
             <div className="w-full max-w-7xl mx-auto">
-                {/* Section Header - Consistent with other sections */}
                 <div className="w-full mb-16 md:mb-20">
                     <SectionHeader number="06." title="Contact" />
                 </div>
 
-                {/* Main Content - Poster Layout */}
                 <div className="flex-1 w-full flex flex-col justify-center items-center min-h-[50vh]">
-                    {/* Headline with staggered word reveal */}
                     <m.div
                         variants={prefersReducedMotion ? undefined : containerVariants}
                         initial={prefersReducedMotion ? undefined : "hidden"}
@@ -87,7 +81,6 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
                         viewport={viewportSettings.onceDeep}
                         className="flex flex-col items-center relative leading-none mb-12"
                     >
-                        {/* Metadata label above headline */}
                         <m.span
                             variants={prefersReducedMotion ? undefined : itemVariants}
                             className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6"
@@ -95,7 +88,6 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
                             Get In Touch
                         </m.span>
 
-                        {/* Main headline - Playfair italic for "Let's" */}
                         <m.span
                             variants={prefersReducedMotion ? undefined : headlineVariants}
                             className="font-playfair italic text-[18vw] md:text-[10vw] leading-[0.8] text-foreground dark:mix-blend-screen select-none text-center relative"
@@ -103,7 +95,6 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
                             Let&apos;s
                         </m.span>
 
-                        {/* Main headline - Urbanist bold for "TALK" */}
                         <m.span
                             variants={prefersReducedMotion ? undefined : headlineVariants}
                             className="font-sans font-black text-[22vw] md:text-[12vw] leading-[0.8] text-gradient-primary tracking-tighter select-none text-center relative"
@@ -112,7 +103,6 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
                         </m.span>
                     </m.div>
 
-                    {/* Bottom Group: Text & Dock with staggered reveal */}
                     <m.div
                         variants={prefersReducedMotion ? undefined : containerVariants}
                         initial={prefersReducedMotion ? undefined : "hidden"}

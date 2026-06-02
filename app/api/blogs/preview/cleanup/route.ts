@@ -4,10 +4,6 @@ import { del } from "@vercel/blob";
 import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
 
-/**
- * Cleanup endpoint for preview entries, designed to work with navigator.sendBeacon.
- * Accepts a POST with JSON body { slug: string }.
- */
 export async function POST(request: Request) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;

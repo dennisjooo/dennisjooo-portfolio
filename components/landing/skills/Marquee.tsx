@@ -13,10 +13,6 @@ interface MarqueeProps {
     className?: string;
 }
 
-/**
- * Pure CSS infinite marquee. Runs entirely on the compositor thread
- * via CSS `@keyframes` + `transform: translateX`, so zero main-thread cost.
- */
 export function Marquee({
     children,
     speed = 40,
@@ -36,7 +32,6 @@ export function Marquee({
                 } as React.CSSProperties
             }
         >
-            {/* Two copies: animate from 0 → -50%, then the second copy fills the gap */}
             <div className="marquee-track">
                 <div className="marquee-content" aria-hidden="false">
                     {children}

@@ -15,8 +15,8 @@ interface UsePaginatedListOptions<T> {
     initialPagination?: PaginationResult;
     queryParams?: Record<string, string | number | boolean>;
     resolveData?: (data: Record<string, unknown>) => T[];
-    dataKey?: string; // Key to extract data from response if resolveData is not provided (default: 'data')
-    paginationKey?: string; // Key to extract pagination from response (default: 'pagination')
+    dataKey?: string;
+    paginationKey?: string;
 }
 
 const EMPTY_QUERY_PARAMS: Record<string, string | number | boolean> = {};
@@ -31,15 +31,12 @@ export function usePaginatedList<T>({
     dataKey = 'data',
     paginationKey = 'pagination'
 }: UsePaginatedListOptions<T>) {
-    // Stabilize queryParams reference - serialize to detect actual changes
     const serializedParams = queryParams ? JSON.stringify(queryParams) : '';
 
-    // Stabilize queryParams reference - serialize to detect actual changes
     const stableQueryParams = useMemo(() => {
         return serializedParams ? JSON.parse(serializedParams) : EMPTY_QUERY_PARAMS;
     }, [serializedParams]);
 
-    // Track if we have server-provided initial data
     const hasInitialData = initialData && initialData.length > 0;
 
     const [items, setItems] = useState<T[]>(initialData ?? []);
@@ -51,12 +48,10 @@ export function usePaginatedList<T>({
         total: initialPagination?.total ?? 0,
     });
 
-    // Track if initial fetch was skipped due to server data
     const initialFetchSkipped = useRef(hasInitialData);
     const fetchAbortRef = useRef<AbortController | null>(null);
 
     const fetchItems = useCallback(async (page: number, reset = false) => {
-        // Cancel any pending requests before starting a new one
         if (fetchAbortRef.current) {
             fetchAbortRef.current.abort();
         }
@@ -71,7 +66,6 @@ export function usePaginatedList<T>({
         }
 
         try {
-            // Build query string
             const params = new URLSearchParams();
             params.append('page', page.toString());
             params.append('limit', pageSize.toString());
@@ -104,7 +98,6 @@ export function usePaginatedList<T>({
                 console.error(`Failed to fetch items from ${endpoint}`, error);
             }
         } finally {
-            // Only update loading state if not aborted
             if (!abortController.signal.aborted) {
                 setLoading(false);
                 setLoadingMore(false);
@@ -112,11 +105,7 @@ export function usePaginatedList<T>({
         }
     }, [endpoint, pageSize, stableQueryParams, resolveData, dataKey, paginationKey]);
 
-    // Initial fetch only if no server-provided data
     useEffect(() => {
-        // Skip initial fetch if we have server-provided data for the initial state
-        // Note: We need to be careful here if queryParams change, we might want to refetch even if we had initial data
-        // For now, we'll assume if initialFetchSkipped is true, we skip ONCE.
         if (initialFetchSkipped.current) {
             initialFetchSkipped.current = false;
             return;
@@ -127,7 +116,6 @@ export function usePaginatedList<T>({
         fetchItems(1, true);
     }, [fetchItems]);
 
-    // Cleanup abort controller on unmount
     useEffect(() => {
         return () => {
             fetchAbortRef.current?.abort();

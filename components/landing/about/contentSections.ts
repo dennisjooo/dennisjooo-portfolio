@@ -27,5 +27,4 @@ export function createContentSections(content: AboutContent): ContentSection[] {
     ];
 }
 
-// Default export for backwards compatibility
 export const contentSections = createContentSections(defaultAboutContent);

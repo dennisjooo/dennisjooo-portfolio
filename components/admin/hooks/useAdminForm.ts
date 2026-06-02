@@ -44,12 +44,11 @@ export function useAdminForm<T>({
           throw new Error(`Failed to fetch ${itemName}`);
         }
         const result = await res.json();
-        
-        // Handle both {data: ...} and direct object responses
+
         if (result.success === false) {
           throw new Error(result.error || `${itemName} not found`);
         }
-        
+
         const itemData = result.data ?? result;
         setData(itemData);
       } catch (error) {

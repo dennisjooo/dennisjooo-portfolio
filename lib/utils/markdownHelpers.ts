@@ -6,9 +6,6 @@ export interface Heading {
     level: number;
 }
 
-/**
- * Extracts headings from markdown content
- */
 export function extractHeadings(markdown: string): Heading[] {
     const headingRegex = /^(#{1,6})\s+(.+)$/gm;
     const headings: Heading[] = [];

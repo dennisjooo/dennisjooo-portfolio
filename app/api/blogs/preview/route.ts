@@ -4,10 +4,6 @@ import { del } from "@vercel/blob";
 import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
 
-/**
- * Creates or updates a temporary preview entry with a `-preview` suffixed slug.
- * Returns the preview slug so the client can open it in a new tab.
- */
 export async function POST(request: Request) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
@@ -22,7 +18,6 @@ export async function POST(request: Request) {
     const baseSlug = body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const previewSlug = `${baseSlug}-preview`;
 
-    // Check if a preview entry already exists for this slug
     const [existing] = await db
       .select({ id: blogs.id })
       .from(blogs)
@@ -55,10 +50,6 @@ export async function POST(request: Request) {
   }
 }
 
-/**
- * Deletes a preview entry by slug.
- * Accepts { slug: string } in the body.
- */
 export async function DELETE(request: Request) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
