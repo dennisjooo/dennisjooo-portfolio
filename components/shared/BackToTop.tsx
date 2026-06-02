@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BsArrowUp } from 'react-icons/bs';
+import { ArrowUp } from 'lucide-react';
 import { scrollToTopWithRefresh } from '@/lib/utils/scrollHelpers';
 
 const BackToTop = () => {
@@ -26,28 +26,24 @@ const BackToTop = () => {
     const handleScrollToTop = () => scrollToTopWithRefresh();
 
     return (
-        <>
-            {isVisible && (
-                <button
-                    onClick={handleScrollToTop}
-                    className="fixed bottom-8 right-8 p-3 text-accent-foreground rounded-full shadow-lg transition-all duration-300 z-50 border-none bg-accent"
-                    style={{
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px var(--accent-shadow)',
-                    }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.1)';
-                        e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15), 0 0 30px var(--accent-shadow)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px var(--accent-shadow)';
-                    }}
-                    aria-label="Back to top"
-                >
-                    <BsArrowUp size={20} />
-                </button>
-            )}
-        </>
+        <button
+            type="button"
+            onClick={handleScrollToTop}
+            className={`
+                fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full
+                border border-border bg-background/85 text-muted-foreground backdrop-blur-md
+                transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out
+                hover:border-foreground hover:bg-foreground hover:text-background
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
+                sm:bottom-8 sm:right-8
+                ${isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0'}
+            `}
+            aria-label="Back to top"
+            aria-hidden={!isVisible}
+            tabIndex={isVisible ? 0 : -1}
+        >
+            <ArrowUp className="size-4" strokeWidth={1.75} />
+        </button>
     );
 };
 
