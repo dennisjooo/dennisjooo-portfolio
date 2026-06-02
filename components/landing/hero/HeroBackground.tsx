@@ -78,16 +78,16 @@ export function HeroBackground() {
 
     // Light Theme Colors
     const lightColors = {
-        color1: '#A78BFA',
-        color2: '#DDD6FE',
-        color3: '#818CF8',
+        color1: '#B0B0B0',
+        color2: '#D0D0D0',
+        color3: '#A0A0A0',
     };
 
     // Dark Theme Colors
     const darkColors = {
-        color1: '#721CA1',
-        color2: '#8033CC',
-        color3: '#A640D9',
+        color1: '#404040',
+        color2: '#505050',
+        color3: '#606060',
     };
 
     const activeColors = isDark ? darkColors : lightColors;
