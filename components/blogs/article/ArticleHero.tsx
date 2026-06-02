@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { PhotoView } from 'react-photo-view';
 import { useState } from 'react';
+import { HoverImageFrame } from '@/components/shared/HoverImageFrame';
 import { NOISE_OVERLAY_HEAVY } from '@/lib/constants/noiseOverlay';
 import { getBlogTypeLabel } from '@/lib/utils/projectFormatting';
 
@@ -108,46 +109,44 @@ function ArticleHeroImage({ src, alt, slug }: { src: string; alt: string; slug: 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="relative cursor-zoom-in group"
+                className="cursor-zoom-in"
             >
-                {/* Gradient Glow */}
-                <div className="absolute -inset-2 bg-gradient-accent rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
+                <HoverImageFrame frameClassName="shadow-lg">
+                    <m.div
+                        layoutId={`hero-image-${slug}`}
+                        className="relative w-full"
+                        style={
+                            aspectRatio
+                                ? {
+                                      aspectRatio: `${aspectRatio}`,
+                                      maxHeight: '70vh',
+                                  }
+                                : { minHeight: '300px', maxHeight: '70vh' }
+                        }
+                    >
+                        <div
+                            className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
+                            style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
+                        />
 
-                {/* Image Container - wider than content column */}
-                <m.div
-                    layoutId={`hero-image-${slug}`}
-                    className="relative w-full overflow-hidden rounded-xl border border-border bg-muted shadow-lg"
-                    style={
-                        aspectRatio
-                            ? {
-                                aspectRatio: `${aspectRatio}`,
-                                maxHeight: '70vh',
-                            }
-                            : { minHeight: '300px', maxHeight: '70vh' }
-                    }
-                >
-                    {/* Noise Overlay */}
-                    <div
-                        className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
-                        style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
-                    />
+                        <Image
+                            src={src}
+                            alt={alt}
+                            fill
+                            style={{ objectFit: 'contain' }}
+                            className="transition-transform duration-700 ease-out group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                            priority
+                            onLoad={handleImageLoad}
+                        />
 
-                    <Image
-                        src={src}
-                        alt={alt}
-                        fill
-                        style={{ objectFit: 'contain' }}
-                        className="transition-transform duration-700 group-hover:scale-[1.02]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                        priority
-                        onLoad={handleImageLoad}
-                    />
+                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10 pointer-events-none" />
 
-                    {/* Zoom Hint */}
-                    <span className="absolute bottom-4 right-4 z-20 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Click to zoom
-                    </span>
-                </m.div>
+                        <span className="absolute bottom-4 right-4 z-20 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Click to zoom
+                        </span>
+                    </m.div>
+                </HoverImageFrame>
             </m.figure>
         </PhotoView>
     );

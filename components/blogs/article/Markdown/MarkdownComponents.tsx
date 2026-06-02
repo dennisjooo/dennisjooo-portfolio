@@ -5,6 +5,7 @@ import { Components } from "react-markdown";
 import { CodeBlock, type CodeProps } from "./CodeBlock";
 import { MermaidBlock } from "./MermaidBlock";
 import { PhotoView } from "react-photo-view";
+import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
 import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 
 export const markdownComponents: Components = {
@@ -128,28 +129,35 @@ export const markdownComponents: Components = {
         const hasDimensions = imgWidth || imgHeight;
 
         return (
-            <span className="flex justify-center my-10 group">
+            <span className="flex justify-center my-10">
                 <span className={hasDimensions ? "inline-block" : "block w-full"}>
-                    <PhotoView src={cleanSrc}>
-                        <span className="relative block rounded-xl overflow-hidden border border-border cursor-zoom-in shadow-md">
+                    <HoverImageFrame
+                        className={hasDimensions ? "inline-block" : "block w-full shadow-md"}
+                    >
+                        <span
+                            className="relative block"
+                            style={{
+                                width: imgWidth ? `${imgWidth}px` : '100%',
+                                ...(imgHeight ? { height: `${imgHeight}px` } : {}),
+                            }}
+                        >
                             <span
                                 className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
                                 style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
                             />
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={cleanSrc}
-                                alt={alt ?? ''}
-                                loading="lazy"
-                                className="h-auto transition-transform duration-500 group-hover:scale-[1.02]"
-                                style={{
-                                    width: imgWidth ? `${imgWidth}px` : '100%',
-                                    ...(imgHeight ? { height: `${imgHeight}px` } : {}),
-                                }}
-                                {...rest}
-                            />
+                            <PhotoView src={cleanSrc}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={cleanSrc}
+                                    alt={alt ?? ''}
+                                    loading="lazy"
+                                    className="block h-auto w-full cursor-zoom-in transition-transform duration-700 ease-out group-hover:scale-105"
+                                    {...rest}
+                                />
+                            </PhotoView>
+                            <span className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10 pointer-events-none" />
                         </span>
-                    </PhotoView>
+                    </HoverImageFrame>
                     {title ? (
                         <span className="block mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
                             {title}
