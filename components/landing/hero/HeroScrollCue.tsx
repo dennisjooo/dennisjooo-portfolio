@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { heroScrollCueBaseClassName, heroScrollCueStyle } from './heroScrollCueStyles';
+import { heroScrollCueStyle } from './heroScrollCueStyles';
 
 const MOBILE_MEDIA = '(max-width: 1023px)';
 const HERO_VISIBILITY_SLACK = 100;
@@ -44,7 +44,7 @@ export function HeroScrollCue() {
     return (
         <div
             id="hero-scroll-cue-mobile"
-            className={`lg:hidden ${heroScrollCueBaseClassName}`}
+            className="lg:hidden text-sm font-light leading-relaxed text-foreground/60 animate-fade-in shrink-0"
             style={heroScrollCueStyle}
             aria-hidden="false"
         >
