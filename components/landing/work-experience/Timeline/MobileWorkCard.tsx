@@ -68,7 +68,7 @@ export const MobileWorkCard = memo(forwardRef<HTMLDivElement, MobileWorkCardProp
                     </div>
 
                     <div className="space-y-2">
-                        <h3 className="text-3xl font-playfair italic font-bold text-gradient-primary leading-tight pb-1">
+                        <h3 className="text-3xl font-playfair italic text-gradient-primary leading-tight pb-1">
                             {group.companyName}
                         </h3>
                         <div className="flex items-center gap-3">

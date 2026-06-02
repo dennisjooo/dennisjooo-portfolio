@@ -31,7 +31,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({ contentSections, scrol
                     className="absolute inset-x-16 top-1/2 -translate-y-1/2 flex flex-col justify-center"
                 >
                     <div className="about-title mb-8">
-                        <h2 className="text-7xl xl:text-8xl font-playfair italic font-bold text-gradient-primary leading-tight pb-4">
+                        <h2 className="text-7xl xl:text-8xl font-playfair italic text-gradient-primary leading-tight pb-4">
                             {section.title}
                         </h2>
                     </div>

@@ -45,7 +45,7 @@ export default function WorkExperience({ workExperience }: WorkExperienceProps) 
                                                     className="object-contain object-left md:object-right"
                                                 />
                                             </div>
-                                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-playfair italic font-bold text-foreground leading-[0.9] md:text-right tracking-tight">
+                                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-playfair italic text-foreground leading-[0.9] md:text-right tracking-tight">
                                                 {group.companyName}
                                             </h3>
                                         </div>

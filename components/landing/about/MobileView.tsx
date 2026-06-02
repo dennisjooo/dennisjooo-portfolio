@@ -23,7 +23,7 @@ export const MobileView: React.FC<MobileViewProps> = ({ contentSections, profile
             {/* Cards 2-5: Content */}
             {contentSections.map((section) => (
                 <div key={section.id} className="w-screen h-full flex flex-col justify-center px-8 space-y-6">
-                    <h2 className="text-5xl font-playfair italic font-bold leading-tight text-gradient-primary pb-2">
+                    <h2 className="text-5xl font-playfair italic leading-tight text-gradient-primary pb-2">
                         {section.title}
                     </h2>
                     <div className="w-12 h-px bg-current opacity-20 text-foreground" />
