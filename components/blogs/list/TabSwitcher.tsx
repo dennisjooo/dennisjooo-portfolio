@@ -54,7 +54,7 @@ export default function TabSwitcher({ activeTab, onTabChange, tabs }: TabSwitche
                     {activeTab === tab && (
                         <m.div
                             layoutId="tab-indicator"
-                            className="absolute -bottom-4 left-0 right-0 h-[2px] bg-gradient-accent"
+                            className="absolute -bottom-4 left-0 right-0 h-[2px] bg-foreground"
                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                         />
                     )}
