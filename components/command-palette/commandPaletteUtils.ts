@@ -94,11 +94,6 @@ export function getContextSnippet(text: string, searchTerm: string, contextChars
     return snippet;
 }
 
-export function hasExactWord(text: string, searchTerm: string): boolean {
-    const regex = new RegExp(`\\b${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-    return regex.test(text);
-}
-
 export function highlightSearchTerm(text: string, searchTerm: string): string {
     return text.replace(
         new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),

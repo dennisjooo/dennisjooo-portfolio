@@ -26,5 +26,3 @@ export function createContentSections(content: AboutContent): ContentSection[] {
         { title: "The Connection", body: content.outro, id: "outro" }
     ];
 }
-
-export const contentSections = createContentSections(defaultAboutContent);

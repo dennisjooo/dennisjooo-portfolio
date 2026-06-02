@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-export function adjustTextareaHeight(textarea: HTMLTextAreaElement) {
+function adjustTextareaHeight(textarea: HTMLTextAreaElement) {
   textarea.style.height = "auto";
   textarea.style.height = `${textarea.scrollHeight}px`;
 }
