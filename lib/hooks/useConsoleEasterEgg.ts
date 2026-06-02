@@ -49,13 +49,13 @@ export function useConsoleEasterEgg() {
         // Log ASCII art with gradient-like styling
         console.log(
             asciiArt,
-            "background: linear-gradient(90deg, #7c3aed, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 10px; font-weight: bold; font-family: monospace;"
+            "background: linear-gradient(90deg, #888888, #666666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 10px; font-weight: bold; font-family: monospace;"
         );
 
         // Log welcome message
         console.log(
             welcomeMessage,
-            "color: #a855f7; font-size: 12px; font-family: monospace; line-height: 1.5;"
+            "color: #888888; font-size: 12px; font-family: monospace; line-height: 1.5;"
         );
 
         // Log coffee art
