@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
 
                 <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0 overflow-hidden">
                     <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen flex flex-nowrap"
+                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen flex flex-nowrap max-w-full"
                         aria-label="Dennis"
                     >
                         {'Dennis'.split('').map((char, i) => (
@@ -41,7 +41,7 @@ const Hero: React.FC = () => {
                         ))}
                     </h1>
                     <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen flex flex-nowrap justify-end"
+                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen flex flex-nowrap justify-end max-w-full"
                         aria-label="JONATHAN"
                     >
                         {'JONATHAN'.split('').map((char, i) => (
