@@ -9,16 +9,12 @@ export const FeaturedProjectsHeader = () => (
         </div>
 
         <div className="relative w-full select-none pt-6">
-            <div className="flex flex-col w-full items-start">
-                <span className="font-playfair italic relative z-20 text-foreground text-7xl md:text-7xl ml-2 md:ml-12 mb-[-3vw] md:mb-[-2vw]">
-                    Selected
-                </span>
-                <h2>
-                    <span className="font-sans font-black leading-[0.8] tracking-tighter text-background-layer z-10 select-none block text-[15vw] md:text-[8vw]">
-                        WORK
-                    </span>
-                </h2>
-            </div>
+            <h2 className="font-playfair italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-4">
+                Selected Work
+            </h2>
+            <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
+                Things I&apos;ve built that mostly still work.
+            </p>
         </div>
     </div>
 );
