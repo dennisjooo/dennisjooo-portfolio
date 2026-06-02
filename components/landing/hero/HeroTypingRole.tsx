@@ -9,7 +9,7 @@ export function HeroTypingRole() {
 
     return (
         <div
-            className="max-w-md text-sm md:text-xl lg:text-2xl font-light leading-relaxed text-foreground/90 text-left animate-fade-in-up min-h-[4rem] md:min-h-[5rem]"
+            className="min-w-0 flex-1 max-w-md pr-3 text-sm md:pr-0 md:text-xl lg:text-2xl font-light leading-relaxed text-foreground/90 text-left animate-fade-in-up min-h-[4rem] md:min-h-[5rem]"
             style={{ animationDelay: '1000ms' }}
         >
             <span className="font-mono text-[10px] md:text-xs lg:text-sm opacity-30 block mb-2 uppercase tracking-widest">
