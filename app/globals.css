@@ -16,40 +16,31 @@ html {
   --popover-foreground: 0 0% 3.9%;
   --primary: 0 0% 9%;
   --primary-foreground: 0 0% 98%;
-  --secondary: 260 40% 96%;
+  --secondary: 0 0% 96%;
   --secondary-foreground: 0 0% 9%;
-  --muted: 250 25% 95%;
+  --muted: 0 0% 95%;
   --muted-foreground: 0 0% 40%;
-  --accent: 268 85% 70%;
+  --accent: 0 0% 45%;
   --accent-foreground: 0 0% 9%;
-  --border: 260 25% 88%;
-  --input: 260 25% 88%;
-  --ring: 268 90% 60%;
-  --destructive: 0 80% 56%;
+  --border: 0 0% 88%;
+  --input: 0 0% 88%;
+  --ring: 0 0% 60%;
+  --destructive: 0 0% 30%;
   --destructive-foreground: 0 0% 98%;
 
   /* Custom variables */
   --radius: 0.5rem;
 
   /* Light mode specific custom colors */
-  --gradient-from: rgba(167, 139, 250, 0.6);
-  /* purple-200/40 */
-  --gradient-via: rgba(221, 214, 254, 0.75);
-  /* purple-200 lighter/50 */
-  --gradient-to: rgba(129, 140, 248, 0.6);
-  /* purple-100/40 */
-  --gradient-accent-from: rgb(139, 92, 246);
-  /* purple-300 */
-  --gradient-accent-via: rgb(167, 139, 250);
-  /* purple-200 */
-  --gradient-accent-to: rgb(99, 102, 241);
-  /* purple-200 lighter */
-  --accent-border: rgb(196, 181, 253);
-  /* purple-200 */
-  --accent-shadow: rgba(196, 181, 253, 0.5);
-  /* purple-200 with opacity */
+  --gradient-from: rgba(0, 0, 0, 0.05);
+  --gradient-via: rgba(0, 0, 0, 0.10);
+  --gradient-to: rgba(0, 0, 0, 0.03);
+  --gradient-accent-from: rgb(60, 60, 60);
+  --gradient-accent-via: rgb(175, 175, 175);
+  --gradient-accent-to: rgb(60, 60, 60);
+  --accent-border: rgb(160, 160, 160);
+  --accent-shadow: rgba(0, 0, 0, 0.10);
   --default-border: rgb(229, 231, 235);
-  /* gray-200 */
 
   /* Fonts */
   /* These are now handled via Tailwind config and Next.js font variables */
@@ -69,33 +60,24 @@ html {
   --secondary-foreground: 0 0% 98%;
   --muted: 0 0% 14.9%;
   --muted-foreground: 0 0% 63.9%;
-  --accent: 271 91% 65%;
+  --accent: 0 0% 65%;
   --accent-foreground: 0 0% 98%;
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
-  --destructive: 0 62% 45%;
+  --destructive: 0 0% 45%;
   --destructive-foreground: 0 0% 98%;
 
   /* Dark mode specific custom colors */
-  --gradient-from: rgba(99, 102, 241, 0.3);
-  /* indigo-500/30 */
-  --gradient-via: rgba(168, 85, 247, 0.4);
-  /* purple-500/40 */
-  --gradient-to: rgba(59, 130, 246, 0.3);
-  /* blue-500/30 */
-  --gradient-accent-from: rgb(129, 140, 248);
-  /* indigo-400 */
-  --gradient-accent-via: rgb(192, 132, 252);
-  /* purple-400 */
-  --gradient-accent-to: rgb(244, 114, 182);
-  /* pink-400 */
-  --accent-border: rgb(168, 85, 247);
-  /* purple-500 */
-  --accent-shadow: rgba(168, 85, 247, 0.4);
-  /* purple-500 with opacity */
+  --gradient-from: rgba(255, 255, 255, 0.04);
+  --gradient-via: rgba(255, 255, 255, 0.08);
+  --gradient-to: rgba(255, 255, 255, 0.02);
+  --gradient-accent-from: rgb(210, 210, 210);
+  --gradient-accent-via: rgb(100, 100, 100);
+  --gradient-accent-to: rgb(210, 210, 210);
+  --accent-border: rgb(80, 80, 80);
+  --accent-shadow: rgba(255, 255, 255, 0.06);
   --default-border: rgb(31, 41, 55);
-  /* gray-800 */
 }
 
 @layer base {
@@ -112,15 +94,11 @@ html {
 @layer utilities {
   /* Gradient utilities */
   .bg-gradient-primary {
-    background: linear-gradient(to bottom right, var(--gradient-from), var(--gradient-via), var(--gradient-to));
+    background: linear-gradient(to bottom, var(--gradient-from), var(--gradient-via), var(--gradient-to));
   }
 
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
-  }
-  .dark .text-gradient-primary {
-    background-image: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
+    @apply text-foreground;
   }
 
   .bg-gradient-accent {
