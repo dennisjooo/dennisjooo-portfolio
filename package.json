@@ -4,16 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/bump-version.mjs && next build",
+    "build": "node scripts/bump-version.mjs && npx tsx scripts/generate-site-files.ts && next build",
     "start": "next start",
-    "build-start": "node scripts/bump-version.mjs && next build && next start",
+    "build-start": "node scripts/bump-version.mjs && npx tsx scripts/generate-site-files.ts && next build && next start",
     "lint": "eslint .",
     "analyze": "ANALYZE=true next build",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:migrate-from-mongo": "npx tsx scripts/migrate-mongo-to-neon.ts"
+    "db:migrate-from-mongo": "npx tsx scripts/migrate-mongo-to-neon.ts",
+    "gen:site": "npx tsx scripts/generate-site-files.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.8",

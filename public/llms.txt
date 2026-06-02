@@ -1,196 +1,161 @@
 # Dennis Jonathan's Portfolio
 
-> Dennis Jonathan is an AI/ML Engineer based in Indonesia, specializing in machine learning, AI systems, and data science. He currently works at Sinarmas Land building OCR pipelines, enterprise chatbots with RAG/ReAct, and document processing systems. He holds a Bachelor of Mathematics from Universitas Prasetiya Mulya with a 3.88 GPA and is passionate about building practical AI tools that bridge the gap between complex technology and real-world applications.
+> AI enthusiast and problem solver with a background in math, stats, and machine learning. I build practical tools, explore weird ideas, and make complex stuff a little more approachable.
 
-Dennis is an AI enthusiast who likes taking ideas apart, figuring out how they tick, and putting them back together in a way that feels smarter. He studied Business Mathematics but now focuses on data, AI, and building systems that make life flow smoother. He cares less about chasing hype and more about quiet, useful progress: automations that save time, systems that scale well, and ideas that grow legs on their own.
+Hey, I'm Dennis. I like taking ideas apart, figuring out how they tick, and putting them back together in a way that feels a little smarter. I studied Business Mathematics, but these days my curiosity leans more toward data, AI, and building systems that make life flow a bit smoother. I like when logic meets intuition, when something just clicks and works better than it has any right to.
 
-Outside of work, Dennis is usually buried in ML papers, sketching side projects, or running laps in a sim rig. He loves comics, science books, and strange ideas that don't fit anywhere yet.
+I've built and shipped ML apps, orchestrated chatbots, and pieced together tools that turn chaos into clarity. I'm drawn to projects that live in the messy space between idea and execution, where a rough sketch becomes something people actually use. I care less about chasing hype and more about quiet, useful progress: automations that save time, systems that scale well, and ideas that grow legs on their own.
 
-Key expertise:
-- AI/ML engineering and production deployment
-- Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG)
-- Computer Vision, OCR systems, and document processing
-- Agentic systems with LangChain and ReAct patterns
-- Time series forecasting and predictive modeling
-- Data science, analytics, and visualization
+Outside of work, I'm usually buried in ML papers I only half understand (for now), sketching side projects that may or may not see daylight, or running laps in a sim rig like there's a trophy at stake. I love comics, science books, and strange ideas that don't fit anywhere yet. For me, building isn't just about utility, it's about curiosity, rhythm, and play.
 
 ## Work Experience
 
-### Current: AI/ML Engineer at Sinarmas Land (February 2024 - Present)
+### AI/ML Engineer at Sinar Mas Land (February 2024 - Now)
 
-Dennis spearheads optimization of OCR pipelines and develops self-service AI platforms, achieving high-accuracy document processing for 2,000+ daily requests.
+- Spearheaded optimization of OCR pipelines and developed self-service AI platform, achieving high-accuracy document processing for 2,000+ daily requests.
+- Engineered a robust enterprise agentic chatbot utilizing LangChain and OpenAI, effectively streamlining internal communications across diverse departments. It uses RAG and ReAct to provide accurate and up-to-date information to employees.
+- Built a scalable WhatsApp call analysis system that automatically evaluates and grades customer service agent performance across ~1,000 customer interactions per month. The solution streamlines quality assurance by analyzing conversations for service quality, consistency, and compliance, enabling faster feedback loops, performance benchmarking, and improved customer support operations.
 
-Key responsibilities:
-- Architected and deployed AI-powered document summarization system for sales letters using Generative AI and OCR, significantly reducing review time
-- Developed and integrated automated OCR services for invoices and tax documents at significant scale
-- Experimented with cutting-edge AI models for document processing including OCR, LLMs, and RAG
-- Engineered robust enterprise agentic chatbot using LangChain and OpenAI with RAG and ReAct for accurate, up-to-date information across departments
+### AI/ML Developer Intern at Sinar Mas Land (November 2023 - January 2024)
 
-### Previous Experience
+- Actively contributed to the maintenance and advancement of the company's proprietary machine learning pipelines, with a primary focus on OCR systems for document information detection and extraction.
+- Collaborated in the creation of novel OCR pipelines specifically designed for Vehicle Registration Number (VRN) detection and extraction.
 
-**ML/AI Developer Intern at Sinarmas Land (November 2023 - January 2024)**
-- Maintained and advanced proprietary machine learning pipelines with focus on OCR systems
-- Collaborated on novel OCR pipelines for Vehicle Registration Number (VRN) detection and extraction
+### Business Intelligence Intern at Vidio.com (August - December 2022)
 
-**Business Intelligence Analyst Intern at Vidio.com (August - December 2022)**
-- Generated actionable insights on platform user behaviors and product analytics using SQL and advanced visualization tools
-- Conducted research on user funneling, customer retention, and cancellation patterns
+- Played a key role in generating actionable insights and fostering a deeper understanding of platform user behaviors and product analytics through SQL and advanced visualization tools.
+- Conducted in-depth research on user funneling progression, customer retention strategies, and cancellation patterns.
 
-**Marketing Research Intern at Universitas Prasetiya Mulya (January - February 2020)**
-- Identified strategic partners for Master's program in Business Analytics launch
-- Performed competitor research for marketing optimization
+### Marketing Research Intern at Universitas Prasetiya Mulya (January - February 2020)
 
-### Education
+- Assisted in identifying and evaluating potential strategic partners for the successful launch of Universitas Prasetiya Mulya's Master's program in Business Analytics.
+- Performed comprehensive competitor research to pinpoint opportunities for enhancing and optimizing marketing initiatives.
 
-**Bachelor of Mathematics, Universitas Prasetiya Mulya (August 2019 - August 2023)**
-- GPA: 3.88
-- Thesis: "Predictive Modelling of Changes in GOTO Stock Prices using Historical and Exogenous Data with LSTM and SARIMAX"
-- Young Scholar Indonesia Scholarship recipient
+### Bachelor of Mathematics at Universitas Prasetiya Mulya (August 2019 - August 2023)
 
-## Featured Projects
+- Graduated with a distinguished GPA of 3.88.
+- Authored a thesis on "Predictive Modelling of Changes in GOTO Stock Prices using Historical and Exogenous Data with LSTM and SARIMAX".
+- Honored as a beneficiary of the prestigious Young Scholar Indonesia Scholarship.
 
-### MoodList - AI-Powered Playlist Generator
-Turn your mood into playlists, vibes, and soundtracks. A full-stack application where you input your mood and get a curated Spotify playlist in minutes.
+## Projects
 
-**Technical Stack:** Next.js 16 with TypeScript, FastAPI with PostgreSQL and Redis, LangGraph for AI agent orchestration, Spotify and ReccoBeat APIs.
+### Reality Check
+Animating Financial Delusion
+**Links:**
+- Give it a try: https://reality-check-tawny.vercel.app/?q=IDRUSD%3DX&speed=5&type=line&interval=1d
+- Github: https://github.com/dennisjooo/reality-check
+- Portfolio: https://dennisjooo.vercel.app/blogs/reality-check-animating-financial-delusion
 
-**Features:** Real-time workflow updates via SSE/WebSocket, triadic color theming based on mood, playlist editing and Spotify sync, user dashboard with activity analytics and audio analysis.
+---
 
+### A Journey In Losing Money
+Lessons I had from trying to make my own trading-bot
+- Portfolio: https://dennisjooo.vercel.app/blogs/babonie-trade-men
+
+---
+
+### MoodList
+Turn your mood into playlists, vibes, and more
 **Links:**
 - Live Demo: https://moodlist-music.vercel.app
-- GitHub: https://github.com/dennisjooo/moodlist
+- Github: https://github.com/dennisjooo/moodlist
+- Portfolio: https://dennisjooo.vercel.app/blogs/moodlist
 
 ---
 
-### Act Natural - AI Interactive Theatre
-An interactive theatre experience where AI characters improvise scenes together while maintaining hidden motives and secret agendas. What started as a way to kill time evolved into a fascinating exploration of agentic systems and emergent behavior.
-
-**Technical Stack:** Groq LLMs with Gemma 2 9B for characters and Llama 3.3 70B as director, LangChain for conversation history and character state management.
-
-**Key Innovation:** Each character maintains consistent personality, remembers past interactions, pursues hidden agendas, and reacts authentically to other characters, creating emergent drama through collaborative AI creativity.
-
+### Straightening the Mess
+Sometimes a slight nudge is all it takes to get documents straight
 **Links:**
-- GitHub: https://github.com/dennisjooo/act-natural
+- Github: https://github.com/dennisjooo/rotation-model
+- Portfolio: https://dennisjooo.vercel.app/blogs/straightening-the-mess
 
 ---
 
-### Bird Classifier - 90K+ Downloads on HuggingFace
-Computer vision model identifying 525 different bird species from photos. Started as a bootcamp assignment and became a model with over 90,000 downloads on HuggingFace's model hub.
-
-**Technical Stack:** EfficientNet-B2 with transfer learning from ImageNet-1K, PyTorch Lightning, trained on 84,635 images.
-
-**Achievement:** 99% validation accuracy after 26 epochs, approaching human-expert level for many species pairs.
-
-**Community Impact:** Used in citizen science projects, educational apps, mobile apps for bird watching, and ecology research.
-
+### Act Natural
+Teaching AI to act human? Spoiler alert: it's beautifully chaotic.
 **Links:**
-- GitHub: https://github.com/dennisjooo/Birds-Classifier-EfficientNetB2
+- Github: https://github.com/dennisjooo/act-natural
+- Portfolio: https://dennisjooo.vercel.app/blogs/act-natural
+
+---
+
+### What is that Bird we're looking at?
+Ever wondered what bird you're looking at? This classifier has over 90k downloads on HuggingFace's model hub.
+**Links:**
+- Github: https://github.com/dennisjooo/Birds-Classifier-EfficientNetB2
 - HuggingFace: https://huggingface.co/dennisjooo/Birds-Classifier-EfficientNetB2
-
----
-
-### Document Rotation Correction
-Production system for automatic document orientation detection and correction. Handles 8 rotation classes (0° to 315° in 45° increments).
-
-**Technical Stack:** MobileNetV3-small backbone enhanced with CoordConv (Coordinate Convolutions) and CBAM (Convolutional Block Attention Module), dual-head output for rotation class and confidence.
-
-**Training Data:** RVL-CDIP (government/corporate documents), PubLayNet (academic papers), MIDV-500 (identity documents).
-
-**Production Impact:** Dramatically improved downstream OCR accuracy by automating document orientation correction in the pipeline.
-
-**Links:**
-- GitHub: https://github.com/dennisjooo/rotation-model
+- Portfolio: https://dennisjooo.vercel.app/blogs/what-is-that-bird-we-re-looking-at
 
 ---
 
 ### Teaching Transformers to Write Harry Potter
-Character-level Transformer model trained to generate text in J.K. Rowling's style, inspired by Andrej Karpathy's work on neural language models.
-
-**Technical Stack:** PyTorch and PyTorch Lightning, 8 transformer layers with 16 attention heads, 512-dimensional embeddings, trained on complete Harry Potter series (~1.1M characters).
-
-**Results:** Model learned to capture character names, magical spells, British English patterns, dialogue formatting, and created new plausible-sounding spells.
-
+What happens when you teach AI to write like J.K. Rowling? Pure magic (or at least entertaining gibberish).
 **Links:**
-- GitHub: https://github.com/dennisjooo/Character-Generation-on-Wizardry-Books
+- Github: https://github.com/dennisjooo/Character-Generation-on-Wizardry-Books
+- Portfolio: https://dennisjooo.vercel.app/blogs/teaching-transformers-to-write-harry-potter
 
 ---
 
-### Credit Fraud Detection with AutoEncoders
-Unsupervised anomaly detection for payment card fraud using the novelty detection approach: train on normal transactions and flag outliers.
-
-**Technical Stack:** AutoEncoder neural networks vs K-Means and Gaussian Mixture Models, trained on PaySim dataset (6 million transactions, only 0.13% fraudulent).
-
-**Results:** AutoEncoder achieved AUC of 0.93 and F1 score of 0.86, outperforming traditional clustering approaches through automatic feature discovery of non-linear patterns.
-
+### Forging Handwritten Digits
+Teaching machines to forge handwritten digits so convincingly, even other machines can't tell the difference.
 **Links:**
-- GitHub: https://github.com/dennisjooo/Credit-Fraud-Detector
+- Github: https://github.com/dennisjooo/DCGAN-on-MNIST
+- Portfolio: https://dennisjooo.vercel.app/blogs/forging-handwritten-digits
 
 ---
 
-### DCGAN on MNIST - Generative Adversarial Networks
-Deep Convolutional GAN implementation teaching machines to forge handwritten digits convincingly.
-
-**Technical Stack:** PyTorch, generator with 100-dimensional noise vector, transposed convolutional layers, trained 200 epochs on Kaggle P100 GPU.
-
-**Results:** Successfully generates convincing handwritten digits with natural variation, demonstrating the model's ability to learn underlying data distributions rather than memorizing examples.
-
+### Finding Anomalies using Things We Already Know
+Hunting down financial criminals with machine learning. AutoEncoders won this round with 93% accuracy.
 **Links:**
-- GitHub: https://github.com/dennisjooo/DCGAN-on-MNIST
+- Github: https://github.com/dennisjooo/Credit-Fraud-Detector
+- Portfolio: https://dennisjooo.vercel.app/blogs/finding-anomalies-using-things-we-already-know
 
 ---
 
-### GOTO Stock Price Prediction with Twitter Sentiment
-Thesis project exploring whether social media sentiment can predict stock price movements, using GOTO (Gojek Tokopedia) as test subject during pandemic-era retail investing surge.
-
-**Technical Stack:** LSTM vs SARIMAX models, multi-modal dataset combining Yahoo Finance data with Twitter sentiment analysis, COVID-19 case data as uncertainty proxy.
-
-**Key Finding:** LSTM enhanced with social media sentiment significantly outperformed traditional approaches. Sentiment polarity and discussion volume provided strongest signals; vanity metrics (likes, followers) showed no predictive power.
-
-**Links:** Research paper available in thesis documents.
+### Can Twitter Predict the Stock Market?
+Can Twitter sentiment predict stock prices? Turns out LSTM + social media data beats traditional models.
+- Portfolio: https://dennisjooo.vercel.app/blogs/can-twitter-predict-the-stock-market
 
 ---
 
-### All-NBA Team Predictor
-Machine learning models forecasting All-NBA team selections using three decades of advanced basketball statistics (1988-2021).
-
-**Technical Stack:** Logistic Regression, Random Forests, Multi-Layer Perceptron, trained on Basketball-Reference.com advanced statistics.
-
-**Key Insights:** Efficiency matters more than raw scoring, team success influences individual recognition, position context dramatically affects All-NBA criteria.
-
+### Will They Make All-NBA?
+Can machine learning predict basketball greatness? Training models to forecast All-NBA team selections.
 **Links:**
-- GitHub: https://github.com/dennisjooo/All-NBA-Predictor
+- Github: https://github.com/dennisjooo/All-NBA-Predictor
+- Deck: https://docs.google.com/presentation/d/190z_733eXOQEWJ3sTLA6T_b8lYXbDoYpxGR7XV6soXk/edit?usp=sharing
 - Paper: https://github.com/dennisjooo/All-NBA-Predictor/blob/master/Result.pdf
+- Portfolio: https://dennisjooo.vercel.app/blogs/will-they-make-all-nba
+
+## Blog Posts
+
+### An Inspired Rennovation
+A personal exploration of modern web design. What inspired it, what broke, and what I learned while rebuilding my portfolio from the ground up.
+
+- Read: https://dennisjooo.vercel.app/blogs/an-inspired-rennovation
 
 ## Skills & Technologies
 
-### Primary Skills
-- **Languages:** Python (expert), TypeScript, JavaScript, C++
-- **ML/DL Frameworks:** PyTorch, TensorFlow, Keras, PyTorch Lightning, Scikit-learn, Hugging Face Transformers
-- **LLM & AI:** LangChain, OpenAI API, Groq, RAG systems, ReAct agents
-- **Computer Vision:** OpenCV, OCR pipelines, image classification, document processing
-- **Data:** Pandas, PostgreSQL, MongoDB
-
-### Secondary Skills
-- **Web Development:** React, Next.js, FastAPI, Flask, Streamlit, Tailwind CSS, shadcn/ui
-- **Infrastructure:** Docker, Git, GitHub, Upstash
-- **Visualization:** Advanced analytics dashboards, data visualization
+- **Languages:** Python, TypeScript, JavaScript, C++, HTML5
+- **AI & Machine Learning:** PyTorch, TensorFlow, Scikit-learn, HuggingFace, LangChain, OpenCV, Pandas, Lightning, Keras, OpenAI
+- **Web & Frameworks:** React, Next.js, FastAPI, Flask, TailwindCSS, Streamlit, ShadcnUI
+- **Backend & Tools:** PostgreSQL, MongoDB, Docker, Git, GitHub, Upstash
 
 ## Certifications
 
-- **Mastering AI Bootcamp** - Ruangguru Engineering Academy (2023): Practical ML and deployment with FastAPI and Gradio
-- **DataCamp Courses** (2023): Big Data with PySpark, Deep Learning with Python, Applied Finance
-- **Deep Learning Specialization** - DeepLearning.AI (2022): Neural Networks and architectures
-- **DataQuest Tracks** (2021): Data Scientist in Python, Data Engineer in Python, Data Analyst in R
-- **Python for Everybody** - Coursera (2020): Python basics, Web APIs, web scraping
+- **Mastering AI Bootcamp** - Ruangguru Engineering Academy (2023): A 2-month bootcamp covering practical Machine Learning and deployment using Fast.API and Gradio. — https://drive.google.com/drive/folders/1ZhPL2rmv7qES_NUtJy53kmB0AfFgfdQS?usp=sharing
+- **DataCamp Courses** - DataCamp (2023): Completed courses on Big Data with PySpark, Deep Learning with Python, and Applied Finance in Python. — https://drive.google.com/file/d/1Z0oWPLLrxiswjgU1D2YLkz4_8Bup5uU2/view?usp=sharing
+- **Deep Learning Specialization** - DeepLearning.AI (2022): Comprehensive course on Neural Networks and their architectures. — https://drive.google.com/drive/folders/1dR0Id6HJRQvMP2OZdYzTBjJwgvfRIuFw?usp=sharing
+- **DataQuest Tracks** - DataQuest (2021): Completed tracks: Data Scientist in Python, Data Engineer in Python, and Data Analyst in R. — https://drive.google.com/drive/folders/1iQiY_0XJAm0dwE9q-IYNedT-ZDhaTWCJ?usp=sharing
+- **Python for Everybody** - Coursera (2020): First online course series, covering Python basics, Web APIs, and web scraping. — https://drive.google.com/drive/folders/1gpnY9sZo-KbcK-G-oA4yG1eLQzRVoqnv?usp=sharing
 
 ## Contact
 
 - **GitHub:** https://github.com/dennisjooo
-- **LinkedIn:** https://linkedin.com/in/dennisjooo
-- **Email:** dennisjonathan12@gmail.com
-- **Portfolio:** https://dennisjooo.vercel.app
+- **Email:** mailto:dennisjonathan78@gmail.com
+- **LinkedIn:** https://www.linkedin.com/in/dennisjooo/
 
 ## Optional
 
-- [Skills Visualization](https://dennisjooo.vercel.app/#skills): Interactive 3D skill cloud with icons for all technologies
-- [Certifications Section](https://dennisjooo.vercel.app/#certifications): Detailed certification cards with links to credentials
+- [Homepage](https://dennisjooo.vercel.app/): Developer & Problem Solver
+- [Projects & Certifications](https://dennisjooo.vercel.app/blogs): Full project list and certification cards
+- [Skills Section](https://dennisjooo.vercel.app/#skills): Interactive skills marquee

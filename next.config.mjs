@@ -54,6 +54,7 @@ const createConfig = (phase) => {
         { source: '/contact', destination: '/#contact' },
         { source: '/contacts', destination: '/#contact' },
         { source: '/sitemap', destination: '/sitemap.xml' },
+        { source: '/llm.txt', destination: '/llms.txt' },
     ].map(r => ({ ...r, permanent: true }));
 
     const { version } = JSON.parse(readFileSync('./package.json', 'utf8'));

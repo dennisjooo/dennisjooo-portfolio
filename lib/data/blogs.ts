@@ -1,11 +1,13 @@
 import 'server-only';
 import { unstable_cache } from 'next/cache';
 import { db, blogs, type Blog } from '@/lib/db';
-import { eq, desc, count, or, and, lte, type SQL } from 'drizzle-orm';
-import { sql } from 'drizzle-orm';
+import { eq, desc, count, and, type SQL } from 'drizzle-orm';
 import { CACHE_CONFIG } from '@/lib/constants/cache';
 import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { buildPagination } from '@/lib/api/apiHelpers';
+import { visibleBlogsFilter } from '@/lib/db/blogFilters';
+
+export { visibleBlogsFilter };
 
 export interface PaginationResult {
     total: number;
@@ -18,13 +20,6 @@ export interface PaginationResult {
 export interface BlogsResult {
     data: Blog[];
     pagination: PaginationResult;
-}
-
-export function visibleBlogsFilter(): SQL {
-    return or(
-        eq(blogs.status, 'published'),
-        and(eq(blogs.status, 'scheduled'), lte(blogs.publishAt, sql`now()`))
-    )!;
 }
 
 export async function findBlogBySlug(slug: string, filter?: SQL): Promise<Blog | null> {
