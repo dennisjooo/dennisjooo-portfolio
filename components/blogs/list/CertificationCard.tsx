@@ -23,10 +23,10 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
             transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
             viewport={{ once: true, margin: "-50px" }}
         >
-            <article className="relative flex flex-col h-full p-6 rounded-lg border border-border bg-card hover:border-accent/50 transition-all duration-500">
-                {/* Gradient Glow on Hover */}
-                <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-500 -z-10" />
+            <div className="relative h-full">
+                <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
+                <article className="relative flex flex-col h-full p-6 rounded-lg border border-border bg-card transition-all duration-500">
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -63,7 +63,8 @@ export const CertificationCard = ({ certification, index }: CertificationCardPro
                         <ArrowUpRightIcon className="w-3.5 h-3.5" />
                     </span>
                 </div>
-            </article>
+                </article>
+            </div>
         </m.a>
     );
 };

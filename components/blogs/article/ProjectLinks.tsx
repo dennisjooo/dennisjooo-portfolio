@@ -43,29 +43,29 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="group relative inline-flex items-center gap-3 px-5 py-3 rounded-lg border border-border bg-card hover:border-accent/50 transition-all duration-300"
+            className="group inline-block"
             target="_blank"
             rel="noopener noreferrer"
         >
-            {/* Gradient Glow on Hover */}
-            <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300 -z-10" />
+            <div className="relative">
+                <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            {/* Icon */}
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
-                {isGitHubLink ? (
-                    <BsGithub className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
-                ) : (
-                    <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
-                )}
+                <span className="relative inline-flex items-center gap-3 px-5 py-3 rounded-lg border border-border bg-card transition-colors duration-500">
+                    <span className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
+                        {isGitHubLink ? (
+                            <BsGithub className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+                        ) : (
+                            <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+                        )}
+                    </span>
+
+                    <span className="font-sans font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
+                        {text}
+                    </span>
+
+                    <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                </span>
             </div>
-
-            {/* Text */}
-            <span className="font-sans font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
-                {text}
-            </span>
-
-            {/* Arrow */}
-            <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
         </m.a>
     );
 }
