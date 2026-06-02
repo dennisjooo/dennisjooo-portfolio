@@ -70,12 +70,9 @@ export default function NotFound() {
                     >
                         <Link
                             href="/"
-                            className="group relative inline-flex items-center gap-4 px-8 py-4 bg-foreground text-background rounded-full overflow-hidden transition-all hover:scale-105"
+                            className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background/85 px-10 py-4 text-base font-medium text-muted-foreground backdrop-blur-md transition-[border-color,color,background-color] duration-200 ease-out hover:border-foreground hover:bg-foreground hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                         >
-                            <span className="relative z-10 font-bold tracking-widest uppercase text-sm">
-                                Return to Base
-                            </span>
-                            <div className="absolute inset-0 bg-accent transform scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100" />
+                            Return to Base
                         </Link>
                     </m.div>
                 </div>
