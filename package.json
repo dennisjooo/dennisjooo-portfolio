@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "node scripts/bump-version.mjs && npx tsx scripts/generate-site-files.ts && next build",
     "start": "next start",
-    "build-start": "node scripts/bump-version.mjs && npx tsx scripts/generate-site-files.ts && next build && next start",
+    "build-start": "next build && next start",
     "lint": "eslint .",
     "analyze": "ANALYZE=true next build",
     "db:generate": "drizzle-kit generate",
