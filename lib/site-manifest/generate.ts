@@ -130,9 +130,10 @@ function formatWorkExperience(data: SiteManifestData): string {
     }
 
     const sections = data.workExperiences.map((entry) => {
+        const items = entry.responsibilities ?? [];
         const responsibilities =
-            entry.responsibilities.length > 0
-                ? `\n\n${entry.responsibilities.map((item) => `- ${item}`).join('\n')}`
+            items.length > 0
+                ? `\n\n${items.map((item) => `- ${item}`).join('\n')}`
                 : '';
 
         return `### ${entry.title} at ${entry.company} (${entry.date})${responsibilities}`;
