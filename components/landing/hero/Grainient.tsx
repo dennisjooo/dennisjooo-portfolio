@@ -172,12 +172,13 @@ const Grainient: React.FC<GrainientProps> = ({
     if (!containerRef.current) return;
 
     const shouldReduceMotion = prefersReducedMotion.current;
+    const isMobile = window.innerWidth < 768;
 
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: shouldReduceMotion ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
+      dpr: shouldReduceMotion ? 1 : isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
     });
 
     const gl = renderer.gl;

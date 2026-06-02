@@ -43,9 +43,8 @@ export function HeroBackground() {
         setMounted(true);
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isMobile = window.innerWidth < 768;
 
-        if (prefersReducedMotion || isMobile) {
+        if (prefersReducedMotion) {
             setAllowGrainient(false);
         } else if (typeof win.requestIdleCallback === 'function') {
             const idleId = win.requestIdleCallback(
