@@ -10,12 +10,12 @@ mermaid.initialize({
     themeVariables: {
         darkMode: true,
         background: "transparent",
-        primaryColor: "#1e1e2e",
-        primaryTextColor: "#cdd6f4",
-        primaryBorderColor: "#585b70",
-        lineColor: "#585b70",
-        secondaryColor: "#313244",
-        tertiaryColor: "#45475a",
+        primaryColor: "#1a1a1a",
+        primaryTextColor: "#d4d4d4",
+        primaryBorderColor: "#525252",
+        lineColor: "#525252",
+        secondaryColor: "#262626",
+        tertiaryColor: "#404040",
     },
 });
 
