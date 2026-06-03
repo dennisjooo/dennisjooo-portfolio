@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 const SCROLL_CUE_CLASSNAME =
-    'font-mono text-[10px] md:text-xs lg:text-sm tracking-widest uppercase opacity-50 animate-fade-in shrink-0';
+    'font-mono text-[10px] md:text-xs lg:text-sm tracking-widest uppercase text-foreground/50 animate-fade-in shrink-0';
 
 const SCROLL_CUE_STYLE = {
     writingMode: 'vertical-rl' as const,

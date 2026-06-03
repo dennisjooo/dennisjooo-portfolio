@@ -18,12 +18,12 @@ export function HeroTypingRole() {
         >
             <span
                 id="hero-role-label"
-                className="mb-2 block font-mono text-[10px] uppercase tracking-widest opacity-50 md:text-xs lg:text-sm"
+                className="mb-2 block font-mono text-[10px] uppercase tracking-widest text-foreground/50 md:text-xs lg:text-sm"
             >
                 Role
             </span>
             <p
-                className="break-words font-mono text-sm font-normal leading-relaxed text-foreground/70 md:text-base lg:text-lg"
+                className="break-words font-mono text-sm font-normal leading-relaxed text-foreground/50 md:text-base lg:text-lg"
                 aria-labelledby="hero-role-label"
                 aria-live={prefersReducedMotion ? undefined : 'polite'}
                 aria-atomic="true"
