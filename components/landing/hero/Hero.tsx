@@ -1,4 +1,5 @@
 import { HeroBackground } from './HeroBackground';
+import { HeroNameLine } from './HeroNameLine';
 import { HeroTypingRole } from './HeroTypingRole';
 import { HeroScrollEffect } from './HeroScrollEffect';
 import { HeroScrollCue } from './HeroScrollCue';
@@ -27,35 +28,26 @@ const Hero: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col justify-center flex-grow relative w-full -mt-10 md:mt-0 overflow-hidden">
-                    <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-playfair italic font-normal text-foreground mix-blend-overlay dark:mix-blend-screen flex flex-nowrap max-w-full"
-                        aria-label="Dennis"
-                    >
-                        {'Dennis'.split('').map((char, i) => (
-                            <span
-                                key={i}
-                                className="animate-letter-reveal shrink-0"
-                                style={{ animationDelay: `${i * 30}ms` }}
-                            >
-                                {char}
-                            </span>
-                        ))}
-                    </h1>
-                    <h1
-                        className="relative z-10 text-[18vw] md:text-[12vw] leading-[0.85] font-bold tracking-[-0.04em] text-foreground self-end text-right w-full mix-blend-screen flex flex-nowrap justify-end max-w-full"
-                        aria-label="JONATHAN"
-                    >
-                        {'JONATHAN'.split('').map((char, i) => (
-                            <span
-                                key={i}
-                                className="animate-letter-reveal shrink-0"
-                                style={{ animationDelay: `${100 + i * 30}ms` }}
-                            >
-                                {char}
-                            </span>
-                        ))}
-                    </h1>
+                <div className="flex flex-col items-center justify-center flex-grow relative w-full -mt-10 md:mt-0 overflow-hidden">
+                    <div className="flex w-full flex-col items-center md:hidden">
+                        <HeroNameLine
+                            text="Dennis"
+                            ariaLabel="Dennis"
+                            className="text-[18vw] flex flex-nowrap justify-center text-center max-w-full"
+                        />
+                        <HeroNameLine
+                            text="Jonathan"
+                            ariaLabel="Jonathan"
+                            startDelay={100}
+                            className="text-[18vw] w-full flex flex-nowrap justify-center text-center max-w-full"
+                        />
+                    </div>
+
+                    <HeroNameLine
+                        text="Dennis Jonathan"
+                        ariaLabel="Dennis Jonathan"
+                        className="hidden md:flex text-[9vw] lg:text-[8vw] w-full flex-nowrap justify-center text-center max-w-full"
+                    />
                 </div>
 
                 <div className="relative flex w-full flex-row items-end justify-between gap-4 pb-8 md:gap-8 md:pb-0">

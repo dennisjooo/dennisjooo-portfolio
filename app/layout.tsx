@@ -19,6 +19,8 @@ const urbanist = Urbanist({
     subsets: ["latin"],
     display: "swap",
     variable: "--font-sans",
+    weight: ["300", "400", "500", "600", "700", "800", "900"],
+    style: ["normal", "italic"],
     preload: true,
     adjustFontFallback: true,
 });
