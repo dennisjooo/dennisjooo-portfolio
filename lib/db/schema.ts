@@ -34,8 +34,6 @@ export const blogs = pgTable("blogs", {
   blogPost: text("blog_post").notNull(),
   date: text("date").notNull(),
   type: blogTypeEnum("type").notNull(),
-  wordCount: integer("word_count"),
-  readTime: integer("read_time"),
   links: json("links").$type<Array<{ text: string; url: string }>>(),
   slug: text("slug").unique(),
   status: blogStatusEnum("status").default("draft").notNull(),

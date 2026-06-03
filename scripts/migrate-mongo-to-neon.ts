@@ -60,8 +60,6 @@ async function migrateBlogs(mongoDb: Db) {
         blogPost: blog.blogPost,
         date: blog.date,
         type: blog.type,
-        wordCount: blog.wordCount || null,
-        readTime: blog.readTime || null,
         links: blog.links || null,
         slug: blog.slug || null,
         createdAt: blog.createdAt ? new Date(blog.createdAt) : new Date(),

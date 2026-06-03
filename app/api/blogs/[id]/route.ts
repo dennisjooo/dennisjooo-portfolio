@@ -42,8 +42,6 @@ export async function PUT(
       "blogPost",
       "date",
       "type",
-      "wordCount",
-      "readTime",
       "links",
       "slug",
       "status",
