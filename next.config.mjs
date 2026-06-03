@@ -68,6 +68,7 @@ const createConfig = (phase) => {
         compress: true,
         images: {
             formats: ['image/avif', 'image/webp'],
+            qualities: [70, 75],
             remotePatterns: [
                 {
                     protocol: 'https',
