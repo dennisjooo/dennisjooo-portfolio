@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "entry": [
+    "scripts/**/*.{ts,mjs}"
+  ],
+  "next": {
+    "entry": [
+      "next.config.{js,ts,mjs,cjs}",
+      "{app,pages}/**/*.{js,jsx,ts,tsx}",
+      "proxy.{js,ts}",
+      "middleware.{js,ts}"
+    ]
+  },
+  "project": [
+    "app/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "lib/**/*.{ts,tsx}",
+    "data/**/*.{ts,tsx}",
+    "proxy.{ts,js}",
+    "scripts/**/*.{ts,tsx,mjs,js}"
+  ]
+}
