@@ -19,7 +19,7 @@ export function AdminPageHeader({
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 className="font-playfair italic text-3xl md:text-4xl text-foreground">
+        <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
           {title} <span className="not-italic font-sans font-bold">{titleAccent}</span>
         </h1>
         <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">

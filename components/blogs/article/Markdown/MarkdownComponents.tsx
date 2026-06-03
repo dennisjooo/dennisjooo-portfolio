@@ -15,7 +15,7 @@ export const markdownComponents: Components = {
         </h1>
     ),
     h2: ({ children, ...props }) => (
-        <h2 className="font-playfair font-normal italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4" {...props}>
+        <h2 className="font-caslon font-normal italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4" {...props}>
             <span className="w-[2px] h-8 bg-accent rounded-full shrink-0" />
             {children}
         </h2>
@@ -43,7 +43,7 @@ export const markdownComponents: Components = {
     strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
     em: ({ children }) => <em className="italic text-muted-foreground">{children}</em>,
     blockquote: ({ children }) => (
-        <blockquote className="relative my-10 mx-auto max-w-2xl py-8 px-6 md:px-10 border-none bg-transparent text-center [&>p]:before:content-none [&>p]:after:content-none [&>p]:mb-0 [&>p]:text-foreground [&>p]:font-playfair [&>p]:italic [&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed">
+        <blockquote className="relative my-10 mx-auto max-w-2xl py-8 px-6 md:px-10 border-none bg-transparent text-center [&>p]:before:content-none [&>p]:after:content-none [&>p]:mb-0 [&>p]:text-foreground [&>p]:font-caslon [&>p]:italic [&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed">
             <div className="mx-auto w-8 h-px bg-accent/60 mb-6" />
             {children}
             <div className="mx-auto w-8 h-px bg-accent/60 mt-6" />

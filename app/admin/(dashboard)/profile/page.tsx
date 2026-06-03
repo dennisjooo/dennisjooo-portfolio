@@ -45,7 +45,7 @@ export default function ProfileAdminPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-playfair italic text-3xl md:text-4xl text-foreground">
+        <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
           Profile <span className="not-italic font-sans font-bold">Settings</span>
         </h1>
         <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">

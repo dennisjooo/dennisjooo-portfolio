@@ -20,7 +20,7 @@ export default function WorkExperience({ workExperience }: WorkExperienceProps) 
         >
             <div className="container mx-auto px-6 max-w-7xl">
                 <div className="relative w-full flex justify-between items-end border-b border-border pb-4 mb-16">
-                    <span className="font-playfair italic text-3xl md:text-4xl text-foreground">03.</span>
+                    <span className="font-caslon italic text-3xl md:text-4xl text-foreground">03.</span>
                     <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-70 text-muted-foreground">
                         Work Experience
                     </span>

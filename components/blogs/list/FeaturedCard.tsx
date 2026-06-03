@@ -94,7 +94,7 @@ export const FeaturedCard = ({
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-playfair italic text-xl md:text-4xl tracking-tight leading-tight md:leading-[1.1] text-foreground group-hover:text-accent transition-colors duration-300">
+                    <h3 className="font-caslon italic text-xl md:text-4xl tracking-tight leading-tight md:leading-[1.1] text-foreground group-hover:text-accent transition-colors duration-300">
                         {title}
                     </h3>
 

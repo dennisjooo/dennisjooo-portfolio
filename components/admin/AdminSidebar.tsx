@@ -32,7 +32,7 @@ export function AdminSidebar() {
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card/50 backdrop-blur-xl hidden lg:flex flex-col">
       <div className="p-8 border-b border-border">
-        <h1 className="font-playfair italic text-2xl">
+        <h1 className="font-caslon italic text-2xl">
           Dennis' Portfolio <span className="font-sans font-bold not-italic text-sm tracking-widest uppercase block mt-1 text-muted-foreground">Mission Control</span>
         </h1>
       </div>

@@ -105,7 +105,7 @@ export const ContentCard = ({
 
                 <div className="flex flex-col gap-3 p-4 md:p-5 flex-1">
                     <h3 className={cn(
-                        "font-playfair italic tracking-tight text-foreground group-hover:text-accent transition-colors duration-300",
+                        "font-caslon italic tracking-tight text-foreground group-hover:text-accent transition-colors duration-300",
                         isFeatured 
                             ? "text-2xl md:text-3xl leading-[0.9]" 
                             : "text-xl md:text-2xl leading-tight"

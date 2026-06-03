@@ -57,7 +57,7 @@ export const SectionHeader = ({
         >
             <m.span
                 variants={prefersReducedMotion ? undefined : itemVariants}
-                className="font-playfair italic text-3xl md:text-4xl text-foreground"
+                className="font-caslon italic text-3xl md:text-4xl text-foreground"
             >
                 {number}
             </m.span>

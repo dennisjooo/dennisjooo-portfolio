@@ -27,7 +27,7 @@ export function NavigationCard({ title, description, href, icon: Icon, stat }: N
             <ArrowRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all mt-1" />
           </div>
 
-          <h2 className="text-xl font-medium font-playfair mb-1.5 group-hover:text-accent transition-colors duration-300">
+          <h2 className="text-xl font-medium font-caslon mb-1.5 group-hover:text-accent transition-colors duration-300">
             {title}
           </h2>
 

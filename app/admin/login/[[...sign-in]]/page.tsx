@@ -13,7 +13,7 @@ export default function AdminLoginPage() {
       <div className="relative z-10 w-full max-w-md mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="font-playfair italic text-3xl md:text-4xl mb-2">
+          <h1 className="font-caslon italic text-3xl md:text-4xl mb-2">
             Mission Control
           </h1>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">

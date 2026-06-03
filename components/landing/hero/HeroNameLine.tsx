@@ -1,5 +1,5 @@
 const HERO_NAME_BASE =
-    'relative z-10 font-playfair italic font-normal text-foreground leading-[0.85] tracking-tight mix-blend-overlay dark:mix-blend-screen';
+    'relative z-10 font-caslon italic font-normal text-foreground leading-[0.85] tracking-tight mix-blend-overlay dark:mix-blend-screen';
 
 type HeroNameLineProps = {
     text: string;

@@ -39,7 +39,7 @@ export function AdminMobileMenu() {
   return (
     <div className="lg:hidden relative">
       <div className="flex items-center justify-between py-4 px-2 border-b border-border mb-6">
-        <h1 className="font-playfair italic text-xl font-bold">
+        <h1 className="font-caslon italic text-xl font-bold">
           Mission Control
         </h1>
         <button

@@ -90,7 +90,7 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
 
                         <m.span
                             variants={prefersReducedMotion ? undefined : headlineVariants}
-                            className="font-playfair italic text-[18vw] md:text-[10vw] leading-[0.8] text-foreground dark:mix-blend-screen select-none text-center relative"
+                            className="font-caslon italic text-[18vw] md:text-[10vw] leading-[0.8] text-foreground dark:mix-blend-screen select-none text-center relative"
                         >
                             Let&apos;s
                         </m.span>

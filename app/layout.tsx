@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Urbanist, Roboto_Mono, Playfair_Display } from "next/font/google";
+import { Urbanist, Roboto_Mono, Libre_Caslon_Text } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -33,11 +33,10 @@ const robotoMono = Roboto_Mono({
     adjustFontFallback: true,
 });
 
-const playfair = Playfair_Display({
+const caslon = Libre_Caslon_Text({
     subsets: ["latin"],
     display: "swap",
-    variable: "--font-playfair",
-    style: "italic",
+    variable: "--font-caslon",
     weight: "400",
     preload: true,
     adjustFontFallback: true,
@@ -96,7 +95,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
                 <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
             </head>
-            <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${playfair.variable}`} suppressHydrationWarning>
+            <body className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${caslon.variable}`} suppressHydrationWarning>
                 <Providers>
                     {children}
                 </Providers>

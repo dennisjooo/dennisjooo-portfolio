@@ -32,7 +32,7 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={prefersReducedMotion ? undefined : { opacity: 0, x: 24 }}
                     transition={prefersReducedMotion ? { duration: 0 } : springConfigs.snappy}
-                    className="font-playfair italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-4"
+                    className="font-caslon italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-4"
                 >
                     {tabTitles[activeTab]}
                 </m.h1>

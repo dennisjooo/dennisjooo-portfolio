@@ -20,8 +20,8 @@ const config: Config = {
 					'var(--font-roboto-mono)',
 					'monospace'
 				],
-				playfair: [
-					'var(--font-playfair)',
+				caslon: [
+					'var(--font-caslon)',
 					'serif'
 				]
 			},

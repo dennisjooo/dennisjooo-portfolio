@@ -32,7 +32,7 @@ export function AdminFormLayout({
           <ArrowLeftIcon className="w-5 h-5 text-muted-foreground" />
         </button>
         <div>
-          <h1 className="font-playfair italic text-3xl font-bold text-foreground">
+          <h1 className="font-caslon italic text-3xl font-bold text-foreground">
             {title} <span className="not-italic font-sans">{titleAccent}</span>
           </h1>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-1">
