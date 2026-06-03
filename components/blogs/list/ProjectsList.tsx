@@ -3,6 +3,8 @@ import { createUrlSlug } from '@/lib/utils/urlHelpers';
 import { formatProjectDate, calculateReadTime } from '@/lib/utils/projectFormatting';
 import { ContentCard, PaginatedList } from '@/components/shared';
 import { FeaturedCard } from './FeaturedCard';
+import { BlogsListSkeleton } from './skeletons';
+import { ContentCardSkeleton } from './skeletons/ContentCardSkeleton';
 import type { PaginationResult } from '@/lib/data/blogs';
 import { usePaginatedList } from '@/lib/hooks/usePaginatedList';
 import { useMemo } from 'react';
@@ -41,10 +43,14 @@ export default function ProjectsList({
     const featuredItem = paginatedList.items[0];
     const remainingItems = paginatedList.items.slice(1);
 
+    if (paginatedList.loading) {
+        return <BlogsListSkeleton gridCount={PAGE_SIZE - 1} />;
+    }
+
     return (
         <div className="w-full">
             {/* Featured first post */}
-            {featuredItem && !paginatedList.loading && (
+            {featuredItem && (
                 <FeaturedCard
                     title={featuredItem.title}
                     description={featuredItem.description}
@@ -59,9 +65,15 @@ export default function ProjectsList({
             {/* Remaining posts in grid */}
             <PaginatedList
                 {...paginatedList}
-                items={paginatedList.loading ? paginatedList.items : remainingItems}
+                items={remainingItems}
                 emptyMessage={emptyMessage}
-                skeletonCount={PAGE_SIZE}
+                loadingMoreSkeleton={
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <ContentCardSkeleton key={i} />
+                        ))}
+                    </div>
+                }
                 keyExtractor={(p) => `${p.title}_${p.date}`}
                 renderItem={({ title, description, date, imageUrl, blogPost, type: itemType, slug }, index) => (
                     <ContentCard

@@ -19,6 +19,8 @@ interface PaginatedListProps<T> {
     skeletonHeight?: string;
     gridClassName?: string;
     gapClassName?: string;
+    loadingSkeleton?: ReactNode;
+    loadingMoreSkeleton?: ReactNode;
 }
 
 export function PaginatedList<T>({
@@ -35,8 +37,13 @@ export function PaginatedList<T>({
     skeletonHeight,
     gridClassName = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     gapClassName = 'gap-8 md:gap-10',
+    loadingSkeleton,
+    loadingMoreSkeleton,
 }: PaginatedListProps<T>) {
     if (loading) {
+        if (loadingSkeleton) {
+            return <>{loadingSkeleton}</>;
+        }
         return <ListSkeleton count={skeletonCount} height={skeletonHeight} gap={gapClassName} />;
     }
 
@@ -54,7 +61,9 @@ export function PaginatedList<T>({
 
             {loadingMore && (
                 <div className="mt-8 md:mt-10">
-                    <ListSkeleton count={3} height={skeletonHeight} gap={gapClassName} />
+                    {loadingMoreSkeleton ?? (
+                        <ListSkeleton count={3} height={skeletonHeight} gap={gapClassName} />
+                    )}
                 </div>
             )}
 
