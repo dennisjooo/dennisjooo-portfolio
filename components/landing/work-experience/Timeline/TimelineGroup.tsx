@@ -1,7 +1,9 @@
 "use client";
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { CompanyGroup } from '@/lib/utils/workExperience';
+import { useScrollActiveZone } from '@/lib/hooks/useScrollActiveZone';
+import { cn } from '@/lib/utils';
 import { CompanyHeader } from './CompanyHeader';
 import { TimelineRole } from './TimelineRole';
 
@@ -11,17 +13,31 @@ interface TimelineGroupProps {
 }
 
 export const TimelineGroup: React.FC<TimelineGroupProps> = ({ group, isLast }) => {
+    const groupRef = useRef<HTMLDivElement>(null);
+    const isActive = useScrollActiveZone(groupRef);
+
     return (
-        <div className={`group relative w-full ${!isLast ? 'mb-0' : ''}`}>
+        <div ref={groupRef} className={`relative w-full ${!isLast ? 'mb-0' : ''}`}>
             {/* Desktop Layout: Grid */}
             <div className="hidden md:grid md:grid-cols-12 md:gap-16 min-h-[50vh]">
                 {/* Left Column: Sticky Header */}
                 <div className="col-span-5 relative">
                     <div className="sticky will-change-transform top-32 flex flex-col items-end pb-20">
-                        <CompanyHeader companyName={group.companyName} logo={group.logo} />
+                        <CompanyHeader
+                            companyName={group.companyName}
+                            logo={group.logo}
+                            isActive={isActive}
+                        />
 
                         {/* Decorative Dot */}
-                        <div className="absolute right-[-4.5rem] top-6 w-4 h-4 rounded-full bg-background border-2 border-foreground group-hover:bg-foreground transition-colors duration-500 z-10 hidden lg:block" />
+                        <div
+                            className={cn(
+                                'absolute right-[-4.5rem] top-6 w-4 h-4 rounded-full border-2 z-10 hidden lg:block transition-all duration-500',
+                                isActive
+                                    ? 'bg-foreground border-foreground shadow-[0_0_0_4px_hsl(var(--foreground)/0.15),0_0_16px_hsl(var(--foreground)/0.25)] scale-110'
+                                    : 'bg-background border-foreground/25 scale-100'
+                            )}
+                        />
                     </div>
                 </div>
 
