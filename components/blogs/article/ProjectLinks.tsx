@@ -15,7 +15,7 @@ interface ProjectLinksProps {
 
 export default function ProjectLinks({ links }: ProjectLinksProps) {
     return (
-        <div className="pt-12 border-t border-border">
+        <div>
             {/* Section Header */}
             <div className="flex items-center gap-4 mb-6">
                 <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
