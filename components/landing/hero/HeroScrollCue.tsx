@@ -1,7 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
-import { heroScrollCueStyle } from './heroScrollCueStyles';
+
+const SCROLL_CUE_CLASSNAME =
+    'font-mono text-[10px] md:text-xs lg:text-sm tracking-widest uppercase opacity-50 animate-fade-in shrink-0';
+
+const SCROLL_CUE_STYLE = {
+    writingMode: 'vertical-rl' as const,
+    animationDelay: '1200ms',
+};
 
 const MOBILE_MEDIA = '(max-width: 1023px)';
 const HERO_VISIBILITY_SLACK = 100;
@@ -42,13 +49,22 @@ export function HeroScrollCue() {
     }, []);
 
     return (
-        <div
-            id="hero-scroll-cue-mobile"
-            className="lg:hidden text-sm font-light leading-relaxed text-foreground/60 animate-fade-in shrink-0"
-            style={heroScrollCueStyle}
-            aria-hidden="false"
-        >
-            Scroll to Explore
-        </div>
+        <>
+            <div
+                className={`hidden lg:block ${SCROLL_CUE_CLASSNAME}`}
+                style={SCROLL_CUE_STYLE}
+            >
+                Scroll to Explore
+            </div>
+
+            <div
+                id="hero-scroll-cue-mobile"
+                className={`lg:hidden ${SCROLL_CUE_CLASSNAME}`}
+                style={SCROLL_CUE_STYLE}
+                aria-hidden="false"
+            >
+                Scroll to Explore
+            </div>
+        </>
     );
 }

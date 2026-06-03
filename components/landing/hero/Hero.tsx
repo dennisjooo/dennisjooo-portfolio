@@ -3,7 +3,6 @@ import { HeroNameLine } from './HeroNameLine';
 import { HeroTypingRole } from './HeroTypingRole';
 import { HeroScrollEffect } from './HeroScrollEffect';
 import { HeroScrollCue } from './HeroScrollCue';
-import { heroScrollCueBaseClassName, heroScrollCueStyle } from './heroScrollCueStyles';
 
 const Hero: React.FC = () => {
     return (
@@ -52,13 +51,6 @@ const Hero: React.FC = () => {
 
                 <div className="relative flex w-full flex-row items-end justify-between gap-4 pb-8 md:gap-8 md:pb-0">
                     <HeroTypingRole />
-
-                    <div
-                        className={`hidden lg:block lg:text-sm ${heroScrollCueBaseClassName}`}
-                        style={heroScrollCueStyle}
-                    >
-                        Scroll to Explore
-                    </div>
 
                     <HeroScrollCue />
                 </div>

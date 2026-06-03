@@ -25,7 +25,24 @@ const parseRollback = (text: string): RollbackConfig | null => {
     return null;
 };
 
-export const useTypingEffect = (descriptions: string[], initialDelay: number = 500) => {
+export const resolveTypingDescription = (text: string): string => {
+    const parsed = parseRollback(text);
+    if (parsed) {
+        return parsed.prefix + parsed.newText + parsed.suffix;
+    }
+    return text;
+};
+
+type UseTypingEffectOptions = {
+    enabled?: boolean;
+};
+
+export const useTypingEffect = (
+    descriptions: string[],
+    initialDelay: number = 500,
+    options: UseTypingEffectOptions = {},
+) => {
+    const { enabled = true } = options;
     const shuffledDescriptions = useMemo(() => shuffleArray(descriptions), [descriptions]);
     const [description, setDescription] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -35,8 +52,15 @@ export const useTypingEffect = (descriptions: string[], initialDelay: number = 5
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
+        if (!enabled) {
+            const first = shuffledDescriptions[0] ?? '';
+            setDescription(resolveTypingDescription(first));
+            setIsReady(true);
+            return;
+        }
+
         const start = () => setIsReady(true);
-        
+
         if ('requestIdleCallback' in window) {
             const id = window.requestIdleCallback(start, { timeout: initialDelay + 500 });
             const timer = setTimeout(() => {
@@ -50,10 +74,10 @@ export const useTypingEffect = (descriptions: string[], initialDelay: number = 5
             const timer = setTimeout(start, initialDelay);
             return () => clearTimeout(timer);
         }
-    }, [initialDelay, isReady]);
+    }, [enabled, initialDelay, isReady, shuffledDescriptions]);
 
     const handleTyping = useCallback(() => {
-        if (!isReady) return;
+        if (!enabled || !isReady) return;
         const i = loopNum % shuffledDescriptions.length;
         const fullDescription = shuffledDescriptions[i];
         const parsedRollback = parseRollback(fullDescription);
@@ -125,13 +149,13 @@ export const useTypingEffect = (descriptions: string[], initialDelay: number = 5
                 setRollbackPhase(null);
             }
         }
-    }, [description, isDeleting, loopNum, shuffledDescriptions, rollbackPhase, isReady]);
+    }, [description, enabled, isDeleting, isReady, loopNum, rollbackPhase, shuffledDescriptions]);
 
     useEffect(() => {
-        if (!isReady) return;
+        if (!enabled || !isReady) return;
         const timer = setTimeout(handleTyping, typingSpeed);
         return () => clearTimeout(timer);
-    }, [handleTyping, typingSpeed, isReady]);
+    }, [enabled, handleTyping, isReady, typingSpeed]);
 
     return description;
 };
