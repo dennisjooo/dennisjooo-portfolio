@@ -13,7 +13,7 @@ export function ProfileMetadata({ className, nameClassName = "text-3xl" }: Profi
         >
             <p className={cn("font-caslon italic text-foreground", nameClassName)}>Dennis Jonathan</p>
             <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                Developer & Problem Solver
+                Okay Developer & Human Being
             </p>
         </div>
     );
