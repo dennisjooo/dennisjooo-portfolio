@@ -1,4 +1,5 @@
 import { StatusData } from './types';
+import { overallStatusStyles } from './statusStyles';
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -7,13 +8,24 @@ function getGreeting(): string {
   return 'Good evening';
 }
 
-function getOverallStatus(statusData: StatusData | null, isLoading: boolean): { label: string; color: string } {
-  if (isLoading || !statusData) return { label: 'Checking...', color: 'text-muted-foreground' };
+function getOverallStatus(
+  statusData: StatusData | null,
+  isLoading: boolean
+): { label: string; textClass: string; dotClass: string } {
+  if (isLoading || !statusData) {
+    return { label: 'Checking...', ...overallStatusStyles.checking };
+  }
   const statuses = [statusData.database, statusData.auth, statusData.blobStorage];
-  if (statuses.some(s => s?.status === 'down')) return { label: 'Degraded', color: 'text-foreground' };
-  if (statuses.some(s => s?.status === 'degraded')) return { label: 'Partial', color: 'text-muted-foreground' };
-  if (statuses.every(s => s?.status === 'operational')) return { label: 'All Systems Go', color: 'text-accent' };
-  return { label: 'Checking...', color: 'text-muted-foreground' };
+  if (statuses.some(s => s?.status === 'down')) {
+    return { label: 'Degraded', ...overallStatusStyles.unhealthy };
+  }
+  if (statuses.some(s => s?.status === 'degraded')) {
+    return { label: 'Partial', ...overallStatusStyles.partial };
+  }
+  if (statuses.every(s => s?.status === 'operational')) {
+    return { label: 'All Systems Go', ...overallStatusStyles.healthy };
+  }
+  return { label: 'Checking...', ...overallStatusStyles.checking };
 }
 
 interface DashboardHeaderProps {
@@ -37,8 +49,8 @@ export function DashboardHeader({ userName, statusData = null, statusLoading = t
           </span>
         </h1>
         <div className="flex items-center gap-3">
-          <span className={`inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest ${status.color}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${status.color.replace('text-', 'bg-')} ${isPending ? 'animate-pulse' : ''}`} />
+          <span className={`inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest ${status.textClass}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${status.dotClass} ${isPending ? 'animate-pulse' : ''}`} />
             {status.label}
           </span>
           <span className="text-border">|</span>

@@ -1,30 +1,10 @@
 import { ServiceStatus } from './types';
+import { statusStyles } from './statusStyles';
 
 interface StatusIndicatorProps {
   status: ServiceStatus | undefined;
   label: string;
 }
-
-const statusConfig = {
-  operational: {
-    dot: 'bg-accent',
-    text: 'Operational',
-    textColor: 'text-foreground',
-    pill: 'bg-accent/20 border-accent/30'
-  },
-  degraded: {
-    dot: 'bg-foreground/40',
-    text: 'Degraded',
-    textColor: 'text-muted-foreground',
-    pill: 'bg-muted/40 border-border/60'
-  },
-  down: {
-    dot: 'bg-foreground',
-    text: 'Down',
-    textColor: 'text-foreground',
-    pill: 'bg-foreground/10 border-border'
-  },
-};
 
 export function StatusIndicator({ status, label }: StatusIndicatorProps) {
   if (!status) {
@@ -39,7 +19,7 @@ export function StatusIndicator({ status, label }: StatusIndicatorProps) {
     );
   }
 
-  const config = statusConfig[status.status];
+  const config = statusStyles[status.status];
 
   return (
     <div className="flex items-center justify-between py-3">
