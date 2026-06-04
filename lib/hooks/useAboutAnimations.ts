@@ -2,6 +2,7 @@
 
 import { RefObject, useEffect } from 'react';
 import { ContentSection } from '@/components/landing/about/contentSections';
+import { resolveSectionScrollTarget, setScrollAnimationsReady } from '@/lib/utils/scrollHelpers';
 
 interface UseAboutAnimationsProps {
     sectionRef: RefObject<HTMLDivElement | null>;
@@ -110,7 +111,14 @@ export const useAboutAnimations = ({
             cleanup = () => {
                 mm.revert();
                 ScrollTrigger.getAll().forEach(st => st.kill());
+                setScrollAnimationsReady(false);
             };
+
+            requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+                setScrollAnimationsReady(true);
+                window.dispatchEvent(new Event('portfolio:scroll-animations-ready'));
+            });
         };
 
         const startObserving = () => {
@@ -141,7 +149,12 @@ export const useAboutAnimations = ({
             });
         };
 
-        if (document.querySelector('[data-content-ready="true"]')) {
+        const pendingSection = resolveSectionScrollTarget();
+        const shouldEagerInit = pendingSection !== '' && pendingSection !== 'home';
+
+        if (shouldEagerInit) {
+            void initAnimations();
+        } else if (document.querySelector('[data-content-ready="true"]')) {
             disconnectObserver = startObserving();
         } else {
             window.addEventListener('portfolio:content-revealed', onContentRevealed, { once: true });

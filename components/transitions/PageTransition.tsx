@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { AnimatePresence, LayoutGroup, m, useReducedMotion } from '@/components/motion';
+import { isSectionNavigationPending } from '@/lib/utils/scrollHelpers';
 
 const SCROLL_KEY = 'portfolio-scroll-pos';
 const CROSSFADE = { duration: 0.22, ease: [0.4, 0, 0.2, 1] as const };
@@ -55,8 +56,10 @@ export function PageTransition({ children }: PageTransitionProps) {
         }
 
         if (prevPathRef.current !== pathname) {
-            window.scrollTo(0, 0);
-            window.lenis?.scrollTo(0, { immediate: true });
+            if (!isSectionNavigationPending()) {
+                window.scrollTo(0, 0);
+                window.lenis?.scrollTo(0, { immediate: true });
+            }
             prevPathRef.current = pathname;
         }
     }, [pathname]);

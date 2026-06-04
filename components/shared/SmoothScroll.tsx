@@ -38,6 +38,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
             });
 
             window.lenis = lenis;
+            window.dispatchEvent(new Event('portfolio:lenis-ready'));
 
             gsap.registerPlugin(ScrollTrigger);
 

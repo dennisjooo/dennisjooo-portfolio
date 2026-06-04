@@ -9,7 +9,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { useCommandPalette } from "@/lib/hooks/useCommandPalette";
-import { scrollToTop, scrollToSection } from "@/lib/utils/scrollHelpers";
+import { scrollToTop, scrollToSection, setPendingSectionScroll } from "@/lib/utils/scrollHelpers";
 
 import { NavigationGroup } from "./groups/NavigationGroup";
 import { ProjectsGroup } from "./groups/ProjectsGroup";
@@ -53,6 +53,8 @@ export function CommandPalette() {
                 }
                 return;
             }
+
+            setPendingSectionScroll(sectionId);
         }
         router.push(path);
     }, [pathname, router]);

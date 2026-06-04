@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { scrollToTop, scrollToSection } from "@/lib/utils/scrollHelpers";
+import { scrollToTop, scrollToSection, setPendingSectionScroll } from "@/lib/utils/scrollHelpers";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
@@ -79,6 +79,7 @@ export const useSectionNavigation = (
                     scrollToSection(sectionId);
                 }
             } else {
+                setPendingSectionScroll(sectionId);
                 router.push(`/#${sectionId}`);
             }
 

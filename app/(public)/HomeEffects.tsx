@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { scrollToSection } from '@/lib/utils/scrollHelpers';
+import {
+    clearPendingSectionScroll,
+    resolveSectionScrollTarget,
+    scrollToSectionWhenReady,
+} from '@/lib/utils/scrollHelpers';
 
 function setHomeVisibility(isVisible: boolean) {
     const visibility = isVisible ? 'visible' : 'hidden';
@@ -14,15 +18,11 @@ function setHomeVisibility(isVisible: boolean) {
 
 export function HomeEffects() {
     useEffect(() => {
-        const hash = window.location.hash ? window.location.hash.substring(1) : '';
-        const isHashNav = hash !== '' && hash !== 'home';
-
-        if (hash) {
-            window.history.replaceState({}, '', window.location.pathname);
-        }
+        const sectionId = resolveSectionScrollTarget();
+        const isHashNav = sectionId !== '' && sectionId !== 'home';
 
         if (!isHashNav) {
-            if (hash === 'home') {
+            if (sectionId === 'home' || window.location.hash === '#home') {
                 if (window.lenis) {
                     window.lenis.stop();
                 }
@@ -37,17 +37,22 @@ export function HomeEffects() {
                     }
                 });
             }
+            clearPendingSectionScroll();
             setHomeVisibility(true);
             return;
         }
 
         setHomeVisibility(false);
-        requestAnimationFrame(() => {
+
+        void (async () => {
+            await scrollToSectionWhenReady(sectionId);
+            setHomeVisibility(true);
+
             setTimeout(() => {
-                scrollToSection(hash);
-                setHomeVisibility(true);
-            }, 50);
-        });
+                clearPendingSectionScroll();
+                window.history.replaceState({}, '', window.location.pathname);
+            }, 150);
+        })();
     }, []);
 
     useEffect(() => {
