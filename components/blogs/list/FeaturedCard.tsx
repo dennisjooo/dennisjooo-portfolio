@@ -94,9 +94,12 @@ export const FeaturedCard = ({
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-caslon italic text-xl md:text-4xl tracking-tight leading-tight md:leading-[1.1] text-foreground group-hover:text-accent transition-colors duration-300">
+                    <m.h3
+                        layoutId={`hero-title-${slug}`}
+                        className="font-caslon italic text-xl md:text-4xl tracking-tight leading-tight md:leading-[1.1] text-foreground group-hover:text-accent transition-colors duration-300"
+                    >
                         {title}
-                    </h3>
+                    </m.h3>
 
                     {/* Description */}
                     <p className="font-sans text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-4">

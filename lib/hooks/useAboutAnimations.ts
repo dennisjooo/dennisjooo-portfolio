@@ -2,6 +2,7 @@
 
 import { RefObject, useEffect } from 'react';
 import { ContentSection } from '@/components/landing/about/contentSections';
+import { resolveSectionScrollTarget, setScrollAnimationsReady } from '@/lib/utils/scrollHelpers';
 
 interface UseAboutAnimationsProps {
     sectionRef: RefObject<HTMLDivElement | null>;
@@ -110,25 +111,58 @@ export const useAboutAnimations = ({
             cleanup = () => {
                 mm.revert();
                 ScrollTrigger.getAll().forEach(st => st.kill());
+                setScrollAnimationsReady(false);
             };
+
+            requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+                setScrollAnimationsReady(true);
+                window.dispatchEvent(new Event('portfolio:scroll-animations-ready'));
+            });
         };
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    initAnimations();
-                    observer.disconnect();
-                }
-            },
-            { rootMargin: '100px' }
-        );
+        const startObserving = () => {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    if (entries[0].isIntersecting) {
+                        initAnimations();
+                        observer.disconnect();
+                    }
+                },
+                { rootMargin: '100px' },
+            );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+            if (sectionRef.current) {
+                observer.observe(sectionRef.current);
+            }
+
+            return () => observer.disconnect();
+        };
+
+        let disconnectObserver: (() => void) | undefined;
+
+        const onContentRevealed = () => {
+            disconnectObserver?.();
+            disconnectObserver = startObserving();
+            void import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+                requestAnimationFrame(() => ScrollTrigger.refresh());
+            });
+        };
+
+        const pendingSection = resolveSectionScrollTarget();
+        const shouldEagerInit = pendingSection !== '' && pendingSection !== 'home';
+
+        if (shouldEagerInit) {
+            void initAnimations();
+        } else if (document.querySelector('[data-content-ready="true"]')) {
+            disconnectObserver = startObserving();
+        } else {
+            window.addEventListener('portfolio:content-revealed', onContentRevealed, { once: true });
         }
 
         return () => {
-            observer.disconnect();
+            disconnectObserver?.();
+            window.removeEventListener('portfolio:content-revealed', onContentRevealed);
             cleanup?.();
         };
     }, [sectionRef, containerRef, contentSections]);

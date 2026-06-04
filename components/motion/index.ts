@@ -1,5 +1,5 @@
 export { MotionProvider } from './MotionProvider';
-export { m, AnimatePresence, useReducedMotion } from 'framer-motion';
+export { m, AnimatePresence, useReducedMotion, LayoutGroup } from 'framer-motion';
 
 export const springConfigs = {
     snappy: { type: 'spring', stiffness: 300, damping: 30 } as const,

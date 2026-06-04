@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { m, useReducedMotion, springConfigs, viewportSettings } from '@/components/motion';
 import { NOISE_OVERLAY_LIGHT } from '@/lib/constants/noiseOverlay';
 import { getBlogTypeLabel } from '@/lib/utils/projectFormatting';
-
 interface ContentCardProps {
     title: string;
     description: string;
@@ -104,14 +103,16 @@ export const ContentCard = ({
                 </m.div>
 
                 <div className="flex flex-col gap-3 p-4 md:p-5 flex-1">
-                    <h3 className={cn(
+                    <m.h3
+                        layoutId={`hero-title-${slug}`}
+                        className={cn(
                         "font-caslon italic tracking-tight text-foreground group-hover:text-accent transition-colors duration-300",
                         isFeatured 
                             ? "text-2xl md:text-3xl leading-[0.9]" 
                             : "text-xl md:text-2xl leading-tight"
                     )}>
                         {title}
-                    </h3>
+                    </m.h3>
 
                     <p className="font-sans text-muted-foreground text-sm leading-relaxed line-clamp-2 flex-1">
                         {description}

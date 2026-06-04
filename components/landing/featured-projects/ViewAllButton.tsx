@@ -8,7 +8,7 @@ export const ViewAllButton = () => {
             <Link
                 href="/blogs"
                 prefetch
-                className="group relative inline-flex items-center gap-3 py-2"
+                className="group relative inline-flex items-center gap-3 py-2 cursor-pointer"
             >
                 <GradientUnderline trigger="hover" className="font-sans font-bold text-lg md:text-xl uppercase tracking-widest text-foreground transition-colors duration-300 group-hover:text-accent">
                     All Projects

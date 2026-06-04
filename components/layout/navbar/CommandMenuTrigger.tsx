@@ -2,7 +2,6 @@
 
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-
 interface CommandMenuTriggerProps {
     textColorClass: string;
     scrolled: boolean;
