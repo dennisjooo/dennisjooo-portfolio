@@ -7,7 +7,12 @@ const Footer = () => {
 
             <div className="relative mx-auto flex w-full max-w-7xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:text-sm">
                 <p className="font-mono text-[0.85em] uppercase tracking-widest text-foreground">
-                    <a href="https://dennisjooo.vercel.app" target="_blank" rel="noopener noreferrer">
+                    <a
+                        href="https://dennisjooo.vercel.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cursor-pointer"
+                    >
                         <span className="hover:text-accent transition-colors duration-300">
                             © {currentYear} Dennis Jonathan
                         </span>

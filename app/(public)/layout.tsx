@@ -1,4 +1,6 @@
 import { ScrollToTop } from "@/components/shared/ScrollToTop";
+import { LoadingProvider } from "@/components/loader/LoadingProvider";
+import { RouteProgressBar } from "@/components/transitions/RouteProgressBar";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 
@@ -26,7 +28,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <CommandPalette />
             <EasterEggs />
             <MotionProvider>
-                <main>{children}</main>
+                <LoadingProvider>
+                    <main>{children}</main>
+                    <RouteProgressBar />
+                </LoadingProvider>
             </MotionProvider>
             <Footer />
         </>

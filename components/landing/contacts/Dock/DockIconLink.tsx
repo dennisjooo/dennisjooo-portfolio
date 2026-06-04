@@ -1,7 +1,6 @@
 import { DockIcon, type DockIconProps } from "./DockIcon";
 import Link from "next/link";
 import type { ReactNode } from "react";
-
 interface DockIconLinkProps extends Partial<DockIconProps> {
     href: string;
     ariaLabel: string;

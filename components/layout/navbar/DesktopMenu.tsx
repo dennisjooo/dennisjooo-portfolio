@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { NavItem } from "@/data/navbarContent";
-
 interface DesktopMenuProps {
     navItems: NavItem[];
     scrolled: boolean;

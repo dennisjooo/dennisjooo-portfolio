@@ -113,22 +113,43 @@ export const useAboutAnimations = ({
             };
         };
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    initAnimations();
-                    observer.disconnect();
-                }
-            },
-            { rootMargin: '100px' }
-        );
+        const startObserving = () => {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    if (entries[0].isIntersecting) {
+                        initAnimations();
+                        observer.disconnect();
+                    }
+                },
+                { rootMargin: '100px' },
+            );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+            if (sectionRef.current) {
+                observer.observe(sectionRef.current);
+            }
+
+            return () => observer.disconnect();
+        };
+
+        let disconnectObserver: (() => void) | undefined;
+
+        const onContentRevealed = () => {
+            disconnectObserver?.();
+            disconnectObserver = startObserving();
+            void import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+                requestAnimationFrame(() => ScrollTrigger.refresh());
+            });
+        };
+
+        if (document.querySelector('[data-content-ready="true"]')) {
+            disconnectObserver = startObserving();
+        } else {
+            window.addEventListener('portfolio:content-revealed', onContentRevealed, { once: true });
         }
 
         return () => {
-            observer.disconnect();
+            disconnectObserver?.();
+            window.removeEventListener('portfolio:content-revealed', onContentRevealed);
             cleanup?.();
         };
     }, [sectionRef, containerRef, contentSections]);
