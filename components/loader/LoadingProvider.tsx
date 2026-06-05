@@ -4,6 +4,16 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { m, useReducedMotion } from '@/components/motion';
 import { Loader } from './Loader';
 
+/** Fade out and remove the server-rendered cover that prevents white flash. */
+function dismissSSRCover() {
+    const cover = document.getElementById('__ssr_cover');
+    if (!cover) return;
+    cover.classList.add('hidden');
+    cover.addEventListener('transitionend', () => cover.remove(), { once: true });
+    // Fallback removal if transitionend doesn't fire
+    setTimeout(() => cover.remove(), 500);
+}
+
 const FIRST_VISIT_KEY = 'portfolio-has-visited';
 const INITIAL_MIN_MS = 1200;
 
@@ -38,6 +48,7 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
 
         requestAnimationFrame(() => {
             setContentReady(true);
+            dismissSSRCover();
             window.dispatchEvent(new Event('portfolio:content-revealed'));
         });
     }, []);
@@ -71,6 +82,7 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
             setShowInitialLoader(false);
             setContentReady(true);
             didRevealRef.current = true;
+            dismissSSRCover();
             window.dispatchEvent(new Event('portfolio:content-revealed'));
             return;
         }

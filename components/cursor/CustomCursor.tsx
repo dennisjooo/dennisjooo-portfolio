@@ -79,7 +79,7 @@ export function CustomCursor() {
         default: {
             width: 40,
             height: 40,
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0,0,0,0)',
             border: '1px solid rgba(150, 150, 150, 0.5)',
             mixBlendMode: 'normal' as any,
             opacity: isVisible ? 1 : 0,
@@ -87,7 +87,7 @@ export function CustomCursor() {
         link: {
             width: 80,
             height: 80,
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0,0,0,0)',
             border: '2px solid white',
             mixBlendMode: 'difference' as any,
             opacity: isVisible ? 1 : 0,
@@ -104,7 +104,7 @@ export function CustomCursor() {
         magnetic: {
             width: 60,
             height: 60,
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0,0,0,0)',
             border: '1px solid rgba(150, 150, 150, 0.8)',
             mixBlendMode: 'normal' as any,
             opacity: isVisible ? 1 : 0,

@@ -4,6 +4,12 @@
 
 html {
   font-size: 93.75%;
+  background-color: #fff;
+  color-scheme: light dark;
+}
+
+html.dark {
+  background-color: #000;
 }
 
 :root {
