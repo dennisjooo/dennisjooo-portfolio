@@ -101,6 +101,12 @@ html {
   }
 }
 
+@media (pointer: fine) {
+  body, a, button, input, textarea, select, [data-cursor] {
+    cursor: none !important;
+  }
+}
+
 @layer utilities {
   /* Gradient utilities */
   .bg-gradient-primary {
