@@ -67,6 +67,7 @@ export function CommandPalette() {
                 placeholder="Search commands, projects, or work..."
                 value={search}
                 onValueChange={setSearch}
+                autoFocus
             />
 
             <SearchOptionsBar

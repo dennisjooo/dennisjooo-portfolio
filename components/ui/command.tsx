@@ -58,6 +58,7 @@ const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
               </div>
               <button
                 onClick={handleClose}
+                tabIndex={-1}
                 className="pointer-events-auto hidden sm:flex h-5 select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
               >
                 <span className="text-xs">Esc</span>
