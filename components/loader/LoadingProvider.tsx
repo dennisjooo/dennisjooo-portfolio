@@ -82,6 +82,40 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
         };
     }, [hasVisitedOnMount, prefersReducedMotion, revealContent, runProgress]);
 
+    useEffect(() => {
+        if (!showInitialLoader) return;
+
+        const htmlEl = document.documentElement;
+        const bodyEl = document.body;
+
+        const originalHtmlOverflow = htmlEl.style.overflow;
+        const originalBodyOverflow = bodyEl.style.overflow;
+
+        htmlEl.style.overflow = 'hidden';
+        bodyEl.style.overflow = 'hidden';
+
+        if (window.lenis) {
+            window.lenis.stop();
+        }
+
+        const handleLenisReady = () => {
+            if (window.lenis) {
+                window.lenis.stop();
+            }
+        };
+
+        window.addEventListener('portfolio:lenis-ready', handleLenisReady);
+
+        return () => {
+            htmlEl.style.overflow = originalHtmlOverflow;
+            bodyEl.style.overflow = originalBodyOverflow;
+            window.removeEventListener('portfolio:lenis-ready', handleLenisReady);
+            if (window.lenis) {
+                window.lenis.start();
+            }
+        };
+    }, [showInitialLoader]);
+
     return (
         <>
             <Loader visible={showInitialLoader} progress={progress} />
