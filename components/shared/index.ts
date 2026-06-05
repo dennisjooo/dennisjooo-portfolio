@@ -1,5 +1,4 @@
 export { default as BackToTop } from './BackToTop';
-export { default as GradientUnderline } from './GradientUnderline';
 export { default as ReadingProgress } from './ReadingProgress';
 export { BlinkingCursor } from './BlinkingCursor';
 export { SmoothScroll } from './SmoothScroll';
