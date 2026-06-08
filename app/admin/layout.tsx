@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs';
+import { SSRCoverDismiss } from '@/components/loader/SSRCoverDismiss';
 import dynamic from 'next/dynamic';
 
 const MotionProvider = dynamic(
@@ -12,6 +13,7 @@ export default function AdminRootLayout({
 }) {
   return (
     <ClerkProvider>
+      <SSRCoverDismiss />
       <MotionProvider>{children}</MotionProvider>
     </ClerkProvider>
   );
