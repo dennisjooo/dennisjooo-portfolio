@@ -5,6 +5,7 @@ import { MotionProvider } from '@/components/motion';
 import { m } from '@/components/motion';
 import { useParallax } from '@/lib/hooks/useParallax';
 import Navbar from '@/components/layout/navbar/Navbar';
+import { SSRCoverDismiss } from '@/components/loader/SSRCoverDismiss';
 
 export default function NotFound() {
     const { mounted, foreground, background } = useParallax();
@@ -13,6 +14,7 @@ export default function NotFound() {
 
     return (
         <MotionProvider>
+        <SSRCoverDismiss />
         <Navbar />
         <main className="relative h-screen w-full overflow-hidden bg-background text-foreground bg-noise selection:bg-accent selection:text-accent-foreground">
 
