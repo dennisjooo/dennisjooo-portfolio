@@ -8,12 +8,17 @@ export const CACHE_CONFIG = {
 
 export const CACHE_CONTROL_HEADER = `public, s-maxage=${CACHE_CONFIG.MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.STALE_WHILE_REVALIDATE}`;
 
-export function withCacheHeaders<T>(response: NextResponse<T>): NextResponse<T> {
+export function withCacheHeaders<T>(
+  response: NextResponse<T>,
+): NextResponse<T> {
   response.headers.set("Cache-Control", CACHE_CONTROL_HEADER);
   return response;
 }
 
-export function cachedJsonResponse<T>(data: T, init?: ResponseInit): NextResponse<T> {
+export function cachedJsonResponse<T>(
+  data: T,
+  init?: ResponseInit,
+): NextResponse<T> {
   const response = NextResponse.json(data, init);
   return withCacheHeaders(response);
 }

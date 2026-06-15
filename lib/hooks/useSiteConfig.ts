@@ -25,23 +25,20 @@ export function useSiteConfig() {
       });
   }, []);
 
-  const updateConfig = useCallback(
-    async (updates: Partial<SiteConfigData>) => {
-      const res = await fetch("/api/site-config", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updates),
-      });
+  const updateConfig = useCallback(async (updates: Partial<SiteConfigData>) => {
+    const res = await fetch("/api/site-config", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updates),
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to update site config");
-      }
+    if (!res.ok) {
+      throw new Error("Failed to update site config");
+    }
 
-      setConfig((prev) => (prev ? { ...prev, ...updates } : prev));
-      return res;
-    },
-    []
-  );
+    setConfig((prev) => (prev ? { ...prev, ...updates } : prev));
+    return res;
+  }, []);
 
   return { config, loading, updateConfig };
 }

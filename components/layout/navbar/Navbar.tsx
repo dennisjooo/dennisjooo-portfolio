@@ -1,7 +1,7 @@
 import { NavbarClient } from "./NavbarClient";
 
 const Navbar = () => {
-    return <NavbarClient />;
+  return <NavbarClient />;
 };
 
 export default Navbar;

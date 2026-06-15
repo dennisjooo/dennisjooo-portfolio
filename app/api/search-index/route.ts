@@ -57,13 +57,13 @@ export async function GET() {
           projects,
           workExperience,
         },
-      })
+      }),
     );
   } catch (error) {
     console.error("Error generating search index:", error);
     return NextResponse.json(
       { success: false, error: "Failed to generate search index" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

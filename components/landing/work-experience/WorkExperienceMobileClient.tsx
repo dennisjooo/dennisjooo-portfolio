@@ -1,12 +1,14 @@
 "use client";
 
-import type { TimelineItemData } from '@/lib/types/workExperience';
-import { MobileTimeline } from './Timeline/MobileTimeline';
+import type { TimelineItemData } from "@/lib/types/workExperience";
+import { MobileTimeline } from "./Timeline/MobileTimeline";
 
 interface WorkExperienceMobileClientProps {
-    items: TimelineItemData[];
+  items: TimelineItemData[];
 }
 
-export function WorkExperienceMobileClient({ items }: WorkExperienceMobileClientProps) {
-    return <MobileTimeline items={items} />;
+export function WorkExperienceMobileClient({
+  items,
+}: WorkExperienceMobileClientProps) {
+  return <MobileTimeline items={items} />;
 }

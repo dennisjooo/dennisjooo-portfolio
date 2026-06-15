@@ -72,11 +72,13 @@ async function main() {
     }
 
     console.log(
-      `Blog "${blog.title}" (slug: ${slug}): ${urlsToMigrate.length} image(s) to migrate`
+      `Blog "${blog.title}" (slug: ${slug}): ${urlsToMigrate.length} image(s) to migrate`,
     );
 
     for (const url of urlsToMigrate) {
-      console.log(`  ${dryRun ? "WOULD MOVE" : "..."}: ${extractBlobFilename(url)}`);
+      console.log(
+        `  ${dryRun ? "WOULD MOVE" : "..."}: ${extractBlobFilename(url)}`,
+      );
     }
 
     if (dryRun) {
@@ -88,7 +90,7 @@ async function main() {
       const result = await migrateAllBlogImages(
         slug,
         blog.imageUrl,
-        blog.blogPost
+        blog.blogPost,
       );
 
       if (result.migrated > 0) {
@@ -113,7 +115,7 @@ async function main() {
   console.log(
     `Done${dryRun ? " (dry run)" : ""}. ` +
       `${totalMigrated} image(s) ${dryRun ? "would be" : ""} migrated, ` +
-      `${totalSkipped} blog(s) skipped.`
+      `${totalSkipped} blog(s) skipped.`,
   );
 }
 

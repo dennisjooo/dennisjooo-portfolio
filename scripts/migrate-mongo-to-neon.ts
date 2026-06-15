@@ -1,9 +1,9 @@
 /**
  * Migration script to transfer data from MongoDB to Neon (PostgreSQL)
- * 
+ *
  * Usage:
  *   npx tsx scripts/migrate-mongo-to-neon.ts
- * 
+ *
  * Required environment variables:
  *   - MONGODB_URI: Your MongoDB connection string
  *   - DATABASE_URL: Your Neon PostgreSQL connection string
@@ -100,7 +100,10 @@ async function migrateContacts(mongoDb: Db) {
       console.log(`  Migrated contact: ${contact.label}`);
     } catch (error: unknown) {
       const err = error as Error;
-      console.error(`  Failed to migrate contact "${contact.label}":`, err.message);
+      console.error(
+        `  Failed to migrate contact "${contact.label}":`,
+        err.message,
+      );
     }
   }
 }
@@ -135,7 +138,7 @@ async function migrateWorkExperiences(mongoDb: Db) {
       const err = error as Error;
       console.error(
         `  Failed to migrate work experience "${exp.title}":`,
-        err.message
+        err.message,
       );
     }
   }
@@ -170,7 +173,7 @@ async function migrateCertifications(mongoDb: Db) {
       const err = error as Error;
       console.error(
         `  Failed to migrate certification "${cert.title}":`,
-        err.message
+        err.message,
       );
     }
   }
@@ -178,9 +181,7 @@ async function migrateCertifications(mongoDb: Db) {
 
 async function migrateSiteConfig(mongoDb: Db) {
   console.log("\n--- Migrating Site Config ---");
-  const mongoConfig = await mongoDb
-    .collection("siteconfigs")
-    .findOne({});
+  const mongoConfig = await mongoDb.collection("siteconfigs").findOne({});
 
   if (!mongoConfig) {
     console.log("No site config found in MongoDB");
@@ -201,15 +202,15 @@ async function migrateSiteConfig(mongoDb: Db) {
         ? new Date(mongoConfig.updatedAt)
         : new Date(),
     });
-      console.log("  Migrated site config successfully");
-    } catch (error: unknown) {
-      const err = error as Error;
-      if (err.message?.includes("duplicate key")) {
-        console.log("  Site config already exists, skipping");
-      } else {
-        console.error("  Failed to migrate site config:", err.message);
-      }
+    console.log("  Migrated site config successfully");
+  } catch (error: unknown) {
+    const err = error as Error;
+    if (err.message?.includes("duplicate key")) {
+      console.log("  Site config already exists, skipping");
+    } else {
+      console.error("  Failed to migrate site config:", err.message);
     }
+  }
 }
 
 async function main() {

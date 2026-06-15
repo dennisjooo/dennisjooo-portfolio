@@ -1,13 +1,15 @@
 "use client";
 
-import { AdminFormLayout } from '@/components/admin/shared';
-import { useAdminForm } from '@/components/admin/hooks';
+import { AdminFormLayout } from "@/components/admin/shared";
+import { useAdminForm } from "@/components/admin/hooks";
 
 interface NewPageConfig<T> {
   endpoint: string;
   redirectTo: string;
   itemName: string;
-  FormComponent: React.ComponentType<{ onSubmit: (data: Partial<T>) => Promise<void> }>;
+  FormComponent: React.ComponentType<{
+    onSubmit: (data: Partial<T>) => Promise<void>;
+  }>;
   title: { accent: string; subtitle: string };
 }
 
@@ -22,7 +24,11 @@ export function createAdminNewPage<T>(config: NewPageConfig<T>) {
     });
 
     return (
-      <AdminFormLayout title="New" titleAccent={title.accent} subtitle={title.subtitle}>
+      <AdminFormLayout
+        title="New"
+        titleAccent={title.accent}
+        subtitle={title.subtitle}
+      >
         <FormComponent onSubmit={handleSubmit} />
       </AdminFormLayout>
     );

@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
-import { auth } from '@clerk/nextjs/server';
-import packageJson from '@/package.json';
+import { NextResponse } from "next/server";
+import { neon } from "@neondatabase/serverless";
+import { auth } from "@clerk/nextjs/server";
+import packageJson from "@/package.json";
 
 interface ServiceStatus {
-  status: 'operational' | 'degraded' | 'down';
+  status: "operational" | "degraded" | "down";
   latency?: number;
   message?: string;
 }
@@ -28,21 +28,21 @@ async function checkDatabase(): Promise<ServiceStatus> {
     const DATABASE_URL = process.env.DATABASE_URL;
     if (!DATABASE_URL) {
       return {
-        status: 'down',
-        message: 'DATABASE_URL not configured',
+        status: "down",
+        message: "DATABASE_URL not configured",
       };
     }
     const sql = neon(DATABASE_URL);
     await sql`SELECT 1`;
     return {
-      status: 'operational',
+      status: "operational",
       latency: Date.now() - start,
     };
   } catch (error) {
-    console.error('Database check failed:', error);
+    console.error("Database check failed:", error);
     return {
-      status: 'down',
-      message: error instanceof Error ? error.message : 'Connection failed',
+      status: "down",
+      message: error instanceof Error ? error.message : "Connection failed",
     };
   }
 }
@@ -54,23 +54,23 @@ async function checkBlobStorage(): Promise<ServiceStatus> {
 
     if (!hasToken) {
       return {
-        status: 'degraded',
-        message: 'Token not configured',
+        status: "degraded",
+        message: "Token not configured",
       };
     }
 
     return {
-      status: 'operational',
+      status: "operational",
       latency: Date.now() - start,
-      message: 'Config present (no deep check)',
+      message: "Config present (no deep check)",
     };
   } catch (error) {
-    console.error('Blob storage check failed:', error);
-    const message = error instanceof Error ? error.message : 'Check failed';
-    const isConfigError = message.includes('BLOB_READ_WRITE_TOKEN');
+    console.error("Blob storage check failed:", error);
+    const message = error instanceof Error ? error.message : "Check failed";
+    const isConfigError = message.includes("BLOB_READ_WRITE_TOKEN");
     return {
-      status: isConfigError ? 'degraded' : 'down',
-      message: isConfigError ? 'Token not configured' : message,
+      status: isConfigError ? "degraded" : "down",
+      message: isConfigError ? "Token not configured" : message,
     };
   }
 }
@@ -80,14 +80,14 @@ async function checkAuth(): Promise<ServiceStatus> {
   try {
     await auth();
     return {
-      status: 'operational',
+      status: "operational",
       latency: Date.now() - start,
     };
   } catch (error) {
-    console.error('Auth check failed:', error);
+    console.error("Auth check failed:", error);
     return {
-      status: 'down',
-      message: error instanceof Error ? error.message : 'Auth check failed',
+      status: "down",
+      message: error instanceof Error ? error.message : "Auth check failed",
     };
   }
 }
@@ -128,7 +128,7 @@ export async function GET() {
 
     return NextResponse.json(freshStatus);
   } catch (error) {
-    console.error('Status check error:', error);
+    console.error("Status check error:", error);
 
     if (cachedStatus) {
       return NextResponse.json({
@@ -139,8 +139,8 @@ export async function GET() {
     }
 
     return NextResponse.json(
-      { error: 'Failed to check status' },
-      { status: 500 }
+      { error: "Failed to check status" },
+      { status: 500 },
     );
   }
 }

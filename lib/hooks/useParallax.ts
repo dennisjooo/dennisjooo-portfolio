@@ -1,94 +1,98 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useCallback } from 'react';
-import { useMotionValue, useSpring, useTransform, MotionValue } from 'framer-motion';
-import { useMounted } from '@/lib/hooks/useMounted';
+import { useEffect, useRef, useCallback } from "react";
+import {
+  useMotionValue,
+  useSpring,
+  useTransform,
+  MotionValue,
+} from "framer-motion";
+import { useMounted } from "@/lib/hooks/useMounted";
 
 interface ParallaxConfig {
-    damping?: number;
-    stiffness?: number;
-    foregroundRange?: [number, number];
-    backgroundRange?: [number, number];
+  damping?: number;
+  stiffness?: number;
+  foregroundRange?: [number, number];
+  backgroundRange?: [number, number];
 }
 
 interface ParallaxResult {
-    mounted: boolean;
-    foreground: {
-        x: MotionValue<number>;
-        y: MotionValue<number>;
-    };
-    background: {
-        x: MotionValue<number>;
-        y: MotionValue<number>;
-    };
+  mounted: boolean;
+  foreground: {
+    x: MotionValue<number>;
+    y: MotionValue<number>;
+  };
+  background: {
+    x: MotionValue<number>;
+    y: MotionValue<number>;
+  };
 }
 
 const DEFAULT_CONFIG: Required<ParallaxConfig> = {
-    damping: 30,
-    stiffness: 200,
-    foregroundRange: [40, -40],
-    backgroundRange: [-20, 20],
+  damping: 30,
+  stiffness: 200,
+  foregroundRange: [40, -40],
+  backgroundRange: [-20, 20],
 };
 
 export function useParallax(config: ParallaxConfig = {}): ParallaxResult {
-    const {
-        damping,
-        stiffness,
-        foregroundRange,
-        backgroundRange,
-    } = { ...DEFAULT_CONFIG, ...config };
+  const { damping, stiffness, foregroundRange, backgroundRange } = {
+    ...DEFAULT_CONFIG,
+    ...config,
+  };
 
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-    const springConfig = { damping, stiffness };
-    const springX = useSpring(mouseX, springConfig);
-    const springY = useSpring(mouseY, springConfig);
+  const springConfig = { damping, stiffness };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
 
-    const fgX = useTransform(springX, [-0.5, 0.5], foregroundRange);
-    const fgY = useTransform(springY, [-0.5, 0.5], foregroundRange);
+  const fgX = useTransform(springX, [-0.5, 0.5], foregroundRange);
+  const fgY = useTransform(springY, [-0.5, 0.5], foregroundRange);
 
-    const bgX = useTransform(springX, [-0.5, 0.5], backgroundRange);
-    const bgY = useTransform(springY, [-0.5, 0.5], backgroundRange);
+  const bgX = useTransform(springX, [-0.5, 0.5], backgroundRange);
+  const bgY = useTransform(springY, [-0.5, 0.5], backgroundRange);
 
-    const mounted = useMounted();
-    const rafId = useRef<number | null>(null);
-    const lastMousePos = useRef({ x: 0, y: 0 });
+  const mounted = useMounted();
+  const rafId = useRef<number | null>(null);
+  const lastMousePos = useRef({ x: 0, y: 0 });
 
-    const updateMousePosition = useCallback(() => {
-        mouseX.set(lastMousePos.current.x);
-        mouseY.set(lastMousePos.current.y);
-        rafId.current = null;
-    }, [mouseX, mouseY]);
+  const updateMousePosition = useCallback(() => {
+    mouseX.set(lastMousePos.current.x);
+    mouseY.set(lastMousePos.current.y);
+    rafId.current = null;
+  }, [mouseX, mouseY]);
 
-    useEffect(() => {
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        if (isTouchDevice) return;
+  useEffect(() => {
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
 
-        const handleMouseMove = (e: MouseEvent) => {
-            const { innerWidth, innerHeight } = window;
-            lastMousePos.current = {
-                x: e.clientX / innerWidth - 0.5,
-                y: e.clientY / innerHeight - 0.5
-            };
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      lastMousePos.current = {
+        x: e.clientX / innerWidth - 0.5,
+        y: e.clientY / innerHeight - 0.5,
+      };
 
-            if (rafId.current === null) {
-                rafId.current = requestAnimationFrame(updateMousePosition);
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove, { passive: true });
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            if (rafId.current !== null) {
-                cancelAnimationFrame(rafId.current);
-            }
-        };
-    }, [mouseX, mouseY, updateMousePosition]);
-
-    return {
-        mounted,
-        foreground: { x: fgX, y: fgY },
-        background: { x: bgX, y: bgY },
+      if (rafId.current === null) {
+        rafId.current = requestAnimationFrame(updateMousePosition);
+      }
     };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, [mouseX, mouseY, updateMousePosition]);
+
+  return {
+    mounted,
+    foreground: { x: fgX, y: fgY },
+    background: { x: bgX, y: bgY },
+  };
 }

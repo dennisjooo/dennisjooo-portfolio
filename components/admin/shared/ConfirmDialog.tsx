@@ -34,14 +34,22 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => (!nextOpen ? onCancel() : null)}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => (!nextOpen ? onCancel() : null)}
+    >
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="pt-2">
-          <button type="button" onClick={onCancel} disabled={loading} className={formStyles.cancelButton}>
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={loading}
+            className={formStyles.cancelButton}
+          >
             {cancelLabel}
           </button>
           <button

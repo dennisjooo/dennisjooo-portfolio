@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { UnsavedChangesDialog } from "@/components/admin/shared/UnsavedChangesDialog";
 
@@ -21,8 +29,8 @@ function normalizeFormValue(value: unknown): unknown {
   if (value instanceof Date) return value.toISOString();
   if (Array.isArray(value)) return value.map(normalizeFormValue);
   if (typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).sort((a, b) =>
-      a[0].localeCompare(b[0])
+    const entries = Object.entries(value as Record<string, unknown>).sort(
+      (a, b) => a[0].localeCompare(b[0]),
     );
     const normalized: Record<string, unknown> = {};
     for (const [key, val] of entries) {
@@ -48,7 +56,7 @@ export function useFormDirty<T>(value: T, enabled = true) {
       initialSnapshot.current = snapshot;
       setDirty(false);
     },
-    [setDirty, value]
+    [setDirty, value],
   );
 
   useEffect(() => {
@@ -66,7 +74,11 @@ export function useFormDirty<T>(value: T, enabled = true) {
   return { reset };
 }
 
-export function UnsavedChangesProvider({ children }: { children: React.ReactNode }) {
+export function UnsavedChangesProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const [isDirty, setIsDirty] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -81,7 +93,7 @@ export function UnsavedChangesProvider({ children }: { children: React.ReactNode
       pendingNavigation.current = navigate;
       setDialogOpen(true);
     },
-    [isDirty]
+    [isDirty],
   );
 
   const confirmLeave = useCallback(() => {
@@ -114,7 +126,8 @@ export function UnsavedChangesProvider({ children }: { children: React.ReactNode
       if (!isDirty) return;
       if (event.defaultPrevented) return;
       if (event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return;
 
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a");
@@ -136,10 +149,13 @@ export function UnsavedChangesProvider({ children }: { children: React.ReactNode
       if (url.origin !== window.location.origin) return;
 
       const current = new URL(window.location.href);
-      if (url.pathname === current.pathname && url.search === current.search) return;
+      if (url.pathname === current.pathname && url.search === current.search)
+        return;
 
       event.preventDefault();
-      requestNavigation(() => router.push(`${url.pathname}${url.search}${url.hash}`));
+      requestNavigation(() =>
+        router.push(`${url.pathname}${url.search}${url.hash}`),
+      );
     };
 
     document.addEventListener("click", handleClick, true);
@@ -151,13 +167,17 @@ export function UnsavedChangesProvider({ children }: { children: React.ReactNode
       setDirty: setIsDirty,
       requestNavigation,
     }),
-    [requestNavigation]
+    [requestNavigation],
   );
 
   return (
     <UnsavedChangesContext.Provider value={value}>
       {children}
-      <UnsavedChangesDialog open={dialogOpen} onConfirm={confirmLeave} onCancel={cancelLeave} />
+      <UnsavedChangesDialog
+        open={dialogOpen}
+        onConfirm={confirmLeave}
+        onCancel={cancelLeave}
+      />
     </UnsavedChangesContext.Provider>
   );
 }

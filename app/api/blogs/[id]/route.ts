@@ -3,12 +3,20 @@ import { eq } from "drizzle-orm";
 import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
 import { migrateAllBlogImages } from "@/lib/utils/blobMigration";
-import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
-import { validateAndPrepareBlogBody, collectBlobUrls } from "@/lib/api/blogHelpers";
+import {
+  requireAuth,
+  isAuthError,
+  successResponse,
+  errorResponse,
+} from "@/lib/api/apiHelpers";
+import {
+  validateAndPrepareBlogBody,
+  collectBlobUrls,
+} from "@/lib/api/blogHelpers";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -26,7 +34,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
@@ -56,7 +64,7 @@ export async function PUT(
     }
 
     const unexpectedKeys = Object.keys(body).filter(
-      (key) => !allowedFields.includes(key as (typeof allowedFields)[number])
+      (key) => !allowedFields.includes(key as (typeof allowedFields)[number]),
     );
     if (unexpectedKeys.length > 0) {
       return errorResponse(`Unexpected fields: ${unexpectedKeys.join(", ")}`);
@@ -92,7 +100,7 @@ export async function PUT(
         const migrated = await migrateAllBlogImages(
           newSlug,
           currentImageUrl,
-          currentBlogPost
+          currentBlogPost,
         );
 
         if (migrated.migrated > 0) {
@@ -124,7 +132,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
@@ -142,7 +150,9 @@ export async function DELETE(
     await db.delete(blogs).where(eq(blogs.id, id));
 
     if (imagesToDelete.length > 0) {
-      del(imagesToDelete).catch(err => console.error('Failed to delete blobs:', err));
+      del(imagesToDelete).catch((err) =>
+        console.error("Failed to delete blobs:", err),
+      );
     }
 
     return successResponse({ message: "Blog deleted successfully" });
@@ -151,4 +161,3 @@ export async function DELETE(
     return errorResponse("Failed to delete blog", 500);
   }
 }
-

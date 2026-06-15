@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
-import type { Blog } from '@/lib/db';
-import { EyeIcon } from '@heroicons/react/24/outline';
-import { toast } from 'sonner';
-import { buildUploadPayload } from '@/lib/utils/blobUpload';
-import { cn } from '@/lib/utils';
-import { formStyles } from './shared/formStyles';
-import { useImageUpload } from '@/lib/hooks/useImageUpload';
-import { createUrlSlug } from '@/lib/utils/urlHelpers';
-import { useFormDirty } from './hooks/useUnsavedChanges';
-import { BlogFormFields } from './BlogFormFields';
-import { LinkManager } from './LinkManager';
-import { MarkdownEditor, EditorMode } from './MarkdownEditor';
+import { useState, useRef, useEffect } from "react";
+import type { Blog } from "@/lib/db";
+import { EyeIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
+import { buildUploadPayload } from "@/lib/utils/blobUpload";
+import { cn } from "@/lib/utils";
+import { formStyles } from "./shared/formStyles";
+import { useImageUpload } from "@/lib/hooks/useImageUpload";
+import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { useFormDirty } from "./hooks/useUnsavedChanges";
+import { BlogFormFields } from "./BlogFormFields";
+import { LinkManager } from "./LinkManager";
+import { MarkdownEditor, EditorMode } from "./MarkdownEditor";
 
 interface BlogFormProps {
   initialData?: Blog;
@@ -28,79 +28,82 @@ interface PendingImage {
 export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<Blog>>({
-    title: initialData?.title || '',
-    description: initialData?.description || '',
-    type: initialData?.type || 'blog',
-    date: initialData?.date || new Date().toISOString().split('T')[0],
-    imageUrl: initialData?.imageUrl || '',
-    blogPost: initialData?.blogPost || '',
+    title: initialData?.title || "",
+    description: initialData?.description || "",
+    type: initialData?.type || "blog",
+    date: initialData?.date || new Date().toISOString().split("T")[0],
+    imageUrl: initialData?.imageUrl || "",
+    blogPost: initialData?.blogPost || "",
     links: initialData?.links || [],
-    slug: initialData?.slug || '',
-    status: initialData?.status || 'draft',
+    slug: initialData?.slug || "",
+    status: initialData?.status || "draft",
     publishAt: initialData?.publishAt || null,
   });
 
-  const [editorMode, setEditorMode] = useState<EditorMode>('write');
+  const [editorMode, setEditorMode] = useState<EditorMode>("write");
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const slugManuallyEdited = useRef(Boolean(initialData?.slug));
 
   useFormDirty(formData);
 
-  const effectiveSlug = formData.slug || createUrlSlug(formData.title || '');
+  const effectiveSlug = formData.slug || createUrlSlug(formData.title || "");
   const canUploadImages = Boolean(effectiveSlug);
   const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
 
   const { uploading, upload: uploadCoverImage } = useImageUpload({
     folder: imageFolder,
-    onSuccess: (url) => setFormData(prev => ({ ...prev, imageUrl: url })),
+    onSuccess: (url) => setFormData((prev) => ({ ...prev, imageUrl: url })),
   });
 
   useEffect(() => {
     return () => {
-      pendingImages.forEach(img => URL.revokeObjectURL(img.previewUrl));
+      pendingImages.forEach((img) => URL.revokeObjectURL(img.previewUrl));
     };
   }, [pendingImages]);
 
   useEffect(() => {
     if (!effectiveSlug) return;
     const previewSlug = `${effectiveSlug}-preview`;
-    fetch('/api/blogs/preview', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("/api/blogs/preview", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slug: previewSlug }),
     }).catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-
   useEffect(() => {
-    if (editorMode === 'split') return;
+    if (editorMode === "split") return;
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
     }
   }, [formData.blogPost, editorMode]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
 
-    if (name === 'slug') {
+    if (name === "slug") {
       if (value.length === 0) {
         slugManuallyEdited.current = false;
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
-          slug: createUrlSlug(prev.title || ''),
+          slug: createUrlSlug(prev.title || ""),
         }));
       } else {
         slugManuallyEdited.current = true;
-        setFormData(prev => ({ ...prev, slug: value }));
+        setFormData((prev) => ({ ...prev, slug: value }));
       }
       return;
     }
 
-    if (name === 'title' && !slugManuallyEdited.current) {
-      setFormData(prev => ({
+    if (name === "title" && !slugManuallyEdited.current) {
+      setFormData((prev) => ({
         ...prev,
         title: value,
         slug: createUrlSlug(value),
@@ -108,30 +111,32 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       return;
     }
 
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (!e.target.files?.[0]) return;
     await uploadCoverImage(e.target.files[0]);
   };
 
   const addLink = (link: { text: string; url: string }) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      links: [...(prev.links || []), link]
+      links: [...(prev.links || []), link],
     }));
   };
 
   const removeLink = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      links: prev.links?.filter((_, i) => i !== index)
+      links: prev.links?.filter((_, i) => i !== index),
     }));
   };
 
   const updateLink = (index: number, link: { text: string; url: string }) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const next = [...(prev.links || [])];
       next[index] = link;
       return { ...prev, links: next };
@@ -139,14 +144,14 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
   };
 
   const reorderLinks = (links: { text: string; url: string }[]) => {
-    setFormData(prev => ({ ...prev, links }));
+    setFormData((prev) => ({ ...prev, links }));
   };
 
   const insertImageToMarkdown = (file: File) => {
     const id = Math.random().toString(36).substring(7);
     const previewUrl = URL.createObjectURL(file);
 
-    setPendingImages(prev => [...prev, { id, file, previewUrl }]);
+    setPendingImages((prev) => [...prev, { id, file, previewUrl }]);
 
     const imageMarkdown = `![Image](${previewUrl})`;
 
@@ -154,17 +159,24 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     if (textarea) {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const text = formData.blogPost || '';
-      const newText = text.substring(0, start) + imageMarkdown + text.substring(end);
+      const text = formData.blogPost || "";
+      const newText =
+        text.substring(0, start) + imageMarkdown + text.substring(end);
 
-      setFormData(prev => ({ ...prev, blogPost: newText }));
+      setFormData((prev) => ({ ...prev, blogPost: newText }));
 
       setTimeout(() => {
         textarea.focus();
-        textarea.setSelectionRange(start + imageMarkdown.length, start + imageMarkdown.length);
+        textarea.setSelectionRange(
+          start + imageMarkdown.length,
+          start + imageMarkdown.length,
+        );
       }, 0);
     } else {
-      setFormData(prev => ({ ...prev, blogPost: (prev.blogPost || '') + '\n' + imageMarkdown }));
+      setFormData((prev) => ({
+        ...prev,
+        blogPost: (prev.blogPost || "") + "\n" + imageMarkdown,
+      }));
     }
   };
 
@@ -175,43 +187,59 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     const blobRegex = /!\[.*?\]\((blob:.*?)\)/g;
     let match;
 
-    const matches: { fullMatch: string, url: string }[] = [];
+    const matches: { fullMatch: string; url: string }[] = [];
     while ((match = blobRegex.exec(content)) !== null) {
       matches.push({ fullMatch: match[0], url: match[1] });
     }
 
-    const uniqueUrls = Array.from(new Set(matches.map(m => m.url)));
+    const uniqueUrls = Array.from(new Set(matches.map((m) => m.url)));
 
     for (const url of uniqueUrls) {
-      const cleanBlobUrl = url.replace(/\s+=\d*x\d*$/, '').replace(/#dim=\d*x\d*$/, '');
-      const pendingImage = pendingImages.find(img => img.previewUrl === cleanBlobUrl);
+      const cleanBlobUrl = url
+        .replace(/\s+=\d*x\d*$/, "")
+        .replace(/#dim=\d*x\d*$/, "");
+      const pendingImage = pendingImages.find(
+        (img) => img.previewUrl === cleanBlobUrl,
+      );
       if (pendingImage) {
         const uploadPromise = (async () => {
           try {
-            const { contentHash, body } = await buildUploadPayload(pendingImage.file);
+            const { contentHash, body } = await buildUploadPayload(
+              pendingImage.file,
+            );
 
             const filename = formData.title
-              ? `${formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${pendingImage.file.name}`
+              ? `${formData.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/(^-|-$)/g, "")}-${pendingImage.file.name}`
               : pendingImage.file.name;
 
-            const slug = formData.slug || createUrlSlug(formData.title || '');
+            const slug = formData.slug || createUrlSlug(formData.title || "");
             const folder = slug ? `blog/${slug}` : undefined;
             const params = new URLSearchParams({ filename, contentHash });
-            if (folder) params.set('folder', folder);
+            if (folder) params.set("folder", folder);
 
             const response = await fetch(`/api/upload?${params.toString()}`, {
-              method: 'POST',
+              method: "POST",
               body,
             });
-            if (!response.ok) throw new Error('Upload failed');
+            if (!response.ok) throw new Error("Upload failed");
             const blob = await response.json();
 
-            const dimInfo = url.match(/\s+=(\d*x\d*)$/) || url.match(/#dim=(\d*x\d*)$/);
-            const uploadedUrl = dimInfo ? `${blob.url}#dim=${dimInfo[1]}` : blob.url;
+            const dimInfo =
+              url.match(/\s+=(\d*x\d*)$/) || url.match(/#dim=(\d*x\d*)$/);
+            const uploadedUrl = dimInfo
+              ? `${blob.url}#dim=${dimInfo[1]}`
+              : blob.url;
 
             processedContent = processedContent.split(url).join(uploadedUrl);
           } catch (error) {
-            console.error('Failed to upload image:', pendingImage.file.name, error);
+            console.error(
+              "Failed to upload image:",
+              pendingImage.file.name,
+              error,
+            );
           }
         })();
         uploadPromises.push(uploadPromise);
@@ -227,7 +255,9 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     const matches = [];
     let match;
     while ((match = regex.exec(content)) !== null) {
-      const cleanUrl = match[1].replace(/#dim=\d*x\d*$/, '').replace(/\s+=\d*x\d*$/, '');
+      const cleanUrl = match[1]
+        .replace(/#dim=\d*x\d*$/, "")
+        .replace(/\s+=\d*x\d*$/, "");
       matches.push(cleanUrl);
     }
     return matches;
@@ -237,25 +267,25 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
 
   const handlePreview = async () => {
     if (!formData.title) {
-      toast.error('Add a title before previewing');
+      toast.error("Add a title before previewing");
       return;
     }
 
     setPreviewing(true);
     try {
-      const previewContent = await processContent(formData.blogPost || '');
-      const response = await fetch('/api/blogs/preview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const previewContent = await processContent(formData.blogPost || "");
+      const response = await fetch("/api/blogs/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, blogPost: previewContent }),
       });
 
-      if (!response.ok) throw new Error('Failed to create preview');
+      if (!response.ok) throw new Error("Failed to create preview");
       const { data } = await response.json();
-      window.open(`/blogs/${data.slug}?preview=true`, '_blank');
+      window.open(`/blogs/${data.slug}?preview=true`, "_blank");
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create preview');
+      toast.error("Failed to create preview");
     } finally {
       setPreviewing(false);
     }
@@ -266,44 +296,51 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
     setLoading(true);
 
     try {
-      const finalContent = await processContent(formData.blogPost || '');
+      const finalContent = await processContent(formData.blogPost || "");
 
       if (initialData) {
-        const initialImages = extractImages(initialData.blogPost || '');
+        const initialImages = extractImages(initialData.blogPost || "");
         if (initialData.imageUrl) initialImages.push(initialData.imageUrl);
 
         const currentImages = extractImages(finalContent);
         if (formData.imageUrl) currentImages.push(formData.imageUrl);
 
-        const imagesToDelete = initialImages.filter(url =>
-          !currentImages.includes(url) &&
-          url.includes('vercel-storage.com')
+        const imagesToDelete = initialImages.filter(
+          (url) =>
+            !currentImages.includes(url) && url.includes("vercel-storage.com"),
         );
 
         if (imagesToDelete.length > 0) {
-          await fetch('/api/upload', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+          await fetch("/api/upload", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ urls: imagesToDelete }),
           });
         }
       }
 
       const submitData = { ...formData, blogPost: finalContent };
-      if (submitData.status !== 'scheduled') {
+      if (submitData.status !== "scheduled") {
         submitData.publishAt = null;
       }
       await onSubmit(submitData);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to save blog post');
+      toast.error("Failed to save blog post");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn(formStyles.panel, "space-y-8", editorMode === 'split' ? "max-w-7xl" : "max-w-4xl")}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn(
+        formStyles.panel,
+        "space-y-8",
+        editorMode === "split" ? "max-w-7xl" : "max-w-4xl",
+      )}
+    >
       <BlogFormFields
         formData={formData}
         onChange={handleChange}
@@ -322,9 +359,11 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
       />
 
       <MarkdownEditor
-        content={formData.blogPost || ''}
+        content={formData.blogPost || ""}
         onChange={handleChange}
-        onContentChange={(content) => setFormData(prev => ({ ...prev, blogPost: content }))}
+        onContentChange={(content) =>
+          setFormData((prev) => ({ ...prev, blogPost: content }))
+        }
         editorMode={editorMode}
         onEditorModeChange={setEditorMode}
         canUploadImages={canUploadImages}
@@ -340,7 +379,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
         >
           <EyeIcon className="w-4 h-4" />
-          {previewing ? 'Creating Preview...' : 'Preview'}
+          {previewing ? "Creating Preview..." : "Preview"}
         </button>
         <button
           type="submit"
@@ -348,12 +387,12 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
           className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           {loading
-            ? 'Uploading & Saving...'
-            : formData.status === 'draft'
-              ? 'Save Draft'
-              : formData.status === 'scheduled'
-                ? 'Schedule Post'
-                : 'Publish Content'}
+            ? "Uploading & Saving..."
+            : formData.status === "draft"
+              ? "Save Draft"
+              : formData.status === "scheduled"
+                ? "Schedule Post"
+                : "Publish Content"}
         </button>
       </div>
     </form>

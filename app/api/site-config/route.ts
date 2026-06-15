@@ -1,6 +1,11 @@
 import { db, siteConfig } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
+import {
+  requireAuth,
+  isAuthError,
+  successResponse,
+  errorResponse,
+} from "@/lib/api/apiHelpers";
 import { defaultAboutContent } from "@/components/landing/about/contentSections";
 
 export async function GET() {
@@ -50,7 +55,8 @@ export async function PUT(request: Request) {
         .values({
           profileImageUrl: body.profileImageUrl ?? "/images/profile.webp",
           aboutIntro: body.aboutIntro ?? defaultAboutContent.intro,
-          aboutExperience: body.aboutExperience ?? defaultAboutContent.experience,
+          aboutExperience:
+            body.aboutExperience ?? defaultAboutContent.experience,
           aboutPersonal: body.aboutPersonal ?? defaultAboutContent.personal,
           aboutOutro: body.aboutOutro ?? defaultAboutContent.outro,
         })

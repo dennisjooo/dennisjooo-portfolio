@@ -43,7 +43,11 @@ function StatPill({
 }
 
 export function ContentStats() {
-  const [counts, setCounts] = useState<BlogCounts>({ draft: 0, scheduled: 0, published: 0 });
+  const [counts, setCounts] = useState<BlogCounts>({
+    draft: 0,
+    scheduled: 0,
+    published: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

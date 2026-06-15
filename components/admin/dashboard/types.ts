@@ -1,5 +1,5 @@
 export interface ServiceStatus {
-  status: 'operational' | 'degraded' | 'down';
+  status: "operational" | "degraded" | "down";
   latency?: number;
   message?: string;
 }

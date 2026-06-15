@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useRef, useMemo } from "react";
 import {
   DocumentPlusIcon,
   EyeIcon,
@@ -11,17 +11,24 @@ import {
   ChatBubbleBottomCenterTextIcon,
   Bars3BottomLeftIcon,
   MinusIcon,
-} from '@heroicons/react/24/outline';
-import { cn } from '@/lib/utils';
-import { formStyles } from './shared/formStyles';
-import { MarkdownPreview } from './MarkdownPreview';
+} from "@heroicons/react/24/outline";
+import { cn } from "@/lib/utils";
+import { formStyles } from "./shared/formStyles";
+import { MarkdownPreview } from "./MarkdownPreview";
 
-export type EditorMode = 'write' | 'preview' | 'split';
+export type EditorMode = "write" | "preview" | "split";
 
 type FormatType =
-  | 'bold' | 'italic' | 'heading' | 'link'
-  | 'code' | 'codeBlock' | 'unorderedList' | 'orderedList'
-  | 'blockquote' | 'horizontalRule';
+  | "bold"
+  | "italic"
+  | "heading"
+  | "link"
+  | "code"
+  | "codeBlock"
+  | "unorderedList"
+  | "orderedList"
+  | "blockquote"
+  | "horizontalRule";
 
 interface MarkdownEditorProps {
   content: string;
@@ -45,31 +52,41 @@ function applyFormatting(
   let cursorStart: number;
   let cursorEnd: number;
 
-  const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
+  const lineStart = value.lastIndexOf("\n", selectionStart - 1) + 1;
 
   switch (type) {
-    case 'bold': {
-      newText = value.substring(0, selectionStart) + `**${selected}**` + value.substring(selectionEnd);
+    case "bold": {
+      newText =
+        value.substring(0, selectionStart) +
+        `**${selected}**` +
+        value.substring(selectionEnd);
       cursorStart = selectionStart + 2;
       cursorEnd = selectionEnd + 2;
       break;
     }
-    case 'italic': {
-      newText = value.substring(0, selectionStart) + `*${selected}*` + value.substring(selectionEnd);
+    case "italic": {
+      newText =
+        value.substring(0, selectionStart) +
+        `*${selected}*` +
+        value.substring(selectionEnd);
       cursorStart = selectionStart + 1;
       cursorEnd = selectionEnd + 1;
       break;
     }
-    case 'heading': {
-      const prefix = '## ';
-      newText = value.substring(0, lineStart) + prefix + value.substring(lineStart);
+    case "heading": {
+      const prefix = "## ";
+      newText =
+        value.substring(0, lineStart) + prefix + value.substring(lineStart);
       cursorStart = selectionStart + prefix.length;
       cursorEnd = selectionEnd + prefix.length;
       break;
     }
-    case 'link': {
-      const linkText = selected || 'text';
-      newText = value.substring(0, selectionStart) + `[${linkText}](url)` + value.substring(selectionEnd);
+    case "link": {
+      const linkText = selected || "text";
+      newText =
+        value.substring(0, selectionStart) +
+        `[${linkText}](url)` +
+        value.substring(selectionEnd);
       if (selected) {
         cursorStart = selectionStart + linkText.length + 3;
         cursorEnd = selectionStart + linkText.length + 6;
@@ -79,42 +96,58 @@ function applyFormatting(
       }
       break;
     }
-    case 'code': {
-      newText = value.substring(0, selectionStart) + '`' + selected + '`' + value.substring(selectionEnd);
+    case "code": {
+      newText =
+        value.substring(0, selectionStart) +
+        "`" +
+        selected +
+        "`" +
+        value.substring(selectionEnd);
       cursorStart = selectionStart + 1;
       cursorEnd = selectionEnd + 1;
       break;
     }
-    case 'codeBlock': {
-      newText = value.substring(0, selectionStart) + '```\n' + selected + '\n```' + value.substring(selectionEnd);
+    case "codeBlock": {
+      newText =
+        value.substring(0, selectionStart) +
+        "```\n" +
+        selected +
+        "\n```" +
+        value.substring(selectionEnd);
       cursorStart = selectionStart + 4;
       cursorEnd = selectionEnd + 4;
       break;
     }
-    case 'unorderedList': {
-      const prefix = '- ';
-      newText = value.substring(0, lineStart) + prefix + value.substring(lineStart);
+    case "unorderedList": {
+      const prefix = "- ";
+      newText =
+        value.substring(0, lineStart) + prefix + value.substring(lineStart);
       cursorStart = selectionStart + prefix.length;
       cursorEnd = selectionEnd + prefix.length;
       break;
     }
-    case 'orderedList': {
-      const prefix = '1. ';
-      newText = value.substring(0, lineStart) + prefix + value.substring(lineStart);
+    case "orderedList": {
+      const prefix = "1. ";
+      newText =
+        value.substring(0, lineStart) + prefix + value.substring(lineStart);
       cursorStart = selectionStart + prefix.length;
       cursorEnd = selectionEnd + prefix.length;
       break;
     }
-    case 'blockquote': {
-      const prefix = '> ';
-      newText = value.substring(0, lineStart) + prefix + value.substring(lineStart);
+    case "blockquote": {
+      const prefix = "> ";
+      newText =
+        value.substring(0, lineStart) + prefix + value.substring(lineStart);
       cursorStart = selectionStart + prefix.length;
       cursorEnd = selectionEnd + prefix.length;
       break;
     }
-    case 'horizontalRule': {
-      const rule = '\n---\n';
-      newText = value.substring(0, selectionStart) + rule + value.substring(selectionEnd);
+    case "horizontalRule": {
+      const rule = "\n---\n";
+      newText =
+        value.substring(0, selectionStart) +
+        rule +
+        value.substring(selectionEnd);
       cursorStart = selectionStart + rule.length;
       cursorEnd = cursorStart;
       break;
@@ -140,7 +173,13 @@ interface ToolbarButtonProps {
   onContentChange: (content: string) => void;
 }
 
-function ToolbarButton({ type, title, icon, textareaRef, onContentChange }: ToolbarButtonProps) {
+function ToolbarButton({
+  type,
+  title,
+  icon,
+  textareaRef,
+  onContentChange,
+}: ToolbarButtonProps) {
   return (
     <button
       type="button"
@@ -177,34 +216,42 @@ export function MarkdownEditor({
   }, [content]);
 
   const handleEditorScroll = useCallback(() => {
-    if (editorMode !== 'split' || isScrollSyncing.current) return;
+    if (editorMode !== "split" || isScrollSyncing.current) return;
     const textarea = textareaRef.current;
     const preview = previewRef.current;
     if (!textarea || !preview) return;
 
     isScrollSyncing.current = true;
-    const scrollRatio = textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight || 1);
-    preview.scrollTop = scrollRatio * (preview.scrollHeight - preview.clientHeight);
-    requestAnimationFrame(() => { isScrollSyncing.current = false; });
+    const scrollRatio =
+      textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight || 1);
+    preview.scrollTop =
+      scrollRatio * (preview.scrollHeight - preview.clientHeight);
+    requestAnimationFrame(() => {
+      isScrollSyncing.current = false;
+    });
   }, [editorMode, textareaRef]);
 
   const handlePreviewScroll = useCallback(() => {
-    if (editorMode !== 'split' || isScrollSyncing.current) return;
+    if (editorMode !== "split" || isScrollSyncing.current) return;
     const textarea = textareaRef.current;
     const preview = previewRef.current;
     if (!textarea || !preview) return;
 
     isScrollSyncing.current = true;
-    const scrollRatio = preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
-    textarea.scrollTop = scrollRatio * (textarea.scrollHeight - textarea.clientHeight);
-    requestAnimationFrame(() => { isScrollSyncing.current = false; });
+    const scrollRatio =
+      preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
+    textarea.scrollTop =
+      scrollRatio * (textarea.scrollHeight - textarea.clientHeight);
+    requestAnimationFrame(() => {
+      isScrollSyncing.current = false;
+    });
   }, [editorMode, textareaRef]);
 
   const handlePaste = (e: React.ClipboardEvent) => {
     if (!canUploadImages) return;
     const items = e.clipboardData.items;
     for (const item of items) {
-      if (item.type.indexOf('image') !== -1) {
+      if (item.type.indexOf("image") !== -1) {
         e.preventDefault();
         const file = item.getAsFile();
         if (file) onInsertImage(file);
@@ -230,13 +277,15 @@ export function MarkdownEditor({
 
     const files = e.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {
-      if (files[i].type.startsWith('image/')) {
+      if (files[i].type.startsWith("image/")) {
         onInsertImage(files[i]);
       }
     }
   };
 
-  const handleMarkdownImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMarkdownImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (e.target.files) {
       for (let i = 0; i < e.target.files.length; i++) {
         onInsertImage(e.target.files[i]);
@@ -244,73 +293,134 @@ export function MarkdownEditor({
     }
   };
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const textarea = e.currentTarget;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      const textarea = e.currentTarget;
 
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const { selectionStart, selectionEnd, value } = textarea;
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const { selectionStart, selectionEnd, value } = textarea;
 
-      if (e.shiftKey) {
-        const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
-        const linePrefix = value.substring(lineStart, lineStart + 2);
-        const spacesToRemove = linePrefix === '  ' ? 2 : linePrefix.startsWith(' ') ? 1 : 0;
-        if (spacesToRemove > 0) {
-          const newText = value.substring(0, lineStart) + value.substring(lineStart + spacesToRemove);
+        if (e.shiftKey) {
+          const lineStart = value.lastIndexOf("\n", selectionStart - 1) + 1;
+          const linePrefix = value.substring(lineStart, lineStart + 2);
+          const spacesToRemove =
+            linePrefix === "  " ? 2 : linePrefix.startsWith(" ") ? 1 : 0;
+          if (spacesToRemove > 0) {
+            const newText =
+              value.substring(0, lineStart) +
+              value.substring(lineStart + spacesToRemove);
+            onContentChange(newText);
+            setTimeout(() => {
+              textarea.focus();
+              textarea.setSelectionRange(
+                selectionStart - spacesToRemove,
+                selectionEnd - spacesToRemove,
+              );
+            }, 0);
+          }
+        } else {
+          const newText =
+            value.substring(0, selectionStart) +
+            "  " +
+            value.substring(selectionEnd);
           onContentChange(newText);
           setTimeout(() => {
             textarea.focus();
-            textarea.setSelectionRange(selectionStart - spacesToRemove, selectionEnd - spacesToRemove);
+            textarea.setSelectionRange(selectionStart + 2, selectionStart + 2);
           }, 0);
         }
-      } else {
-        const newText = value.substring(0, selectionStart) + '  ' + value.substring(selectionEnd);
-        onContentChange(newText);
-        setTimeout(() => {
-          textarea.focus();
-          textarea.setSelectionRange(selectionStart + 2, selectionStart + 2);
-        }, 0);
-      }
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
-      if (e.shiftKey && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        applyFormatting(textarea, 'codeBlock', onContentChange);
         return;
       }
 
-      switch (e.key.toLowerCase()) {
-        case 'b':
+      if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+        if (e.shiftKey && e.key.toLowerCase() === "k") {
           e.preventDefault();
-          applyFormatting(textarea, 'bold', onContentChange);
-          break;
-        case 'i':
-          e.preventDefault();
-          applyFormatting(textarea, 'italic', onContentChange);
-          break;
-        case 'k':
-          e.preventDefault();
-          applyFormatting(textarea, 'link', onContentChange);
-          break;
+          applyFormatting(textarea, "codeBlock", onContentChange);
+          return;
+        }
+
+        switch (e.key.toLowerCase()) {
+          case "b":
+            e.preventDefault();
+            applyFormatting(textarea, "bold", onContentChange);
+            break;
+          case "i":
+            e.preventDefault();
+            applyFormatting(textarea, "italic", onContentChange);
+            break;
+          case "k":
+            e.preventDefault();
+            applyFormatting(textarea, "link", onContentChange);
+            break;
+        }
       }
-    }
-  }, [onContentChange]);
+    },
+    [onContentChange],
+  );
 
   const iconClass = "w-3.5 h-3.5";
 
-  const toolbarButtons: { type: FormatType; title: string; icon: React.ReactNode }[] = [
-    { type: 'bold', title: 'Bold (Ctrl+B)', icon: <span className="font-bold text-xs">B</span> },
-    { type: 'italic', title: 'Italic (Ctrl+I)', icon: <span className="italic text-xs">I</span> },
-    { type: 'heading', title: 'Heading', icon: <HashtagIcon className={iconClass} /> },
-    { type: 'link', title: 'Link (Ctrl+K)', icon: <LinkIcon className={iconClass} /> },
-    { type: 'code', title: 'Inline Code', icon: <CodeBracketIcon className={iconClass} /> },
-    { type: 'codeBlock', title: 'Code Block (Ctrl+Shift+K)', icon: <><CodeBracketIcon className={iconClass} /><span className="text-[10px]">{'{}'}</span></> },
-    { type: 'unorderedList', title: 'Unordered List', icon: <ListBulletIcon className={iconClass} /> },
-    { type: 'orderedList', title: 'Ordered List', icon: <Bars3BottomLeftIcon className={iconClass} /> },
-    { type: 'blockquote', title: 'Blockquote', icon: <ChatBubbleBottomCenterTextIcon className={iconClass} /> },
-    { type: 'horizontalRule', title: 'Horizontal Rule', icon: <MinusIcon className={iconClass} /> },
+  const toolbarButtons: {
+    type: FormatType;
+    title: string;
+    icon: React.ReactNode;
+  }[] = [
+    {
+      type: "bold",
+      title: "Bold (Ctrl+B)",
+      icon: <span className="font-bold text-xs">B</span>,
+    },
+    {
+      type: "italic",
+      title: "Italic (Ctrl+I)",
+      icon: <span className="italic text-xs">I</span>,
+    },
+    {
+      type: "heading",
+      title: "Heading",
+      icon: <HashtagIcon className={iconClass} />,
+    },
+    {
+      type: "link",
+      title: "Link (Ctrl+K)",
+      icon: <LinkIcon className={iconClass} />,
+    },
+    {
+      type: "code",
+      title: "Inline Code",
+      icon: <CodeBracketIcon className={iconClass} />,
+    },
+    {
+      type: "codeBlock",
+      title: "Code Block (Ctrl+Shift+K)",
+      icon: (
+        <>
+          <CodeBracketIcon className={iconClass} />
+          <span className="text-[10px]">{"{}"}</span>
+        </>
+      ),
+    },
+    {
+      type: "unorderedList",
+      title: "Unordered List",
+      icon: <ListBulletIcon className={iconClass} />,
+    },
+    {
+      type: "orderedList",
+      title: "Ordered List",
+      icon: <Bars3BottomLeftIcon className={iconClass} />,
+    },
+    {
+      type: "blockquote",
+      title: "Blockquote",
+      icon: <ChatBubbleBottomCenterTextIcon className={iconClass} />,
+    },
+    {
+      type: "horizontalRule",
+      title: "Horizontal Rule",
+      icon: <MinusIcon className={iconClass} />,
+    },
   ];
 
   return (
@@ -319,12 +429,12 @@ export function MarkdownEditor({
         <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/30">
           <button
             type="button"
-            onClick={() => onEditorModeChange('write')}
+            onClick={() => onEditorModeChange("write")}
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
-              editorMode === 'write'
+              editorMode === "write"
                 ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             <PencilSquareIcon className="w-3.5 h-3.5" />
@@ -332,12 +442,12 @@ export function MarkdownEditor({
           </button>
           <button
             type="button"
-            onClick={() => onEditorModeChange('preview')}
+            onClick={() => onEditorModeChange("preview")}
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
-              editorMode === 'preview'
+              editorMode === "preview"
                 ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             <EyeIcon className="w-3.5 h-3.5" />
@@ -345,12 +455,12 @@ export function MarkdownEditor({
           </button>
           <button
             type="button"
-            onClick={() => onEditorModeChange('split')}
+            onClick={() => onEditorModeChange("split")}
             className={cn(
               "hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
-              editorMode === 'split'
+              editorMode === "split"
                 ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             <ViewColumnsIcon className="w-3.5 h-3.5" />
@@ -358,14 +468,18 @@ export function MarkdownEditor({
           </button>
         </div>
 
-        {editorMode !== 'preview' && (
+        {editorMode !== "preview" && (
           <label
-            title={!canUploadImages ? 'Add a title to enable image uploads' : undefined}
+            title={
+              !canUploadImages
+                ? "Add a title to enable image uploads"
+                : undefined
+            }
             className={cn(
               "flex items-center gap-2 text-xs",
               canUploadImages
                 ? "text-primary cursor-pointer hover:underline"
-                : "text-muted-foreground/50 pointer-events-none"
+                : "text-muted-foreground/50 pointer-events-none",
             )}
           >
             <DocumentPlusIcon className="w-4 h-4" />
@@ -382,7 +496,7 @@ export function MarkdownEditor({
         )}
       </div>
 
-      {editorMode !== 'preview' && (
+      {editorMode !== "preview" && (
         <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/30 mb-2 overflow-x-auto">
           {toolbarButtons.map((btn) => (
             <ToolbarButton
@@ -397,20 +511,18 @@ export function MarkdownEditor({
         </div>
       )}
 
-      <div className={cn(
-        editorMode === 'split' && "grid grid-cols-2 gap-4"
-      )}>
-        {editorMode !== 'preview' && (
+      <div className={cn(editorMode === "split" && "grid grid-cols-2 gap-4")}>
+        {editorMode !== "preview" && (
           <div className="relative">
             <textarea
               ref={textareaRef}
               name="blogPost"
-              required={editorMode === 'write'}
+              required={editorMode === "write"}
               value={content}
               onChange={onChange}
               onPaste={handlePaste}
               onKeyDown={handleKeyDown}
-              onScroll={editorMode === 'split' ? handleEditorScroll : undefined}
+              onScroll={editorMode === "split" ? handleEditorScroll : undefined}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -418,45 +530,49 @@ export function MarkdownEditor({
               className={cn(
                 formStyles.input,
                 "font-mono text-sm leading-relaxed",
-                editorMode === 'split'
+                editorMode === "split"
                   ? "h-[700px] resize-y overflow-auto"
                   : "resize-none overflow-hidden min-h-[500px]",
-                dragActive && "border-primary ring-2 ring-primary/20"
+                dragActive && "border-primary ring-2 ring-primary/20",
               )}
               placeholder="# Write your masterpiece here... (Drag & drop images supported)"
             />
-            {editorMode === 'write' && (
-              <div className={cn(
-                "absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none transition-opacity duration-300",
-                content ? "opacity-20" : "opacity-100"
-              )}>
+            {editorMode === "write" && (
+              <div
+                className={cn(
+                  "absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none transition-opacity duration-300",
+                  content ? "opacity-20" : "opacity-100",
+                )}
+              >
                 Markdown Supported &bull; Drag & Drop Images
               </div>
             )}
             {dragActive && (
               <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px] border-2 border-primary border-dashed rounded-lg flex items-center justify-center pointer-events-none">
-                <span className="text-primary font-medium">Drop image to insert</span>
+                <span className="text-primary font-medium">
+                  Drop image to insert
+                </span>
               </div>
             )}
           </div>
         )}
 
-        {editorMode === 'preview' && (
-          <input type="hidden" name="blogPost" value={content || ''} />
+        {editorMode === "preview" && (
+          <input type="hidden" name="blogPost" value={content || ""} />
         )}
 
-        {editorMode !== 'write' && (
+        {editorMode !== "write" && (
           <div
-            ref={editorMode === 'split' ? previewRef : undefined}
-            onScroll={editorMode === 'split' ? handlePreviewScroll : undefined}
+            ref={editorMode === "split" ? previewRef : undefined}
+            onScroll={editorMode === "split" ? handlePreviewScroll : undefined}
             className={cn(
               "rounded-lg border border-border bg-background p-6",
-              editorMode === 'split'
+              editorMode === "split"
                 ? "h-[700px] overflow-auto"
-                : "min-h-[500px]"
+                : "min-h-[500px]",
             )}
           >
-            <MarkdownPreview content={content || ''} />
+            <MarkdownPreview content={content || ""} />
           </div>
         )}
       </div>

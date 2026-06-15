@@ -30,38 +30,38 @@ SyntaxHighlighter.registerLanguage("python", python);
 SyntaxHighlighter.registerLanguage("sql", sql);
 
 interface CodeProps {
-    inline?: boolean;
-    className?: string;
-    children?: ReactNode;
+  inline?: boolean;
+  className?: string;
+  children?: ReactNode;
 }
 
 export const CodeBlock = ({ children, className }: CodeProps) => {
-    const match = /language-(\w+)/.exec(className || "");
-    const language = match ? match[1] : "";
-    const codeString = String(children).replace(/\n$/, "");
+  const match = /language-(\w+)/.exec(className || "");
+  const language = match ? match[1] : "";
+  const codeString = String(children).replace(/\n$/, "");
 
-    return (
-        <div className="not-prose my-6">
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
-                <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
-                    <span className="text-xs text-muted-foreground font-mono">
-                        {language || "code"}
-                    </span>
-                    <CopyButton text={codeString} title="Copy code" />
-                </div>
-                <div className="overflow-x-auto">
-                    <SyntaxHighlighter
-                        style={vscDarkPlus}
-                        language={language || "text"}
-                        PreTag="div"
-                        className="!m-0 !p-4 !bg-transparent text-sm leading-relaxed"
-                    >
-                        {codeString}
-                    </SyntaxHighlighter>
-                </div>
-            </div>
+  return (
+    <div className="not-prose my-6">
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
+          <span className="text-xs text-muted-foreground font-mono">
+            {language || "code"}
+          </span>
+          <CopyButton text={codeString} title="Copy code" />
         </div>
-    );
+        <div className="overflow-x-auto">
+          <SyntaxHighlighter
+            style={vscDarkPlus}
+            language={language || "text"}
+            PreTag="div"
+            className="!m-0 !p-4 !bg-transparent text-sm leading-relaxed"
+          >
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export type { CodeProps };

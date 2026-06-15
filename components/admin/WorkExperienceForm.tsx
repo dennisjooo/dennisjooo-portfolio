@@ -59,7 +59,9 @@ export default function WorkExperienceForm({
   const submitWorkExperience = async () => {
     const cleanedData = {
       ...formData,
-      responsibilities: formData.responsibilities.filter((r) => r.trim() !== ""),
+      responsibilities: formData.responsibilities.filter(
+        (r) => r.trim() !== "",
+      ),
     };
     try {
       await onSubmit(cleanedData);
@@ -71,21 +73,21 @@ export default function WorkExperienceForm({
   };
 
   const addResponsibility = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       responsibilities: [...prev.responsibilities, ""],
     }));
   };
 
   const removeResponsibility = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       responsibilities: prev.responsibilities.filter((_, i) => i !== index),
     }));
   };
 
   const updateResponsibility = (index: number, value: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const updated = [...prev.responsibilities];
       updated[index] = value;
       return { ...prev, responsibilities: updated };
@@ -94,7 +96,9 @@ export default function WorkExperienceForm({
 
   const handleDragStart = (event: React.DragEvent, index: number) => {
     setDragIndex(index);
-    const row = (event.target as HTMLElement).closest("[data-responsibility-row]");
+    const row = (event.target as HTMLElement).closest(
+      "[data-responsibility-row]",
+    );
     if (row && event.dataTransfer) {
       event.dataTransfer.setDragImage(row, 0, 0);
       event.dataTransfer.effectAllowed = "move";
@@ -110,7 +114,7 @@ export default function WorkExperienceForm({
   const handleDrop = (index: number) => {
     if (dragIndex === null) return;
     if (dragIndex !== index) {
-      setFormData(prev => {
+      setFormData((prev) => {
         const next = [...prev.responsibilities];
         const [moved] = next.splice(dragIndex, 1);
         next.splice(index, 0, moved);
@@ -174,11 +178,12 @@ export default function WorkExperienceForm({
               placeholder="Or enter image URL directly..."
               value={formData.imageSrc}
               onChange={(e) =>
-                setFormData(prev => ({ ...prev, imageSrc: e.target.value }))
+                setFormData((prev) => ({ ...prev, imageSrc: e.target.value }))
               }
             />
             <p className="text-xs text-muted-foreground mt-2">
-              Upload an image or paste a URL. Supports local paths like /images/work/company.svg
+              Upload an image or paste a URL. Supports local paths like
+              /images/work/company.svg
             </p>
           </div>
         </div>
@@ -193,7 +198,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. AI/ML Engineer"
             value={formData.title}
             onChange={(e) =>
-              setFormData(prev => ({ ...prev, title: e.target.value }))
+              setFormData((prev) => ({ ...prev, title: e.target.value }))
             }
           />
         </FormField>
@@ -206,7 +211,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. Sinar Mas Land"
             value={formData.company}
             onChange={(e) =>
-              setFormData(prev => ({ ...prev, company: e.target.value }))
+              setFormData((prev) => ({ ...prev, company: e.target.value }))
             }
           />
         </FormField>
@@ -221,7 +226,7 @@ export default function WorkExperienceForm({
             placeholder="e.g. February 2024 - Now"
             value={formData.date}
             onChange={(e) =>
-              setFormData(prev => ({ ...prev, date: e.target.value }))
+              setFormData((prev) => ({ ...prev, date: e.target.value }))
             }
           />
         </FormField>
@@ -233,7 +238,10 @@ export default function WorkExperienceForm({
             placeholder="0"
             value={formData.order}
             onChange={(e) =>
-              setFormData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))
+              setFormData((prev) => ({
+                ...prev,
+                order: parseInt(e.target.value) || 0,
+              }))
             }
           />
         </FormField>
@@ -271,14 +279,16 @@ export default function WorkExperienceForm({
                 className={cn(
                   "flex items-stretch gap-2 rounded-lg transition-all duration-200",
                   isDragging && "opacity-50 bg-muted/50",
-                  isDragOver && "ring-2 ring-primary"
+                  isDragOver && "ring-2 ring-primary",
                 )}
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDrop={() => handleDrop(index)}
                 onDragEnd={handleDragEnd}
               >
                 {formData.responsibilities.length > 1 && (
-                  <DragGripHandle onDragStart={(e) => handleDragStart(e, index)} />
+                  <DragGripHandle
+                    onDragStart={(e) => handleDragStart(e, index)}
+                  />
                 )}
                 <span className="self-center text-muted-foreground font-mono text-sm w-6 text-right shrink-0">
                   {index + 1}.

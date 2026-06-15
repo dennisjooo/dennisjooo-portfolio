@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { toast } from 'sonner';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { toast } from "sonner";
 
 interface UseAdminListOptions {
   endpoint: string;
@@ -55,14 +55,14 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   enableReorder = false,
   reorderEndpoint,
   deleteSuccessMessage,
-  itemName = 'item',
+  itemName = "item",
 }: UseAdminListOptions): UseAdminListReturn<T> {
   const [items, setItems] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [deleteDialog, setDeleteDialog] = useState<DeleteDialogState>({
@@ -79,27 +79,33 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   }, [currentPage]);
 
   const fetchItems = useCallback(
-    async (page: number, showLoading = true, query?: string, currentFilters?: Record<string, string>) => {
+    async (
+      page: number,
+      showLoading = true,
+      query?: string,
+      currentFilters?: Record<string, string>,
+    ) => {
       if (showLoading) setLoading(true);
       try {
         const params = new URLSearchParams();
         if (!enableReorder) {
-          params.set('page', String(page));
-          params.set('limit', String(pageSize));
+          params.set("page", String(page));
+          params.set("limit", String(pageSize));
         }
         const q = query ?? searchQuery;
-        if (q) params.set('q', q);
+        if (q) params.set("q", q);
 
         const activeFilters = currentFilters ?? filters;
         Object.entries(activeFilters).forEach(([key, value]) => {
           if (value) params.set(key, value);
         });
 
-        const url = enableReorder && !params.toString()
-          ? endpoint
-          : `${endpoint}?${params.toString()}`;
+        const url =
+          enableReorder && !params.toString()
+            ? endpoint
+            : `${endpoint}?${params.toString()}`;
 
-        const res = await fetch(url, { cache: 'no-store' });
+        const res = await fetch(url, { cache: "no-store" });
 
         if (!res.ok) {
           let errorMessage = `Failed to fetch ${itemName}s`;
@@ -139,7 +145,7 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
         if (showLoading) setLoading(false);
       }
     },
-    [endpoint, pageSize, enableReorder, itemName, searchQuery, filters]
+    [endpoint, pageSize, enableReorder, itemName, searchQuery, filters],
   );
 
   useEffect(() => {
@@ -154,7 +160,7 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     (page: number) => {
       fetchItems(page);
     },
-    [fetchItems]
+    [fetchItems],
   );
 
   const handleSearch = useCallback(
@@ -165,12 +171,12 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
         fetchItems(1, true, query);
       }, 300);
     },
-    [fetchItems]
+    [fetchItems],
   );
 
   const handleFilter = useCallback(
     (key: string, value: string) => {
-      setFilters(prev => {
+      setFilters((prev) => {
         const next = { ...prev };
         if (value) {
           next[key] = value;
@@ -181,35 +187,34 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
         return next;
       });
     },
-    [fetchItems]
+    [fetchItems],
   );
 
-  const handleDelete = useCallback(
-    (id: string) => {
-      setBulkDeleteMode(false);
-      setDeleteDialog({ open: true, id, loading: false });
-    },
-    []
-  );
+  const handleDelete = useCallback((id: string) => {
+    setBulkDeleteMode(false);
+    setDeleteDialog({ open: true, id, loading: false });
+  }, []);
 
   const confirmDelete = useCallback(async () => {
     const { id } = deleteDialog;
     if (!id) return;
 
-    const successMsg = deleteSuccessMessage || `${itemName.charAt(0).toUpperCase() + itemName.slice(1)} deleted successfully`;
-    setDeleteDialog(prev => ({ ...prev, loading: true }));
+    const successMsg =
+      deleteSuccessMessage ||
+      `${itemName.charAt(0).toUpperCase() + itemName.slice(1)} deleted successfully`;
+    setDeleteDialog((prev) => ({ ...prev, loading: true }));
 
     try {
-      const res = await fetch(`${endpoint}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
       if (res.ok) {
         fetchItems(currentPageRef.current);
         toast.success(successMsg);
       } else {
-        toast.error('Failed to delete');
+        toast.error("Failed to delete");
       }
     } catch (error) {
-      console.error('Error deleting:', error);
-      toast.error('Something went wrong');
+      console.error("Error deleting:", error);
+      toast.error("Something went wrong");
     } finally {
       setDeleteDialog({ open: false, id: null, loading: false });
     }
@@ -228,25 +233,27 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
 
   const confirmBulkDelete = useCallback(async () => {
     if (selectedIds.size === 0) return;
-    setDeleteDialog(prev => ({ ...prev, loading: true }));
+    setDeleteDialog((prev) => ({ ...prev, loading: true }));
 
     try {
-      const deletePromises = Array.from(selectedIds).map(id =>
-        fetch(`${endpoint}/${id}`, { method: 'DELETE' })
+      const deletePromises = Array.from(selectedIds).map((id) =>
+        fetch(`${endpoint}/${id}`, { method: "DELETE" }),
       );
       const results = await Promise.all(deletePromises);
-      const successCount = results.filter(r => r.ok).length;
+      const successCount = results.filter((r) => r.ok).length;
 
       if (successCount > 0) {
-        toast.success(`${successCount} ${itemName}${successCount > 1 ? 's' : ''} deleted`);
+        toast.success(
+          `${successCount} ${itemName}${successCount > 1 ? "s" : ""} deleted`,
+        );
         fetchItems(currentPageRef.current);
       }
       if (successCount < selectedIds.size) {
         toast.error(`${selectedIds.size - successCount} failed to delete`);
       }
     } catch (error) {
-      console.error('Bulk delete error:', error);
-      toast.error('Something went wrong');
+      console.error("Bulk delete error:", error);
+      toast.error("Something went wrong");
     } finally {
       setDeleteDialog({ open: false, id: null, loading: false });
       setBulkDeleteMode(false);
@@ -255,7 +262,7 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   }, [selectedIds, endpoint, fetchItems, itemName]);
 
   const toggleSelect = useCallback((id: string) => {
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -264,9 +271,9 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   }, []);
 
   const toggleSelectAll = useCallback(() => {
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       if (prev.size === items.length) return new Set();
-      return new Set(items.map(item => item.id));
+      return new Set(items.map((item) => item.id));
     });
   }, [items]);
 
@@ -287,33 +294,33 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
         nextItems.map((item, index) => ({
           ...item,
           order: index,
-        }))
+        })),
       );
 
       try {
         const res = await fetch(reorderEndpoint, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items: payload }),
         });
 
-        if (!res.ok) throw new Error('Failed to reorder');
-        toast.success('Order updated');
+        if (!res.ok) throw new Error("Failed to reorder");
+        toast.success("Order updated");
         fetchItems(currentPage, false);
       } catch (error) {
         console.error(`Failed to reorder ${itemName}s:`, error);
-        toast.error('Failed to update order');
+        toast.error("Failed to update order");
         fetchItems(currentPage, false);
       }
     },
-    [enableReorder, reorderEndpoint, currentPage, fetchItems, itemName]
+    [enableReorder, reorderEndpoint, currentPage, fetchItems, itemName],
   );
 
   const refresh = useCallback(
     async (showLoading = true) => {
       await fetchItems(currentPage, showLoading);
     },
-    [fetchItems, currentPage]
+    [fetchItems, currentPage],
   );
 
   return {
@@ -325,9 +332,7 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     searchQuery,
     filters,
     selectedIds,
-    deleteDialog: bulkDeleteMode
-      ? { ...deleteDialog, id: null }
-      : deleteDialog,
+    deleteDialog: bulkDeleteMode ? { ...deleteDialog, id: null } : deleteDialog,
     handlePageChange,
     handleSearch,
     handleFilter,

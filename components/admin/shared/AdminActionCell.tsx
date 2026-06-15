@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import Link from "next/link";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface AdminActionCellProps {
   editHref: string;

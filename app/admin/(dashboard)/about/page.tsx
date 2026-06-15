@@ -11,10 +11,26 @@ import { useFormDirty } from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
 
 const sections = [
-  { key: "aboutIntro", title: "The Logic", description: "Introduction - Who you are" },
-  { key: "aboutExperience", title: "The Builder", description: "Your work and experience" },
-  { key: "aboutPersonal", title: "The Curiosity", description: "Personal interests and hobbies" },
-  { key: "aboutOutro", title: "The Connection", description: "Call to action and contact" },
+  {
+    key: "aboutIntro",
+    title: "The Logic",
+    description: "Introduction - Who you are",
+  },
+  {
+    key: "aboutExperience",
+    title: "The Builder",
+    description: "Your work and experience",
+  },
+  {
+    key: "aboutPersonal",
+    title: "The Curiosity",
+    description: "Personal interests and hobbies",
+  },
+  {
+    key: "aboutOutro",
+    title: "The Connection",
+    description: "Call to action and contact",
+  },
 ] as const;
 
 type SectionKey = (typeof sections)[number]["key"];
@@ -68,7 +84,8 @@ export default function AboutAdminPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
-            About <span className="not-italic font-sans font-bold">Section</span>
+            About{" "}
+            <span className="not-italic font-sans font-bold">Section</span>
           </h1>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
             Tell your story
@@ -99,7 +116,9 @@ export default function AboutAdminPage() {
               <h3 className="text-lg font-bold font-sans text-foreground">
                 {section.title}
               </h3>
-              <p className="text-sm text-muted-foreground">{section.description}</p>
+              <p className="text-sm text-muted-foreground">
+                {section.description}
+              </p>
             </div>
             <AutoResizeTextarea
               value={content[section.key]}

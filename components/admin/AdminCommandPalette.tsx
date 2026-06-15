@@ -26,8 +26,16 @@ import {
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Blogs & Projects", href: "/admin/blogs", icon: DocumentTextIcon },
-  { name: "Work Experience", href: "/admin/work-experience", icon: BriefcaseIcon },
-  { name: "Certifications", href: "/admin/certifications", icon: AcademicCapIcon },
+  {
+    name: "Work Experience",
+    href: "/admin/work-experience",
+    icon: BriefcaseIcon,
+  },
+  {
+    name: "Certifications",
+    href: "/admin/certifications",
+    icon: AcademicCapIcon,
+  },
   { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
@@ -36,8 +44,16 @@ const navItems = [
 const quickActions = [
   { name: "New Blog Post", href: "/admin/blogs/new", icon: PlusIcon },
   { name: "New Contact", href: "/admin/contacts/new", icon: PlusIcon },
-  { name: "New Work Experience", href: "/admin/work-experience/new", icon: PlusIcon },
-  { name: "New Certification", href: "/admin/certifications/new", icon: PlusIcon },
+  {
+    name: "New Work Experience",
+    href: "/admin/work-experience/new",
+    icon: PlusIcon,
+  },
+  {
+    name: "New Certification",
+    href: "/admin/certifications/new",
+    icon: PlusIcon,
+  },
 ];
 
 export function AdminCommandPalette() {
@@ -55,13 +71,10 @@ export function AdminCommandPalette() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const runCommand = useCallback(
-    (command: () => void) => {
-      setOpen(false);
-      command();
-    },
-    []
-  );
+  const runCommand = useCallback((command: () => void) => {
+    setOpen(false);
+    command();
+  }, []);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>

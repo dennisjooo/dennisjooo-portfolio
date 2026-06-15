@@ -1,9 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "ignoreExportsUsedInFile": true,
-  "entry": [
-    "scripts/**/*.{ts,mjs}"
-  ],
+  "entry": ["scripts/**/*.{ts,mjs}"],
   "next": {
     "entry": [
       "next.config.{js,ts,mjs,cjs}",

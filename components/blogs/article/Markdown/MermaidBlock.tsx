@@ -5,67 +5,75 @@ import mermaid from "mermaid";
 import { CopyButton } from "@/components/shared/CopyButton";
 
 mermaid.initialize({
-    startOnLoad: false,
-    theme: "dark",
-    themeVariables: {
-        darkMode: true,
-        background: "transparent",
-        primaryColor: "#1a1a1a",
-        primaryTextColor: "#d4d4d4",
-        primaryBorderColor: "#525252",
-        lineColor: "#525252",
-        secondaryColor: "#262626",
-        tertiaryColor: "#404040",
-    },
+  startOnLoad: false,
+  theme: "dark",
+  themeVariables: {
+    darkMode: true,
+    background: "transparent",
+    primaryColor: "#1a1a1a",
+    primaryTextColor: "#d4d4d4",
+    primaryBorderColor: "#525252",
+    lineColor: "#525252",
+    secondaryColor: "#262626",
+    tertiaryColor: "#404040",
+  },
 });
 
 interface MermaidBlockProps {
-    children: string;
+  children: string;
 }
 
 export const MermaidBlock = ({ children }: MermaidBlockProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [error, setError] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const render = async () => {
-            if (!containerRef.current) return;
+  useEffect(() => {
+    const render = async () => {
+      if (!containerRef.current) return;
 
-            try {
-                const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
-                const { svg } = await mermaid.render(id, children.trim());
-                containerRef.current.innerHTML = svg;
-                setError(null);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : "Failed to render diagram");
-            }
-        };
-
-        render();
-    }, [children]);
-
-    if (error) {
-        return (
-            <div className="not-prose my-6">
-                <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-4">
-                    <p className="text-sm text-destructive font-mono">Mermaid Error: {error}</p>
-                    <pre className="mt-2 text-xs text-muted-foreground overflow-x-auto">{children}</pre>
-                </div>
-            </div>
+      try {
+        const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
+        const { svg } = await mermaid.render(id, children.trim());
+        containerRef.current.innerHTML = svg;
+        setError(null);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to render diagram",
         );
-    }
+      }
+    };
 
+    render();
+  }, [children]);
+
+  if (error) {
     return (
-        <div className="not-prose my-6">
-            <div className="rounded-xl border border-border bg-card overflow-hidden">
-                <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
-                    <span className="text-xs text-muted-foreground font-mono">mermaid</span>
-                    <CopyButton text={children.trim()} title="Copy Mermaid source" />
-                </div>
-                <div className="p-6 overflow-x-auto flex justify-center">
-                    <div ref={containerRef} className="[&_svg]:max-w-full" />
-                </div>
-            </div>
+      <div className="not-prose my-6">
+        <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-4">
+          <p className="text-sm text-destructive font-mono">
+            Mermaid Error: {error}
+          </p>
+          <pre className="mt-2 text-xs text-muted-foreground overflow-x-auto">
+            {children}
+          </pre>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="not-prose my-6">
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
+          <span className="text-xs text-muted-foreground font-mono">
+            mermaid
+          </span>
+          <CopyButton text={children.trim()} title="Copy Mermaid source" />
+        </div>
+        <div className="p-6 overflow-x-auto flex justify-center">
+          <div ref={containerRef} className="[&_svg]:max-w-full" />
+        </div>
+      </div>
+    </div>
+  );
 };

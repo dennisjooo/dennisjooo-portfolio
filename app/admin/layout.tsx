@@ -1,9 +1,11 @@
-import { ClerkProvider } from '@clerk/nextjs';
-import { SSRCoverDismiss } from '@/components/loader/SSRCoverDismiss';
-import dynamic from 'next/dynamic';
+import { ClerkProvider } from "@clerk/nextjs";
+import { SSRCoverDismiss } from "@/components/loader/SSRCoverDismiss";
+import dynamic from "next/dynamic";
 
-const MotionProvider = dynamic(
-  () => import("@/components/motion/MotionProvider").then(m => ({ default: m.MotionProvider }))
+const MotionProvider = dynamic(() =>
+  import("@/components/motion/MotionProvider").then((m) => ({
+    default: m.MotionProvider,
+  })),
 );
 
 export default function AdminRootLayout({

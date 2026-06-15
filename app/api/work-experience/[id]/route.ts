@@ -16,7 +16,7 @@ export const PUT = crud.PUT;
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
@@ -41,7 +41,10 @@ export async function DELETE(
         .select({ id: workExperiences.id })
         .from(workExperiences)
         .where(
-          and(eq(workExperiences.imageSrc, imageUrl), ne(workExperiences.id, id))
+          and(
+            eq(workExperiences.imageSrc, imageUrl),
+            ne(workExperiences.id, id),
+          ),
         )
         .limit(1);
 
@@ -52,7 +55,7 @@ export async function DELETE(
 
     if (shouldDeleteBlob) {
       del([imageUrl]).catch((err) =>
-        console.error("Failed to delete blob:", err)
+        console.error("Failed to delete blob:", err),
       );
     }
 

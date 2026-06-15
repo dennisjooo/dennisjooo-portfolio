@@ -23,20 +23,24 @@ export async function GET(request: Request) {
     const searchQuery = searchParams.get("q");
 
     const validTypes = ["blog", "project"] as const;
-    const type = typeParam && validTypes.includes(typeParam as typeof validTypes[number])
-      ? (typeParam as "blog" | "project")
-      : null;
+    const type =
+      typeParam && validTypes.includes(typeParam as (typeof validTypes)[number])
+        ? (typeParam as "blog" | "project")
+        : null;
 
     const { userId } = await auth();
     const validStatuses = ["draft", "scheduled", "published"] as const;
-    const adminStatus = userId && statusParam && validStatuses.includes(statusParam as typeof validStatuses[number])
-      ? (statusParam as "draft" | "scheduled" | "published")
-      : null;
+    const adminStatus =
+      userId &&
+      statusParam &&
+      validStatuses.includes(statusParam as (typeof validStatuses)[number])
+        ? (statusParam as "draft" | "scheduled" | "published")
+        : null;
 
     const conditions = [];
     if (type) conditions.push(eq(blogs.type, type));
     if (searchQuery) conditions.push(ilike(blogs.title, `%${searchQuery}%`));
-    conditions.push(not(like(blogs.slug, '%-preview')));
+    conditions.push(not(like(blogs.slug, "%-preview")));
 
     if (adminStatus) {
       conditions.push(eq(blogs.status, adminStatus));
@@ -66,7 +70,7 @@ export async function GET(request: Request) {
         success: true,
         data: blogResults,
         pagination: buildPagination(total, page, limit),
-      })
+      }),
     );
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -81,7 +85,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const validationError = validateAndPrepareBlogBody(body, { defaultStatus: "draft" });
+    const validationError = validateAndPrepareBlogBody(body, {
+      defaultStatus: "draft",
+    });
     if (validationError) return validationError;
 
     const [blog] = await db.insert(blogs).values(body).returning();

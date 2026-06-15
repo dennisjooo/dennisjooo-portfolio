@@ -32,7 +32,10 @@ export default function CertificationForm({
   useFormDirty(formData);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))} className={`${formStyles.panel} space-y-6 max-w-3xl`}>
+    <form
+      onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
+      className={`${formStyles.panel} space-y-6 max-w-3xl`}
+    >
       <div className="space-y-4">
         <FormField label="Title">
           <input
@@ -41,7 +44,9 @@ export default function CertificationForm({
             className={formStyles.input}
             placeholder="e.g. Advanced Machine Learning Specialization"
             value={formData.title}
-            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, title: e.target.value }))
+            }
           />
         </FormField>
 
@@ -54,7 +59,7 @@ export default function CertificationForm({
               placeholder="e.g. Coursera / Stanford"
               value={formData.issuer}
               onChange={(e) =>
-                setFormData(prev => ({ ...prev, issuer: e.target.value }))
+                setFormData((prev) => ({ ...prev, issuer: e.target.value }))
               }
             />
           </FormField>
@@ -66,7 +71,9 @@ export default function CertificationForm({
               className={formStyles.input}
               placeholder="YYYY"
               value={formData.date}
-              onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, date: e.target.value }))
+              }
             />
           </FormField>
         </div>
@@ -78,7 +85,9 @@ export default function CertificationForm({
             className={formStyles.input}
             placeholder="https://..."
             value={formData.link}
-            onChange={(e) => setFormData(prev => ({ ...prev, link: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, link: e.target.value }))
+            }
           />
         </FormField>
 
@@ -90,7 +99,7 @@ export default function CertificationForm({
             placeholder="Brief summary of what was covered..."
             value={formData.description}
             onChange={(e) =>
-              setFormData(prev => ({ ...prev, description: e.target.value }))
+              setFormData((prev) => ({ ...prev, description: e.target.value }))
             }
           />
         </FormField>

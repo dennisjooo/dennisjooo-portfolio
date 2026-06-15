@@ -1,15 +1,18 @@
 "use client";
 
-import { m } from '@/components/motion';
-import { NavigationCard } from './NavigationCard';
-import { navigationCards, containerVariants } from './constants';
+import { m } from "@/components/motion";
+import { NavigationCard } from "./NavigationCard";
+import { navigationCards, containerVariants } from "./constants";
 
 interface NavigationCardsProps {
   counts?: Record<string, number>;
   countsLoading?: boolean;
 }
 
-export function NavigationCards({ counts, countsLoading }: NavigationCardsProps) {
+export function NavigationCards({
+  counts,
+  countsLoading,
+}: NavigationCardsProps) {
   return (
     <m.div
       variants={containerVariants}

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from 'next/link';
-import { m } from '@/components/motion';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { itemVariants } from './constants';
+import Link from "next/link";
+import { m } from "@/components/motion";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { itemVariants } from "./constants";
 
 interface NavigationCardProps {
   title: string;
@@ -13,7 +13,13 @@ interface NavigationCardProps {
   stat?: string;
 }
 
-export function NavigationCard({ title, description, href, icon: Icon, stat }: NavigationCardProps) {
+export function NavigationCard({
+  title,
+  description,
+  href,
+  icon: Icon,
+  stat,
+}: NavigationCardProps) {
   return (
     <m.div variants={itemVariants}>
       <Link href={href} className="group relative block h-full">

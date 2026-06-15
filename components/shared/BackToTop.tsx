@@ -1,50 +1,50 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { ArrowUp } from 'lucide-react';
-import { scrollToTopWithRefresh } from '@/lib/utils/scrollHelpers';
+import { useEffect, useState } from "react";
+import { ArrowUp } from "lucide-react";
+import { scrollToTopWithRefresh } from "@/lib/utils/scrollHelpers";
 
 const BackToTop = () => {
-    const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-    useEffect(() => {
-        const toggleVisibility = () => {
-            if (window.scrollY > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
 
-        window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility);
 
-        return () => {
-            window.removeEventListener('scroll', toggleVisibility);
-        };
-    }, []);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
 
-    const handleScrollToTop = () => scrollToTopWithRefresh();
+  const handleScrollToTop = () => scrollToTopWithRefresh();
 
-    return (
-        <button
-            type="button"
-            onClick={handleScrollToTop}
-            className={`
+  return (
+    <button
+      type="button"
+      onClick={handleScrollToTop}
+      className={`
                 fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full
                 border border-border bg-background/85 text-muted-foreground backdrop-blur-md
                 transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out
                 hover:border-foreground hover:bg-foreground hover:text-background
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
                 sm:bottom-8 sm:right-8
-                ${isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0'}
+                ${isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}
             `}
-            aria-label="Back to top"
-            aria-hidden={!isVisible}
-            tabIndex={isVisible ? 0 : -1}
-        >
-            <ArrowUp className="size-4" strokeWidth={1.75} />
-        </button>
-    );
+      aria-label="Back to top"
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? 0 : -1}
+    >
+      <ArrowUp className="size-4" strokeWidth={1.75} />
+    </button>
+  );
 };
 
-export default BackToTop; 
+export default BackToTop;

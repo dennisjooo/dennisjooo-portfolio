@@ -11,7 +11,7 @@ export function extractBlobFilename(blobUrl: string): string {
 
 export function extractBlobUrls(
   imageUrl: string | null,
-  blogPost: string | null
+  blogPost: string | null,
 ): string[] {
   const urls = new Set<string>();
 
@@ -36,7 +36,10 @@ export function isUnderSlug(blobUrl: string, slug: string): boolean {
   return !rest.includes("/");
 }
 
-async function copyBlobToSlug(oldUrl: string, newSlug: string): Promise<string> {
+async function copyBlobToSlug(
+  oldUrl: string,
+  newSlug: string,
+): Promise<string> {
   const filename = extractBlobFilename(oldUrl);
   const newPath = `blog/${newSlug}/${filename}`;
 
@@ -50,8 +53,12 @@ async function copyBlobToSlug(oldUrl: string, newSlug: string): Promise<string> 
 export async function migrateAllBlogImages(
   newSlug: string,
   imageUrl: string | null,
-  blogPost: string | null
-): Promise<{ imageUrl: string | null; blogPost: string | null; migrated: number }> {
+  blogPost: string | null,
+): Promise<{
+  imageUrl: string | null;
+  blogPost: string | null;
+  migrated: number;
+}> {
   const allUrls = extractBlobUrls(imageUrl, blogPost);
   const urlsToMigrate = allUrls.filter((url) => !isUnderSlug(url, newSlug));
 

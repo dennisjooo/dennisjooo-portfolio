@@ -1,9 +1,13 @@
 "use client";
 
-import { AdminTable, Column } from '@/components/admin/AdminTable';
-import { AdminPageHeader, AdminActionCell, ConfirmDialog } from '@/components/admin/shared';
-import { useAdminList } from '@/components/admin/hooks';
-import type { Certification } from '@/lib/db';
+import { AdminTable, Column } from "@/components/admin/AdminTable";
+import {
+  AdminPageHeader,
+  AdminActionCell,
+  ConfirmDialog,
+} from "@/components/admin/shared";
+import { useAdminList } from "@/components/admin/hooks";
+import type { Certification } from "@/lib/db";
 
 export default function AdminCertificationsList() {
   const {
@@ -17,25 +21,31 @@ export default function AdminCertificationsList() {
     confirmDelete,
     cancelDelete,
   } = useAdminList<Certification>({
-    endpoint: '/api/certifications',
+    endpoint: "/api/certifications",
     pageSize: 10,
-    itemName: 'certification',
-    deleteSuccessMessage: 'Certification deleted successfully',
+    itemName: "certification",
+    deleteSuccessMessage: "Certification deleted successfully",
   });
 
   const columns: Column<Certification>[] = [
     {
       header: "Title",
       primary: true,
-      cell: (row: Certification) => <span className="font-semibold text-foreground">{row.title}</span>
+      cell: (row: Certification) => (
+        <span className="font-semibold text-foreground">{row.title}</span>
+      ),
     },
     {
       header: "Issuer",
-      accessorKey: "issuer"
+      accessorKey: "issuer",
     },
     {
       header: "Year",
-      cell: (row: Certification) => <span className="font-mono text-xs bg-muted px-2 py-1 rounded">{row.date}</span>
+      cell: (row: Certification) => (
+        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
+          {row.date}
+        </span>
+      ),
     },
     {
       header: "Actions",
@@ -45,8 +55,8 @@ export default function AdminCertificationsList() {
           editHref={`/admin/certifications/${row.id}`}
           onDelete={() => handleDelete(row.id)}
         />
-      )
-    }
+      ),
+    },
   ];
 
   return (

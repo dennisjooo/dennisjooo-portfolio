@@ -1,46 +1,46 @@
-import { Heading } from '@/lib/utils/markdownHelpers';
-import { scrollToCentered } from '@/lib/utils/scrollHelpers';
+import { Heading } from "@/lib/utils/markdownHelpers";
+import { scrollToCentered } from "@/lib/utils/scrollHelpers";
 
 export function getDisplayActiveId(
-    activeId: string,
-    headings: Heading[],
-    isHovered: boolean
+  activeId: string,
+  headings: Heading[],
+  isHovered: boolean,
 ): string {
-    if (!activeId) return '';
+  if (!activeId) return "";
 
-    if (isHovered) return activeId;
+  if (isHovered) return activeId;
 
-    const activeHeading = headings.find(h => h.id === activeId);
-    if (!activeHeading) return activeId;
+  const activeHeading = headings.find((h) => h.id === activeId);
+  if (!activeHeading) return activeId;
 
-    const minLevel = Math.min(...headings.map(h => h.level));
+  const minLevel = Math.min(...headings.map((h) => h.level));
 
-    if (activeHeading.level === minLevel) return activeId;
+  if (activeHeading.level === minLevel) return activeId;
 
-    const activeIndex = headings.findIndex(h => h.id === activeId);
-    for (let i = activeIndex - 1; i >= 0; i--) {
-        if (headings[i].level === minLevel) {
-            return headings[i].id;
-        }
+  const activeIndex = headings.findIndex((h) => h.id === activeId);
+  for (let i = activeIndex - 1; i >= 0; i--) {
+    if (headings[i].level === minLevel) {
+      return headings[i].id;
     }
+  }
 
-    return activeId;
+  return activeId;
 }
 
 export function handleTocClick(
-    e: React.MouseEvent<HTMLAnchorElement>,
-    id: string,
-    setActiveId: (id: string) => void
+  e: React.MouseEvent<HTMLAnchorElement>,
+  id: string,
+  setActiveId: (id: string) => void,
 ): void {
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    setActiveId(id);
+  setActiveId(id);
 
-    const element = document.getElementById(id);
-    if (!element) {
-        return;
-    }
+  const element = document.getElementById(id);
+  if (!element) {
+    return;
+  }
 
-    scrollToCentered(element);
+  scrollToCentered(element);
 }

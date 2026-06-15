@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell, AdminReorderHint, ConfirmDialog } from "@/components/admin/shared";
+import {
+  AdminPageHeader,
+  AdminActionCell,
+  AdminReorderHint,
+  ConfirmDialog,
+} from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { WorkExperience } from "@/lib/db";
 

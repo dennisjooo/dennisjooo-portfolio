@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback } from "react";
 
 interface UseInfiniteScrollOptions {
   onLoadMore: () => void;
@@ -12,7 +12,7 @@ export function useInfiniteScroll({
   onLoadMore,
   hasMore,
   isLoading,
-  rootMargin = '100px',
+  rootMargin = "100px",
   threshold = 0.1,
 }: UseInfiniteScrollOptions) {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -24,7 +24,7 @@ export function useInfiniteScroll({
         onLoadMore();
       }
     },
-    [onLoadMore, hasMore, isLoading]
+    [onLoadMore, hasMore, isLoading],
   );
 
   const ref = useCallback(
@@ -43,7 +43,7 @@ export function useInfiniteScroll({
         observerRef.current = observer;
       }
     },
-    [handleObserver, rootMargin, threshold]
+    [handleObserver, rootMargin, threshold],
   );
 
   return ref;

@@ -3,7 +3,7 @@
 import { useConsoleEasterEgg } from "@/lib/hooks/useConsoleEasterEgg";
 
 export function EasterEggs() {
-    useConsoleEasterEgg();
+  useConsoleEasterEgg();
 
-    return null;
+  return null;
 }

@@ -33,7 +33,7 @@ export async function GET(request: Request) {
         success: true,
         data: certs,
         pagination: buildPagination(total, page, limit),
-      })
+      }),
     );
   } catch (error) {
     console.error("Failed to fetch certifications:", error);

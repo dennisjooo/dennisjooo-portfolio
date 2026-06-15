@@ -5,7 +5,10 @@ import { errorResponse } from "@/lib/api/apiHelpers";
 
 const BLOB_IMG_REGEX = /!\[.*?\]\((https:\/\/[^)]+vercel-storage\.com[^)]+)\)/g;
 
-export function collectBlobUrls(imageUrl: string | null, blogPost: string | null): string[] {
+export function collectBlobUrls(
+  imageUrl: string | null,
+  blogPost: string | null,
+): string[] {
   const urls: string[] = [];
   if (imageUrl?.includes("vercel-storage.com")) {
     urls.push(imageUrl);
@@ -21,7 +24,7 @@ export function collectBlobUrls(imageUrl: string | null, blogPost: string | null
 export async function getPreviewExclusiveBlobUrls(
   previewImageUrl: string | null,
   previewBlogPost: string | null,
-  previewSlug: string
+  previewSlug: string,
 ): Promise<string[]> {
   const previewUrls = collectBlobUrls(previewImageUrl, previewBlogPost);
   if (previewUrls.length === 0) return [];
@@ -34,7 +37,9 @@ export async function getPreviewExclusiveBlobUrls(
 
   if (!original) return previewUrls;
 
-  const originalUrls = new Set(collectBlobUrls(original.imageUrl, original.blogPost));
+  const originalUrls = new Set(
+    collectBlobUrls(original.imageUrl, original.blogPost),
+  );
   return previewUrls.filter((url) => !originalUrls.has(url));
 }
 
@@ -50,7 +55,10 @@ interface PrepareOptions {
   defaultStatus?: string;
 }
 
-export function validateAndPrepareBlogBody(body: BlogBody, options?: PrepareOptions) {
+export function validateAndPrepareBlogBody(
+  body: BlogBody,
+  options?: PrepareOptions,
+) {
   if (!body.status && options?.defaultStatus) {
     body.status = options.defaultStatus;
   }

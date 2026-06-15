@@ -7,7 +7,7 @@ import "react-photo-view/dist/react-photo-view.css";
 
 const ProjectContent = dynamic(
   () => import("@/components/blogs/article/ProjectContent"),
-  { ssr: false }
+  { ssr: false },
 );
 
 interface MarkdownPreviewProps {

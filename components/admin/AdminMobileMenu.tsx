@@ -22,8 +22,16 @@ import {
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Blogs & Projects", href: "/admin/blogs", icon: DocumentTextIcon },
-  { name: "Work Experience", href: "/admin/work-experience", icon: BriefcaseIcon },
-  { name: "Certifications", href: "/admin/certifications", icon: AcademicCapIcon },
+  {
+    name: "Work Experience",
+    href: "/admin/work-experience",
+    icon: BriefcaseIcon,
+  },
+  {
+    name: "Certifications",
+    href: "/admin/certifications",
+    icon: AcademicCapIcon,
+  },
   { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
@@ -69,9 +77,10 @@ export function AdminMobileMenu() {
         <div className="mx-2 bg-card/95 backdrop-blur-xl border border-border rounded-xl shadow-2xl overflow-hidden">
           <nav className="p-3 space-y-1">
             {navItems.map((item) => {
-              const isActive = item.href === '/admin'
-                ? pathname === '/admin'
-                : pathname.startsWith(item.href);
+              const isActive =
+                item.href === "/admin"
+                  ? pathname === "/admin"
+                  : pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.href}
@@ -83,8 +92,12 @@ export function AdminMobileMenu() {
                       : "hover:bg-accent/10 hover:text-accent"
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`} />
-                  <span className="font-sans font-medium tracking-wide">{item.name}</span>
+                  <item.icon
+                    className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`}
+                  />
+                  <span className="font-sans font-medium tracking-wide">
+                    {item.name}
+                  </span>
                 </Link>
               );
             })}
@@ -106,7 +119,9 @@ export function AdminMobileMenu() {
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 group"
               >
                 <ArrowRightStartOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span className="font-mono text-xs uppercase tracking-widest">Sign Out</span>
+                <span className="font-mono text-xs uppercase tracking-widest">
+                  Sign Out
+                </span>
               </button>
             </SignOutButton>
 
@@ -116,7 +131,9 @@ export function AdminMobileMenu() {
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground transition-all duration-200 group"
             >
               <ArrowLeftStartOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="font-mono text-xs uppercase tracking-widest">Exit to Site</span>
+              <span className="font-mono text-xs uppercase tracking-widest">
+                Exit to Site
+              </span>
             </Link>
           </nav>
         </div>

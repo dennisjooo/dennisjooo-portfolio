@@ -39,13 +39,13 @@ html.dark {
 
   /* Light mode specific custom colors */
   --gradient-from: rgba(0, 0, 0, 0.05);
-  --gradient-via: rgba(0, 0, 0, 0.10);
+  --gradient-via: rgba(0, 0, 0, 0.1);
   --gradient-to: rgba(0, 0, 0, 0.03);
   --gradient-accent-from: rgb(60, 60, 60);
   --gradient-accent-via: rgb(175, 175, 175);
   --gradient-accent-to: rgb(60, 60, 60);
   --accent-border: rgb(160, 160, 160);
-  --accent-shadow: rgba(0, 0, 0, 0.10);
+  --accent-shadow: rgba(0, 0, 0, 0.1);
   --default-border: rgb(229, 231, 235);
 
   /* Fonts */
@@ -91,14 +91,17 @@ html.dark {
     @apply border-border;
   }
 
-  html, body {
+  html,
+  body {
     overflow-x: clip;
     width: 100%;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   ::selection {
@@ -110,7 +113,12 @@ html.dark {
 @layer utilities {
   /* Gradient utilities */
   .bg-gradient-primary {
-    background: linear-gradient(to bottom, var(--gradient-from), var(--gradient-via), var(--gradient-to));
+    background: linear-gradient(
+      to bottom,
+      var(--gradient-from),
+      var(--gradient-via),
+      var(--gradient-to)
+    );
   }
 
   .text-gradient-primary {
@@ -118,7 +126,12 @@ html.dark {
   }
 
   .bg-gradient-accent {
-    background: linear-gradient(to right, var(--gradient-accent-from), var(--gradient-accent-via), var(--gradient-accent-to));
+    background: linear-gradient(
+      to right,
+      var(--gradient-accent-from),
+      var(--gradient-accent-via),
+      var(--gradient-accent-to)
+    );
   }
 
   /* Border and shadow utilities */
@@ -156,7 +169,6 @@ html.dark {
     @apply text-neutral-200 dark:text-neutral-800;
   }
 }
-
 
 /* Article drop cap - targets the first paragraph's first letter */
 .article-content > p:first-of-type::first-letter {
@@ -264,8 +276,12 @@ html.dark {
    Uses opacity only — transforms create a containing block that breaks
    position:fixed descendants (GSAP ScrollTrigger pin). */
 @keyframes page-transition-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .page-transition-enter {
@@ -315,17 +331,28 @@ html.dark {
 }
 
 .contacts-spring-item {
-  animation: contacts-spring-item 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: contacts-spring-item 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
+    forwards;
 }
 
 /* Stagger delays for headline group (0.1s between items) */
-.contacts-stagger-0 { animation-delay: 0s; }
-.contacts-stagger-1 { animation-delay: 0.1s; }
-.contacts-stagger-2 { animation-delay: 0.2s; }
+.contacts-stagger-0 {
+  animation-delay: 0s;
+}
+.contacts-stagger-1 {
+  animation-delay: 0.1s;
+}
+.contacts-stagger-2 {
+  animation-delay: 0.2s;
+}
 
 /* Bottom group delays (0.6s base delay + 0.1s stagger) */
-.contacts-bottom-0 { animation-delay: 0.6s; }
-.contacts-bottom-1 { animation-delay: 0.7s; }
+.contacts-bottom-0 {
+  animation-delay: 0.6s;
+}
+.contacts-bottom-1 {
+  animation-delay: 0.7s;
+}
 
 /* ─── CSS Marquee ─── */
 @keyframes marquee-scroll {
@@ -361,7 +388,7 @@ html.dark {
   width: max-content;
   animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
   animation-direction: var(--marquee-direction, normal);
-  transform: translateZ(0);       /* force GPU layer */
+  transform: translateZ(0); /* force GPU layer */
   will-change: transform;
   backface-visibility: hidden;
 }

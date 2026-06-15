@@ -1,5 +1,5 @@
-import { BlogsPageSkeleton } from '@/components/blogs/list/skeletons';
+import { BlogsPageSkeleton } from "@/components/blogs/list/skeletons";
 
 export default function Loading() {
-    return <BlogsPageSkeleton />;
+  return <BlogsPageSkeleton />;
 }

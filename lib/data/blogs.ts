@@ -1,109 +1,122 @@
-import 'server-only';
-import { unstable_cache } from 'next/cache';
-import { db, blogs, type Blog } from '@/lib/db';
-import { eq, desc, count, and, type SQL } from 'drizzle-orm';
-import { CACHE_CONFIG } from '@/lib/constants/cache';
-import { createUrlSlug } from '@/lib/utils/urlHelpers';
-import { buildPagination } from '@/lib/api/apiHelpers';
-import { visibleBlogsFilter } from '@/lib/db/blogFilters';
+import "server-only";
+import { unstable_cache } from "next/cache";
+import { db, blogs, type Blog } from "@/lib/db";
+import { eq, desc, count, and, type SQL } from "drizzle-orm";
+import { CACHE_CONFIG } from "@/lib/constants/cache";
+import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { buildPagination } from "@/lib/api/apiHelpers";
+import { visibleBlogsFilter } from "@/lib/db/blogFilters";
 
 export { visibleBlogsFilter };
 
 export interface PaginationResult {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasMore: boolean;
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
 }
 
 export interface BlogsResult {
-    data: Blog[];
-    pagination: PaginationResult;
+  data: Blog[];
+  pagination: PaginationResult;
 }
 
-export async function findBlogBySlug(slug: string, filter?: SQL): Promise<Blog | null> {
-    const whereClause = filter ? and(eq(blogs.slug, slug), filter) : eq(blogs.slug, slug);
+export async function findBlogBySlug(
+  slug: string,
+  filter?: SQL,
+): Promise<Blog | null> {
+  const whereClause = filter
+    ? and(eq(blogs.slug, slug), filter)
+    : eq(blogs.slug, slug);
 
-    const [project] = await db.select().from(blogs).where(whereClause);
-    if (project) return project;
+  const [project] = await db.select().from(blogs).where(whereClause);
+  if (project) return project;
 
-    const allSlugs = await db
-        .select({ id: blogs.id, title: blogs.title, slug: blogs.slug })
-        .from(blogs)
-        .where(filter);
+  const allSlugs = await db
+    .select({ id: blogs.id, title: blogs.title, slug: blogs.slug })
+    .from(blogs)
+    .where(filter);
 
-    const match = allSlugs.find(p => createUrlSlug(p.title) === slug || p.slug === slug);
+  const match = allSlugs.find(
+    (p) => createUrlSlug(p.title) === slug || p.slug === slug,
+  );
 
-    if (match) {
-        const [fullProject] = await db.select().from(blogs).where(eq(blogs.id, match.id));
-        return fullProject ?? null;
-    }
+  if (match) {
+    const [fullProject] = await db
+      .select()
+      .from(blogs)
+      .where(eq(blogs.id, match.id));
+    return fullProject ?? null;
+  }
 
-    return null;
+  return null;
 }
 
 export const getFeaturedProjects = unstable_cache(
-    async (): Promise<Blog[]> => {
-        try {
-            const projects = await db
-                .select()
-                .from(blogs)
-                .where(and(eq(blogs.type, 'project'), visibleBlogsFilter()))
-                .orderBy(desc(blogs.date))
-                .limit(3);
-            return projects;
-        } catch (error) {
-            console.error('Failed to fetch featured projects', error);
-            return [];
-        }
-    },
-    ['featured-projects'],
-    { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['projects', 'blogs'] }
+  async (): Promise<Blog[]> => {
+    try {
+      const projects = await db
+        .select()
+        .from(blogs)
+        .where(and(eq(blogs.type, "project"), visibleBlogsFilter()))
+        .orderBy(desc(blogs.date))
+        .limit(3);
+      return projects;
+    } catch (error) {
+      console.error("Failed to fetch featured projects", error);
+      return [];
+    }
+  },
+  ["featured-projects"],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["projects", "blogs"] },
 );
 
 export const getBlogs = unstable_cache(
-    async (
-        page: number = 1,
-        limit: number = 9,
-        type?: 'blog' | 'project' | 'all'
-    ): Promise<BlogsResult> => {
-        try {
-            const offset = (page - 1) * limit;
-            const effectiveType = type === 'all' ? null : type;
+  async (
+    page: number = 1,
+    limit: number = 9,
+    type?: "blog" | "project" | "all",
+  ): Promise<BlogsResult> => {
+    try {
+      const offset = (page - 1) * limit;
+      const effectiveType = type === "all" ? null : type;
 
-            const whereClause = effectiveType
-                ? and(eq(blogs.type, effectiveType), visibleBlogsFilter())
-                : visibleBlogsFilter();
+      const whereClause = effectiveType
+        ? and(eq(blogs.type, effectiveType), visibleBlogsFilter())
+        : visibleBlogsFilter();
 
-            const baseQuery = db.select().from(blogs).where(whereClause);
-            const countQuery = db.select({ count: count() }).from(blogs).where(whereClause);
+      const baseQuery = db.select().from(blogs).where(whereClause);
+      const countQuery = db
+        .select({ count: count() })
+        .from(blogs)
+        .where(whereClause);
 
-            const [blogResults, totalResult] = await Promise.all([
-                baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
-                countQuery,
-            ]);
+      const [blogResults, totalResult] = await Promise.all([
+        baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
+        countQuery,
+      ]);
 
-            const total = totalResult[0]?.count ?? 0;
+      const total = totalResult[0]?.count ?? 0;
 
-            return {
-                data: blogResults,
-                pagination: buildPagination(total, page, limit),
-            };
-        } catch (error) {
-            console.error('Failed to fetch blogs', error);
-            return {
-                data: [],
-                pagination: {
-                    total: 0,
-                    page: 1,
-                    limit,
-                    totalPages: 0,
-                    hasMore: false,
-                },
-            };
-        }
-    },
-    ['blogs-list'],
-    { revalidate: CACHE_CONFIG.REVALIDATE, tags: ['blogs', 'projects'] }
+      return {
+        data: blogResults,
+        pagination: buildPagination(total, page, limit),
+      };
+    } catch (error) {
+      console.error("Failed to fetch blogs", error);
+      return {
+        data: [],
+        pagination: {
+          total: 0,
+          page: 1,
+          limit,
+          totalPages: 0,
+          hasMore: false,
+        },
+      };
+    }
+  },
+  ["blogs-list"],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["blogs", "projects"] },
 );

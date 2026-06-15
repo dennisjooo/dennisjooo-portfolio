@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { CameraIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import { toast } from 'sonner';
-import { buildUploadPayload } from '@/lib/utils/blobUpload';
-import { useSiteConfig } from '@/lib/hooks/useSiteConfig';
-import { LoadingSpinner } from '@/components/admin/shared';
+import { useState } from "react";
+import Image from "next/image";
+import { CameraIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
+import { buildUploadPayload } from "@/lib/utils/blobUpload";
+import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
+import { LoadingSpinner } from "@/components/admin/shared";
 
 export default function ProfileAdminPage() {
   const { config, loading, updateConfig } = useSiteConfig();
   const [uploading, setUploading] = useState(false);
 
-  const imageUrl = config?.profileImageUrl || '/images/profile.webp';
+  const imageUrl = config?.profileImageUrl || "/images/profile.webp";
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
@@ -23,18 +23,21 @@ export default function ProfileAdminPage() {
     try {
       const { contentHash, body } = await buildUploadPayload(file);
 
-      const response = await fetch(`/api/upload?filename=profile.webp&contentHash=${contentHash}`, {
-        method: 'POST',
-        body,
-      });
+      const response = await fetch(
+        `/api/upload?filename=profile.webp&contentHash=${contentHash}`,
+        {
+          method: "POST",
+          body,
+        },
+      );
 
       const newBlob = await response.json();
 
       await updateConfig({ profileImageUrl: newBlob.url });
-      toast.success('Profile updated!');
+      toast.success("Profile updated!");
     } catch (error) {
       console.error(error);
-      toast.error('Failed to update profile');
+      toast.error("Failed to update profile");
     } finally {
       setUploading(false);
     }
@@ -46,7 +49,8 @@ export default function ProfileAdminPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
-          Profile <span className="not-italic font-sans font-bold">Settings</span>
+          Profile{" "}
+          <span className="not-italic font-sans font-bold">Settings</span>
         </h1>
         <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
           Global configuration & identity
@@ -63,7 +67,7 @@ export default function ProfileAdminPage() {
                   alt="Profile"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  unoptimized={imageUrl.startsWith('http')}
+                  unoptimized={imageUrl.startsWith("http")}
                 />
               )}
               {uploading && (
@@ -97,7 +101,9 @@ export default function ProfileAdminPage() {
             </p>
 
             <div className="pt-4 border-t border-border/50">
-              <h4 className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-3">Current Source</h4>
+              <h4 className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-3">
+                Current Source
+              </h4>
               <code className="block w-full p-3 bg-muted/50 rounded-lg text-xs font-mono text-muted-foreground break-all border border-border/50">
                 {imageUrl}
               </code>

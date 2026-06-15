@@ -17,7 +17,7 @@ export function useFormSubmit() {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { loading, handleSubmit };

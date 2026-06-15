@@ -12,7 +12,7 @@ type RouteParams = { params: Promise<{ id: string }> };
 export function createCrudHandlers(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: any,
-  entityName: string
+  entityName: string,
 ) {
   async function GET(_request: Request, { params }: RouteParams) {
     const { id } = await params;

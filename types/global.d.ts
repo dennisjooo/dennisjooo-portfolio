@@ -1,9 +1,9 @@
-import type Lenis from 'lenis';
+import type Lenis from "lenis";
 
 declare global {
-    interface Window {
-        lenis?: Lenis;
-    }
+  interface Window {
+    lenis?: Lenis;
+  }
 }
 
 export {};

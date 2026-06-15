@@ -122,14 +122,16 @@ export function LinkManager({
                 className={cn(
                   "flex items-stretch gap-2 p-2 bg-background rounded-md border border-border/50 transition-all duration-200",
                   isDragging && "opacity-50 bg-muted/50",
-                  isDragOver && "ring-2 ring-primary"
+                  isDragOver && "ring-2 ring-primary",
                 )}
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDrop={() => handleDrop(index)}
                 onDragEnd={handleDragEnd}
               >
                 {links.length > 1 && (
-                  <DragGripHandle onDragStart={(e) => handleDragStart(e, index)} />
+                  <DragGripHandle
+                    onDragStart={(e) => handleDragStart(e, index)}
+                  />
                 )}
                 <span className="self-center text-muted-foreground font-mono text-sm w-6 text-right shrink-0">
                   {index + 1}.
@@ -150,7 +152,7 @@ export function LinkManager({
                     onValueChange={(url) => onUpdate(index, { ...link, url })}
                     className={cn(
                       formStyles.input,
-                      "py-2 text-sm font-mono min-h-[2.5rem]"
+                      "py-2 text-sm font-mono min-h-[2.5rem]",
                     )}
                   />
                 </div>

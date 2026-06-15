@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import Link from "next/link";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 interface AdminPageHeaderProps {
   title: string;
@@ -14,13 +14,14 @@ export function AdminPageHeader({
   titleAccent,
   subtitle,
   actionHref,
-  actionLabel = 'Add New',
+  actionLabel = "Add New",
 }: AdminPageHeaderProps) {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
-          {title} <span className="not-italic font-sans font-bold">{titleAccent}</span>
+          {title}{" "}
+          <span className="not-italic font-sans font-bold">{titleAccent}</span>
         </h1>
         <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
           {subtitle}

@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { useUnsavedChanges } from '@/components/admin/hooks';
+import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useUnsavedChanges } from "@/components/admin/hooks";
 
 interface AdminFormLayoutProps {
   title: string;

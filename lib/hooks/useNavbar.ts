@@ -2,118 +2,133 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { scrollToTop, scrollToSection, setPendingSectionScroll } from "@/lib/utils/scrollHelpers";
+import {
+  scrollToTop,
+  scrollToSection,
+  setPendingSectionScroll,
+} from "@/lib/utils/scrollHelpers";
 
 // Constants
 const SCROLL_THRESHOLD = 20;
 
 interface HeroSectionState {
-    isHeroSection: boolean;
-    scrolled: boolean;
+  isHeroSection: boolean;
+  scrolled: boolean;
 }
 
-export const useHeroSectionState = (isClientReady: boolean, pathname: string): HeroSectionState => {
-    const [state, setState] = useState<HeroSectionState>({
-        isHeroSection: true,
-        scrolled: false,
-    });
+export const useHeroSectionState = (
+  isClientReady: boolean,
+  pathname: string,
+): HeroSectionState => {
+  const [state, setState] = useState<HeroSectionState>({
+    isHeroSection: true,
+    scrolled: false,
+  });
 
-    useEffect(() => {
-        if (!isClientReady) return;
+  useEffect(() => {
+    if (!isClientReady) return;
 
-        let rafId: number | null = null;
-        let lastScrollY = 0;
+    let rafId: number | null = null;
+    let lastScrollY = 0;
 
-        const updateState = () => {
-            const heroSection = document.getElementById("home");
-            const isHeroSection = heroSection
-                ? lastScrollY < heroSection.offsetTop + heroSection.offsetHeight
-                : false;
+    const updateState = () => {
+      const heroSection = document.getElementById("home");
+      const isHeroSection = heroSection
+        ? lastScrollY < heroSection.offsetTop + heroSection.offsetHeight
+        : false;
 
-            setState({
-                isHeroSection,
-                scrolled: lastScrollY > SCROLL_THRESHOLD,
-            });
-            rafId = null;
-        };
+      setState({
+        isHeroSection,
+        scrolled: lastScrollY > SCROLL_THRESHOLD,
+      });
+      rafId = null;
+    };
 
-        const handleScroll = () => {
-            lastScrollY = window.scrollY;
-            if (rafId === null) {
-                rafId = requestAnimationFrame(updateState);
-            }
-        };
+    const handleScroll = () => {
+      lastScrollY = window.scrollY;
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updateState);
+      }
+    };
 
-        handleScroll();
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-            if (rafId !== null) {
-                cancelAnimationFrame(rafId);
-            }
-        };
-    }, [isClientReady, pathname]);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, [isClientReady, pathname]);
 
-    return state;
+  return state;
 };
 
 interface UseSectionNavigationParams {
-    isClientReady: boolean;
-    pathname: string;
-    closeMenu: () => void;
+  isClientReady: boolean;
+  pathname: string;
+  closeMenu: () => void;
 }
 
-export const useSectionNavigation = (
-    { isClientReady, pathname, closeMenu }: UseSectionNavigationParams
-): ((sectionId: string) => void) => {
-    const router = useRouter();
+export const useSectionNavigation = ({
+  isClientReady,
+  pathname,
+  closeMenu,
+}: UseSectionNavigationParams): ((sectionId: string) => void) => {
+  const router = useRouter();
 
-    return useCallback(
-        (sectionId: string) => {
-            if (!isClientReady) return;
+  return useCallback(
+    (sectionId: string) => {
+      if (!isClientReady) return;
 
-            if (pathname === "/") {
-                if (sectionId === "home") {
-                    scrollToTop(true);
-                } else {
-                    scrollToSection(sectionId);
-                }
-            } else {
-                setPendingSectionScroll(sectionId);
-                router.push(`/#${sectionId}`);
-            }
+      if (pathname === "/") {
+        if (sectionId === "home") {
+          scrollToTop(true);
+        } else {
+          scrollToSection(sectionId);
+        }
+      } else {
+        setPendingSectionScroll(sectionId);
+        router.push(`/#${sectionId}`);
+      }
 
-            closeMenu();
-        },
-        [closeMenu, isClientReady, pathname, router],
-    );
+      closeMenu();
+    },
+    [closeMenu, isClientReady, pathname, router],
+  );
 };
 
 interface NavbarStylesParams {
-    isHeroSection: boolean;
-    scrolled: boolean;
-    isMenuOpen: boolean;
-    pathname: string;
+  isHeroSection: boolean;
+  scrolled: boolean;
+  isMenuOpen: boolean;
+  pathname: string;
 }
 
 interface NavbarStyles {
-    bgClass: string;
-    navWidth: string;
-    textColorClass: string;
+  bgClass: string;
+  navWidth: string;
+  textColorClass: string;
 }
 
-export const useNavbarStyles = (
-    { isHeroSection, scrolled, isMenuOpen, pathname }: NavbarStylesParams
-): NavbarStyles =>
-    useMemo(() => {
-        const bgClass = !isHeroSection || scrolled || isMenuOpen ? "glass-panel" : "bg-transparent";
+export const useNavbarStyles = ({
+  isHeroSection,
+  scrolled,
+  isMenuOpen,
+  pathname,
+}: NavbarStylesParams): NavbarStyles =>
+  useMemo(() => {
+    const bgClass =
+      !isHeroSection || scrolled || isMenuOpen
+        ? "glass-panel"
+        : "bg-transparent";
 
-        const navWidth =
-            isHeroSection && !scrolled && pathname === "/"
-                ? "w-11/12 lg:w-5/6"
-                : "w-11/12 lg:w-3/4 xl:w-2/3";
+    const navWidth =
+      isHeroSection && !scrolled && pathname === "/"
+        ? "w-11/12 lg:w-5/6"
+        : "w-11/12 lg:w-3/4 xl:w-2/3";
 
-        const textColorClass = "text-foreground";
+    const textColorClass = "text-foreground";
 
-        return { bgClass, navWidth, textColorClass };
-    }, [isHeroSection, isMenuOpen, pathname, scrolled]);
+    return { bgClass, navWidth, textColorClass };
+  }, [isHeroSection, isMenuOpen, pathname, scrolled]);

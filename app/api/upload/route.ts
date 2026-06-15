@@ -1,22 +1,26 @@
-import { put, del } from '@vercel/blob';
-import { NextResponse } from 'next/server';
-import sharp from 'sharp';
-import { requireAuth, isAuthError, errorResponse } from '@/lib/api/apiHelpers';
+import { put, del } from "@vercel/blob";
+import { NextResponse } from "next/server";
+import sharp from "sharp";
+import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
 
 export async function POST(request: Request) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
 
   const { searchParams } = new URL(request.url);
-  const originalFilename = searchParams.get('filename') || `profile-${Date.now()}.webp`;
-  const folder = searchParams.get('folder');
-  const contentHashParam = searchParams.get('contentHash');
+  const originalFilename =
+    searchParams.get("filename") || `profile-${Date.now()}.webp`;
+  const folder = searchParams.get("folder");
+  const contentHashParam = searchParams.get("contentHash");
   const normalizedHash = contentHashParam
-    ? contentHashParam.toLowerCase().replace(/[^a-f0-9]/g, '').slice(0, 32)
+    ? contentHashParam
+        .toLowerCase()
+        .replace(/[^a-f0-9]/g, "")
+        .slice(0, 32)
     : null;
 
   if (!request.body) {
-    return errorResponse('No body', 400);
+    return errorResponse("No body", 400);
   }
 
   try {
@@ -28,13 +32,13 @@ export async function POST(request: Request) {
       .toBuffer();
 
     let webpFilename;
-    if (originalFilename === 'profile.webp') {
-      webpFilename = 'profile.webp';
+    if (originalFilename === "profile.webp") {
+      webpFilename = "profile.webp";
     } else if (normalizedHash) {
-      const baseName = originalFilename.replace(/\.[^.]+$/, '');
+      const baseName = originalFilename.replace(/\.[^.]+$/, "");
       webpFilename = `${baseName}-${normalizedHash}.webp`;
     } else {
-      const baseName = originalFilename.replace(/\.[^.]+$/, '');
+      const baseName = originalFilename.replace(/\.[^.]+$/, "");
       const uniqueId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
       webpFilename = `${baseName}-${uniqueId}.webp`;
     }
@@ -42,14 +46,14 @@ export async function POST(request: Request) {
     const pathname = folder ? `${folder}/${webpFilename}` : webpFilename;
 
     const blob = await put(pathname, optimizedBuffer, {
-      access: 'public',
-      addRandomSuffix: webpFilename !== 'profile.webp' && !normalizedHash,
+      access: "public",
+      addRandomSuffix: webpFilename !== "profile.webp" && !normalizedHash,
     });
 
     return NextResponse.json(blob);
   } catch (error) {
-    console.error('Upload error:', error);
-    return errorResponse('Upload failed', 500);
+    console.error("Upload error:", error);
+    return errorResponse("Upload failed", 500);
   }
 }
 
@@ -60,19 +64,22 @@ export async function DELETE(request: Request) {
   try {
     const { urls } = await request.json();
     if (!urls || !Array.isArray(urls)) {
-      return errorResponse('Invalid body', 400);
+      return errorResponse("Invalid body", 400);
     }
 
-    const validUrlPattern = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/.+$/;
-    const invalidUrls = urls.filter((url: string) => typeof url !== 'string' || !validUrlPattern.test(url));
+    const validUrlPattern =
+      /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/.+$/;
+    const invalidUrls = urls.filter(
+      (url: string) => typeof url !== "string" || !validUrlPattern.test(url),
+    );
     if (invalidUrls.length > 0) {
-      return errorResponse('Invalid blob URLs provided', 400);
+      return errorResponse("Invalid blob URLs provided", 400);
     }
 
     await del(urls);
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Delete error:', error);
-    return errorResponse('Delete failed', 500);
+    console.error("Delete error:", error);
+    return errorResponse("Delete failed", 500);
   }
 }

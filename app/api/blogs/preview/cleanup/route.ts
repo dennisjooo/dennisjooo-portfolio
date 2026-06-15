@@ -1,7 +1,12 @@
 import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { del } from "@vercel/blob";
-import { requireAuth, isAuthError, successResponse, errorResponse } from "@/lib/api/apiHelpers";
+import {
+  requireAuth,
+  isAuthError,
+  successResponse,
+  errorResponse,
+} from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
 
 export async function POST(request: Request) {
@@ -16,10 +21,7 @@ export async function POST(request: Request) {
       return errorResponse("Invalid preview slug");
     }
 
-    const [preview] = await db
-      .select()
-      .from(blogs)
-      .where(eq(blogs.slug, slug));
+    const [preview] = await db.select().from(blogs).where(eq(blogs.slug, slug));
 
     if (!preview) {
       return successResponse({ message: "No preview to delete" });
@@ -28,14 +30,14 @@ export async function POST(request: Request) {
     const imagesToDelete = await getPreviewExclusiveBlobUrls(
       preview.imageUrl,
       preview.blogPost,
-      slug
+      slug,
     );
 
     await db.delete(blogs).where(eq(blogs.id, preview.id));
 
     if (imagesToDelete.length > 0) {
       del(imagesToDelete).catch((err) =>
-        console.error("Failed to delete preview blobs:", err)
+        console.error("Failed to delete preview blobs:", err),
       );
     }
 

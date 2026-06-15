@@ -16,7 +16,7 @@ export function PreviewBanner({ status, slug }: PreviewBannerProps) {
     if (!isTemporaryPreview) return;
     navigator.sendBeacon(
       "/api/blogs/preview/cleanup",
-      JSON.stringify({ slug })
+      JSON.stringify({ slug }),
     );
   }, [isTemporaryPreview, slug]);
 
@@ -35,8 +35,8 @@ export function PreviewBanner({ status, slug }: PreviewBannerProps) {
       <EyeIcon className="h-4 w-4" />
       <span>
         Preview mode — this post is currently{" "}
-        <strong>{BLOG_STATUS_LABELS[status] ?? status}</strong> and not visible to the
-        public.
+        <strong>{BLOG_STATUS_LABELS[status] ?? status}</strong> and not visible
+        to the public.
       </span>
     </div>
   );

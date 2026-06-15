@@ -1,7 +1,12 @@
 "use client";
 
 import { AdminTable, Column } from "@/components/admin/AdminTable";
-import { AdminPageHeader, AdminActionCell, AdminReorderHint, ConfirmDialog } from "@/components/admin/shared";
+import {
+  AdminPageHeader,
+  AdminActionCell,
+  AdminReorderHint,
+  ConfirmDialog,
+} from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";

@@ -1,5 +1,5 @@
-import { ServiceStatus } from './types';
-import { statusStyles } from './statusStyles';
+import { ServiceStatus } from "./types";
+import { statusStyles } from "./statusStyles";
 
 interface StatusIndicatorProps {
   status: ServiceStatus | undefined;
@@ -30,7 +30,9 @@ export function StatusIndicator({ status, label }: StatusIndicatorProps) {
             {status.latency}ms
           </span>
         )}
-        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest ${config.pill} ${config.textColor}`}>
+        <span
+          className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest ${config.pill} ${config.textColor}`}
+        >
           <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
           {config.text}
         </span>

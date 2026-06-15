@@ -20,7 +20,7 @@ export async function requireAuth(): Promise<
 }
 
 export function isAuthError(
-  result: { userId: string } | NextResponse
+  result: { userId: string } | NextResponse,
 ): result is NextResponse {
   return result instanceof NextResponse;
 }

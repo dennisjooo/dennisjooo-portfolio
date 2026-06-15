@@ -15,7 +15,7 @@ interface ReorderItem {
 export function createReorderHandler(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: any,
-  entityName: string
+  entityName: string,
 ) {
   async function PUT(request: Request) {
     const authResult = await requireAuth();
@@ -34,8 +34,8 @@ export function createReorderHandler(
           db
             .update(table)
             .set({ order: item.order, updatedAt: new Date() })
-            .where(eq(table.id, item.id))
-        )
+            .where(eq(table.id, item.id)),
+        ),
       );
 
       return successResponse({});

@@ -1,6 +1,6 @@
-import { CircleStackIcon } from '@heroicons/react/24/outline';
-import { StatusIndicator } from './StatusIndicator';
-import { StatusData } from './types';
+import { CircleStackIcon } from "@heroicons/react/24/outline";
+import { StatusIndicator } from "./StatusIndicator";
+import { StatusData } from "./types";
 
 interface SystemAnalyticsProps {
   statusData: StatusData | null;
@@ -8,7 +8,11 @@ interface SystemAnalyticsProps {
   error: string | null;
 }
 
-export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalyticsProps) {
+export function SystemAnalytics({
+  statusData,
+  isLoading,
+  error,
+}: SystemAnalyticsProps) {
   return (
     <div className="rounded-2xl border border-border bg-card/20 backdrop-blur-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
@@ -33,7 +37,9 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
             </span>
           )}
           {error && (
-            <span className="font-mono text-[11px] text-destructive">{error}</span>
+            <span className="font-mono text-[11px] text-destructive">
+              {error}
+            </span>
           )}
         </div>
       </div>
@@ -41,11 +47,14 @@ export function SystemAnalytics({ statusData, isLoading, error }: SystemAnalytic
       <div className="px-6 py-2 divide-y divide-border/30">
         <StatusIndicator status={statusData?.database} label="Database" />
         <StatusIndicator status={statusData?.auth} label="Authentication" />
-        <StatusIndicator status={statusData?.blobStorage} label="Blob Storage" />
+        <StatusIndicator
+          status={statusData?.blobStorage}
+          label="Blob Storage"
+        />
         <div className="flex items-center justify-between py-3">
           <span className="text-sm text-foreground">Build Version</span>
           <span className="font-mono text-xs text-muted-foreground">
-            {statusData?.version ? `v${statusData.version}` : '...'}
+            {statusData?.version ? `v${statusData.version}` : "..."}
           </span>
         </div>
       </div>

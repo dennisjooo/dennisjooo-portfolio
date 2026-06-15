@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { dismissSSRCover } from './dismissSSRCover';
+import { useEffect } from "react";
+import { dismissSSRCover } from "./dismissSSRCover";
 
 export function SSRCoverDismiss() {
-    useEffect(() => {
-        dismissSSRCover();
-    }, []);
+  useEffect(() => {
+    dismissSSRCover();
+  }, []);
 
-    return null;
+  return null;
 }

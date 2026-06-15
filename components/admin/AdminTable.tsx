@@ -1,10 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { DragGripHandle } from "./shared/DragGripHandle";
 import { cn } from "@/lib/utils";
 
@@ -65,10 +62,7 @@ export function AdminTable<T extends { id?: string | number }>({
     }
   };
 
-  const handleDragOver = (
-    event: React.DragEvent,
-    index: number
-  ) => {
+  const handleDragOver = (event: React.DragEvent, index: number) => {
     if (!enableReorder || dragIndex === null) return;
     event.preventDefault();
     setDragOverIndex(index);
@@ -100,7 +94,9 @@ export function AdminTable<T extends { id?: string | number }>({
   if (isLoading) {
     return (
       <div className="w-full h-64 flex items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm animate-pulse">
-        <div className="font-mono text-sm text-muted-foreground">Loading Data stream...</div>
+        <div className="font-mono text-sm text-muted-foreground">
+          Loading Data stream...
+        </div>
       </div>
     );
   }
@@ -108,14 +104,20 @@ export function AdminTable<T extends { id?: string | number }>({
   if (!localData || localData.length === 0) {
     return (
       <div className="w-full h-40 flex items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
-        <div className="font-mono text-sm text-muted-foreground">No records found in database.</div>
+        <div className="font-mono text-sm text-muted-foreground">
+          No records found in database.
+        </div>
       </div>
     );
   }
 
-  const primaryColumn = columns.find(col => col.primary) || columns[0];
-  const actionsColumn = columns.find(col => col.header.toLowerCase() === "actions");
-  const detailColumns = columns.filter(col => col !== primaryColumn && col !== actionsColumn);
+  const primaryColumn = columns.find((col) => col.primary) || columns[0];
+  const actionsColumn = columns.find(
+    (col) => col.header.toLowerCase() === "actions",
+  );
+  const detailColumns = columns.filter(
+    (col) => col !== primaryColumn && col !== actionsColumn,
+  );
 
   return (
     <div className="space-y-4 w-full max-w-full">
@@ -123,7 +125,10 @@ export function AdminTable<T extends { id?: string | number }>({
       <div className="md:hidden space-y-3">
         {localData.map((row, rowIdx) => {
           const isDragging = dragIndex === rowIdx;
-          const isDragOver = dragOverIndex === rowIdx && dragIndex !== null && dragIndex !== rowIdx;
+          const isDragOver =
+            dragOverIndex === rowIdx &&
+            dragIndex !== null &&
+            dragIndex !== rowIdx;
 
           return (
             <div
@@ -132,13 +137,15 @@ export function AdminTable<T extends { id?: string | number }>({
               className={cn(
                 "flex items-stretch gap-2 rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4 transition-all duration-200",
                 isDragging && "opacity-50 bg-muted/50",
-                isDragOver && "ring-2 ring-primary"
+                isDragOver && "ring-2 ring-primary",
               )}
               onDragOver={(e) => handleDragOver(e, rowIdx)}
               onDrop={() => handleDrop(rowIdx)}
             >
               {enableReorder && (
-                <DragGripHandle onDragStart={(e) => handleDragStart(e, rowIdx)} />
+                <DragGripHandle
+                  onDragStart={(e) => handleDragStart(e, rowIdx)}
+                />
               )}
               <div className="flex-1 min-w-0">
                 {/* Card Header: Primary content + Actions */}
@@ -167,7 +174,10 @@ export function AdminTable<T extends { id?: string | number }>({
                 {detailColumns.length > 0 && (
                   <div className="space-y-2 pt-3 border-t border-border/30">
                     {detailColumns.map((col, colIdx) => (
-                      <div key={colIdx} className="flex items-center justify-between gap-4 text-sm">
+                      <div
+                        key={colIdx}
+                        className="flex items-center justify-between gap-4 text-sm"
+                      >
                         <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
                           {col.header}
                         </span>
@@ -194,7 +204,10 @@ export function AdminTable<T extends { id?: string | number }>({
                   <th className="px-4 py-4 w-[40px]">
                     <input
                       type="checkbox"
-                      checked={localData.length > 0 && selectedIds?.size === localData.length}
+                      checked={
+                        localData.length > 0 &&
+                        selectedIds?.size === localData.length
+                      }
                       onChange={() => onToggleSelectAll?.()}
                       className="rounded border-border accent-primary"
                     />
@@ -208,7 +221,7 @@ export function AdminTable<T extends { id?: string | number }>({
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-6 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground ${col.className || ''}`}
+                    className={`px-6 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground ${col.className || ""}`}
                   >
                     {col.header}
                   </th>
@@ -218,8 +231,11 @@ export function AdminTable<T extends { id?: string | number }>({
             <tbody className="divide-y divide-border/30">
               {localData.map((row, rowIdx) => {
                 const isDragging = dragIndex === rowIdx;
-                const isDragOver = dragOverIndex === rowIdx && dragIndex !== null && dragIndex !== rowIdx;
-                
+                const isDragOver =
+                  dragOverIndex === rowIdx &&
+                  dragIndex !== null &&
+                  dragIndex !== rowIdx;
+
                 let rowClass = "group transition-all duration-200 ";
                 if (isDragging) {
                   rowClass += "opacity-50 bg-muted/50 ";
@@ -229,7 +245,8 @@ export function AdminTable<T extends { id?: string | number }>({
 
                 if (isDragOver) {
                   if (dragIndex! < rowIdx) {
-                    rowClass += "shadow-[inset_0_-2px_0_0_hsl(var(--primary))] ";
+                    rowClass +=
+                      "shadow-[inset_0_-2px_0_0_hsl(var(--primary))] ";
                   } else {
                     rowClass += "shadow-[inset_0_2px_0_0_hsl(var(--primary))] ";
                   }
