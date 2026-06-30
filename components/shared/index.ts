@@ -3,6 +3,7 @@ export { default as ReadingProgress } from "./ReadingProgress";
 export { BlinkingCursor } from "./BlinkingCursor";
 export { SmoothScroll } from "./SmoothScroll";
 export * from "./SectionHeader";
+export * from "./SectionShell";
 export * from "./ContentCard";
 export * from "./CopyButton";
 export * from "./PaginatedList";

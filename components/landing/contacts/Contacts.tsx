@@ -4,47 +4,18 @@ import React from "react";
 import { Dock } from "./Dock/Dock";
 import { DockIconLink } from "./Dock/DockIconLink";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { SectionShell } from "@/components/shared/SectionShell";
 import { resolveContactLinks } from "@/data/defaultContactLinks";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import type { ContactLinkData } from "@/lib/types/contacts";
 import {
   m,
   useReducedMotion,
-  springConfigs,
   viewportSettings,
+  staggerContainer,
+  fadeUpItem,
+  fadeUpItemLarge,
 } from "@/components/motion";
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: springConfigs.smooth,
-  },
-};
-
-const headlineVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      ...springConfigs.gentle,
-      duration: 0.8,
-    },
-  },
-};
 
 interface ContactsProps {
   contacts?: ContactLinkData[];
@@ -62,76 +33,64 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
   });
 
   return (
-    <section
-      id="contact"
-      className="relative min-h-[80vh] flex flex-col py-24 px-6 md:px-8 bg-background overflow-hidden"
-    >
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="w-full mb-16 md:mb-20">
-          <SectionHeader number="06." title="Contact" />
-        </div>
-
-        <div className="flex-1 w-full flex flex-col justify-center items-center min-h-[50vh]">
-          <m.div
-            variants={prefersReducedMotion ? undefined : containerVariants}
-            initial={prefersReducedMotion ? undefined : "hidden"}
-            whileInView={prefersReducedMotion ? undefined : "visible"}
-            viewport={viewportSettings.onceDeep}
-            className="flex flex-col items-center relative leading-none mb-12"
-          >
-            <m.span
-              variants={prefersReducedMotion ? undefined : itemVariants}
-              className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6"
-            >
-              Get In Touch
-            </m.span>
-
-            <m.span
-              variants={prefersReducedMotion ? undefined : headlineVariants}
-              className="font-caslon italic text-[18vw] md:text-[10vw] leading-[0.8] text-foreground dark:mix-blend-screen select-none text-center relative"
-            >
-              Let&apos;s
-            </m.span>
-
-            <m.span
-              variants={prefersReducedMotion ? undefined : headlineVariants}
-              className="font-sans font-black text-[22vw] md:text-[12vw] leading-[0.8] text-gradient-primary tracking-tighter select-none text-center relative"
-            >
-              TALK
-            </m.span>
-          </m.div>
-
-          <m.div
-            variants={prefersReducedMotion ? undefined : containerVariants}
-            initial={prefersReducedMotion ? undefined : "hidden"}
-            whileInView={prefersReducedMotion ? undefined : "visible"}
-            viewport={viewportSettings.once}
-            className="flex flex-col items-center gap-8"
-          >
-            <m.p
-              variants={prefersReducedMotion ? undefined : itemVariants}
-              className="text-base md:text-xl font-light text-muted-foreground font-sans text-center max-w-md px-4"
-            >
-              Have a cool idea? Want to geek out over AI, or just want to say
-              hi? Drop a line.
-            </m.p>
-
-            <m.div variants={prefersReducedMotion ? undefined : itemVariants}>
-              <Dock className="mx-auto">
-                {dockLinks.map(({ href, ariaLabel, icon }) => (
-                  <DockIconLink
-                    key={ariaLabel}
-                    href={href}
-                    ariaLabel={ariaLabel}
-                    icon={icon}
-                  />
-                ))}
-              </Dock>
-            </m.div>
-          </m.div>
-        </div>
+    <SectionShell id="contact" spacing="compact" minHeight overflowHidden>
+      <div className="w-full mb-16 md:mb-20">
+        <SectionHeader number="06." title="Contact" />
       </div>
-    </section>
+
+      <div className="flex-1 w-full flex flex-col justify-center items-center min-h-[50vh]">
+        <m.div
+          variants={prefersReducedMotion ? undefined : staggerContainer}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
+          viewport={viewportSettings.onceDeep}
+          className="flex flex-col items-center relative mb-12 text-center"
+        >
+          <m.span
+            variants={prefersReducedMotion ? undefined : fadeUpItem}
+            className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6"
+          >
+            Get In Touch
+          </m.span>
+
+          <m.h2
+            variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
+            className="font-caslon italic text-5xl md:text-6xl leading-tight text-foreground select-none"
+          >
+            Let&apos;s Talk
+          </m.h2>
+        </m.div>
+
+        <m.div
+          variants={prefersReducedMotion ? undefined : staggerContainer}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
+          viewport={viewportSettings.once}
+          className="flex flex-col items-center gap-8"
+        >
+          <m.p
+            variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
+            className="text-base md:text-xl font-light text-muted-foreground font-sans text-center max-w-md px-4"
+          >
+            Have a cool idea? Want to geek out over AI, or just want to say hi?
+            Drop a line.
+          </m.p>
+
+          <m.div variants={prefersReducedMotion ? undefined : fadeUpItemLarge}>
+            <Dock className="mx-auto">
+              {dockLinks.map(({ href, ariaLabel, icon }) => (
+                <DockIconLink
+                  key={ariaLabel}
+                  href={href}
+                  ariaLabel={ariaLabel}
+                  icon={icon}
+                />
+              ))}
+            </Dock>
+          </m.div>
+        </m.div>
+      </div>
+    </SectionShell>
   );
 };
 

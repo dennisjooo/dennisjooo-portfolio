@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
+import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { sectionInnerClasses } from "@/components/shared/SectionShell";
 import { MobileView } from "./MobileView";
 import { DesktopView } from "./DesktopView";
 import { useAboutAnimations } from "@/lib/hooks/useAboutAnimations";
@@ -35,15 +37,18 @@ const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative bg-background text-foreground overflow-hidden min-h-[calc(100vh+2500px)] md:min-h-[calc(100vh+2000px)]"
+      className="relative bg-background text-foreground overflow-hidden min-h-[calc(100vh+1500px)] md:min-h-[calc(100vh+1200px)]"
     >
       <div
         ref={containerRef}
-        className="h-screen w-full flex flex-col md:max-w-7xl mx-auto md:px-6 py-24 md:py-20"
+        className={cn(
+          "h-screen w-full flex flex-col py-24 md:py-20",
+          sectionInnerClasses,
+        )}
       >
         {/* Header */}
         <div className="w-full px-6 md:px-0 mb-8">
-          <SectionHeader number="02." title="About Me" />
+          <SectionHeader number="02." title="About Me" animated={false} />
         </div>
 
         <div className="flex-1 w-full relative overflow-hidden flex flex-col md:flex-row">
