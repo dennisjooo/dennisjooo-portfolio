@@ -14,7 +14,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ projects }) => {
       <SectionHeader
         number="04."
         title="Featured Projects"
-        subtitle="Selected Work"
+        subtitle="Projects"
         description="Things I've built that mostly still work."
       />
       <FeaturedProjectsGrid projects={projects} />
