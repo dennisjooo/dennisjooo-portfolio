@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindScrollbar from "tailwind-scrollbar";
 
 const config: Config = {
   darkMode: "class",
@@ -69,11 +72,10 @@ const config: Config = {
       },
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [
-    require("@tailwindcss/typography"),
-    require("tailwindcss-animate"),
-    require("tailwind-scrollbar")({ nocompatible: true }),
+    typography,
+    tailwindcssAnimate,
+    tailwindScrollbar({ nocompatible: true }),
   ],
 };
 
