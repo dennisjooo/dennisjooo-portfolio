@@ -1,8 +1,21 @@
 "use client";
 
-import { SignIn } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinner } from "@/components/admin/shared";
+
+const SignInLoadingCard = () => (
+  <div className="w-full bg-card/80 backdrop-blur-xl border border-border shadow-2xl rounded-2xl min-h-[28rem] flex items-center justify-center">
+    <LoadingSpinner className="h-12" />
+  </div>
+);
+
+const SignIn = dynamic(
+  () => import("@clerk/nextjs").then((mod) => mod.SignIn),
+  { loading: SignInLoadingCard },
+);
 
 export default function AdminLoginPage() {
   return (
@@ -23,9 +36,13 @@ export default function AdminLoginPage() {
 
         {/* Clerk SignIn Component */}
         <div className="flex justify-center">
-          <SignIn
-            appearance={{
-              variables: {
+          <ClerkLoading>
+            <SignInLoadingCard />
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignIn
+              appearance={{
+                variables: {
                 colorPrimary: "hsl(var(--primary))",
                 colorBackground: "hsl(var(--card))",
                 colorInputBackground: "hsl(var(--input))",
@@ -33,8 +50,8 @@ export default function AdminLoginPage() {
                 colorText: "hsl(var(--foreground))",
                 colorTextSecondary: "hsl(var(--muted-foreground))",
                 borderRadius: "0.75rem",
-              },
-              elements: {
+                },
+                elements: {
                 rootBox: "w-full",
                 card: "bg-card/80 backdrop-blur-xl border border-border shadow-2xl rounded-2xl",
                 header: "hidden",
@@ -58,17 +75,18 @@ export default function AdminLoginPage() {
                 alert:
                   "bg-destructive/10 border-destructive/20 text-destructive",
                 alertText: "text-destructive font-sans",
-              },
-              layout: {
-                socialButtonsPlacement: "bottom",
-                socialButtonsVariant: "blockButton",
-              },
-            }}
-            routing="path"
-            path="/admin/login"
-            signUpUrl="/admin/login"
-            forceRedirectUrl="/admin"
-          />
+                },
+                layout: {
+                  socialButtonsPlacement: "bottom",
+                  socialButtonsVariant: "blockButton",
+                },
+              }}
+              routing="path"
+              path="/admin/login"
+              signUpUrl="/admin/login"
+              forceRedirectUrl="/admin"
+            />
+          </ClerkLoaded>
         </div>
 
         {/* Back to site link */}
