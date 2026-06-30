@@ -1,15 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { AdminTable, Column } from "@/components/admin/AdminTable";
+import { AdminTable } from "@/components/admin/AdminTable";
 import {
   AdminPageHeader,
-  AdminActionCell,
   AdminReorderHint,
   ConfirmDialog,
 } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { WorkExperience } from "@/lib/db";
+import { createWorkExperienceColumns } from "./columns";
 
 export default function AdminWorkExperienceList() {
   const {
@@ -28,54 +27,7 @@ export default function AdminWorkExperienceList() {
     deleteSuccessMessage: "Item deleted successfully",
   });
 
-  const columns: Column<WorkExperience>[] = [
-    {
-      header: "Logo",
-      cell: (row: WorkExperience) => (
-        <div className="w-10 h-10 relative rounded-lg overflow-hidden bg-muted/30 border border-border/50">
-          {row.imageSrc && (
-            <Image
-              src={row.imageSrc}
-              alt={row.company}
-              fill
-              className="object-contain p-1"
-              unoptimized={row.imageSrc.startsWith("http")}
-            />
-          )}
-        </div>
-      ),
-    },
-    {
-      header: "Position",
-      primary: true,
-      cell: (row: WorkExperience) => (
-        <div>
-          <span className="font-semibold text-foreground block">
-            {row.title}
-          </span>
-          <span className="text-muted-foreground text-xs">{row.company}</span>
-        </div>
-      ),
-    },
-    {
-      header: "Period",
-      cell: (row: WorkExperience) => (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
-          {row.date}
-        </span>
-      ),
-    },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: WorkExperience) => (
-        <AdminActionCell
-          editHref={`/admin/work-experience/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
-  ];
+  const columns = createWorkExperienceColumns(handleDelete);
 
   return (
     <div className="space-y-8">

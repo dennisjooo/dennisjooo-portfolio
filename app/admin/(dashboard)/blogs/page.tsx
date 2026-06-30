@@ -2,26 +2,15 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { AdminTable, Column } from "@/components/admin/AdminTable";
+import { AdminTable } from "@/components/admin/AdminTable";
 import {
   AdminPageHeader,
-  AdminActionCell,
   ConfirmDialog,
 } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
-import { BLOG_STATUS_STYLES } from "@/lib/constants/blogStatus";
-import { formatRelativeTime } from "@/lib/utils/relativeTime";
+import type { Blog } from "@/lib/db";
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
-
-interface Blog {
-  id: string;
-  title: string;
-  type: string;
-  date: string;
-  updatedAt: string;
-  status: "draft" | "scheduled" | "published";
-  publishAt: string | null;
-}
+import { createBlogColumns } from "./columns";
 
 export default function AdminBlogsList() {
   const [bulkStatus, setBulkStatus] = useState("");
@@ -104,77 +93,7 @@ export default function AdminBlogsList() {
     }
   };
 
-  const columns: Column<Blog>[] = [
-    {
-      header: "Title",
-      primary: true,
-      cell: (row: Blog) => (
-        <span className="font-semibold text-foreground">{row.title}</span>
-      ),
-    },
-    {
-      header: "Type",
-      cell: (row: Blog) => (
-        <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
-            row.type === "project"
-              ? "bg-secondary text-foreground dark:bg-secondary/40 dark:text-foreground"
-              : "bg-accent/20 text-foreground dark:bg-accent/25 dark:text-foreground"
-          }`}
-        >
-          {row.type}
-        </span>
-      ),
-    },
-    {
-      header: "Status",
-      cell: (row: Blog) => {
-        return (
-          <div className="flex flex-col gap-1">
-            <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize w-fit ${BLOG_STATUS_STYLES[row.status] ?? BLOG_STATUS_STYLES.draft}`}
-            >
-              {row.status}
-            </span>
-            {row.status === "scheduled" && row.publishAt && (
-              <span className="text-[10px] text-muted-foreground">
-                {new Date(row.publishAt).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      header: "Updated",
-      cell: (row: Blog) => (
-        <span
-          className="text-muted-foreground"
-          title={
-            row.updatedAt ? new Date(row.updatedAt).toLocaleString() : row.date
-          }
-        >
-          {row.updatedAt ? formatRelativeTime(row.updatedAt) : row.date}
-        </span>
-      ),
-    },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: Blog) => (
-        <AdminActionCell
-          editHref={`/admin/blogs/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
-  ];
+  const columns = createBlogColumns(handleDelete);
 
   const deleteDescription = deleteDialog.id
     ? "Are you sure you want to delete this blog? This action cannot be undone."
@@ -190,7 +109,6 @@ export default function AdminBlogsList() {
         actionLabel="Create New"
       />
 
-      {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div className="relative flex-1 w-full sm:max-w-xs">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -225,7 +143,6 @@ export default function AdminBlogsList() {
         </div>
       </div>
 
-      {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
         <div className="flex items-center gap-4 px-4 py-2.5 rounded-lg border border-border bg-muted/30 animate-fade-in">
           <span className="text-sm font-medium">

@@ -1,13 +1,13 @@
 "use client";
 
-import { AdminTable, Column } from "@/components/admin/AdminTable";
+import { AdminTable } from "@/components/admin/AdminTable";
 import {
   AdminPageHeader,
-  AdminActionCell,
   ConfirmDialog,
 } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Certification } from "@/lib/db";
+import { createCertificationColumns } from "./columns";
 
 export default function AdminCertificationsList() {
   const {
@@ -27,37 +27,7 @@ export default function AdminCertificationsList() {
     deleteSuccessMessage: "Certification deleted successfully",
   });
 
-  const columns: Column<Certification>[] = [
-    {
-      header: "Title",
-      primary: true,
-      cell: (row: Certification) => (
-        <span className="font-semibold text-foreground">{row.title}</span>
-      ),
-    },
-    {
-      header: "Issuer",
-      accessorKey: "issuer",
-    },
-    {
-      header: "Year",
-      cell: (row: Certification) => (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
-          {row.date}
-        </span>
-      ),
-    },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: Certification) => (
-        <AdminActionCell
-          editHref={`/admin/certifications/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
-  ];
+  const columns = createCertificationColumns(handleDelete);
 
   return (
     <div className="space-y-8">
