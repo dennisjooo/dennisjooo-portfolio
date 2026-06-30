@@ -136,7 +136,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
       </head>
       <body
-        className={`bg-white dark:bg-black ${urbanist.variable} ${robotoMono.variable} ${caslon.variable}`}
+        className={`bg-background text-foreground ${urbanist.variable} ${robotoMono.variable} ${caslon.variable}`}
         suppressHydrationWarning
       >
         {/* Server-rendered cover: pure HTML, renders on first paint before React hydrates.
@@ -144,8 +144,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     Hidden by LoadingProvider or SSRCoverDismiss once the app is ready. */}
         <div id="__ssr_cover" aria-hidden="true" />
         <Providers>{children}</Providers>
-        <Analytics />
-        <SpeedInsights />
+        {process.env.VERCEL === "1" && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
