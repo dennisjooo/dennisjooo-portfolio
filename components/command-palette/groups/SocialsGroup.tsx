@@ -1,26 +1,29 @@
 "use client";
 
-import { Github, Linkedin, Mail, Globe, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import {
   CommandGroup,
   CommandItem,
   CommandSeparator,
 } from "@/components/ui/command";
-import { contactLinks } from "@/data/contactContent";
+import { resolveContactLinks } from "@/data/defaultContactLinks";
+import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
+import type { ContactLinkData } from "@/lib/types/contacts";
 
 interface SocialsGroupProps {
+  contacts?: ContactLinkData[];
   onSelect: (command: () => unknown) => void;
 }
 
-export function SocialsGroup({ onSelect }: SocialsGroupProps) {
+export function SocialsGroup({ contacts, onSelect }: SocialsGroupProps) {
+  const links = resolveContactLinks(contacts);
+
   return (
     <>
       <CommandGroup heading="Socials">
-        {contactLinks.map((link) => {
-          let Icon = Globe;
-          if (link.ariaLabel === "GitHub") Icon = Github;
-          if (link.ariaLabel === "LinkedIn") Icon = Linkedin;
-          if (link.ariaLabel === "Email") Icon = Mail;
+        {links.map((link) => {
+          const Icon =
+            CONTACT_ICON_MAP[link.icon] ?? CONTACT_ICON_MAP.website;
 
           return (
             <CommandItem

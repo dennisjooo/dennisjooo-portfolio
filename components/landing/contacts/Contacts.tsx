@@ -4,8 +4,9 @@ import React from "react";
 import { Dock } from "./Dock/Dock";
 import { DockIconLink } from "./Dock/DockIconLink";
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { contactLinks } from "@/data/contactContent";
+import { resolveContactLinks } from "@/data/defaultContactLinks";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
+import type { ContactLinkData } from "@/lib/types/contacts";
 import {
   m,
   useReducedMotion,
@@ -45,28 +46,20 @@ const headlineVariants = {
   },
 };
 
-interface ContactItem {
-  href: string;
-  ariaLabel: string;
-  icon: string;
-}
-
 interface ContactsProps {
-  contacts?: ContactItem[];
+  contacts?: ContactLinkData[];
 }
 
 const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
   const prefersReducedMotion = useReducedMotion();
-  const dockLinks = contacts?.length
-    ? contacts.map((contact) => {
-        const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
-        return {
-          href: contact.href,
-          ariaLabel: contact.ariaLabel,
-          icon: <Icon className="size-6" />,
-        };
-      })
-    : contactLinks;
+  const dockLinks = resolveContactLinks(contacts).map((contact) => {
+    const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
+    return {
+      href: contact.href,
+      ariaLabel: contact.ariaLabel,
+      icon: <Icon className="size-6" />,
+    };
+  });
 
   return (
     <section

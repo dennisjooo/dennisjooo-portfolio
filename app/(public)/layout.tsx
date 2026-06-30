@@ -3,6 +3,8 @@ import { LoadingProvider } from "@/components/loader/LoadingProvider";
 import { RouteProgressBar } from "@/components/transitions/RouteProgressBar";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
+import { getContacts } from "@/lib/data/site";
+import { resolveContactLinks } from "@/data/defaultContactLinks";
 
 const Navbar = dynamic(() => import("@/components/layout/navbar/Navbar"), {
   ssr: true,
@@ -26,12 +28,18 @@ const MotionProvider = dynamic(() =>
   })),
 );
 
-export default function PublicLayout({ children }: { children: ReactNode }) {
+export default async function PublicLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const contacts = resolveContactLinks(await getContacts());
+
   return (
     <>
       <ScrollToTop />
       <Navbar />
-      <CommandPalette />
+      <CommandPalette contacts={contacts} />
       <EasterEggs />
       <MotionProvider>
         <LoadingProvider>

@@ -23,8 +23,13 @@ import { UtilitiesGroup } from "./groups/UtilitiesGroup";
 import { ThemeGroup } from "./groups/ThemeGroup";
 import { SecretGroup } from "./groups/SecretGroup";
 import { SearchOptionsBar } from "./groups/SearchOptionsBar";
+import type { ContactLinkData } from "@/lib/types/contacts";
 
-export function CommandPalette() {
+interface CommandPaletteProps {
+  contacts?: ContactLinkData[];
+}
+
+export function CommandPalette({ contacts }: CommandPaletteProps) {
   const pathname = usePathname() ?? "/";
   const {
     open,
@@ -121,7 +126,7 @@ export function CommandPalette() {
           </>
         )}
 
-        <SocialsGroup onSelect={runCommand} />
+        <SocialsGroup contacts={contacts} onSelect={runCommand} />
 
         <UtilitiesGroup copied={copied} onCopyUrl={copyUrl} />
 
