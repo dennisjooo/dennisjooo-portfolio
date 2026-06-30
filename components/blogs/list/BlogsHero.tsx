@@ -48,13 +48,13 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
       <AnimatePresence mode="wait">
         <m.p
           key={activeTab}
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={prefersReducedMotion ? undefined : { opacity: 0, y: 8 }}
+          exit={prefersReducedMotion ? undefined : { opacity: 0, y: 6 }}
           transition={
             prefersReducedMotion
               ? { duration: 0 }
-              : { ...springConfigs.smooth, delay: 0.1 }
+              : { ...springConfigs.snappy, delay: 0.05 }
           }
           className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl"
         >
