@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 import {
   m,
   useReducedMotion,
-  springConfigs,
   viewportSettings,
+  headerStaggerContainer,
+  fadeUpItem,
+  underlineReveal,
 } from "@/components/motion";
 
 interface SectionHeaderProps {
@@ -17,34 +19,6 @@ interface SectionHeaderProps {
   className?: string;
   headerClassName?: string;
 }
-
-const headerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: springConfigs.smooth,
-  },
-};
-
-const underlineVariants = {
-  hidden: { scaleX: 0, opacity: 0 },
-  visible: {
-    scaleX: 1,
-    opacity: 1,
-    transition: { ...springConfigs.smooth, delay: 0.3 },
-  },
-};
 
 function StaticSectionHeader({
   number,
@@ -78,7 +52,7 @@ function AnimatedSectionHeader({
 
   return (
     <m.div
-      variants={prefersReducedMotion ? undefined : headerVariants}
+      variants={prefersReducedMotion ? undefined : headerStaggerContainer}
       initial={prefersReducedMotion ? undefined : "hidden"}
       whileInView={prefersReducedMotion ? undefined : "visible"}
       viewport={viewportSettings.once}
@@ -88,19 +62,19 @@ function AnimatedSectionHeader({
       )}
     >
       <m.span
-        variants={prefersReducedMotion ? undefined : itemVariants}
+        variants={prefersReducedMotion ? undefined : fadeUpItem}
         className="font-caslon italic text-3xl md:text-4xl text-foreground"
       >
         {number}
       </m.span>
       <m.span
-        variants={prefersReducedMotion ? undefined : itemVariants}
+        variants={prefersReducedMotion ? undefined : fadeUpItem}
         className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-70 text-muted-foreground"
       >
         {title}
       </m.span>
       <m.div
-        variants={prefersReducedMotion ? undefined : underlineVariants}
+        variants={prefersReducedMotion ? undefined : underlineReveal}
         className="absolute bottom-0 left-0 right-0 h-px bg-gradient-accent origin-left"
         style={{ boxShadow: "0 0 8px var(--accent-shadow)" }}
       />
@@ -117,7 +91,9 @@ export const SectionHeader = ({
   className,
   headerClassName,
 }: SectionHeaderProps) => {
-  const HeaderComponent = animated ? AnimatedSectionHeader : StaticSectionHeader;
+  const HeaderComponent = animated
+    ? AnimatedSectionHeader
+    : StaticSectionHeader;
 
   if (!subtitle && !description) {
     return (
