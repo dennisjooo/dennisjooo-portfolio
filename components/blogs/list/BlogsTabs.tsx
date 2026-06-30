@@ -14,11 +14,10 @@ import { AnimatePresence, m } from "@/components/motion";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";
 import { useMemo, useEffect } from "react";
-import type { Blog } from "@/lib/db";
-import type { PaginationResult } from "@/lib/data/blogs";
+import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
 
 interface BlogsTabsProps {
-  initialProjects?: Blog[];
+  initialProjects?: BlogListItem[];
   initialPagination?: PaginationResult;
 }
 

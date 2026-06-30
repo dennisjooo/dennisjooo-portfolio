@@ -1,14 +1,9 @@
-import type { Blog } from "@/lib/db";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import {
-  formatProjectDate,
-  calculateReadTime,
-} from "@/lib/utils/projectFormatting";
+import { formatProjectDate } from "@/lib/utils/projectFormatting";
 import { ContentCard, PaginatedList } from "@/components/shared";
 import { FeaturedCard } from "./FeaturedCard";
 import { BlogsListSkeleton } from "./skeletons";
-import { ContentCardSkeleton } from "./skeletons/ContentCardSkeleton";
-import type { PaginationResult } from "@/lib/data/blogs";
+import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
 import { usePaginatedList } from "@/lib/hooks/usePaginatedList";
 import { useMemo } from "react";
 
@@ -16,8 +11,20 @@ const PAGE_SIZE = 7;
 
 interface ProjectsListProps {
   type?: "project" | "blog" | "all";
-  initialData?: Blog[];
+  initialData?: BlogListItem[];
   initialPagination?: PaginationResult;
+}
+
+function LoadMoreFallback() {
+  return (
+    <div
+      className="flex justify-center py-6"
+      aria-busy="true"
+      aria-label="Loading more posts"
+    >
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
+    </div>
+  );
 }
 
 export default function ProjectsList({
@@ -33,12 +40,14 @@ export default function ProjectsList({
     return params;
   }, [type]);
 
-  const paginatedList = usePaginatedList<Blog>({
+  const paginatedList = usePaginatedList<BlogListItem>({
     endpoint: "/api/blogs",
     pageSize: PAGE_SIZE,
     initialData,
     initialPagination,
     queryParams,
+    prefetchNextPage: true,
+    infiniteScrollRootMargin: "800px",
   });
 
   const emptyMessage =
@@ -57,7 +66,6 @@ export default function ProjectsList({
 
   return (
     <div className="w-full">
-      {/* Featured first post */}
       {featuredItem && (
         <FeaturedCard
           title={featuredItem.title}
@@ -66,22 +74,15 @@ export default function ProjectsList({
           date={formatProjectDate(featuredItem.date, true)}
           imageUrl={featuredItem.imageUrl ?? undefined}
           type={featuredItem.type}
-          readTime={`${calculateReadTime(featuredItem.blogPost)} min`}
+          readTime={`${featuredItem.readTimeMinutes} min`}
         />
       )}
 
-      {/* Remaining posts in grid */}
       <PaginatedList
         {...paginatedList}
         items={remainingItems}
         emptyMessage={emptyMessage}
-        loadingMoreSkeleton={
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <ContentCardSkeleton key={i} />
-            ))}
-          </div>
-        }
+        loadingMoreSkeleton={<LoadMoreFallback />}
         keyExtractor={(p) => `${p.title}_${p.date}`}
         renderItem={(
           {
@@ -89,9 +90,9 @@ export default function ProjectsList({
             description,
             date,
             imageUrl,
-            blogPost,
             type: itemType,
             slug,
+            readTimeMinutes,
           },
           index,
         ) => (
@@ -103,7 +104,7 @@ export default function ProjectsList({
             imageUrl={imageUrl ?? undefined}
             index={index}
             type={itemType}
-            readTime={`${calculateReadTime(blogPost)} min`}
+            readTime={`${readTimeMinutes} min`}
             variant="standard"
           />
         )}

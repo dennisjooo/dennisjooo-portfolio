@@ -1,11 +1,12 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import { db, blogs, type Blog } from "@/lib/db";
-import { eq, desc, count, and, type SQL } from "drizzle-orm";
+import { eq, desc, count, and, not, like, type SQL } from "drizzle-orm";
 import { CACHE_CONFIG } from "@/lib/constants/cache";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { buildPagination } from "@/lib/api/apiHelpers";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
+import { calculateReadTime } from "@/lib/utils/projectFormatting";
 
 export { visibleBlogsFilter };
 
@@ -17,9 +18,37 @@ export interface PaginationResult {
   hasMore: boolean;
 }
 
+export interface BlogListItem {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  date: string;
+  type: "project" | "blog";
+  slug: string | null;
+  readTimeMinutes: number;
+}
+
 export interface BlogsResult {
-  data: Blog[];
+  data: BlogListItem[];
   pagination: PaginationResult;
+}
+
+function toBlogListItem(row: {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  date: string;
+  type: "project" | "blog";
+  slug: string | null;
+  blogPost: string;
+}): BlogListItem {
+  const { blogPost, ...rest } = row;
+  return {
+    ...rest,
+    readTimeMinutes: calculateReadTime(blogPost),
+  };
 }
 
 export async function findBlogBySlug(
@@ -82,11 +111,27 @@ export const getBlogs = unstable_cache(
       const offset = (page - 1) * limit;
       const effectiveType = type === "all" ? null : type;
 
-      const whereClause = effectiveType
-        ? and(eq(blogs.type, effectiveType), visibleBlogsFilter())
-        : visibleBlogsFilter();
+      const visibilityFilter = and(
+        visibleBlogsFilter(),
+        not(like(blogs.slug, "%-preview")),
+      );
 
-      const baseQuery = db.select().from(blogs).where(whereClause);
+      const whereClause = effectiveType
+        ? and(eq(blogs.type, effectiveType), visibilityFilter)
+        : visibilityFilter;
+
+      const listSelect = {
+        id: blogs.id,
+        title: blogs.title,
+        description: blogs.description,
+        imageUrl: blogs.imageUrl,
+        date: blogs.date,
+        type: blogs.type,
+        slug: blogs.slug,
+        blogPost: blogs.blogPost,
+      };
+
+      const baseQuery = db.select(listSelect).from(blogs).where(whereClause);
       const countQuery = db
         .select({ count: count() })
         .from(blogs)
@@ -100,7 +145,7 @@ export const getBlogs = unstable_cache(
       const total = totalResult[0]?.count ?? 0;
 
       return {
-        data: blogResults,
+        data: blogResults.map(toBlogListItem),
         pagination: buildPagination(total, page, limit),
       };
     } catch (error) {

@@ -8,6 +8,11 @@ interface PaginationState {
   total: number;
 }
 
+interface PrefetchedPage<T> {
+  items: T[];
+  pagination: PaginationState;
+}
+
 interface UsePaginatedListOptions<T> {
   endpoint: string;
   pageSize: number;
@@ -17,9 +22,19 @@ interface UsePaginatedListOptions<T> {
   resolveData?: (data: Record<string, unknown>) => T[];
   dataKey?: string;
   paginationKey?: string;
+  prefetchNextPage?: boolean;
+  infiniteScrollRootMargin?: string;
 }
 
 const EMPTY_QUERY_PARAMS: Record<string, string | number | boolean> = {};
+
+function toPaginationState(data: PaginationResult): PaginationState {
+  return {
+    page: data.page,
+    hasMore: data.hasMore,
+    total: data.total,
+  };
+}
 
 export function usePaginatedList<T>({
   endpoint,
@@ -30,6 +45,8 @@ export function usePaginatedList<T>({
   resolveData,
   dataKey = "data",
   paginationKey = "pagination",
+  prefetchNextPage = false,
+  infiniteScrollRootMargin = "200px",
 }: UsePaginatedListOptions<T>) {
   const serializedParams = queryParams ? JSON.stringify(queryParams) : "";
 
@@ -50,6 +67,95 @@ export function usePaginatedList<T>({
 
   const initialFetchSkipped = useRef(hasInitialData);
   const fetchAbortRef = useRef<AbortController | null>(null);
+  const prefetchAbortRef = useRef<AbortController | null>(null);
+  const prefetchCacheRef = useRef<Map<number, PrefetchedPage<T>>>(new Map());
+  const prefetchInFlightRef = useRef<number | null>(null);
+
+  const buildFetchUrl = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams();
+      params.append("page", page.toString());
+      params.append("limit", pageSize.toString());
+
+      Object.entries(stableQueryParams).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          params.append(key, String(value));
+        }
+      });
+
+      return `${endpoint}?${params.toString()}`;
+    },
+    [endpoint, pageSize, stableQueryParams],
+  );
+
+  const parseFetchResponse = useCallback(
+    (data: Record<string, unknown>) => {
+      const newItems = resolveData
+        ? resolveData(data)
+        : (data[dataKey] as T[]) || [];
+      const paginationData = data[paginationKey] as
+        PaginationResult | undefined;
+
+      return {
+        items: newItems,
+        pagination: paginationData ? toPaginationState(paginationData) : null,
+      };
+    },
+    [resolveData, dataKey, paginationKey],
+  );
+
+  const prefetchPage = useCallback(
+    async (page: number) => {
+      if (!prefetchNextPage || page < 1) return;
+      if (prefetchCacheRef.current.has(page)) return;
+      if (prefetchInFlightRef.current === page) return;
+
+      prefetchAbortRef.current?.abort();
+      const abortController = new AbortController();
+      prefetchAbortRef.current = abortController;
+      prefetchInFlightRef.current = page;
+
+      try {
+        const res = await fetch(buildFetchUrl(page), {
+          signal: abortController.signal,
+        });
+        const data = await res.json();
+        const parsed = parseFetchResponse(data);
+
+        if (
+          !abortController.signal.aborted &&
+          parsed.pagination &&
+          parsed.items.length > 0
+        ) {
+          prefetchCacheRef.current.set(page, {
+            items: parsed.items,
+            pagination: parsed.pagination,
+          });
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name !== "AbortError") {
+          console.error(
+            `Failed to prefetch page ${page} from ${endpoint}`,
+            error,
+          );
+        }
+      } finally {
+        if (prefetchInFlightRef.current === page) {
+          prefetchInFlightRef.current = null;
+        }
+      }
+    },
+    [prefetchNextPage, buildFetchUrl, parseFetchResponse, endpoint],
+  );
+
+  const schedulePrefetch = useCallback(
+    (currentPage: number, hasMore: boolean) => {
+      if (prefetchNextPage && hasMore) {
+        void prefetchPage(currentPage + 1);
+      }
+    },
+    [prefetchNextPage, prefetchPage],
+  );
 
   const fetchItems = useCallback(
     async (page: number, reset = false) => {
@@ -67,32 +173,17 @@ export function usePaginatedList<T>({
       }
 
       try {
-        const params = new URLSearchParams();
-        params.append("page", page.toString());
-        params.append("limit", pageSize.toString());
-
-        Object.entries(stableQueryParams).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            params.append(key, String(value));
-          }
-        });
-
-        const res = await fetch(`${endpoint}?${params.toString()}`, {
+        const res = await fetch(buildFetchUrl(page), {
           signal: abortController.signal,
         });
         const data = await res.json();
+        const parsed = parseFetchResponse(data);
 
-        const newItems = resolveData ? resolveData(data) : data[dataKey] || [];
-        const paginationData = data[paginationKey];
+        setItems((prev) => (reset ? parsed.items : [...prev, ...parsed.items]));
 
-        setItems((prev) => (reset ? newItems : [...prev, ...newItems]));
-
-        if (paginationData) {
-          setPagination({
-            page: paginationData.page,
-            hasMore: paginationData.hasMore,
-            total: paginationData.total,
-          });
+        if (parsed.pagination) {
+          setPagination(parsed.pagination);
+          schedulePrefetch(parsed.pagination.page, parsed.pagination.hasMore);
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name !== "AbortError") {
@@ -105,15 +196,14 @@ export function usePaginatedList<T>({
         }
       }
     },
-    [
-      endpoint,
-      pageSize,
-      stableQueryParams,
-      resolveData,
-      dataKey,
-      paginationKey,
-    ],
+    [buildFetchUrl, parseFetchResponse, endpoint, schedulePrefetch],
   );
+
+  useEffect(() => {
+    prefetchCacheRef.current.clear();
+    prefetchInFlightRef.current = null;
+    prefetchAbortRef.current?.abort();
+  }, [serializedParams]);
 
   useEffect(() => {
     if (initialFetchSkipped.current) {
@@ -127,22 +217,54 @@ export function usePaginatedList<T>({
   }, [fetchItems]);
 
   useEffect(() => {
+    if (!prefetchNextPage || !hasInitialData || !initialPagination?.hasMore) {
+      return;
+    }
+
+    void prefetchPage(2);
+  }, [
+    prefetchNextPage,
+    hasInitialData,
+    initialPagination?.hasMore,
+    prefetchPage,
+    serializedParams,
+  ]);
+
+  useEffect(() => {
     return () => {
       fetchAbortRef.current?.abort();
+      prefetchAbortRef.current?.abort();
     };
   }, []);
 
   const loadMore = useCallback(() => {
-    if (!loadingMore && pagination.hasMore) {
-      fetchItems(pagination.page + 1);
+    if (loadingMore || !pagination.hasMore) return;
+
+    const nextPage = pagination.page + 1;
+    const cached = prefetchCacheRef.current.get(nextPage);
+
+    if (cached) {
+      prefetchCacheRef.current.delete(nextPage);
+      setItems((prev) => [...prev, ...cached.items]);
+      setPagination(cached.pagination);
+      schedulePrefetch(cached.pagination.page, cached.pagination.hasMore);
+      return;
     }
-  }, [fetchItems, loadingMore, pagination.hasMore, pagination.page]);
+
+    fetchItems(nextPage);
+  }, [
+    loadingMore,
+    pagination.hasMore,
+    pagination.page,
+    fetchItems,
+    schedulePrefetch,
+  ]);
 
   const sentinelRef = useInfiniteScroll({
     onLoadMore: loadMore,
     hasMore: pagination.hasMore,
     isLoading: loadingMore,
-    rootMargin: "200px",
+    rootMargin: infiniteScrollRootMargin,
   });
 
   return {

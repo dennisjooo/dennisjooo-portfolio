@@ -3,7 +3,7 @@ import { db, blogs } from "@/lib/db";
 import { desc, count, eq, and, ilike, not, like } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
-import { visibleBlogsFilter } from "@/lib/data/blogs";
+import { getBlogs, visibleBlogsFilter } from "@/lib/data/blogs";
 import { validateAndPrepareBlogBody } from "@/lib/api/blogHelpers";
 import {
   requireAuth,
@@ -36,6 +36,16 @@ export async function GET(request: Request) {
       validStatuses.includes(statusParam as (typeof validStatuses)[number])
         ? (statusParam as "draft" | "scheduled" | "published")
         : null;
+
+    if (!userId && !adminStatus && !searchQuery) {
+      const result = await getBlogs(page, limit, type ?? "all");
+      return withCacheHeaders(
+        NextResponse.json({
+          success: true,
+          ...result,
+        }),
+      );
+    }
 
     const conditions = [];
     if (type) conditions.push(eq(blogs.type, type));
