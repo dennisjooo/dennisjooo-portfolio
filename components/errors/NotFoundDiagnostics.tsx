@@ -10,7 +10,7 @@ export function NotFoundDiagnostics() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.8 }}
     >
-      <div className="flex flex-col gap-2 font-mono text-[10px] md:text-xs text-muted-foreground/80 uppercase tracking-[0.2em]">
+      <div className="flex flex-col gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80 md:text-xs">
         <div className="flex items-center justify-end gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
           <span>System Critical</span>
