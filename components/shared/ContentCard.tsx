@@ -10,7 +10,6 @@ import {
   springConfigs,
   viewportSettings,
 } from "@/components/motion";
-import { NOISE_OVERLAY_LIGHT } from "@/lib/constants/noiseOverlay";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 interface ContentCardProps {
   title: string;
@@ -59,8 +58,7 @@ export const ContentCard = ({
     },
   };
 
-  // Hover lift amounts
-  const hoverY = isFeatured ? -12 : -6;
+  const hoverY = -6;
 
   return (
     <Link
@@ -89,18 +87,11 @@ export const ContentCard = ({
         }
         className="relative h-full"
       >
-        <div className="absolute -inset-px bg-gradient-accent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        <article className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden">
+        <article className="relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden transition-colors duration-300 group-hover:border-foreground/30">
           <m.div
             layoutId={`hero-image-${slug}`}
             className="relative w-full aspect-[16/9] bg-muted overflow-hidden"
           >
-            <div
-              className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
-              style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
-            />
-
             {imageUrl ? (
               <Image
                 src={imageUrl}
