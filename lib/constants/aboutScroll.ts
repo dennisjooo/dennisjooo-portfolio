@@ -1,0 +1,2 @@
+export const ABOUT_SCROLL_MOBILE = 1500;
+export const ABOUT_SCROLL_DESKTOP = 1200;

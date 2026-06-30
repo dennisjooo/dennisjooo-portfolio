@@ -6,6 +6,10 @@ import {
   resolveSectionScrollTarget,
   setScrollAnimationsReady,
 } from "@/lib/utils/scrollHelpers";
+import {
+  ABOUT_SCROLL_MOBILE,
+  ABOUT_SCROLL_DESKTOP,
+} from "@/lib/constants/aboutScroll";
 
 interface UseAboutAnimationsProps {
   sectionRef: RefObject<HTMLDivElement | null>;
@@ -59,7 +63,7 @@ export const useAboutAnimations = ({
               ease: "power2.out",
               inertia: false,
             },
-            end: "+=2500",
+            end: `+=${ABOUT_SCROLL_MOBILE}`,
             fastScrollEnd: true,
             preventOverlaps: true,
             invalidateOnRefresh: true,
@@ -88,7 +92,7 @@ export const useAboutAnimations = ({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: "+=2000",
+            end: `+=${ABOUT_SCROLL_DESKTOP}`,
             pin: true,
             pinSpacing: false,
             scrub: 0.5,
