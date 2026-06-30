@@ -10,7 +10,7 @@ import {
   getContextSnippet,
   type ProcessedProject,
   type ProcessedWorkExperience,
-} from "@/components/command-palette/commandPaletteUtils";
+} from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
 
 export type SearchScope = "all" | "projects" | "work";
