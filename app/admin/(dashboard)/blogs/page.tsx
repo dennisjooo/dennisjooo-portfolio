@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { AdminTable } from "@/components/admin/AdminTable";
-import {
-  AdminPageHeader,
-  ConfirmDialog,
-} from "@/components/admin/shared";
+import { AdminPageHeader, ConfirmDialog } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Blog } from "@/lib/db";
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";

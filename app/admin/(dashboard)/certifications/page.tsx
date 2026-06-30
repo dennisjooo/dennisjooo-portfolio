@@ -1,10 +1,7 @@
 "use client";
 
 import { AdminTable } from "@/components/admin/AdminTable";
-import {
-  AdminPageHeader,
-  ConfirmDialog,
-} from "@/components/admin/shared";
+import { AdminPageHeader, ConfirmDialog } from "@/components/admin/shared";
 import { useAdminList } from "@/components/admin/hooks";
 import type { Certification } from "@/lib/db";
 import { createCertificationColumns } from "./columns";

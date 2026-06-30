@@ -22,8 +22,7 @@ export function SocialsGroup({ contacts, onSelect }: SocialsGroupProps) {
     <>
       <CommandGroup heading="Socials">
         {links.map((link) => {
-          const Icon =
-            CONTACT_ICON_MAP[link.icon] ?? CONTACT_ICON_MAP.website;
+          const Icon = CONTACT_ICON_MAP[link.icon] ?? CONTACT_ICON_MAP.website;
 
           return (
             <CommandItem

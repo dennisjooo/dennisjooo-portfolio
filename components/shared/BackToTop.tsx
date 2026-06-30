@@ -9,11 +9,7 @@ const BackToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", toggleVisibility);
@@ -23,21 +19,11 @@ const BackToTop = () => {
     };
   }, []);
 
-  const handleScrollToTop = () => scrollToTopWithRefresh();
-
   return (
     <button
       type="button"
-      onClick={handleScrollToTop}
-      className={`
-                fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full
-                border border-border bg-background/85 text-muted-foreground backdrop-blur-md
-                transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out
-                hover:border-foreground hover:bg-foreground hover:text-background
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
-                sm:bottom-8 sm:right-8
-                ${isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}
-            `}
+      onClick={() => scrollToTopWithRefresh()}
+      className={`fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full border border-border bg-background/85 text-muted-foreground backdrop-blur-md transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out hover:border-foreground hover:bg-foreground hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:bottom-8 sm:right-8 ${isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}`}
       aria-label="Back to top"
       aria-hidden={!isVisible}
       tabIndex={isVisible ? 0 : -1}

@@ -9,11 +9,7 @@ interface RollbackConfig {
 }
 
 type RollbackPhase =
-  | "typing-to-old"
-  | "pausing"
-  | "deleting-old"
-  | "typing-new"
-  | "done";
+  "typing-to-old" | "pausing" | "deleting-old" | "typing-new" | "done";
 
 const parseRollback = (text: string): RollbackConfig | null => {
   const rollbackRegex = /^(.*){{(.+?)>>(.+?)}}(.*)$/;
