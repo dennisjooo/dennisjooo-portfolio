@@ -3,13 +3,11 @@
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
 } from "react";
 import { m, useReducedMotion } from "@/components/motion";
-import { Loader } from "./Loader";
 import { dismissSSRCover } from "./dismissSSRCover";
 
 const FIRST_VISIT_KEY = "portfolio-has-visited";
@@ -34,9 +32,8 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
     useState(!hasVisitedOnMount);
   const [contentReady, setContentReady] = useState(hasVisitedOnMount);
 
-  const [progress, setProgress] = useState(0);
   const didRevealRef = useRef(false);
-  const rafRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const revealContent = useCallback(() => {
     setShowInitialLoader(false);
@@ -50,25 +47,6 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
       dismissSSRCover();
       window.dispatchEvent(new Event("portfolio:content-revealed"));
     });
-  }, []);
-
-  const runProgress = useCallback((durationMs: number, onDone: () => void) => {
-    const start = performance.now();
-
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      const p = Math.min((elapsed / durationMs) * 100, 100);
-      setProgress(p);
-
-      if (p < 100) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        onDone();
-      }
-    };
-
-    setProgress(0);
-    rafRef.current = requestAnimationFrame(tick);
   }, []);
 
   useEffect(() => {
@@ -86,18 +64,12 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
       return;
     }
 
-    runProgress(INITIAL_MIN_MS, revealContent);
+    timerRef.current = setTimeout(revealContent, INITIAL_MIN_MS);
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [hasVisitedOnMount, prefersReducedMotion, revealContent, runProgress]);
-
-  useLayoutEffect(() => {
-    if (!showInitialLoader) return;
-    const ssrLoader = document.getElementById("__ssr_loader");
-    if (ssrLoader) ssrLoader.style.visibility = "hidden";
-  }, [showInitialLoader]);
+  }, [hasVisitedOnMount, prefersReducedMotion, revealContent]);
 
   useEffect(() => {
     if (!showInitialLoader) return;
@@ -135,7 +107,6 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
 
   return (
     <>
-      <Loader visible={showInitialLoader} progress={progress} />
       <m.div
         data-content-ready={contentReady ? "true" : "false"}
         initial={false}
