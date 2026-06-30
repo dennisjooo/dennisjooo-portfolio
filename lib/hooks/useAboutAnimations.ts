@@ -1,7 +1,7 @@
 "use client";
 
 import { RefObject, useEffect } from "react";
-import { ContentSection } from "@/components/landing/about/contentSections";
+import { ContentSection } from "@/lib/constants/aboutContent";
 import {
   resolveSectionScrollTarget,
   setScrollAnimationsReady,

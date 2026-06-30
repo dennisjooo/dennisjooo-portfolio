@@ -9,31 +9,12 @@ import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { useFormDirty } from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
+import {
+  ABOUT_SECTIONS,
+  type AboutAdminKey,
+} from "@/lib/constants/aboutSections";
 
-const sections = [
-  {
-    key: "aboutIntro",
-    title: "The Logic",
-    description: "Introduction - Who you are",
-  },
-  {
-    key: "aboutExperience",
-    title: "The Builder",
-    description: "Your work and experience",
-  },
-  {
-    key: "aboutPersonal",
-    title: "The Curiosity",
-    description: "Personal interests and hobbies",
-  },
-  {
-    key: "aboutOutro",
-    title: "The Connection",
-    description: "Call to action and contact",
-  },
-] as const;
-
-type SectionKey = (typeof sections)[number]["key"];
+type SectionKey = AboutAdminKey;
 
 export default function AboutAdminPage() {
   const { config, loading, updateConfig } = useSiteConfig();
@@ -107,9 +88,9 @@ export default function AboutAdminPage() {
       </div>
 
       <div className="space-y-6">
-        {sections.map((section) => (
+        {ABOUT_SECTIONS.map((section) => (
           <div
-            key={section.key}
+            key={section.adminKey}
             className="glass-panel p-6 rounded-2xl border border-border/50"
           >
             <div className="mb-4">
@@ -121,16 +102,16 @@ export default function AboutAdminPage() {
               </p>
             </div>
             <AutoResizeTextarea
-              value={content[section.key]}
+              value={content[section.adminKey]}
               onValueChange={(value) =>
-                setContent({ ...content, [section.key]: value })
+                setContent({ ...content, [section.adminKey]: value })
               }
               className={cn(formStyles.input, "min-h-[7.5rem]")}
               placeholder={`Enter content for ${section.title}...`}
             />
             <div className="mt-2 text-right">
               <span className="text-xs text-muted-foreground font-mono">
-                {content[section.key].length} characters
+                {content[section.adminKey].length} characters
               </span>
             </div>
           </div>

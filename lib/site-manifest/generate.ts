@@ -1,6 +1,6 @@
 import packageJson from "@/package.json";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/constants/site";
-import { defaultAboutContent } from "@/components/landing/about/contentSections";
+import { defaultAboutContent } from "@/lib/constants/aboutContent";
 import { skillCategories } from "@/data/skillContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import type { SiteManifestData } from "./types";
