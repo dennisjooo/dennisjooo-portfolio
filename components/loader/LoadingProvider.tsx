@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
@@ -91,6 +92,12 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [hasVisitedOnMount, prefersReducedMotion, revealContent, runProgress]);
+
+  useLayoutEffect(() => {
+    if (!showInitialLoader) return;
+    const ssrLoader = document.getElementById("__ssr_loader");
+    if (ssrLoader) ssrLoader.style.visibility = "hidden";
+  }, [showInitialLoader]);
 
   useEffect(() => {
     if (!showInitialLoader) return;

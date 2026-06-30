@@ -16,27 +16,20 @@ export function Loader({ visible, progress }: LoaderProps) {
       {visible && (
         <m.div
           key="loader"
-          className="loader-overlay fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-background"
-          initial={{ opacity: 1 }}
+          className="loader-overlay fixed inset-0 z-[100000] flex flex-col items-center justify-center bg-background"
+          initial={false}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="flex flex-col items-center gap-10 px-6">
             <div className="flex flex-col items-center gap-2" aria-hidden>
-              {nameParts.map((part, lineIndex) => (
-                <m.p
+              {nameParts.map((part) => (
+                <p
                   key={part}
                   className="font-caslon italic text-3xl md:text-5xl tracking-tight text-foreground leading-[1.15] py-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    delay: lineIndex * 0.12,
-                    duration: 0.45,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
                 >
                   {part}
-                </m.p>
+                </p>
               ))}
             </div>
 
@@ -48,14 +41,9 @@ export function Loader({ visible, progress }: LoaderProps) {
               />
             </div>
 
-            <m.span
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground tabular-nums"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground tabular-nums">
               {Math.round(progress)}%
-            </m.span>
+            </span>
           </div>
         </m.div>
       )}

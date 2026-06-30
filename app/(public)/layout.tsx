@@ -1,6 +1,7 @@
 import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { LoadingProvider } from "@/components/loader/LoadingProvider";
 import { RouteProgressBar } from "@/components/transitions/RouteProgressBar";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import { getContacts } from "@/lib/data/site";
@@ -22,12 +23,6 @@ const EasterEggs = dynamic(() =>
   })),
 );
 
-const MotionProvider = dynamic(() =>
-  import("@/components/motion/MotionProvider").then((m) => ({
-    default: m.MotionProvider,
-  })),
-);
-
 export default async function PublicLayout({
   children,
 }: {
@@ -36,18 +31,16 @@ export default async function PublicLayout({
   const contacts = resolveContactLinks(await getContacts());
 
   return (
-    <>
-      <ScrollToTop />
-      <Navbar />
-      <CommandPalette contacts={contacts} />
-      <EasterEggs />
-      <MotionProvider>
-        <LoadingProvider>
-          <main>{children}</main>
-          <RouteProgressBar />
-        </LoadingProvider>
-      </MotionProvider>
-      <Footer />
-    </>
+    <MotionProvider>
+      <LoadingProvider>
+        <ScrollToTop />
+        <Navbar />
+        <CommandPalette contacts={contacts} />
+        <EasterEggs />
+        <main>{children}</main>
+        <RouteProgressBar />
+        <Footer />
+      </LoadingProvider>
+    </MotionProvider>
   );
 }
