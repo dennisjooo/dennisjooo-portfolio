@@ -39,3 +39,8 @@ next-env.d.ts
 # dev
 dev/
 AGENT.md
+
+# code editor garbage
+.cursor/
+.codex/
+.claude/
