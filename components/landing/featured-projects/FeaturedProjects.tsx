@@ -13,7 +13,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ projects }) => {
     <SectionShell id="projects" overflowHidden>
       <SectionHeader
         number="04."
-        title="Featured Projects"
+        title="Projects"
         subtitle="Projects"
         description="Things I've built that mostly still work."
       />
