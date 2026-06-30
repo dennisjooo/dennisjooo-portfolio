@@ -46,7 +46,7 @@ export default async function Home() {
 
       <div
         id="home-content"
-        className="relative z-10 bg-white dark:bg-black shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+        className="relative z-10 bg-background shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
       >
         <About profileImageUrl={profileImageUrl} aboutContent={aboutContent} />
         <WorkExperience workExperience={workExperience} />

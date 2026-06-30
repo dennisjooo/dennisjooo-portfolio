@@ -33,9 +33,7 @@ export function SecretGroup({ show, onSelect }: SecretGroupProps) {
           }
         >
           <Gift className="h-4 w-4 text-accent" />
-          <span className="font-medium text-gradient-primary">
-            Claim Free Bitcoin
-          </span>
+          <span className="font-medium text-display">Claim Free Bitcoin</span>
           <Sparkles className="ml-auto h-3 w-3 text-accent animate-pulse" />
         </CommandItem>
       </CommandGroup>

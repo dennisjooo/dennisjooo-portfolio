@@ -70,7 +70,7 @@ export const MobileWorkCard = memo(
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-3xl font-caslon italic text-gradient-primary leading-tight pb-1">
+                <h3 className="text-3xl font-caslon italic text-display leading-tight pb-1">
                   {group.companyName}
                 </h3>
                 <div className="flex items-center gap-3">

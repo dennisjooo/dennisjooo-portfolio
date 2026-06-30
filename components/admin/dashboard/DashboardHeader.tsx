@@ -52,7 +52,7 @@ export function DashboardHeader({
       <div className="space-y-2">
         <h1 className="font-caslon italic text-4xl md:text-5xl lg:text-6xl text-foreground">
           {greeting},{" "}
-          <span className="not-italic font-sans font-bold text-gradient-primary">
+          <span className="not-italic font-sans font-bold text-display">
             {userName || "Admin"}.
           </span>
         </h1>

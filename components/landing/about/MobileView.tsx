@@ -29,7 +29,7 @@ export const MobileView: React.FC<MobileViewProps> = ({
           key={section.id}
           className="w-screen h-full flex flex-col justify-center px-8 space-y-6"
         >
-          <h2 className="text-5xl font-caslon italic leading-tight text-gradient-primary pb-2">
+          <h2 className="text-5xl font-caslon italic leading-tight text-display pb-2">
             {section.title}
           </h2>
           <div className="w-12 h-px bg-current opacity-20 text-foreground" />

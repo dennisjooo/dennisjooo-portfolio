@@ -121,7 +121,7 @@ html.dark {
     );
   }
 
-  .text-gradient-primary {
+  .text-display {
     @apply text-foreground;
   }
 
@@ -134,15 +134,6 @@ html.dark {
     );
   }
 
-  /* Border and shadow utilities */
-  .border-accent {
-    border-color: var(--accent-border);
-  }
-
-  .shadow-accent {
-    box-shadow: 0 0 15px var(--accent-shadow);
-  }
-
   .glass-panel {
     @apply bg-white/70 dark:bg-neutral-900/70 backdrop-blur-lg shadow-xl;
   }
@@ -151,22 +142,8 @@ html.dark {
     @apply bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-2xl shadow-accent/10;
   }
 
-  /* Code Block Utilities */
-  .code-block-wrapper {
-    @apply bg-gray-100 dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg overflow-hidden shadow-lg;
-  }
-
-  .code-block-header {
-    @apply bg-gray-200 dark:bg-gray-900 px-4 py-2 border-b border-gray-300 dark:border-gray-800 flex items-center justify-between;
-  }
-
   .code-copy-btn {
     @apply flex items-center space-x-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-all duration-200 border border-border/50 hover:border-border;
-  }
-
-  /* Typography Utilities */
-  .text-background-layer {
-    @apply text-neutral-200 dark:text-neutral-800;
   }
 }
 
@@ -292,66 +269,6 @@ html.dark {
   .page-transition-enter {
     animation: none;
   }
-}
-
-/* Contacts section animations */
-@keyframes contacts-blur-reveal {
-  from {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
-  }
-}
-
-@keyframes contacts-spring-item {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  70% {
-    transform: translateY(-5px) scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.contacts-blur-reveal {
-  animation: contacts-blur-reveal 0.6s ease-out forwards;
-}
-
-.contacts-stagger-item {
-  animation: fade-in-up 0.5s ease-out forwards;
-}
-
-.contacts-spring-item {
-  animation: contacts-spring-item 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
-    forwards;
-}
-
-/* Stagger delays for headline group (0.1s between items) */
-.contacts-stagger-0 {
-  animation-delay: 0s;
-}
-.contacts-stagger-1 {
-  animation-delay: 0.1s;
-}
-.contacts-stagger-2 {
-  animation-delay: 0.2s;
-}
-
-/* Bottom group delays (0.6s base delay + 0.1s stagger) */
-.contacts-bottom-0 {
-  animation-delay: 0.6s;
-}
-.contacts-bottom-1 {
-  animation-delay: 0.7s;
 }
 
 /* ─── CSS Marquee ─── */

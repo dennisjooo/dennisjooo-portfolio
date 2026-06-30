@@ -24,7 +24,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
 
       {/* Role Header */}
       <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-6 gap-3">
-        <h4 className="text-3xl md:text-4xl font-sans font-bold leading-none text-gradient-primary tracking-tight pb-1">
+        <h4 className="text-3xl md:text-4xl font-sans font-bold leading-none text-display tracking-tight pb-1">
           {role.title}
         </h4>
         <span className="font-mono text-xs md:text-sm tracking-widest uppercase text-muted-foreground bg-foreground/5 px-3 py-1 rounded w-fit">
