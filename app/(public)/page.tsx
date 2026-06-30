@@ -5,15 +5,11 @@ import FeaturedProjects from "@/components/landing/featured-projects";
 import dynamic from "next/dynamic";
 import { HomeEffects } from "./HomeEffects";
 import {
-  db,
-  siteConfig,
-  workExperiences,
-  contacts,
-  type SiteConfig,
-} from "@/lib/db";
-import { desc, asc } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
-import { CACHE_CONFIG } from "@/lib/constants/cache";
+  getSiteConfig,
+  getWorkExperience,
+  getContacts,
+  buildAboutContent,
+} from "@/lib/data/site";
 import { getFeaturedProjects } from "@/lib/data/blogs";
 
 export const revalidate = 60;
@@ -31,63 +27,6 @@ const Contacts = dynamic(() => import("@/components/landing/contacts"), {
 
 const BackToTop = dynamic(() => import("@/components/shared/BackToTop"));
 
-const getSiteConfig = unstable_cache(
-  async (): Promise<SiteConfig | null> => {
-    try {
-      const [config] = await db.select().from(siteConfig).limit(1);
-      return config ?? null;
-    } catch (error) {
-      console.error("Failed to fetch site config", error);
-      return null;
-    }
-  },
-  ["site-config"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["site-config"] },
-);
-
-const getWorkExperience = unstable_cache(
-  async () => {
-    try {
-      const experiences = await db
-        .select()
-        .from(workExperiences)
-        .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt));
-      return experiences.map((exp) => ({
-        ...exp,
-        responsibilities: exp.responsibilities ?? [],
-        order: exp.order ?? undefined,
-      }));
-    } catch (error) {
-      console.error("Failed to fetch work experience", error);
-      return [];
-    }
-  },
-  ["work-experience"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["work-experience"] },
-);
-
-const getContacts = unstable_cache(
-  async () => {
-    try {
-      const contactItems = await db
-        .select()
-        .from(contacts)
-        .orderBy(asc(contacts.order), desc(contacts.createdAt));
-
-      return contactItems.map((contact) => ({
-        href: contact.href,
-        ariaLabel: contact.label,
-        icon: contact.icon,
-      }));
-    } catch (error) {
-      console.error("Failed to fetch contacts", error);
-      return [];
-    }
-  },
-  ["contacts"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["contacts"] },
-);
-
 export default async function Home() {
   const [projects, config, workExperience, contactLinks] = await Promise.all([
     getFeaturedProjects(),
@@ -97,14 +36,7 @@ export default async function Home() {
   ]);
 
   const profileImageUrl = config?.profileImageUrl ?? undefined;
-  const aboutContent = config
-    ? {
-        intro: config.aboutIntro ?? "",
-        experience: config.aboutExperience ?? "",
-        personal: config.aboutPersonal ?? "",
-        outro: config.aboutOutro ?? "",
-      }
-    : undefined;
+  const aboutContent = buildAboutContent(config);
 
   return (
     <>
