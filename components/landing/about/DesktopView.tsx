@@ -1,7 +1,7 @@
 import React, { Ref } from "react";
 import { ProfileImage } from "./ProfileImage";
 import { ProfileMetadata } from "./ProfileMetadata";
-import { ContentSection } from "./contentSections";
+import { ContentSection } from "@/lib/content/aboutContent";
 
 interface DesktopViewProps {
   contentSections: ContentSection[];

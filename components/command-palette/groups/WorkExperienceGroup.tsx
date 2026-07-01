@@ -9,7 +9,7 @@ import {
 import {
   highlightSearchTerm,
   type ProcessedWorkExperience,
-} from "../commandPaletteUtils";
+} from "@/lib/command-palette/utils";
 
 interface FilteredWorkExperience extends ProcessedWorkExperience {
   context: string | null;

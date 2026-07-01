@@ -9,7 +9,7 @@ import {
 import {
   highlightSearchTerm,
   type ProcessedProject,
-} from "../commandPaletteUtils";
+} from "@/lib/command-palette/utils";
 
 interface FilteredProject extends ProcessedProject {
   context: string | null;

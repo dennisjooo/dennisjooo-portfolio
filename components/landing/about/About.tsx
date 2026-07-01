@@ -2,16 +2,16 @@
 
 import React, { useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { SectionHeader } from "@/components/shared/SectionHeader";
-import { sectionInnerClasses } from "@/components/shared/SectionShell";
+import { SectionHeader } from "@/components/shared/layout/SectionHeader";
+import { sectionInnerClasses } from "@/components/shared/layout/SectionShell";
 import { MobileView } from "./MobileView";
 import { DesktopView } from "./DesktopView";
-import { useAboutAnimations } from "@/lib/hooks/useAboutAnimations";
+import { useAboutAnimations } from "@/lib/hooks/domain/useAboutAnimations";
 import {
   createContentSections,
   defaultAboutContent,
   AboutContent,
-} from "./contentSections";
+} from "@/lib/content/aboutContent";
 
 interface AboutProps {
   profileImageUrl?: string;

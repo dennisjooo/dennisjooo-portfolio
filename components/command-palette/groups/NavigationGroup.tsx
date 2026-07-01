@@ -5,8 +5,8 @@ import {
   CommandItem,
   CommandSeparator,
 } from "@/components/ui/command";
-import { navItems } from "@/data/navbarContent";
-import { getIconForId } from "../commandPaletteUtils";
+import { navItems } from "@/lib/content/navbarContent";
+import { getIconForId } from "@/lib/command-palette/utils";
 
 interface NavigationGroupProps {
   onSelect: (command: () => unknown) => void;
