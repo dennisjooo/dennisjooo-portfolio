@@ -1,6 +1,6 @@
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
-import { AdminMobileMenu } from "@/components/admin/AdminMobileMenu";
+import { AdminSidebar } from "@/components/admin/layout/AdminSidebar";
+import { AdminCommandPalette } from "@/components/admin/layout/AdminCommandPalette";
+import { AdminMobileMenu } from "@/components/admin/layout/AdminMobileMenu";
 import { UnsavedChangesProvider } from "@/components/admin/hooks";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

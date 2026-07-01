@@ -1,6 +1,6 @@
 "use client";
 
-import ContactForm from "@/components/admin/ContactForm";
+import ContactForm from "@/components/admin/forms/ContactForm";
 import { createAdminNewPage } from "@/components/admin/factories";
 import type { Contact } from "@/lib/db";
 

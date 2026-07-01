@@ -11,14 +11,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import type { WorkExperience } from "@/lib/db";
-import { formStyles } from "./shared/formStyles";
-import { FormActions } from "./shared/FormActions";
-import { FormField } from "./shared/FormField";
-import { AutoResizeTextarea } from "./shared/AutoResizeTextarea";
-import { DragGripHandle } from "./shared/DragGripHandle";
-import { useImageUpload } from "@/lib/hooks/useImageUpload";
-import { useFormSubmit } from "./hooks/useFormSubmit";
-import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { FormActions } from "@/components/admin/shared/FormActions";
+import { FormField } from "@/components/admin/shared/FormField";
+import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
+import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
+import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
+import { useFormSubmit } from "@/components/admin/hooks/useFormSubmit";
+import {
+  useFormDirty,
+  useUnsavedChanges,
+} from "@/components/admin/hooks/useUnsavedChanges";
 import { cn } from "@/lib/utils";
 
 interface WorkExperienceFormProps {

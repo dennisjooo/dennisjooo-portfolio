@@ -1,6 +1,6 @@
 "use client";
 
-import { BlogForm } from "@/components/admin/BlogForm";
+import { BlogForm } from "@/components/admin/forms/BlogForm";
 import { createAdminEditPage } from "@/components/admin/factories";
 import type { Blog } from "@/lib/db";
 

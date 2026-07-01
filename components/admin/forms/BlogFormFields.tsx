@@ -2,8 +2,8 @@ import type { Blog } from "@/lib/db";
 import Image from "next/image";
 import { PhotoIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
-import { formStyles } from "./shared/formStyles";
-import { FormField } from "./shared/FormField";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { FormField } from "@/components/admin/shared/FormField";
 
 interface BlogFormFieldsProps {
   formData: Partial<Blog>;

@@ -6,13 +6,16 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { buildUploadPayload } from "@/lib/utils/blobUpload";
 import { cn } from "@/lib/utils";
-import { formStyles } from "./shared/formStyles";
-import { useImageUpload } from "@/lib/hooks/useImageUpload";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import { useFormDirty } from "./hooks/useUnsavedChanges";
+import { useFormDirty } from "@/components/admin/hooks/useUnsavedChanges";
 import { BlogFormFields } from "./BlogFormFields";
 import { LinkManager } from "./LinkManager";
-import { MarkdownEditor, EditorMode } from "./MarkdownEditor";
+import {
+  MarkdownEditor,
+  EditorMode,
+} from "@/components/admin/editors/MarkdownEditor";
 
 interface BlogFormProps {
   initialData?: Blog;

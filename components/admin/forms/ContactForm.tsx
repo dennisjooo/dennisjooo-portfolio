@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_OPTIONS } from "@/lib/constants/contactIcons";
-import { formStyles } from "./shared/formStyles";
-import { FormActions } from "./shared/FormActions";
-import { FormField } from "./shared/FormField";
-import { useFormSubmit } from "./hooks/useFormSubmit";
-import { useFormDirty, useUnsavedChanges } from "./hooks/useUnsavedChanges";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { FormActions } from "@/components/admin/shared/FormActions";
+import { FormField } from "@/components/admin/shared/FormField";
+import { useFormSubmit } from "@/components/admin/hooks/useFormSubmit";
+import {
+  useFormDirty,
+  useUnsavedChanges,
+} from "@/components/admin/hooks/useUnsavedChanges";
 
 interface ContactFormProps {
   initialData?: Contact;

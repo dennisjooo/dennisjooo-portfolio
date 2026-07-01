@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { LinkIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { formStyles } from "./shared/formStyles";
-import { AutoResizeTextarea } from "./shared/AutoResizeTextarea";
-import { DragGripHandle } from "./shared/DragGripHandle";
+import { formStyles } from "@/components/admin/shared/formStyles";
+import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
+import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { cn } from "@/lib/utils";
 
 interface Link {

@@ -1,6 +1,6 @@
 "use client";
 
-import CertificationForm from "@/components/admin/CertificationForm";
+import CertificationForm from "@/components/admin/forms/CertificationForm";
 import { createAdminEditPage } from "@/components/admin/factories";
 import type { Certification } from "@/lib/db";
 
