@@ -99,9 +99,7 @@ function buildSearchRegex(
   if (!term) return null;
 
   const escaped = escapeRegex(term);
-  const pattern = options.exactMatch
-    ? buildWholeWordPattern(escaped)
-    : escaped;
+  const pattern = options.exactMatch ? buildWholeWordPattern(escaped) : escaped;
   const flags = `${options.caseSensitive ? "" : "i"}${global ? "g" : ""}`;
 
   return new RegExp(pattern, flags);
