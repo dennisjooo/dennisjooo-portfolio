@@ -76,19 +76,64 @@ export function setProcessedWorkExperience(
   });
 }
 
+export interface SearchOptions {
+  caseSensitive: boolean;
+  exactMatch: boolean;
+}
+
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildWholeWordPattern(escaped: string): string {
+  // Treat dots as part of identifiers (e.g. "Three.js") so whole-word
+  // search does not match a prefix before a file extension or package name.
+  return `(?<![\\w.])${escaped}(?![\\w.])`;
+}
+
+function buildSearchRegex(
+  term: string,
+  options: SearchOptions,
+  global = false,
+): RegExp | null {
+  if (!term) return null;
+
+  const escaped = escapeRegex(term);
+  const pattern = options.exactMatch
+    ? buildWholeWordPattern(escaped)
+    : escaped;
+  const flags = `${options.caseSensitive ? "" : "i"}${global ? "g" : ""}`;
+
+  return new RegExp(pattern, flags);
+}
+
+export function matchesSearch(
+  text: string,
+  term: string,
+  options: SearchOptions,
+): boolean {
+  const regex = buildSearchRegex(term, options);
+  if (!regex) return false;
+  return regex.test(text);
+}
+
 export function getContextSnippet(
   text: string,
   searchTerm: string,
+  options: SearchOptions,
   contextChars: number = 40,
 ): string | null {
-  const lowerText = text.toLowerCase();
-  const lowerTerm = searchTerm.toLowerCase();
-  const index = lowerText.indexOf(lowerTerm);
+  const regex = buildSearchRegex(searchTerm, options);
+  if (!regex) return null;
 
-  if (index === -1) return null;
+  const match = regex.exec(text);
+  if (!match) return null;
+
+  const index = match.index;
+  const matchLength = match[0].length;
 
   const start = Math.max(0, index - contextChars);
-  const end = Math.min(text.length, index + searchTerm.length + contextChars);
+  const end = Math.min(text.length, index + matchLength + contextChars);
 
   let snippet = text.slice(start, end);
 
@@ -98,10 +143,17 @@ export function getContextSnippet(
   return snippet;
 }
 
-export function highlightSearchTerm(text: string, searchTerm: string): string {
+export function highlightSearchTerm(
+  text: string,
+  searchTerm: string,
+  options: SearchOptions,
+): string {
+  const regex = buildSearchRegex(searchTerm, options, true);
+  if (!regex) return text;
+
   return text.replace(
-    new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"),
-    '<mark class="bg-accent/30 text-foreground font-medium rounded px-0.5 py-px">$1</mark>',
+    regex,
+    '<mark class="bg-accent/30 text-foreground font-medium rounded px-0.5 py-px">$&</mark>',
   );
 }
 

@@ -8,8 +8,10 @@ import {
   processedWorkExperience,
   setProcessedWorkExperience,
   getContextSnippet,
+  matchesSearch,
   type ProcessedProject,
   type ProcessedWorkExperience,
+  type SearchOptions,
 } from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
 
@@ -46,31 +48,6 @@ export interface UseCommandPaletteReturn {
   runCommand: (command: () => unknown) => void;
   copyUrl: () => void;
   router: ReturnType<typeof useRouter>;
-}
-
-function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function createSearchMatcher(
-  term: string,
-  options: { caseSensitive: boolean; exactMatch: boolean },
-): (text: string) => boolean {
-  const { caseSensitive, exactMatch } = options;
-
-  if (exactMatch) {
-    const escaped = escapeRegex(term);
-    const flags = caseSensitive ? "" : "i";
-    const regex = new RegExp(`\\b${escaped}\\b`, flags);
-    return (text: string) => regex.test(text);
-  }
-
-  // Simple substring match
-  if (caseSensitive) {
-    return (text: string) => text.includes(term);
-  }
-  const lowerTerm = term.toLowerCase();
-  return (text: string) => text.toLowerCase().includes(lowerTerm);
 }
 
 export function useCommandPalette(): UseCommandPaletteReturn {
@@ -165,40 +142,45 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     }
   }, [copyToClipboard, runCommand]);
 
-  const matcher = React.useMemo(() => {
-    if (!search.trim()) return null;
-    return createSearchMatcher(search.trim(), { caseSensitive, exactMatch });
-  }, [search, caseSensitive, exactMatch]);
+  const searchOptions = React.useMemo(
+    (): SearchOptions => ({ caseSensitive, exactMatch }),
+    [caseSensitive, exactMatch],
+  );
 
   const filteredProjects = React.useMemo((): FilteredProject[] => {
-    if (!search.trim() || !matcher || searchScope === "work") return [];
+    if (!search.trim() || searchScope === "work") return [];
 
     const term = search.trim();
 
     return processedProjects
       .map((project) => {
-        if (!matcher(project.rawContent)) return null;
+        if (!matchesSearch(project.rawContent, term, searchOptions))
+          return null;
 
-        const context = getContextSnippet(project.rawContent, term);
+        const context = getContextSnippet(
+          project.rawContent,
+          term,
+          searchOptions,
+        );
         return { ...project, context };
       })
       .filter((p): p is FilteredProject => p !== null);
-  }, [search, matcher, searchScope]);
+  }, [search, searchOptions, searchScope]);
 
   const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
-    if (!search.trim() || !matcher || searchScope === "projects") return [];
+    if (!search.trim() || searchScope === "projects") return [];
 
     const term = search.trim();
 
     return processedWorkExperience
       .map((work) => {
-        if (!matcher(work.rawContent)) return null;
+        if (!matchesSearch(work.rawContent, term, searchOptions)) return null;
 
-        const context = getContextSnippet(work.rawContent, term);
+        const context = getContextSnippet(work.rawContent, term, searchOptions);
         return { ...work, context };
       })
       .filter((w): w is FilteredWorkExperience => w !== null);
-  }, [search, matcher, searchScope]);
+  }, [search, searchOptions, searchScope]);
 
   return {
     open,

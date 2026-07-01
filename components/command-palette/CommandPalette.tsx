@@ -114,12 +114,14 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
             <ProjectsGroup
               projects={filteredProjects}
               searchTerm={search.trim()}
+              searchOptions={{ caseSensitive, exactMatch }}
               onSelect={runCommand}
               onNavigate={handleNavigate}
             />
             <WorkExperienceGroup
               workExperience={filteredWorkExperience}
               searchTerm={search.trim()}
+              searchOptions={{ caseSensitive, exactMatch }}
               onSelect={runCommand}
               onNavigate={handleNavigate}
             />

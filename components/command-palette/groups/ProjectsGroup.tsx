@@ -9,6 +9,7 @@ import {
 import {
   highlightSearchTerm,
   type ProcessedProject,
+  type SearchOptions,
 } from "@/lib/command-palette/utils";
 
 interface FilteredProject extends ProcessedProject {
@@ -18,6 +19,7 @@ interface FilteredProject extends ProcessedProject {
 interface ProjectsGroupProps {
   projects: FilteredProject[];
   searchTerm: string;
+  searchOptions: SearchOptions;
   onSelect: (command: () => unknown) => void;
   onNavigate: (path: string) => void;
 }
@@ -25,6 +27,7 @@ interface ProjectsGroupProps {
 export function ProjectsGroup({
   projects,
   searchTerm,
+  searchOptions,
   onSelect,
   onNavigate,
 }: ProjectsGroupProps) {
@@ -52,7 +55,11 @@ export function ProjectsGroup({
                 <span
                   className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
                   dangerouslySetInnerHTML={{
-                    __html: highlightSearchTerm(project.context, searchTerm),
+                    __html: highlightSearchTerm(
+                      project.context,
+                      searchTerm,
+                      searchOptions,
+                    ),
                   }}
                 />
               )}

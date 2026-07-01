@@ -9,6 +9,7 @@ import {
 import {
   highlightSearchTerm,
   type ProcessedWorkExperience,
+  type SearchOptions,
 } from "@/lib/command-palette/utils";
 
 interface FilteredWorkExperience extends ProcessedWorkExperience {
@@ -18,6 +19,7 @@ interface FilteredWorkExperience extends ProcessedWorkExperience {
 interface WorkExperienceGroupProps {
   workExperience: FilteredWorkExperience[];
   searchTerm: string;
+  searchOptions: SearchOptions;
   onSelect: (command: () => unknown) => void;
   onNavigate: (path: string) => void;
 }
@@ -25,6 +27,7 @@ interface WorkExperienceGroupProps {
 export function WorkExperienceGroup({
   workExperience,
   searchTerm,
+  searchOptions,
   onSelect,
   onNavigate,
 }: WorkExperienceGroupProps) {
@@ -52,7 +55,11 @@ export function WorkExperienceGroup({
                 <span
                   className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
                   dangerouslySetInnerHTML={{
-                    __html: highlightSearchTerm(work.context, searchTerm),
+                    __html: highlightSearchTerm(
+                      work.context,
+                      searchTerm,
+                      searchOptions,
+                    ),
                   }}
                 />
               )}
