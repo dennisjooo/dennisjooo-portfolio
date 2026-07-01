@@ -17,12 +17,12 @@ The typography relies on extreme contrast between Serif and Sans-Serif, and size
 
 ### Primary Pairing
 
-- **Name / Headlines:** *Libre Caslon Text* (Italic, via `font-caslon`) vs **Urbanist** (Bold/Black, Weight: 700+).
-  - *Usage:* The hero name lockup uses Caslon italic with mix-blend modes over the gradient background.
-  - *Scale:* Hero name uses `vw` units (`18vw` mobile, `8–9vw` desktop) for impact. Reserve `vw` typography for the hero only; all other display headings use rem-based scale (`text-4xl`–`text-6xl`).
-- **Body / UI:** *Urbanist* (clean, geometric sans-serif).
-- **Metadata / Tech:** *Roboto Mono* (technical, code-like).
-  - *Usage:* Copyright dates, locations, section titles, "Scroll to Explore" indicators.
+- **Name / Headlines:** _Libre Caslon Text_ (Italic, via `font-caslon`) vs **Urbanist** (Bold/Black, Weight: 700+).
+  - _Usage:_ The hero name lockup uses Caslon italic with mix-blend modes over the gradient background.
+  - _Scale:_ Hero name uses `vw` units (`18vw` mobile, `8–9vw` desktop) for impact. Reserve `vw` typography for the hero only; all other display headings use rem-based scale (`text-4xl`–`text-6xl`).
+- **Body / UI:** _Urbanist_ (clean, geometric sans-serif).
+- **Metadata / Tech:** _Roboto Mono_ (technical, code-like).
+  - _Usage:_ Copyright dates, locations, section titles, "Scroll to Explore" indicators.
 
 ### Styling Rules
 
@@ -49,7 +49,7 @@ The site uses a vertical stacking context to create depth.
 
 1. **Sticky Hero:** The Hero section is `position: sticky; top: 0; z-index: 0;`.
 2. **Content Stack:** The main content container is `relative; z-index: 10;` with `bg-background`.
-3. **The Reveal:** As users scroll, the content slides *over* the Hero (like a card deck).
+3. **The Reveal:** As users scroll, the content slides _over_ the Hero (like a card deck).
 4. **Parallax:** The Hero undergoes a subtle GSAP transformation (Scale Down + Blur) as it is covered.
 
 ### Smooth Scrolling
@@ -104,24 +104,24 @@ The site uses a vertical stacking context to create depth.
 
 The same content entity uses different names by layer. Use this table when naming files, routes, or UI copy:
 
-| Layer | Term | Notes |
-|-------|------|-------|
-| Database / API | `blogs` | Table name and REST endpoints |
-| Type field | `type: "project" \| "blog"` | Discriminator on each row |
-| Public URL | `/blogs`, `/blogs/[slug]` | Route path |
-| Nav section id | `"projects"` | Homepage anchor for featured work |
-| Component prefix | `Project*` | Historical naming (`ProjectContent`, `ProjectPageClient`) |
-| Admin UI label | "Blogs & Projects" | Display copy only |
+| Layer            | Term                        | Notes                                                     |
+| ---------------- | --------------------------- | --------------------------------------------------------- |
+| Database / API   | `blogs`                     | Table name and REST endpoints                             |
+| Type field       | `type: "project" \| "blog"` | Discriminator on each row                                 |
+| Public URL       | `/blogs`, `/blogs/[slug]`   | Route path                                                |
+| Nav section id   | `"projects"`                | Homepage anchor for featured work                         |
+| Component prefix | `Project*`                  | Historical naming (`ProjectContent`, `ProjectPageClient`) |
+| Admin UI label   | "Blogs & Projects"          | Display copy only                                         |
 
 **Rule:** DB entity is always `blogs`. Display label varies by `type` field. Do not rename the table or URL without a migration plan.
 
 ## 7. Content & Data Layers
 
-| Directory | Purpose |
-|-----------|---------|
-| `lib/content/` | Static marketing fallbacks (hero, nav, skills, about defaults, contact links) |
-| `lib/constants/` | Infra config (cache, site URL, blog status, scroll tuning, icons) |
-| `lib/data/` | Server-only DB fetchers with caching (`blogs.ts`, `site.ts`) |
+| Directory        | Purpose                                                                       |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `lib/content/`   | Static marketing fallbacks (hero, nav, skills, about defaults, contact links) |
+| `lib/constants/` | Infra config (cache, site URL, blog status, scroll tuning, icons)             |
+| `lib/data/`      | Server-only DB fetchers with caching (`blogs.ts`, `site.ts`)                  |
 
 ## 8. Icon Libraries
 
