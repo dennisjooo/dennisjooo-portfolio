@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { scrollToTopWithRefresh } from "@/lib/utils/scrollHelpers";
 
+/** Floating button that appears after scrolling down; scrolls the page back to top. */
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 

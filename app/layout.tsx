@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Urbanist, Roboto_Mono, Libre_Caslon_Text } from "next/font/google";
 import type { ReactNode } from "react";
+import "./styles/tokens.css";
 import "./globals.css";
+import "./styles/animations.css";
+import "./styles/marquee.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";

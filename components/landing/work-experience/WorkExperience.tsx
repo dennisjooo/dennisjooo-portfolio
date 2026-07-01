@@ -1,6 +1,6 @@
 import type { TimelineItemData } from "@/lib/types/workExperience";
-import { SectionHeader } from "@/components/shared/SectionHeader";
-import { SectionShell } from "@/components/shared/SectionShell";
+import { SectionHeader } from "@/components/shared/layout/SectionHeader";
+import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { DesktopTimeline } from "./Timeline/DesktopTimeline";
 import { WorkExperienceMobileClient } from "./WorkExperienceMobileClient";
 

@@ -7,6 +7,7 @@ import {
   scrollToTopWithRefresh,
 } from "@/lib/utils/scrollHelpers";
 
+/** Resets scroll position on route change (not a floating button — see BackToTop). */
 export const ScrollToTop = () => {
   const pathname = usePathname();
   const prevPathname = useRef<string | null>(null);

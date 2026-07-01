@@ -1,6 +1,6 @@
 import type { Blog } from "@/lib/db";
-import { SectionHeader } from "@/components/shared/SectionHeader";
-import { SectionShell } from "@/components/shared/SectionShell";
+import { SectionHeader } from "@/components/shared/layout/SectionHeader";
+import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { FeaturedProjectsGrid } from "./FeaturedProjectsGrid";
 import { ViewAllButton } from "./ViewAllButton";
 
