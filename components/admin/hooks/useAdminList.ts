@@ -2,52 +2,18 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
+import {
+  type UseAdminListOptions,
+  type UseAdminListReturn,
+} from "./adminListTypes";
+import { fetchAdminListItems } from "./fetchAdminListItems";
 
-interface UseAdminListOptions {
-  endpoint: string;
-  pageSize?: number;
-  enableReorder?: boolean;
-  reorderEndpoint?: string;
-  deleteSuccessMessage?: string;
-  itemName?: string;
-}
-
-interface PaginationData {
-  page: number;
-  totalPages: number;
-  total: number;
-}
-
-interface DeleteDialogState {
-  open: boolean;
-  id: string | null;
-  loading: boolean;
-}
-
-interface UseAdminListReturn<T> {
-  items: T[];
-  loading: boolean;
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  searchQuery: string;
-  filters: Record<string, string>;
-  selectedIds: Set<string>;
-  deleteDialog: DeleteDialogState;
-  handlePageChange: (page: number) => void;
-  handleSearch: (query: string) => void;
-  handleFilter: (key: string, value: string) => void;
-  handleDelete: (id: string) => void;
-  confirmDelete: () => Promise<void>;
-  cancelDelete: () => void;
-  handleBulkDelete: () => void;
-  confirmBulkDelete: () => Promise<void>;
-  toggleSelect: (id: string) => void;
-  toggleSelectAll: () => void;
-  clearSelection: () => void;
-  handleReorder: (nextItems: T[]) => Promise<void>;
-  refresh: (showLoading?: boolean) => Promise<void>;
-}
+export type {
+  UseAdminListOptions,
+  UseAdminListReturn,
+  DeleteDialogState,
+  PaginationData,
+} from "./adminListTypes";
 
 export function useAdminList<T extends { id: string; order?: number | null }>({
   endpoint,
@@ -65,9 +31,9 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [deleteDialog, setDeleteDialog] = useState<DeleteDialogState>({
+  const [deleteDialog, setDeleteDialog] = useState({
     open: false,
-    id: null,
+    id: null as string | null,
     loading: false,
   });
   const [bulkDeleteMode, setBulkDeleteMode] = useState(false);
@@ -87,55 +53,28 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     ) => {
       if (showLoading) setLoading(true);
       try {
-        const params = new URLSearchParams();
-        if (!enableReorder) {
-          params.set("page", String(page));
-          params.set("limit", String(pageSize));
-        }
-        const q = query ?? searchQuery;
-        if (q) params.set("q", q);
-
-        const activeFilters = currentFilters ?? filters;
-        Object.entries(activeFilters).forEach(([key, value]) => {
-          if (value) params.set(key, value);
+        const result = await fetchAdminListItems<T>({
+          endpoint,
+          page,
+          pageSize,
+          enableReorder,
+          itemName,
+          searchQuery,
+          filters,
+          query,
+          currentFilters,
         });
 
-        const url =
-          enableReorder && !params.toString()
-            ? endpoint
-            : `${endpoint}?${params.toString()}`;
-
-        const res = await fetch(url, { cache: "no-store" });
-
-        if (!res.ok) {
-          let errorMessage = `Failed to fetch ${itemName}s`;
-          try {
-            const errorData = await res.json();
-            if (errorData.error) {
-              errorMessage = errorData.error;
-            }
-          } catch {
-            errorMessage = `Failed to fetch ${itemName}s: ${res.status} ${res.statusText}`;
-          }
-          toast.error(errorMessage);
-          return;
-        }
-
-        const data = await res.json();
-
-        if (data.success !== false && (data.data || Array.isArray(data))) {
-          const fetchedItems = data.data || data;
-          setItems(fetchedItems);
-
-          if (data.pagination) {
-            const pagination = data.pagination as PaginationData;
-            setTotalPages(pagination.totalPages);
-            setCurrentPage(pagination.page);
-            setTotalItems(pagination.total ?? 0);
+        if (result) {
+          setItems(result.items);
+          if (result.pagination) {
+            setTotalPages(result.pagination.totalPages);
+            setCurrentPage(result.pagination.page);
+            setTotalItems(result.pagination.total ?? 0);
           } else {
             setCurrentPage(1);
             setTotalPages(1);
-            setTotalItems(fetchedItems.length);
+            setTotalItems(result.items.length);
           }
         }
       } catch (error) {

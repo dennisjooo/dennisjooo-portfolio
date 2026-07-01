@@ -1,56 +1,10 @@
-import { db, certifications } from "@/lib/db";
-import { NextResponse } from "next/server";
-import { desc, count } from "drizzle-orm";
-import { withCacheHeaders } from "@/lib/constants/cache";
-import {
-  requireAuth,
-  isAuthError,
-  successResponse,
-  errorResponse,
-  parsePagination,
-  buildPagination,
-} from "@/lib/api/apiHelpers";
+import { certifications } from "@/lib/db";
+import { desc } from "drizzle-orm";
+import { createListRouteHandler } from "@/lib/api/listRouteFactory";
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const { page, limit, offset } = parsePagination(searchParams);
-
-    const [certs, totalResult] = await Promise.all([
-      db
-        .select()
-        .from(certifications)
-        .orderBy(desc(certifications.date))
-        .offset(offset)
-        .limit(limit),
-      db.select({ count: count() }).from(certifications),
-    ]);
-
-    const total = totalResult[0]?.count ?? 0;
-
-    return withCacheHeaders(
-      NextResponse.json({
-        success: true,
-        data: certs,
-        pagination: buildPagination(total, page, limit),
-      }),
-    );
-  } catch (error) {
-    console.error("Failed to fetch certifications:", error);
-    return errorResponse("Failed to fetch certifications");
-  }
-}
-
-export async function POST(request: Request) {
-  const authResult = await requireAuth();
-  if (isAuthError(authResult)) return authResult;
-
-  try {
-    const body = await request.json();
-    const [cert] = await db.insert(certifications).values(body).returning();
-    return successResponse(cert, 201);
-  } catch (error) {
-    console.error("Failed to create certification:", error);
-    return errorResponse("Failed to create certification");
-  }
-}
+export const { GET, POST } = createListRouteHandler({
+  table: certifications,
+  entityName: "certification",
+  orderBy: desc(certifications.date),
+  cache: true,
+});

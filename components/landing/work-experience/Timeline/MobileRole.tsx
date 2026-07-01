@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { TimelineItemData } from "@/lib/types/workExperience";
-import { useExpandableList } from "@/lib/hooks/useExpandableList";
+import { RoleResponsibilitiesList } from "../RoleResponsibilitiesList";
 
 interface MobileRoleProps {
   role: TimelineItemData;
@@ -11,12 +11,8 @@ interface MobileRoleProps {
 
 export const MobileRole: React.FC<MobileRoleProps> = memo(
   ({ role, isLast }) => {
-    const { isExpanded, toggle, initialItems, expandedItems, hasMore } =
-      useExpandableList(role.responsibilities, 2);
-
     return (
       <div className="space-y-4">
-        {/* Role Header */}
         <div className="space-y-1">
           <h4 className="text-xl font-sans font-bold uppercase tracking-tight text-foreground">
             {role.title}
@@ -26,62 +22,14 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(
           </span>
         </div>
 
-        {/* Responsibilities */}
-        <ul className="space-y-2">
-          {initialItems.map((resp, respIndex) => (
-            <li
-              key={respIndex}
-              className="flex items-start text-sm font-light text-muted-foreground leading-relaxed"
-            >
-              <span className="mr-3 mt-2 w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
-              <span>{resp}</span>
-            </li>
-          ))}
-        </ul>
+        <RoleResponsibilitiesList
+          responsibilities={role.responsibilities}
+          initialCount={2}
+          itemKeyPrefix={`mobile-${role.title}`}
+          variant="mobile"
+          onToggleClick={(event) => event.stopPropagation()}
+        />
 
-        {/* Expandable items using CSS grid for smooth height animation */}
-        {hasMore && (
-          <div
-            className="grid transition-[grid-template-rows] duration-150 ease-out"
-            style={{
-              gridTemplateRows: isExpanded ? "1fr" : "0fr",
-            }}
-          >
-            <div className="overflow-hidden">
-              <ul className="space-y-2">
-                {expandedItems.map((resp, respIndex) => (
-                  <li
-                    key={`expanded-${respIndex}`}
-                    className="flex items-start text-sm font-light text-muted-foreground leading-relaxed"
-                  >
-                    <span className="mr-3 mt-2 w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
-                    <span>{resp}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-
-        {/* Read More Button */}
-        {hasMore && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggle();
-            }}
-            className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors pt-1"
-          >
-            <span>{isExpanded ? "Show Less" : "Show More"}</span>
-            <span
-              className={`transition-transform duration-150 ${isExpanded ? "rotate-180" : "rotate-0"}`}
-            >
-              ↓
-            </span>
-          </button>
-        )}
-
-        {/* Role Divider (not for last role) */}
         {!isLast && (
           <div className="pt-4">
             <div className="w-12 h-px bg-foreground/10" />
