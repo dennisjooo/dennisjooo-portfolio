@@ -55,7 +55,7 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
 
           <m.h2
             variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
-            className="font-caslon italic text-5xl md:text-6xl leading-tight text-foreground select-none"
+            className="font-caslon italic text-6xl md:text-7xl lg:text-8xl leading-tight text-foreground select-none"
           >
             Let&apos;s Talk
           </m.h2>
