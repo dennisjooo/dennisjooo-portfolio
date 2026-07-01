@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CameraIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { buildUploadPayload } from "@/lib/utils/blobUpload";
-import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
+import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
 import { LoadingSpinner } from "@/components/admin/shared";
 
 export default function ProfileAdminPage() {

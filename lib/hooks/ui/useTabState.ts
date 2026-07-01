@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getSessionItem, setSessionItem } from "@/lib/utils/storage";
-import { useMounted } from "@/lib/hooks/useMounted";
+import { useMounted } from "@/lib/hooks/ui/useMounted";
 
 type TabType = "blog" | "certifications";
 

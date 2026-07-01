@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { m } from "@/components/motion";
 import { Heading } from "@/lib/utils/markdownHelpers";
-import { useActiveHeading } from "@/lib/hooks/useActiveHeading";
+import { useActiveHeading } from "@/lib/hooks/scroll/useActiveHeading";
 import {
   getDisplayActiveId,
   handleTocClick,

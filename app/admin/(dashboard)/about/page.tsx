@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
-import { useSiteConfig } from "@/lib/hooks/useSiteConfig";
+import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
 import { LoadingSpinner } from "@/components/admin/shared";
 import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
 import { formStyles } from "@/components/admin/shared/formStyles";

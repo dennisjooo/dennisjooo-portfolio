@@ -7,7 +7,7 @@ import {
   Briefcase,
   FolderGit2,
 } from "lucide-react";
-import type { SearchScope } from "@/lib/hooks/useCommandPalette";
+import type { SearchScope } from "@/lib/hooks/nav/useCommandPalette";
 import { cn } from "@/lib/utils";
 
 interface SearchOptionsBarProps {

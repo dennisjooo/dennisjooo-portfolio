@@ -4,7 +4,7 @@ import { ContentCard, PaginatedList } from "@/components/shared";
 import { FeaturedCard } from "./FeaturedCard";
 import { BlogsListSkeleton } from "./skeletons";
 import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
-import { usePaginatedList } from "@/lib/hooks/usePaginatedList";
+import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { useMemo } from "react";
 
 const PAGE_SIZE = 7;

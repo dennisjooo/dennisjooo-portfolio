@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { CompanyGroup } from "@/lib/utils/workExperience";
-import { useScrollActiveZone } from "@/lib/hooks/useScrollActiveZone";
+import { useScrollActiveZone } from "@/lib/hooks/scroll/useScrollActiveZone";
 import { cn } from "@/lib/utils";
 import { CompanyHeader } from "./CompanyHeader";
 import { TimelineRole } from "./TimelineRole";

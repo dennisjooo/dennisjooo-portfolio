@@ -1,6 +1,6 @@
 "use client";
 
-import { useConsoleEasterEgg } from "@/lib/hooks/useConsoleEasterEgg";
+import { useConsoleEasterEgg } from "@/lib/hooks/domain/useConsoleEasterEgg";
 
 export function EasterEggs() {
   useConsoleEasterEgg();

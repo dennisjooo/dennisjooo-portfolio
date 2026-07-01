@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 
 const SmoothScroll = dynamic(
   () =>
-    import("@/components/shared/SmoothScroll").then((m) => ({
+    import("@/components/shared/scroll/SmoothScroll").then((m) => ({
       default: m.SmoothScroll,
     })),
   { ssr: false },

@@ -11,7 +11,7 @@ import {
   type ProcessedProject,
   type ProcessedWorkExperience,
 } from "@/lib/command-palette/utils";
-import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
+import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
 
 export type SearchScope = "all" | "projects" | "work";
 

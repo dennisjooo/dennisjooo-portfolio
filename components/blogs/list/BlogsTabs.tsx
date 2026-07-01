@@ -9,7 +9,7 @@ const tabContentVariants = {
   exit: { opacity: 0, y: -20 },
   transition: { duration: 0.3 },
 };
-import { useTabState } from "@/lib/hooks/useTabState";
+import { useTabState } from "@/lib/hooks/ui/useTabState";
 import { AnimatePresence, m } from "@/components/motion";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";

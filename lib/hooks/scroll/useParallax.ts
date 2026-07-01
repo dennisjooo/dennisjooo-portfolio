@@ -7,7 +7,7 @@ import {
   useTransform,
   MotionValue,
 } from "framer-motion";
-import { useMounted } from "@/lib/hooks/useMounted";
+import { useMounted } from "@/lib/hooks/ui/useMounted";
 
 interface ParallaxConfig {
   damping?: number;

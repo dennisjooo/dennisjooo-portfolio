@@ -8,7 +8,7 @@ import {
   CommandInput,
   CommandList,
 } from "@/components/ui/command";
-import { useCommandPalette } from "@/lib/hooks/useCommandPalette";
+import { useCommandPalette } from "@/lib/hooks/nav/useCommandPalette";
 import {
   scrollToTop,
   scrollToSection,

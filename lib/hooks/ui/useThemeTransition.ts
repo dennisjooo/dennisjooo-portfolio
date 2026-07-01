@@ -3,7 +3,7 @@
 import { useCallback, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
-import { useMounted } from "@/lib/hooks/useMounted";
+import { useMounted } from "@/lib/hooks/ui/useMounted";
 
 interface ThemeTransitionConfig {
   duration?: number;

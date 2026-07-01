@@ -2,7 +2,7 @@
 
 import { CertificationCard } from "./CertificationCard";
 import type { Certification } from "@/lib/db";
-import { usePaginatedList } from "@/lib/hooks/usePaginatedList";
+import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { PaginatedList } from "@/components/shared";
 import { CertificationsListSkeleton } from "./skeletons";
 

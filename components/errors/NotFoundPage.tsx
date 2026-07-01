@@ -1,6 +1,6 @@
 "use client";
 
-import { useParallax } from "@/lib/hooks/useParallax";
+import { useParallax } from "@/lib/hooks/scroll/useParallax";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { NotFoundBackground } from "./NotFoundBackground";
 import { NotFoundContent } from "./NotFoundContent";
