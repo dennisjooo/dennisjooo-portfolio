@@ -1,8 +1,8 @@
-import { Column } from "@/components/admin/AdminTable";
-import { AdminActionCell } from "@/components/admin/shared";
+import { Column } from "@/components/admin/layout/AdminTable";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import { Globe } from "lucide-react";
+import { createActionsColumn } from "./createActionsColumn";
 
 export function createContactColumns(
   handleDelete: (id: string) => void,
@@ -39,15 +39,6 @@ export function createContactColumns(
         </a>
       ),
     },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: Contact) => (
-        <AdminActionCell
-          editHref={`/admin/contacts/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
+    createActionsColumn<Contact>("/admin/contacts", handleDelete),
   ];
 }

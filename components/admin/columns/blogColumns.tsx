@@ -1,8 +1,8 @@
-import { Column } from "@/components/admin/AdminTable";
-import { AdminActionCell } from "@/components/admin/shared";
+import { Column } from "@/components/admin/layout/AdminTable";
 import { BLOG_STATUS_STYLES } from "@/lib/constants/blogStatus";
 import { formatRelativeTime } from "@/lib/utils/relativeTime";
 import type { Blog } from "@/lib/db";
+import { createActionsColumn } from "./createActionsColumn";
 
 export function createBlogColumns(
   handleDelete: (id: string) => void,
@@ -67,15 +67,6 @@ export function createBlogColumns(
         </span>
       ),
     },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: Blog) => (
-        <AdminActionCell
-          editHref={`/admin/blogs/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
+    createActionsColumn<Blog>("/admin/blogs", handleDelete),
   ];
 }

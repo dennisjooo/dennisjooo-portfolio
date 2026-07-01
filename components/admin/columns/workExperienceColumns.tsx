@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { Column } from "@/components/admin/AdminTable";
-import { AdminActionCell } from "@/components/admin/shared";
+import { Column } from "@/components/admin/layout/AdminTable";
 import type { WorkExperience } from "@/lib/db";
+import { createActionsColumn } from "./createActionsColumn";
 
 export function createWorkExperienceColumns(
   handleDelete: (id: string) => void,
@@ -43,15 +43,6 @@ export function createWorkExperienceColumns(
         </span>
       ),
     },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: WorkExperience) => (
-        <AdminActionCell
-          editHref={`/admin/work-experience/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
+    createActionsColumn<WorkExperience>("/admin/work-experience", handleDelete),
   ];
 }

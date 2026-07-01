@@ -1,6 +1,6 @@
-import { Column } from "@/components/admin/AdminTable";
-import { AdminActionCell } from "@/components/admin/shared";
+import { Column } from "@/components/admin/layout/AdminTable";
 import type { Certification } from "@/lib/db";
+import { createActionsColumn } from "./createActionsColumn";
 
 export function createCertificationColumns(
   handleDelete: (id: string) => void,
@@ -25,15 +25,6 @@ export function createCertificationColumns(
         </span>
       ),
     },
-    {
-      header: "Actions",
-      className: "text-right",
-      cell: (row: Certification) => (
-        <AdminActionCell
-          editHref={`/admin/certifications/${row.id}`}
-          onDelete={() => handleDelete(row.id)}
-        />
-      ),
-    },
+    createActionsColumn<Certification>("/admin/certifications", handleDelete),
   ];
 }
