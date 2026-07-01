@@ -16,13 +16,16 @@ This project is a responsive and interactive portfolio website showcasing Dennis
 
 ## Technologies Used
 
-- Next.js
+- Next.js (App Router)
 - React
 - TypeScript
 - Tailwind CSS
 - Framer Motion for animations
-- React Icon Cloud for skill visualization
-- MagicUI for the UI components
+- GSAP + Lenis for scroll-driven effects
+- Clerk for authentication
+- Drizzle ORM + Neon PostgreSQL
+- Vercel Blob for media storage
+- KaTeX, Mermaid, and react-markdown for rich blog content
 
 ## Getting Started
 

@@ -14,8 +14,17 @@
     "app/**/*.{ts,tsx}",
     "components/**/*.{ts,tsx}",
     "lib/**/*.{ts,tsx}",
-    "data/**/*.{ts,tsx}",
     "proxy.{ts,js}",
     "scripts/**/*.{ts,tsx,mjs,js}"
+  ],
+  "ignore": [
+    "components/admin/editors/index.ts",
+    "components/admin/forms/index.ts",
+    "components/admin/layout/index.ts",
+    "components/blogs/index.ts",
+    "components/command-palette/index.ts",
+    "components/layout/index.ts",
+    "lib/content/index.ts",
+    "lib/hooks/index.ts"
   ]
 }

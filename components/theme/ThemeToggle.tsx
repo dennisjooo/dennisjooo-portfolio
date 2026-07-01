@@ -2,7 +2,7 @@
 
 import { BsSun, BsMoon } from "react-icons/bs";
 import { cn } from "@/lib/utils";
-import { useThemeTransition } from "@/lib/hooks/useThemeTransition";
+import { useThemeTransition } from "@/lib/hooks/ui/useThemeTransition";
 
 interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number;
