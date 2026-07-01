@@ -6,7 +6,7 @@ import {
   CommandItem,
   CommandSeparator,
 } from "@/components/ui/command";
-import { resolveContactLinks } from "@/data/defaultContactLinks";
+import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import type { ContactLinkData } from "@/lib/types/contacts";
 

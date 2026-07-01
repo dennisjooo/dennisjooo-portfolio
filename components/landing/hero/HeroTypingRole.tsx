@@ -1,7 +1,7 @@
 "use client";
 
-import { HERO_CONTENT } from "@/data/heroContent";
-import { useTypingEffect } from "@/lib/hooks/useTypingEffect";
+import { HERO_CONTENT } from "@/lib/content/heroContent";
+import { useTypingEffect } from "@/lib/hooks/ui/useTypingEffect";
 import { BlinkingCursor } from "@/components/shared/BlinkingCursor";
 import { useReducedMotion } from "@/components/motion";
 

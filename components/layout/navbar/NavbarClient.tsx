@@ -7,13 +7,13 @@ import { DesktopMenu } from "./DesktopMenu";
 import { CommandMenuTrigger } from "./CommandMenuTrigger";
 import { MobileMenu } from "./MobileMenu";
 import { ThemeToggle } from "@/components/theme";
-import { navItems } from "@/data/navbarContent";
+import { navItems } from "@/lib/content/navbarContent";
 import {
   useHeroSectionState,
   useNavbarStyles,
   useSectionNavigation,
-} from "@/lib/hooks/useNavbar";
-import { useMounted } from "@/lib/hooks/useMounted";
+} from "@/lib/hooks/nav/useNavbar";
+import { useMounted } from "@/lib/hooks/ui/useMounted";
 
 export const NavbarClient = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

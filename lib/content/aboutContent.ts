@@ -1,4 +1,4 @@
-import { ABOUT_SECTIONS } from "./aboutSections";
+import { ABOUT_SECTIONS } from "@/lib/constants/aboutSections";
 
 export interface ContentSection {
   title: string;

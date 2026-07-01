@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { NavItem } from "@/data/navbarContent";
+import { NavItem } from "@/lib/content/navbarContent";
 interface DesktopMenuProps {
   navItems: NavItem[];
   scrolled: boolean;

@@ -1,11 +1,11 @@
-import { ScrollToTop } from "@/components/shared/ScrollToTop";
+import { ScrollToTop } from "@/components/shared/scroll/ScrollToTop";
 import { LoadingProvider } from "@/components/loader/LoadingProvider";
 import { RouteProgressBar } from "@/components/transitions/RouteProgressBar";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import { getContacts } from "@/lib/data/site";
-import { resolveContactLinks } from "@/data/defaultContactLinks";
+import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
 
 const Navbar = dynamic(() => import("@/components/layout/navbar/Navbar"), {
   ssr: true,

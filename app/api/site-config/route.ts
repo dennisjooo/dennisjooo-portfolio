@@ -6,7 +6,7 @@ import {
   successResponse,
   errorResponse,
 } from "@/lib/api/apiHelpers";
-import { defaultAboutContent } from "@/lib/constants/aboutContent";
+import { defaultAboutContent } from "@/lib/content/aboutContent";
 
 export async function GET() {
   try {

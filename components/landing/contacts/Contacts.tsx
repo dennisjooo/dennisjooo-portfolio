@@ -3,9 +3,9 @@
 import React from "react";
 import { Dock } from "./Dock/Dock";
 import { DockIconLink } from "./Dock/DockIconLink";
-import { SectionHeader } from "@/components/shared/SectionHeader";
-import { SectionShell } from "@/components/shared/SectionShell";
-import { resolveContactLinks } from "@/data/defaultContactLinks";
+import { SectionHeader } from "@/components/shared/layout/SectionHeader";
+import { SectionShell } from "@/components/shared/layout/SectionShell";
+import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import type { ContactLinkData } from "@/lib/types/contacts";
 import {

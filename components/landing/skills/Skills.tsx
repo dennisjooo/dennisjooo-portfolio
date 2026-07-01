@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { skillCategories } from "@/data/skillContent";
-import { SectionHeader } from "@/components/shared/SectionHeader";
+import { skillCategories } from "@/lib/content/skillContent";
+import { SectionHeader } from "@/components/shared/layout/SectionHeader";
 import {
   SectionShell,
   SectionShellHeader,
-} from "@/components/shared/SectionShell";
+} from "@/components/shared/layout/SectionShell";
 import { Marquee } from "./Marquee";
 import { getIconSlug } from "./utils";
 import {
