@@ -40,7 +40,6 @@ export default function ProjectPageClient({
       >
         <div className="min-h-screen bg-background text-foreground">
           <article className="w-full max-w-4xl mx-auto px-6 py-24 md:py-28">
-            {/* Editorial Hero */}
             <ArticleHero
               title={project.title}
               description={project.description}
@@ -52,7 +51,6 @@ export default function ProjectPageClient({
               slug={project.slug ?? ""}
             />
 
-            {/* Article Content */}
             <m.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -62,7 +60,6 @@ export default function ProjectPageClient({
               {children}
             </m.div>
 
-            {/* Project Links */}
             {project.links && project.links.length > 0 && (
               <m.div
                 initial={{ opacity: 0, y: 20 }}
@@ -73,7 +70,6 @@ export default function ProjectPageClient({
               </m.div>
             )}
 
-            {/* Back to all posts footer */}
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

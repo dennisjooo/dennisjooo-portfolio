@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BackToTop } from "@/components/shared";
-import ProjectPageClient from "./ProjectPageClient";
+import ProjectPageClient from "@/components/blogs/article/ProjectPageClient";
 import ProjectContent from "@/components/blogs/article/ProjectContent";
 import { unstable_cache } from "next/cache";
 import { CACHE_CONFIG } from "@/lib/constants/cache";
 import { extractHeadings } from "@/lib/utils/markdownHelpers";
 import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
 import { auth } from "@clerk/nextjs/server";
-import { PreviewBanner } from "./PreviewBanner";
+import { PreviewBanner } from "@/components/blogs/article/PreviewBanner";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;

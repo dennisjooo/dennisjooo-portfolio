@@ -3,7 +3,8 @@ import About from "@/components/landing/about";
 import WorkExperience from "@/components/landing/work-experience";
 import FeaturedProjects from "@/components/landing/featured-projects";
 import dynamic from "next/dynamic";
-import { HomeEffects } from "./HomeEffects";
+import { HomeEffects } from "@/components/landing/home/HomeEffects";
+import { SectionSkeleton } from "@/components/shared/SectionSkeleton";
 import {
   getSiteConfig,
   getWorkExperience,
@@ -14,10 +15,6 @@ import { getFeaturedProjects } from "@/lib/data/blogs";
 
 export const revalidate = 60;
 
-const SectionSkeleton = ({ height = "min-h-screen" }: { height?: string }) => (
-  <div className={`${height} bg-background`} />
-);
-
 const Skills = dynamic(() => import("@/components/landing/skills"), {
   loading: () => <SectionSkeleton height="min-h-[50vh]" />,
 });
@@ -25,7 +22,7 @@ const Contacts = dynamic(() => import("@/components/landing/contacts"), {
   loading: () => <SectionSkeleton height="min-h-[50vh]" />,
 });
 
-const BackToTop = dynamic(() => import("@/components/shared/BackToTop"));
+const BackToTop = dynamic(() => import("@/components/shared/scroll/BackToTop"));
 
 export default async function Home() {
   const [projects, config, workExperience, contactLinks] = await Promise.all([
