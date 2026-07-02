@@ -23,6 +23,8 @@ import { UtilitiesGroup } from "./groups/UtilitiesGroup";
 import { ThemeGroup } from "./groups/ThemeGroup";
 import { SecretGroup } from "./groups/SecretGroup";
 import { SearchOptionsBar } from "./groups/SearchOptionsBar";
+import { EasterEggProgressGroup } from "./groups/EasterEggProgressGroup";
+import { shouldShowEasterEggProgress } from "@/lib/easter-eggs/search";
 import type { ContactLinkData } from "@/lib/types/contacts";
 
 interface CommandPaletteProps {
@@ -71,10 +73,16 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     [pathname, router],
   );
 
+  const showEasterEggProgress = shouldShowEasterEggProgress(
+    search,
+    matchedSecrets.length,
+  );
+
   const hasSearchResults =
     filteredProjects.length > 0 ||
     filteredWorkExperience.length > 0 ||
-    matchedSecrets.length > 0;
+    matchedSecrets.length > 0 ||
+    showEasterEggProgress;
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -137,6 +145,8 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
         <ThemeGroup onSelect={runCommand} />
 
         <SecretGroup secrets={matchedSecrets} onSelect={runCommand} />
+
+        {showEasterEggProgress ? <EasterEggProgressGroup open={open} /> : null}
       </CommandList>
     </CommandDialog>
   );

@@ -1,4 +1,4 @@
-import { EASTER_EGG_STORAGE_KEY } from "./constants";
+import { EASTER_EGG_STORAGE_KEY, EASTER_EGG_FOUND_EVENT } from "./constants";
 import { PALETTE_SECRETS } from "./secrets";
 
 function readFoundIds(): string[] {
@@ -28,8 +28,17 @@ export function getFoundSecretCount(): number {
   return readFoundIds().length;
 }
 
+export function getFoundSecretIds(): string[] {
+  return readFoundIds();
+}
+
 export function markSecretFound(id: string): void {
   const found = readFoundIds();
   if (found.includes(id)) return;
   writeFoundIds([...found, id]);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent(EASTER_EGG_FOUND_EVENT, { detail: id }),
+    );
+  }
 }
