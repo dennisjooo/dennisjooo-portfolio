@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dennisjooo.vercel.app/sitemap.xml
-
-# LLM-friendly content
-# See https://llmstxt.org for specification
-# AI agents can find structured portfolio info at /llms.txt
