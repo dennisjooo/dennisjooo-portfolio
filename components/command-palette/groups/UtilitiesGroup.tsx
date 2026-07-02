@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Check, ExternalLink, FileText, Map } from "lucide-react";
+import { Copy, Check, FileText, Map } from "lucide-react";
 import {
   CommandGroup,
   CommandItem,
