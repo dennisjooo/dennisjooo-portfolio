@@ -146,7 +146,9 @@ The same content entity uses different names by layer. Use this table when namin
 - Only create git commits when explicitly asked
 - Keep code diffs minimal and focused; do not add unrelated changes
 - Easter eggs should be subtle and discoverable (console hints, command palette, hidden copy)—not flashy overlays or Konami effects
-- Toast editorial labels use mono (Roboto Mono); body uses sans (Urbanist) or Caslon for playful; top-right placement with clear label/body hierarchy
+- Toast editorial labels use Urbanist sans (semibold uppercase), not mono; body uses sans (Urbanist) or Caslon for playful; top-right placement with clear label/body hierarchy
+- Command palette should keep stable height while typing/filtering; use light backdrop blur on overlay only, not stacked glass on panels
+- Suppress persistent focus rings on icon/pill buttons after click
 
 ## Learned Workspace Facts
 
@@ -154,3 +156,5 @@ The same content entity uses different names by layer. Use this table when namin
 - Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale glass editorial styling, no Sonner `richColors`
 - Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
 - Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
+- SSR loader critical CSS in `app/layout.tsx` must use `var(--font-caslon)` so the name matches hero Libre Caslon Text
+- Prettier uses `prettier-plugin-tailwindcss` and `prettier-plugin-packagejson` (see `.prettierrc`)
