@@ -140,7 +140,11 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
 
         <SocialsGroup contacts={contacts} onSelect={runCommand} />
 
-        <UtilitiesGroup copied={copied} onCopyUrl={copyUrl} />
+        <UtilitiesGroup
+          copied={copied}
+          onCopyUrl={copyUrl}
+          onSelect={runCommand}
+        />
 
         <ThemeGroup onSelect={runCommand} />
 
