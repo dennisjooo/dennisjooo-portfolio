@@ -5,14 +5,19 @@ import { PublicShell } from "@/components/layout/PublicShell";
 import { NotFoundBackground } from "./NotFoundBackground";
 import { NotFoundContent } from "./NotFoundContent";
 import { NotFoundDiagnostics } from "./NotFoundDiagnostics";
+import type { ContactLinkData } from "@/lib/types/contacts";
 
-export function NotFoundPage() {
+interface NotFoundPageProps {
+  contacts?: ContactLinkData[];
+}
+
+export function NotFoundPage({ contacts }: NotFoundPageProps) {
   const { mounted, foreground, background } = useParallax();
 
   if (!mounted) return null;
 
   return (
-    <PublicShell>
+    <PublicShell contacts={contacts}>
       <main className="bg-noise relative h-screen w-full overflow-hidden bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
         <NotFoundBackground x={background.x} y={background.y} />
         <NotFoundContent x={foreground.x} y={foreground.y} />

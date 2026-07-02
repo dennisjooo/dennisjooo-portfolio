@@ -1,7 +1,9 @@
-"use client";
-
 import { NotFoundPage } from "@/components/errors/NotFoundPage";
+import { getContacts } from "@/lib/data/site";
+import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
 
-export default function NotFound() {
-  return <NotFoundPage />;
+export default async function NotFound() {
+  const contacts = resolveContactLinks(await getContacts());
+
+  return <NotFoundPage contacts={contacts} />;
 }

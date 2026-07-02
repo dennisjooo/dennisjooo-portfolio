@@ -5,7 +5,7 @@ import { type DialogProps } from "@radix-ui/react-dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Command as CommandPrimitive } from "cmdk";
-import { Search, Command as CommandIcon } from "lucide-react";
+import { Search, Command as CommandIcon, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -82,22 +82,38 @@ const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <div
-    className="flex items-center border-b border-border/50 bg-muted/30 px-4"
-    cmdk-input-wrapper=""
-  >
-    <Search className="mr-3 h-4 w-4 shrink-0 text-muted-foreground" />
-    <CommandPrimitive.Input
-      ref={ref}
-      className={cn(
-        "flex h-12 w-full rounded-md bg-transparent py-3 text-sm font-medium outline-none placeholder:text-muted-foreground/80 disabled:cursor-not-allowed disabled:opacity-50",
-        className,
-      )}
-      {...props}
-    />
-  </div>
-));
+>(({ className, value, onValueChange, ...props }, ref) => {
+  const hasValue = value !== undefined && String(value).length > 0;
+
+  return (
+    <div
+      className="flex items-center border-b border-border/50 bg-muted/30 px-4"
+      cmdk-input-wrapper=""
+    >
+      <Search className="mr-3 h-4 w-4 shrink-0 text-muted-foreground" />
+      <CommandPrimitive.Input
+        ref={ref}
+        value={value}
+        onValueChange={onValueChange}
+        className={cn(
+          "flex h-12 w-full rounded-md bg-transparent py-3 text-sm font-medium outline-none placeholder:text-muted-foreground/80 disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        {...props}
+      />
+      {hasValue && onValueChange ? (
+        <button
+          type="button"
+          onClick={() => onValueChange("")}
+          aria-label="Clear search"
+          className="ml-2 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      ) : null}
+    </div>
+  );
+});
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 
