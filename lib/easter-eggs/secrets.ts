@@ -52,8 +52,8 @@ export const PALETTE_SECRETS: SecretDefinition[] = [
     searchValue: "404 void lost enter",
     icon: Ghost,
     action: {
-      type: "toast",
-      message: "ERR_CODE: 0xEASTER — entity not found in this dimension.",
+      type: "navigate",
+      path: "/void",
     },
   },
   {

@@ -6,6 +6,9 @@ export async function executeSecretAction(action: SecretAction): Promise<void> {
     case "openUrl":
       window.open(action.url, "_blank", "noopener,noreferrer");
       break;
+    case "navigate":
+      window.location.assign(action.path);
+      break;
     case "toast":
       siteToast.playful(action.message);
       break;
