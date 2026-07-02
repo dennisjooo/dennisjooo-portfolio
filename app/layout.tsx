@@ -122,7 +122,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               "html.light #__ssr_cover{background:#fff!important}",
               "#__ssr_cover.hidden{opacity:0;pointer-events:none;visibility:hidden}",
               "#__ssr_loader{display:flex;flex-direction:column;align-items:center;gap:2.5rem;padding:0 1.5rem}",
-              "#__ssr_loader .ssr-name{display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:clamp(1.875rem,5vw,3rem);line-height:1.15;letter-spacing:-.025em;color:#0a0a0a}",
+              "#__ssr_loader .ssr-name{display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--font-caslon),Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;font-size:clamp(1.875rem,5vw,3rem);line-height:.85;letter-spacing:-.025em;color:#0a0a0a}",
               "@media(prefers-color-scheme:dark){#__ssr_loader .ssr-name{color:#fafafa}}",
               "html.dark #__ssr_loader .ssr-name{color:#fafafa!important}",
               "html.light #__ssr_loader .ssr-name{color:#0a0a0a!important}",
