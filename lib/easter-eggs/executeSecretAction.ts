@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import type { SecretAction } from "./types";
 
 export async function executeSecretAction(action: SecretAction): Promise<void> {
@@ -7,14 +7,14 @@ export async function executeSecretAction(action: SecretAction): Promise<void> {
       window.open(action.url, "_blank", "noopener,noreferrer");
       break;
     case "toast":
-      toast(action.message);
+      siteToast.playful(action.message);
       break;
     case "copy":
       try {
         await navigator.clipboard.writeText(action.text);
-        toast(action.toastMessage ?? "Copied to clipboard");
+        siteToast.copied(action.toastMessage ?? "Copied to clipboard");
       } catch {
-        toast.error("Failed to copy to clipboard");
+        siteToast.error("Failed to copy to clipboard");
       }
       break;
   }

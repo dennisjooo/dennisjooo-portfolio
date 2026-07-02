@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { FOOTER_SECRET_ID } from "@/lib/easter-eggs/constants";
 import { markSecretFound } from "@/lib/easter-eggs/unlock";
 
@@ -20,9 +20,9 @@ const Footer = () => {
     try {
       await navigator.clipboard.writeText(FOOTER_COPY);
       markSecretFound(FOOTER_SECRET_ID);
-      toast("Copied. You're one of us now.");
+      siteToast.copied("You're one of us now.");
     } catch {
-      toast.error("Failed to copy to clipboard");
+      siteToast.error("Failed to copy to clipboard");
     }
   };
 

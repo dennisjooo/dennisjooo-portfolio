@@ -60,6 +60,62 @@
   .code-copy-btn {
     @apply flex items-center space-x-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-all duration-200 border border-border/50 hover:border-border;
   }
+
+  .site-toast::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--accent) / 0.5),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  .site-toast::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--gradient-accent-from),
+      var(--gradient-accent-via),
+      var(--gradient-accent-to)
+    );
+    box-shadow: 0 0 8px var(--accent-shadow);
+    pointer-events: none;
+  }
+
+  [data-sonner-toast][data-type="error"].site-toast::after {
+    background: hsl(var(--destructive) / 0.45);
+    box-shadow: none;
+  }
+
+  .site-toast--editorial [data-content] {
+    @apply gap-0 w-full;
+  }
+
+  .site-toast--editorial [data-title] {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground pb-2;
+  }
+
+  .site-toast--editorial [data-description] {
+    @apply border-t border-border/70 pt-2.5 font-sans text-[15px] font-medium leading-snug text-foreground;
+  }
+
+  .site-toast--playful [data-description] {
+    @apply font-caslon italic text-base font-normal leading-snug;
+  }
+
+  .site-toast:not(.site-toast--editorial) [data-title] {
+    @apply font-sans text-sm font-medium leading-snug text-foreground;
+  }
 }
 
 .article-content > p:first-of-type::first-letter {

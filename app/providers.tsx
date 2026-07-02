@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
-import { Toaster } from "sonner";
+import { SiteToaster } from "@/components/shared/feedback/SiteToaster";
 import dynamic from "next/dynamic";
 
 const SmoothScroll = dynamic(
@@ -26,7 +26,7 @@ export function Providers({ children }: ProvidersProps) {
       disableTransitionOnChange
     >
       <SmoothScroll>{children}</SmoothScroll>
-      <Toaster richColors position="top-center" />
+      <SiteToaster />
     </ThemeProvider>
   );
 }
