@@ -145,7 +145,12 @@ The same content entity uses different names by layer. Use this table when namin
 - Unified SSR flashing loader for initial page load, not a separate 0→100% client progress bar
 - Only create git commits when explicitly asked
 - Keep code diffs minimal and focused; do not add unrelated changes
+- Easter eggs should be subtle and discoverable (console hints, command palette, hidden copy)—not flashy overlays or Konami effects
+- Toast editorial labels use mono (Roboto Mono); body uses sans (Urbanist) or Caslon for playful; top-right placement with clear label/body hierarchy
 
 ## Learned Workspace Facts
 
 - This file (`AGENTS.md`) is the single design and agent-memory reference for the project
+- Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale glass editorial styling, no Sonner `richColors`
+- Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
+- Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
