@@ -92,7 +92,7 @@ export default async function Page({ params, searchParams }: ProjectPageProps) {
     headline: project.title,
     description: project.description,
     datePublished: new Date(project.date).toISOString(),
-    dateModified: project.updatedAt.toISOString(),
+    dateModified: new Date(project.updatedAt).toISOString(),
     author: {
       "@type": "Person",
       name: SITE_NAME,
