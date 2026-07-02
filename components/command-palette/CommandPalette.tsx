@@ -43,7 +43,7 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     setCaseSensitive,
     searchScope,
     setSearchScope,
-    showSecretCommand,
+    matchedSecrets,
     filteredProjects,
     filteredWorkExperience,
     runCommand,
@@ -72,7 +72,9 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
   );
 
   const hasSearchResults =
-    filteredProjects.length > 0 || filteredWorkExperience.length > 0;
+    filteredProjects.length > 0 ||
+    filteredWorkExperience.length > 0 ||
+    matchedSecrets.length > 0;
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -134,7 +136,7 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
 
         <ThemeGroup onSelect={runCommand} />
 
-        <SecretGroup show={showSecretCommand} onSelect={runCommand} />
+        <SecretGroup secrets={matchedSecrets} onSelect={runCommand} />
       </CommandList>
     </CommandDialog>
   );

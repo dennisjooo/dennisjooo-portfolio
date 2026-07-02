@@ -14,6 +14,9 @@ import {
   type SearchOptions,
 } from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
+import { matchSecrets } from "@/lib/easter-eggs/matchSecrets";
+import { PALETTE_SECRETS } from "@/lib/easter-eggs/secrets";
+import type { SecretDefinition } from "@/lib/easter-eggs/types";
 
 export type SearchScope = "all" | "projects" | "work";
 
@@ -40,7 +43,7 @@ export interface UseCommandPaletteReturn {
   setSearchScope: React.Dispatch<React.SetStateAction<SearchScope>>;
 
   // Derived state
-  showSecretCommand: boolean;
+  matchedSecrets: SecretDefinition[];
   filteredProjects: FilteredProject[];
   filteredWorkExperience: FilteredWorkExperience[];
 
@@ -126,14 +129,10 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     command();
   }, []);
 
-  const showSecretCommand = React.useMemo(() => {
-    const normalizedSearch = search.toLowerCase();
-    return (
-      normalizedSearch.includes("rick") ||
-      normalizedSearch.includes("bitcoin") ||
-      normalizedSearch.includes("free")
-    );
-  }, [search]);
+  const matchedSecrets = React.useMemo(
+    () => matchSecrets(search, PALETTE_SECRETS),
+    [search],
+  );
 
   const copyUrl = React.useCallback(() => {
     if (typeof window !== "undefined") {
@@ -194,7 +193,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     setCaseSensitive,
     searchScope,
     setSearchScope,
-    showSecretCommand,
+    matchedSecrets,
     filteredProjects,
     filteredWorkExperience,
     runCommand,
