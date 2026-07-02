@@ -1,4 +1,5 @@
-export const SITE_URL = "https://dennisjooo.vercel.app";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://dennisjooo.vercel.app";
 
 export const SITE_NAME = "Dennis Jonathan";
 
