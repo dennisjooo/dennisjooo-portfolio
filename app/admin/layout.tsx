@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SSRCoverDismiss } from "@/components/loader/SSRCoverDismiss";
 import dynamic from "next/dynamic";
@@ -7,6 +8,13 @@ const MotionProvider = dynamic(() =>
     default: m.MotionProvider,
   })),
 );
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function AdminRootLayout({
   children,
