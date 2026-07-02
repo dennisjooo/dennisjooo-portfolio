@@ -53,11 +53,11 @@ function SearchOptionButton({
       onClick={onClick}
       title={title}
       className={cn(
-        "flex items-center gap-1.5 py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-all duration-200",
+        "flex items-center gap-1.5 rounded-lg py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200",
         base,
         active
           ? activeStyle
-          : "hover:bg-muted/60 text-muted-foreground hover:text-foreground",
+          : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
       )}
     >
       <Icon className="h-3 w-3" />
@@ -79,7 +79,7 @@ export function SearchOptionsBar({
 
   return (
     <div className="flex flex-col border-b border-border/50 bg-muted/20">
-      <div className="flex items-center gap-3 px-4 py-2 text-xs text-muted-foreground flex-wrap">
+      <div className="flex flex-wrap items-center gap-3 px-4 py-2 text-xs text-muted-foreground">
         {/* Match options */}
         <div className="flex items-center gap-1.5">
           <SearchOptionButton
@@ -101,7 +101,7 @@ export function SearchOptionsBar({
         <div className="h-4 w-px bg-border/50" />
 
         <div className="flex items-center gap-1.5">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80 mr-1">
+          <span className="mr-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80">
             Scope:
           </span>
           <SearchOptionButton

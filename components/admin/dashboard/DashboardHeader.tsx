@@ -50,9 +50,9 @@ export function DashboardHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="space-y-2">
-        <h1 className="font-caslon italic text-4xl md:text-5xl lg:text-6xl text-foreground">
+        <h1 className="font-caslon text-4xl italic text-foreground md:text-5xl lg:text-6xl">
           {greeting},{" "}
-          <span className="not-italic font-sans font-bold text-display">
+          <span className="text-display font-sans font-bold not-italic">
             {userName || "Admin"}.
           </span>
         </h1>
@@ -61,15 +61,15 @@ export function DashboardHeader({
             className={`inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest ${status.textClass}`}
           >
             <span
-              className={`w-1.5 h-1.5 rounded-full ${status.dotClass} ${isPending ? "animate-pulse" : ""}`}
+              className={`h-1.5 w-1.5 rounded-full ${status.dotClass} ${isPending ? "animate-pulse" : ""}`}
             />
             {status.label}
           </span>
           <span className="text-border">|</span>
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-border bg-muted/50 font-mono text-[10px] text-muted-foreground">
+          <kbd className="hidden items-center gap-1 rounded border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-flex">
             Ctrl K
           </kbd>
-          <span className="hidden sm:inline font-mono text-xs text-muted-foreground">
+          <span className="hidden font-mono text-xs text-muted-foreground sm:inline">
             to jump anywhere
           </span>
         </div>

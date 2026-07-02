@@ -17,13 +17,13 @@ export function AdminPageHeader({
   actionLabel = "Add New",
 }: AdminPageHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
       <div>
-        <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
+        <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
           {title}{" "}
-          <span className="not-italic font-sans font-bold">{titleAccent}</span>
+          <span className="font-sans font-bold not-italic">{titleAccent}</span>
         </h1>
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
+        <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           {subtitle}
         </p>
       </div>
@@ -31,9 +31,9 @@ export function AdminPageHeader({
       {actionHref && (
         <Link
           href={actionHref}
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity font-sans font-medium shadow-lg shadow-primary/20"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-sans font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-opacity hover:opacity-90"
         >
-          <PlusIcon className="w-5 h-5" />
+          <PlusIcon className="h-5 w-5" />
           {actionLabel}
         </Link>
       )}

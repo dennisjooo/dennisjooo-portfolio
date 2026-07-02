@@ -142,7 +142,7 @@ export const MobileTimeline: React.FC<MobileTimelineProps> = ({ items }) => {
   }, []);
 
   return (
-    <div className="md:hidden w-full px-5 py-12">
+    <div className="w-full px-5 py-12 md:hidden">
       <m.div
         variants={prefersReducedMotion ? undefined : containerVariants}
         initial={prefersReducedMotion ? undefined : "hidden"}

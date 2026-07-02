@@ -58,7 +58,7 @@ export function ConfirmDialog({
             disabled={loading}
             className={
               variant === "danger"
-                ? "px-6 py-2.5 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 disabled:opacity-50 font-medium transition-all"
+                ? "rounded-lg bg-destructive px-6 py-2.5 font-medium text-destructive-foreground transition-all hover:bg-destructive/90 disabled:opacity-50"
                 : formStyles.submitButton
             }
           >

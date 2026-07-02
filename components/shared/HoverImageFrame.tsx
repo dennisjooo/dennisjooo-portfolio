@@ -23,10 +23,10 @@ export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
     const roundedClass = roundedClasses[rounded];
 
     return (
-      <div className={cn("relative group", className)}>
+      <div className={cn("group relative", className)}>
         <div
           className={cn(
-            "absolute -inset-px bg-gradient-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500",
+            "bg-gradient-accent absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100",
             roundedClass,
           )}
         />

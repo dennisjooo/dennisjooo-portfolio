@@ -25,8 +25,8 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <header className="w-full mb-8 md:mb-10">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
+    <header className="mb-8 w-full md:mb-10">
+      <p className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
         Blog & Certifications
       </p>
 
@@ -39,7 +39,7 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
           transition={
             prefersReducedMotion ? { duration: 0 } : springConfigs.snappy
           }
-          className="font-caslon italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-4"
+          className="mb-4 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
         >
           {tabTitles[activeTab]}
         </m.h1>
@@ -56,7 +56,7 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
               ? { duration: 0 }
               : { ...springConfigs.snappy, delay: 0.05 }
           }
-          className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl"
+          className="max-w-xl font-sans text-base leading-relaxed text-muted-foreground md:text-lg"
         >
           {tabCaptions[activeTab]}
         </m.p>

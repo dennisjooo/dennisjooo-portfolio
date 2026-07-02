@@ -25,17 +25,17 @@ function StatPill({
   return (
     <Link
       href={href}
-      className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-card/20 hover:bg-card/40 hover:border-accent/30 transition-all group"
+      className="group flex items-center gap-2.5 rounded-xl border border-border bg-card/20 px-4 py-3 transition-all hover:border-accent/30 hover:bg-card/40"
     >
-      <span className={`w-2 h-2 rounded-full ${color}`} />
-      <span className="font-sans font-bold text-lg tabular-nums group-hover:text-accent transition-colors">
+      <span className={`h-2 w-2 rounded-full ${color}`} />
+      <span className="font-sans text-lg font-bold tabular-nums transition-colors group-hover:text-accent">
         {loading ? (
-          <span className="inline-block w-5 h-5 rounded bg-muted/40 animate-pulse" />
+          <span className="inline-block h-5 w-5 animate-pulse rounded bg-muted/40" />
         ) : (
           count
         )}
       </span>
-      <span className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
+      <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
         {label}
       </span>
     </Link>

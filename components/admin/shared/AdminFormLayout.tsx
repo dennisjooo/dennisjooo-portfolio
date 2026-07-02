@@ -26,16 +26,16 @@ export function AdminFormLayout({
         <button
           type="button"
           onClick={() => requestNavigation(() => router.back())}
-          className="p-2 rounded-full hover:bg-muted/50 transition-colors"
+          className="rounded-full p-2 transition-colors hover:bg-muted/50"
           aria-label="Go back"
         >
-          <ArrowLeftIcon className="w-5 h-5 text-muted-foreground" />
+          <ArrowLeftIcon className="h-5 w-5 text-muted-foreground" />
         </button>
         <div>
-          <h1 className="font-caslon italic text-3xl font-bold text-foreground">
-            {title} <span className="not-italic font-sans">{titleAccent}</span>
+          <h1 className="font-caslon text-3xl font-bold italic text-foreground">
+            {title} <span className="font-sans not-italic">{titleAccent}</span>
           </h1>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-1">
+          <p className="mt-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {subtitle}
           </p>
         </div>

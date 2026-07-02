@@ -34,28 +34,28 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
 
   return (
     <SectionShell id="contact" spacing="compact" minHeight overflowHidden>
-      <div className="w-full mb-16 md:mb-20">
+      <div className="mb-16 w-full md:mb-20">
         <SectionHeader number="06." title="Contact" />
       </div>
 
-      <div className="flex-1 w-full flex flex-col justify-center items-center min-h-[50vh]">
+      <div className="flex min-h-[50vh] w-full flex-1 flex-col items-center justify-center">
         <m.div
           variants={prefersReducedMotion ? undefined : staggerContainer}
           initial={prefersReducedMotion ? undefined : "hidden"}
           whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={viewportSettings.onceDeep}
-          className="flex flex-col items-center relative mb-12 text-center"
+          className="relative mb-12 flex flex-col items-center text-center"
         >
           <m.span
             variants={prefersReducedMotion ? undefined : fadeUpItem}
-            className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6"
+            className="mb-6 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:text-xs"
           >
             Get In Touch
           </m.span>
 
           <m.h2
             variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
-            className="font-caslon italic text-6xl md:text-7xl lg:text-8xl leading-tight text-foreground select-none"
+            className="select-none font-caslon text-6xl italic leading-tight text-foreground md:text-7xl lg:text-8xl"
           >
             Let&apos;s Talk
           </m.h2>
@@ -70,7 +70,7 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
         >
           <m.p
             variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
-            className="text-base md:text-xl font-light text-muted-foreground font-sans text-center max-w-md px-4"
+            className="max-w-md px-4 text-center font-sans text-base font-light text-muted-foreground md:text-xl"
           >
             Have a cool idea? Want to geek out over AI, or just want to say hi?
             Drop a line.

@@ -62,13 +62,13 @@ export default function AboutAdminPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
+          <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
             About{" "}
-            <span className="not-italic font-sans font-bold">Section</span>
+            <span className="font-sans font-bold not-italic">Section</span>
           </h1>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
+          <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Tell your story
           </p>
         </div>
@@ -76,12 +76,12 @@ export default function AboutAdminPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-all font-sans font-medium shadow-lg shadow-primary/20 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-sans font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:opacity-90 disabled:opacity-50"
         >
           {saving ? (
-            <ArrowPathIcon className="w-5 h-5 animate-spin" />
+            <ArrowPathIcon className="h-5 w-5 animate-spin" />
           ) : saved ? (
-            <CheckIcon className="w-5 h-5" />
+            <CheckIcon className="h-5 w-5" />
           ) : null}
           {saving ? "Saving..." : saved ? "Saved!" : "Save Changes"}
         </button>
@@ -91,10 +91,10 @@ export default function AboutAdminPage() {
         {ABOUT_SECTIONS.map((section) => (
           <div
             key={section.adminKey}
-            className="glass-panel p-6 rounded-2xl border border-border/50"
+            className="glass-panel rounded-2xl border border-border/50 p-6"
           >
             <div className="mb-4">
-              <h3 className="text-lg font-bold font-sans text-foreground">
+              <h3 className="font-sans text-lg font-bold text-foreground">
                 {section.title}
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -110,7 +110,7 @@ export default function AboutAdminPage() {
               placeholder={`Enter content for ${section.title}...`}
             />
             <div className="mt-2 text-right">
-              <span className="text-xs text-muted-foreground font-mono">
+              <span className="font-mono text-xs text-muted-foreground">
                 {content[section.adminKey].length} characters
               </span>
             </div>

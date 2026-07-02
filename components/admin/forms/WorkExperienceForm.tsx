@@ -136,12 +136,12 @@ export default function WorkExperienceForm({
   return (
     <form
       onSubmit={(e) => handleSubmit(e, submitWorkExperience)}
-      className={cn(formStyles.panel, "space-y-6 max-w-3xl")}
+      className={cn(formStyles.panel, "max-w-3xl space-y-6")}
     >
       <FormField label="Company Logo">
         <div className="flex items-start gap-6">
-          <div className="relative group">
-            <div className="w-24 h-24 rounded-xl border-2 border-dashed border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+          <div className="group relative">
+            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border bg-muted/30">
               {formData.imageSrc ? (
                 <Image
                   src={formData.imageSrc}
@@ -151,19 +151,19 @@ export default function WorkExperienceForm({
                   unoptimized={formData.imageSrc.startsWith("http")}
                 />
               ) : (
-                <PhotoIcon className="w-8 h-8 text-muted-foreground" />
+                <PhotoIcon className="h-8 w-8 text-muted-foreground" />
               )}
               {uploading && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                  <ArrowPathIcon className="w-6 h-6 text-white animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                  <ArrowPathIcon className="h-6 w-6 animate-spin text-white" />
                 </div>
               )}
             </div>
             <label
               htmlFor="logo-upload"
-              className="absolute -bottom-2 -right-2 p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors"
+              className="absolute -bottom-2 -right-2 cursor-pointer rounded-full bg-primary p-2 text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
             >
-              <PhotoIcon className="w-4 h-4" />
+              <PhotoIcon className="h-4 w-4" />
               <input
                 id="logo-upload"
                 type="file"
@@ -184,7 +184,7 @@ export default function WorkExperienceForm({
                 setFormData((prev) => ({ ...prev, imageSrc: e.target.value }))
               }
             />
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="mt-2 text-xs text-muted-foreground">
               Upload an image or paste a URL. Supports local paths like
               /images/work/company.svg
             </p>
@@ -192,7 +192,7 @@ export default function WorkExperienceForm({
         </div>
       </FormField>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <FormField label="Job Title">
           <input
             type="text"
@@ -220,7 +220,7 @@ export default function WorkExperienceForm({
         </FormField>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <FormField label="Date Range">
           <input
             type="text"
@@ -251,19 +251,19 @@ export default function WorkExperienceForm({
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-1">
+        <div className="mb-1 flex items-center justify-between">
           <label className={formStyles.label}>Responsibilities</label>
           <button
             type="button"
             onClick={addResponsibility}
-            className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 transition-colors"
+            className="inline-flex items-center gap-1 text-xs text-accent transition-colors hover:text-accent/80"
           >
-            <PlusIcon className="w-4 h-4" />
+            <PlusIcon className="h-4 w-4" />
             Add Item
           </button>
         </div>
         {formData.responsibilities.length > 1 && (
-          <p className="text-xs text-muted-foreground mb-3">
+          <p className="mb-3 text-xs text-muted-foreground">
             Drag the grip to reorder items.
           </p>
         )}
@@ -281,7 +281,7 @@ export default function WorkExperienceForm({
                 data-responsibility-row
                 className={cn(
                   "flex items-stretch gap-2 rounded-lg transition-all duration-200",
-                  isDragging && "opacity-50 bg-muted/50",
+                  isDragging && "bg-muted/50 opacity-50",
                   isDragOver && "ring-2 ring-primary",
                 )}
                 onDragOver={(e) => handleDragOver(e, index)}
@@ -293,7 +293,7 @@ export default function WorkExperienceForm({
                     onDragStart={(e) => handleDragStart(e, index)}
                   />
                 )}
-                <span className="self-center text-muted-foreground font-mono text-sm w-6 text-right shrink-0">
+                <span className="w-6 shrink-0 self-center text-right font-mono text-sm text-muted-foreground">
                   {index + 1}.
                 </span>
                 <AutoResizeTextarea
@@ -306,9 +306,9 @@ export default function WorkExperienceForm({
                   <button
                     type="button"
                     onClick={() => removeResponsibility(index)}
-                    className="self-center p-2 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                    className="shrink-0 self-center p-2 text-muted-foreground transition-colors hover:text-destructive"
                   >
-                    <TrashIcon className="w-4 h-4" />
+                    <TrashIcon className="h-4 w-4" />
                   </button>
                 )}
               </div>

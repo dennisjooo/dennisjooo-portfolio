@@ -70,15 +70,15 @@ export function LinkManager({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
+      <div className="mb-1 flex items-center justify-between">
         <label className={formStyles.label}>Related Links</label>
       </div>
       {links.length > 1 && (
-        <p className="text-xs text-muted-foreground mb-3">
+        <p className="mb-3 text-xs text-muted-foreground">
           Drag the grip to reorder links.
         </p>
       )}
-      <div className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border/50">
+      <div className="space-y-3 rounded-lg border border-border/50 bg-muted/30 p-4">
         <div className="flex gap-2">
           <input
             type="text"
@@ -101,9 +101,9 @@ export function LinkManager({
           <button
             type="button"
             onClick={addLink}
-            className="p-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+            className="rounded-lg bg-primary p-2 text-primary-foreground transition-opacity hover:opacity-90"
           >
-            <LinkIcon className="w-5 h-5" />
+            <LinkIcon className="h-5 w-5" />
           </button>
         </div>
 
@@ -120,8 +120,8 @@ export function LinkManager({
                 key={index}
                 data-link-row
                 className={cn(
-                  "flex items-stretch gap-2 p-2 bg-background rounded-md border border-border/50 transition-all duration-200",
-                  isDragging && "opacity-50 bg-muted/50",
+                  "flex items-stretch gap-2 rounded-md border border-border/50 bg-background p-2 transition-all duration-200",
+                  isDragging && "bg-muted/50 opacity-50",
                   isDragOver && "ring-2 ring-primary",
                 )}
                 onDragOver={(e) => handleDragOver(e, index)}
@@ -133,10 +133,10 @@ export function LinkManager({
                     onDragStart={(e) => handleDragStart(e, index)}
                   />
                 )}
-                <span className="self-center text-muted-foreground font-mono text-sm w-6 text-right shrink-0">
+                <span className="w-6 shrink-0 self-center text-right font-mono text-sm text-muted-foreground">
                   {index + 1}.
                 </span>
-                <div className="flex-1 min-w-0 space-y-2">
+                <div className="min-w-0 flex-1 space-y-2">
                   <input
                     type="text"
                     placeholder="Label"
@@ -152,22 +152,22 @@ export function LinkManager({
                     onValueChange={(url) => onUpdate(index, { ...link, url })}
                     className={cn(
                       formStyles.input,
-                      "py-2 text-sm font-mono min-h-[2.5rem]",
+                      "min-h-[2.5rem] py-2 font-mono text-sm",
                     )}
                   />
                 </div>
                 <button
                   type="button"
                   onClick={() => onRemove(index)}
-                  className="self-center p-2 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                  className="shrink-0 self-center p-2 text-muted-foreground transition-colors hover:text-destructive"
                 >
-                  <XMarkIcon className="w-4 h-4" />
+                  <XMarkIcon className="h-4 w-4" />
                 </button>
               </div>
             );
           })}
           {links.length === 0 && (
-            <p className="text-xs text-muted-foreground text-center py-2">
+            <p className="py-2 text-center text-xs text-muted-foreground">
               No links added yet.
             </p>
           )}

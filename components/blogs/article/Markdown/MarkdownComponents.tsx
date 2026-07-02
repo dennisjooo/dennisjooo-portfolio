@@ -11,7 +11,7 @@ import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 export const markdownComponents: Components = {
   h1: ({ children, ...props }) => (
     <h1
-      className="font-sans font-black text-3xl md:text-4xl mb-6 text-foreground border-b border-border pb-4 tracking-tight"
+      className="mb-6 border-b border-border pb-4 font-sans text-3xl font-black tracking-tight text-foreground md:text-4xl"
       {...props}
     >
       {children}
@@ -19,16 +19,16 @@ export const markdownComponents: Components = {
   ),
   h2: ({ children, ...props }) => (
     <h2
-      className="font-caslon font-normal italic text-2xl md:text-3xl mb-4 mt-14 text-foreground tracking-tight flex items-center gap-4"
+      className="mb-4 mt-14 flex items-center gap-4 font-caslon text-2xl font-normal italic tracking-tight text-foreground md:text-3xl"
       {...props}
     >
-      <span className="w-[2px] h-8 bg-accent rounded-full shrink-0" />
+      <span className="h-8 w-[2px] shrink-0 rounded-full bg-accent" />
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
     <h3
-      className="font-sans font-bold text-xl md:text-2xl mb-3 mt-8 text-foreground tracking-tight"
+      className="mb-3 mt-8 font-sans text-xl font-bold tracking-tight text-foreground md:text-2xl"
       {...props}
     >
       {children}
@@ -36,7 +36,7 @@ export const markdownComponents: Components = {
   ),
   h4: ({ children, ...props }) => (
     <h4
-      className="font-sans font-bold text-lg md:text-xl mb-2 mt-6 text-foreground tracking-tight"
+      className="mb-2 mt-6 font-sans text-lg font-bold tracking-tight text-foreground md:text-xl"
       {...props}
     >
       {children}
@@ -51,7 +51,7 @@ export const markdownComponents: Components = {
       return <div className="mb-5">{children}</div>;
     }
     return (
-      <p className="mb-5 text-muted-foreground leading-relaxed">{children}</p>
+      <p className="mb-5 leading-relaxed text-muted-foreground">{children}</p>
     );
   },
   strong: ({ children }) => (
@@ -61,21 +61,21 @@ export const markdownComponents: Components = {
     <em className="italic text-muted-foreground">{children}</em>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="relative my-10 mx-auto max-w-2xl py-8 px-6 md:px-10 border-none bg-transparent text-center [&>p]:before:content-none [&>p]:after:content-none [&>p]:mb-0 [&>p]:text-foreground [&>p]:font-caslon [&>p]:italic [&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed">
-      <div className="mx-auto w-8 h-px bg-accent/60 mb-6" />
+    <blockquote className="relative mx-auto my-10 max-w-2xl border-none bg-transparent px-6 py-8 text-center md:px-10 [&>p]:mb-0 [&>p]:font-caslon [&>p]:text-lg [&>p]:italic [&>p]:leading-relaxed [&>p]:text-foreground [&>p]:before:content-none [&>p]:after:content-none [&>p]:md:text-xl">
+      <div className="mx-auto mb-6 h-px w-8 bg-accent/60" />
       {children}
-      <div className="mx-auto w-8 h-px bg-accent/60 mt-6" />
+      <div className="mx-auto mt-6 h-px w-8 bg-accent/60" />
     </blockquote>
   ),
 
   // Lists
   ul: ({ children }) => (
-    <ul className="list-disc list-inside mb-5 text-muted-foreground space-y-2 leading-relaxed">
+    <ul className="mb-5 list-inside list-disc space-y-2 leading-relaxed text-muted-foreground">
       {children}
     </ul>
   ),
   ol: ({ children }) => (
-    <ol className="list-decimal list-inside mb-5 text-muted-foreground space-y-2 leading-relaxed">
+    <ol className="mb-5 list-inside list-decimal space-y-2 leading-relaxed text-muted-foreground">
       {children}
     </ol>
   ),
@@ -97,7 +97,7 @@ export const markdownComponents: Components = {
 
     if (isInlineCode) {
       return (
-        <code className="bg-muted rounded px-2 py-1 text-sm font-mono text-accent border border-border">
+        <code className="rounded border border-border bg-muted px-2 py-1 font-mono text-sm text-accent">
           {children}
         </code>
       );
@@ -116,21 +116,21 @@ export const markdownComponents: Components = {
     </div>
   ),
   thead: ({ children }) => (
-    <thead className="bg-muted border-b border-border">{children}</thead>
+    <thead className="border-b border-border bg-muted">{children}</thead>
   ),
   tbody: ({ children }) => (
     <tbody className="divide-y divide-border">{children}</tbody>
   ),
   tr: ({ children }) => (
-    <tr className="hover:bg-muted/50 transition-colors">{children}</tr>
+    <tr className="transition-colors hover:bg-muted/50">{children}</tr>
   ),
   th: ({ children }) => (
-    <th className="px-6 py-4 text-left font-sans font-bold text-foreground text-sm tracking-wide uppercase">
+    <th className="px-6 py-4 text-left font-sans text-sm font-bold uppercase tracking-wide text-foreground">
       {children}
     </th>
   ),
   td: ({ children }) => (
-    <td className="px-6 py-4 text-muted-foreground text-sm">{children}</td>
+    <td className="px-6 py-4 text-sm text-muted-foreground">{children}</td>
   ),
 
   // Media - With Noise Overlay
@@ -156,7 +156,7 @@ export const markdownComponents: Components = {
     const hasDimensions = imgWidth || imgHeight;
 
     return (
-      <span className="flex justify-center my-10">
+      <span className="my-10 flex justify-center">
         <span className={hasDimensions ? "inline-block" : "block w-full"}>
           <HoverImageFrame
             className={
@@ -171,7 +171,7 @@ export const markdownComponents: Components = {
               }}
             >
               <span
-                className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
+                className="pointer-events-none absolute inset-0 z-10 opacity-15 mix-blend-overlay"
                 style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
               />
               <PhotoView src={cleanSrc}>
@@ -184,11 +184,11 @@ export const markdownComponents: Components = {
                   {...rest}
                 />
               </PhotoView>
-              <span className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10 pointer-events-none" />
+              <span className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
             </span>
           </HoverImageFrame>
           {title ? (
-            <span className="block mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            <span className="mt-3 block text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
               {title}
             </span>
           ) : null}
@@ -215,7 +215,7 @@ export const markdownComponents: Components = {
 
     return (
       <figure className="my-8">
-        <div className="relative rounded-xl overflow-hidden border border-border">
+        <div className="relative overflow-hidden rounded-xl border border-border">
           <video
             className="w-full"
             controls={showControls}
@@ -261,7 +261,7 @@ export const markdownComponents: Components = {
               height={height}
               allow={allow}
               allowFullScreen={allowFullScreen}
-              className="w-full h-full"
+              className="h-full w-full"
               loading="lazy"
               {...rest}
             />
@@ -288,7 +288,7 @@ export const markdownComponents: Components = {
 
     return (
       <figure className="my-8">
-        <div className="rounded-xl border border-border p-4 bg-muted/30">
+        <div className="rounded-xl border border-border bg-muted/30 p-4">
           <audio
             className="w-full"
             controls={showControls}

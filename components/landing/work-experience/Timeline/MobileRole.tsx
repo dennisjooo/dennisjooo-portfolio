@@ -14,10 +14,10 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(
     return (
       <div className="space-y-4">
         <div className="space-y-1">
-          <h4 className="text-xl font-sans font-bold uppercase tracking-tight text-foreground">
+          <h4 className="font-sans text-xl font-bold uppercase tracking-tight text-foreground">
             {role.title}
           </h4>
-          <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground bg-foreground/5 px-2 py-1 rounded inline-block">
+          <span className="inline-block rounded bg-foreground/5 px-2 py-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {role.date}
           </span>
         </div>
@@ -32,7 +32,7 @@ export const MobileRole: React.FC<MobileRoleProps> = memo(
 
         {!isLast && (
           <div className="pt-4">
-            <div className="w-12 h-px bg-foreground/10" />
+            <div className="h-px w-12 bg-foreground/10" />
           </div>
         )}
       </div>

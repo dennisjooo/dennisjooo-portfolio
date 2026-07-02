@@ -31,7 +31,7 @@ export function BlogFormFields({
     : "";
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div className="space-y-6">
         <FormField label="Title">
           <input
@@ -131,7 +131,7 @@ export function BlogFormFields({
       <div className="space-y-6">
         <FormField label="Cover Image">
           <div className="space-y-3">
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border border-border">
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border bg-muted">
               {formData.imageUrl ? (
                 <Image
                   src={formData.imageUrl}
@@ -143,7 +143,7 @@ export function BlogFormFields({
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground/50">
-                  <PhotoIcon className="w-12 h-12 mb-2" />
+                  <PhotoIcon className="mb-2 h-12 w-12" />
                   <span className="text-xs uppercase tracking-widest">
                     {canUploadImages
                       ? "No Image Selected"
@@ -152,8 +152,8 @@ export function BlogFormFields({
                 </div>
               )}
               {uploading && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm z-10">
-                  <span className="text-white font-medium animate-pulse">
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                  <span className="animate-pulse font-medium text-white">
                     Uploading...
                   </span>
                 </div>
@@ -167,7 +167,7 @@ export function BlogFormFields({
                 value={formData.imageUrl ?? ""}
                 onChange={onChange}
                 placeholder="Paste image URL..."
-                className={`${formStyles.input} text-xs font-mono`}
+                className={`${formStyles.input} font-mono text-xs`}
               />
               <label
                 title={
@@ -176,13 +176,13 @@ export function BlogFormFields({
                     : undefined
                 }
                 className={cn(
-                  "flex items-center justify-center px-4 bg-secondary text-secondary-foreground rounded-lg transition-colors",
+                  "flex items-center justify-center rounded-lg bg-secondary px-4 text-secondary-foreground transition-colors",
                   !canUploadImages || uploading
-                    ? "opacity-50 pointer-events-none"
+                    ? "pointer-events-none opacity-50"
                     : "cursor-pointer hover:bg-secondary/80",
                 )}
               >
-                <ArrowUpTrayIcon className="w-5 h-5" />
+                <ArrowUpTrayIcon className="h-5 w-5" />
                 <input
                   type="file"
                   accept="image/*"

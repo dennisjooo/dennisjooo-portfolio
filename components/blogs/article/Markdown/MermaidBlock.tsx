@@ -50,10 +50,10 @@ export const MermaidBlock = ({ children }: MermaidBlockProps) => {
     return (
       <div className="not-prose my-6">
         <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-4">
-          <p className="text-sm text-destructive font-mono">
+          <p className="font-mono text-sm text-destructive">
             Mermaid Error: {error}
           </p>
-          <pre className="mt-2 text-xs text-muted-foreground overflow-x-auto">
+          <pre className="mt-2 overflow-x-auto text-xs text-muted-foreground">
             {children}
           </pre>
         </div>
@@ -63,14 +63,14 @@ export const MermaidBlock = ({ children }: MermaidBlockProps) => {
 
   return (
     <div className="not-prose my-6">
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="font-mono text-xs text-muted-foreground">
             mermaid
           </span>
           <CopyButton text={children.trim()} title="Copy Mermaid source" />
         </div>
-        <div className="p-6 overflow-x-auto flex justify-center">
+        <div className="flex justify-center overflow-x-auto p-6">
           <div ref={containerRef} className="[&_svg]:max-w-full" />
         </div>
       </div>

@@ -38,8 +38,8 @@ export function SecretGroup({ secrets, onSelect }: SecretGroupProps) {
               }
             >
               <Icon className="h-4 w-4 text-accent" />
-              <span className="font-medium text-display">{secret.label}</span>
-              <Sparkles className="ml-auto h-3 w-3 text-accent animate-pulse" />
+              <span className="text-display font-medium">{secret.label}</span>
+              <Sparkles className="ml-auto h-3 w-3 animate-pulse text-accent" />
             </CommandItem>
           );
         })}

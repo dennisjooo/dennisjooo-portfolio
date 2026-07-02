@@ -15,7 +15,7 @@ export function AdminTablePagination({
 
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="text-sm text-muted-foreground font-mono">
+      <div className="font-mono text-sm text-muted-foreground">
         Page {currentPage} of {totalPages}
       </div>
       <div className="flex items-center gap-2">
@@ -23,17 +23,17 @@ export function AdminTablePagination({
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 rounded-lg border border-border bg-card/50 hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="rounded-lg border border-border bg-card/50 p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <ChevronLeftIcon className="w-4 h-4" />
+          <ChevronLeftIcon className="h-4 w-4" />
         </button>
         <button
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-lg border border-border bg-card/50 hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="rounded-lg border border-border bg-card/50 p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <ChevronRightIcon className="w-4 h-4" />
+          <ChevronRightIcon className="h-4 w-4" />
         </button>
       </div>
     </div>

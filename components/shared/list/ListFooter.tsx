@@ -13,8 +13,8 @@ export function ListFooter({
   const label = total === 1 ? itemName : plural;
 
   return (
-    <div className="w-full flex justify-center py-8">
-      <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">
+    <div className="flex w-full justify-center py-8">
+      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
         Showing all {total} {label}
       </p>
     </div>

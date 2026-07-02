@@ -13,8 +13,8 @@ export function createContactColumns(
       cell: (row: Contact) => {
         const IconComponent = CONTACT_ICON_MAP[row.icon] || Globe;
         return (
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50">
-            <IconComponent className="w-4 h-4" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted/50">
+            <IconComponent className="h-4 w-4" />
           </div>
         );
       },
@@ -33,7 +33,7 @@ export function createContactColumns(
           href={row.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-muted-foreground hover:text-accent truncate max-w-[200px] block"
+          className="block max-w-[200px] truncate text-sm text-muted-foreground hover:text-accent"
         >
           {row.href}
         </a>

@@ -12,11 +12,11 @@ export const MobileView: React.FC<MobileViewProps> = ({
   contentSections,
   profileImageUrl,
 }) => (
-  <div className="md:hidden w-full h-full overflow-hidden touch-pan-y">
-    <div className="mobile-scroll-container flex w-[500%] h-full transform-gpu backface-hidden">
+  <div className="h-full w-full touch-pan-y overflow-hidden md:hidden">
+    <div className="mobile-scroll-container backface-hidden flex h-full w-[500%] transform-gpu">
       {/* Card 1: Profile */}
-      <div className="w-screen h-full flex flex-col justify-center items-center px-8 gap-6">
-        <span className="font-mono text-xs uppercase tracking-widest opacity-50 text-muted-foreground">
+      <div className="flex h-full w-screen flex-col items-center justify-center gap-6 px-8">
+        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-50">
           Swipe to Explore
         </span>
         <ProfileImage imageUrl={profileImageUrl} />
@@ -27,13 +27,13 @@ export const MobileView: React.FC<MobileViewProps> = ({
       {contentSections.map((section) => (
         <div
           key={section.id}
-          className="w-screen h-full flex flex-col justify-center px-8 space-y-6"
+          className="flex h-full w-screen flex-col justify-center space-y-6 px-8"
         >
-          <h2 className="text-5xl font-caslon italic leading-tight text-display pb-2">
+          <h2 className="text-display pb-2 font-caslon text-5xl italic leading-tight">
             {section.title}
           </h2>
-          <div className="w-12 h-px bg-current opacity-20 text-foreground" />
-          <p className="font-light text-muted-foreground leading-relaxed text-lg">
+          <div className="h-px w-12 bg-current text-foreground opacity-20" />
+          <p className="text-lg font-light leading-relaxed text-muted-foreground">
             {section.body}
           </p>
         </div>

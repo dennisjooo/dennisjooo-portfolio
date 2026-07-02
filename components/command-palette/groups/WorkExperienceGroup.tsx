@@ -44,16 +44,16 @@ export function WorkExperienceGroup({
             onSelect={() => onSelect(() => onNavigate("/#work"))}
           >
             <Briefcase className="h-4 w-4 shrink-0" />
-            <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
               <div className="flex items-center gap-2">
-                <span className="font-medium truncate">{work.title}</span>
+                <span className="truncate font-medium">{work.title}</span>
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground/80 uppercase tracking-wider truncate">
+              <span className="truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
                 {work.company} / {work.date}
               </span>
               {work.context && (
                 <span
-                  className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
+                  className="mt-0.5 block max-w-full truncate text-xs text-muted-foreground/70"
                   dangerouslySetInnerHTML={{
                     __html: highlightSearchTerm(
                       work.context,

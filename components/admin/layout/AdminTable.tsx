@@ -93,7 +93,7 @@ export function AdminTable<T extends { id?: string | number }>({
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm animate-pulse">
+      <div className="flex h-64 w-full animate-pulse items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
         <div className="font-mono text-sm text-muted-foreground">
           Loading Data stream...
         </div>
@@ -103,7 +103,7 @@ export function AdminTable<T extends { id?: string | number }>({
 
   if (!localData || localData.length === 0) {
     return (
-      <div className="w-full h-40 flex items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
+      <div className="flex h-40 w-full items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
         <div className="font-mono text-sm text-muted-foreground">
           No records found in database.
         </div>
@@ -120,9 +120,9 @@ export function AdminTable<T extends { id?: string | number }>({
   );
 
   return (
-    <div className="space-y-4 w-full max-w-full">
+    <div className="w-full max-w-full space-y-4">
       {/* Mobile Card Layout */}
-      <div className="md:hidden space-y-3">
+      <div className="space-y-3 md:hidden">
         {localData.map((row, rowIdx) => {
           const isDragging = dragIndex === rowIdx;
           const isDragOver =
@@ -135,8 +135,8 @@ export function AdminTable<T extends { id?: string | number }>({
               key={row.id || rowIdx}
               data-card
               className={cn(
-                "flex items-stretch gap-2 rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4 transition-all duration-200",
-                isDragging && "opacity-50 bg-muted/50",
+                "flex items-stretch gap-2 rounded-xl border border-border bg-card/30 p-4 backdrop-blur-sm transition-all duration-200",
+                isDragging && "bg-muted/50 opacity-50",
                 isDragOver && "ring-2 ring-primary",
               )}
               onDragOver={(e) => handleDragOver(e, rowIdx)}
@@ -147,10 +147,10 @@ export function AdminTable<T extends { id?: string | number }>({
                   onDragStart={(e) => handleDragStart(e, rowIdx)}
                 />
               )}
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 {/* Card Header: Primary content + Actions */}
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
                     {enableSelect && (
                       <input
                         type="checkbox"
@@ -159,7 +159,7 @@ export function AdminTable<T extends { id?: string | number }>({
                         className="flex-shrink-0 self-center rounded border-border accent-primary"
                       />
                     )}
-                    <div className="flex-1 min-w-0 text-sm font-sans text-foreground">
+                    <div className="min-w-0 flex-1 font-sans text-sm text-foreground">
                       {getCellValue(row, primaryColumn)}
                     </div>
                   </div>
@@ -172,13 +172,13 @@ export function AdminTable<T extends { id?: string | number }>({
 
                 {/* Card Details */}
                 {detailColumns.length > 0 && (
-                  <div className="space-y-2 pt-3 border-t border-border/30">
+                  <div className="space-y-2 border-t border-border/30 pt-3">
                     {detailColumns.map((col, colIdx) => (
                       <div
                         key={colIdx}
                         className="flex items-center justify-between gap-4 text-sm"
                       >
-                        <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground flex-shrink-0">
+                        <span className="flex-shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                           {col.header}
                         </span>
                         <div className="text-right font-sans text-foreground">
@@ -195,13 +195,13 @@ export function AdminTable<T extends { id?: string | number }>({
       </div>
 
       {/* Desktop Table Layout */}
-      <div className="hidden md:block overflow-hidden rounded-xl border border-border bg-card/30 backdrop-blur-sm shadow-sm">
+      <div className="hidden overflow-hidden rounded-xl border border-border bg-card/30 shadow-sm backdrop-blur-sm md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border/50 bg-muted/20">
                 {enableSelect && (
-                  <th className="px-4 py-4 w-[40px]">
+                  <th className="w-[40px] px-4 py-4">
                     <input
                       type="checkbox"
                       checked={
@@ -214,14 +214,14 @@ export function AdminTable<T extends { id?: string | number }>({
                   </th>
                 )}
                 {enableReorder && (
-                  <th className="px-4 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                  <th className="px-4 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                     Order
                   </th>
                 )}
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-6 py-4 text-xs font-mono uppercase tracking-widest text-muted-foreground ${col.className || ""}`}
+                    className={`px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground ${col.className || ""}`}
                   >
                     {col.header}
                   </th>
@@ -260,7 +260,7 @@ export function AdminTable<T extends { id?: string | number }>({
                     onDrop={() => handleDrop(rowIdx)}
                   >
                     {enableSelect && (
-                      <td className="px-4 py-4 w-[40px]">
+                      <td className="w-[40px] px-4 py-4">
                         <input
                           type="checkbox"
                           checked={selectedIds?.has(String(row.id)) ?? false}
@@ -270,7 +270,7 @@ export function AdminTable<T extends { id?: string | number }>({
                       </td>
                     )}
                     {enableReorder && (
-                      <td className="p-0 w-11">
+                      <td className="w-11 p-0">
                         <DragGripHandle
                           onDragStart={(e) => handleDragStart(e, rowIdx)}
                           className="h-full min-h-[3.5rem] w-full rounded-none"
@@ -280,7 +280,7 @@ export function AdminTable<T extends { id?: string | number }>({
                     {columns.map((col, colIdx) => (
                       <td
                         key={colIdx}
-                        className="px-6 py-4 text-sm font-sans text-foreground"
+                        className="px-6 py-4 font-sans text-sm text-foreground"
                       >
                         {getCellValue(row, col)}
                       </td>

@@ -13,7 +13,7 @@ export function BlogsListSkeleton({
   return (
     <div className="w-full" aria-busy="true" aria-label="Loading blogs">
       {showFeatured && <FeaturedCardSkeleton />}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-10 lg:grid-cols-3">
         {Array.from({ length: gridCount }).map((_, i) => (
           <ContentCardSkeleton key={i} />
         ))}

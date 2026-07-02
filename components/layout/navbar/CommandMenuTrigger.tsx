@@ -41,8 +41,8 @@ export const CommandMenuTrigger = ({
       className={`${BASE_CLASSES} ${textColorClass} ${hoverClass}`}
       aria-label={`Open command menu (${shortcut})`}
     >
-      <Search className="w-4 h-4" />
-      <kbd className="pointer-events-none hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted/30 px-1.5 font-mono text-[10px] font-medium text-muted-foreground whitespace-nowrap">
+      <Search className="h-4 w-4" />
+      <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 whitespace-nowrap rounded border bg-muted/30 px-1.5 font-mono text-[10px] font-medium text-muted-foreground lg:inline-flex">
         <span className="text-xs">{shortcut}</span>
       </kbd>
     </button>

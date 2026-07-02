@@ -37,7 +37,7 @@ export default function CertificationForm({
   return (
     <form
       onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
-      className={`${formStyles.panel} space-y-6 max-w-3xl`}
+      className={`${formStyles.panel} max-w-3xl space-y-6`}
     >
       <div className="space-y-4">
         <FormField label="Title">
@@ -53,7 +53,7 @@ export default function CertificationForm({
           />
         </FormField>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField label="Issuer">
             <input
               type="text"

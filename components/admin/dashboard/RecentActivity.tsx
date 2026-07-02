@@ -45,8 +45,8 @@ const typeConfig: Record<
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center gap-3 px-4 py-3 animate-pulse">
-      <div className="w-8 h-8 rounded-lg bg-muted/40" />
+    <div className="flex animate-pulse items-center gap-3 px-4 py-3">
+      <div className="h-8 w-8 rounded-lg bg-muted/40" />
       <div className="flex-1 space-y-1.5">
         <div className="h-3.5 w-3/5 rounded bg-muted/40" />
         <div className="h-2.5 w-2/5 rounded bg-muted/30" />
@@ -76,15 +76,15 @@ export function RecentActivity() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-border bg-card/20 backdrop-blur-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-border/50 flex items-center gap-2">
-        <ClockIcon className="w-4 h-4 text-muted-foreground" />
+    <div className="overflow-hidden rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
+      <div className="flex items-center gap-2 border-b border-border/50 px-6 py-4">
+        <ClockIcon className="h-4 w-4 text-muted-foreground" />
         <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Recent Activity
         </h3>
       </div>
 
-      <div className="divide-y divide-border/30 max-h-[240px] overflow-y-auto scrollbar-thin scrollbar-thumb-border/40 scrollbar-track-transparent">
+      <div className="max-h-[240px] divide-y divide-border/30 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/40">
         {loading && (
           <>
             <SkeletonRow />
@@ -109,18 +109,18 @@ export function RecentActivity() {
               <Link
                 key={item.id}
                 href={item.href}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-accent/5 transition-colors group"
+                className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/5"
               >
                 <div
-                  className={`flex-shrink-0 p-1.5 rounded-lg bg-muted/30 ${config.color}`}
+                  className={`flex-shrink-0 rounded-lg bg-muted/30 p-1.5 ${config.color}`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="h-4 w-4" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate group-hover:text-accent transition-colors">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium transition-colors group-hover:text-accent">
                     {item.title}
                   </p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <span className={config.color}>{config.label}</span>
                     {item.meta && (
                       <>

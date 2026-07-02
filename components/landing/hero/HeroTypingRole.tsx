@@ -13,7 +13,7 @@ export function HeroTypingRole() {
 
   return (
     <div
-      className="min-w-0 flex-1 max-w-md pr-3 text-left animate-fade-in-up md:max-w-lg md:pr-0 lg:max-w-xl"
+      className="animate-fade-in-up min-w-0 max-w-md flex-1 pr-3 text-left md:max-w-lg md:pr-0 lg:max-w-xl"
       style={{ animationDelay: "1000ms" }}
     >
       <span

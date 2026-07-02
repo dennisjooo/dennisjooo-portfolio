@@ -38,21 +38,21 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   if (headings.length === 0) return null;
 
   return (
-    <div className="fixed right-6 inset-y-0 z-10 hidden lg:flex items-center">
+    <div className="fixed inset-y-0 right-6 z-10 hidden items-center lg:flex">
       <m.nav
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`relative p-3 rounded-2xl transition-all duration-300 ${
+        className={`relative rounded-2xl p-3 transition-all duration-300 ${
           isHovered
-            ? "bg-muted/80 backdrop-blur-md border border-border shadow-lg w-[280px]"
-            : "bg-transparent border border-transparent"
+            ? "w-[280px] border border-border bg-muted/80 shadow-lg backdrop-blur-md"
+            : "border border-transparent bg-transparent"
         }`}
       >
         <m.span
-          className="absolute -top-8 left-0 font-mono text-[10px] uppercase tracking-widest text-muted-foreground pl-3"
+          className="absolute -top-8 left-0 pl-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground"
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 0.3s ease",
@@ -102,9 +102,9 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   />
 
                   <span
-                    className={`font-sans text-sm truncate transition-all duration-300 ease-in-out ${
+                    className={`truncate font-sans text-sm transition-all duration-300 ease-in-out ${
                       isActive
-                        ? "text-accent font-medium"
+                        ? "font-medium text-accent"
                         : "text-muted-foreground group-hover:text-foreground"
                     }`}
                     style={{

@@ -44,7 +44,7 @@ export const DesktopTimeline: React.FC<DesktopTimelineProps> = ({ items }) => {
       initial={prefersReducedMotion ? undefined : "hidden"}
       whileInView={prefersReducedMotion ? undefined : "visible"}
       viewport={viewportSettings.once}
-      className="hidden md:flex flex-col w-full relative"
+      className="relative hidden w-full flex-col md:flex"
     >
       {groupedItems.map((group, index) => (
         <m.div

@@ -50,10 +50,10 @@ export const NavbarClient = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-200 ease-in-out ${navWidth}`}
+      className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-all duration-200 ease-in-out ${navWidth}`}
     >
       <div className={navbarContainerClasses}>
-        <div className="flex justify-between items-center px-4 py-3 min-h-[3rem]">
+        <div className="flex min-h-[3rem] items-center justify-between px-4 py-3">
           <BurgerButton
             isMenuOpen={isMenuOpen}
             onToggle={(nextIsMenuOpen) => setIsMenuOpen(nextIsMenuOpen)}

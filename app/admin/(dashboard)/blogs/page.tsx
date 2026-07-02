@@ -53,22 +53,22 @@ export default function AdminBlogsList() {
         actionLabel="Create New"
       />
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-xs">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+        <div className="relative w-full flex-1 sm:max-w-xs">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search by title..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all"
+            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20"
           />
         </div>
         <div className="flex items-center gap-2">
           <select
             value={filters.type || ""}
             onChange={(e) => handleFilter("type", e.target.value)}
-            className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-accent/20"
           >
             <option value="">All Types</option>
             <option value="blog">Blog</option>
@@ -77,7 +77,7 @@ export default function AdminBlogsList() {
           <select
             value={filters.status || ""}
             onChange={(e) => handleFilter("status", e.target.value)}
-            className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-accent/20"
           >
             <option value="">All Statuses</option>
             <option value="draft">Draft</option>

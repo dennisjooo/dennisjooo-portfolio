@@ -87,7 +87,7 @@ export function AdminCommandPalette() {
               key={item.href}
               onSelect={() => runCommand(() => router.push(item.href))}
             >
-              <item.icon className="w-4 h-4" />
+              <item.icon className="h-4 w-4" />
               <span>{item.name}</span>
             </CommandItem>
           ))}
@@ -99,7 +99,7 @@ export function AdminCommandPalette() {
               key={item.href}
               onSelect={() => runCommand(() => router.push(item.href))}
             >
-              <item.icon className="w-4 h-4" />
+              <item.icon className="h-4 w-4" />
               <span>{item.name}</span>
             </CommandItem>
           ))}
@@ -109,7 +109,7 @@ export function AdminCommandPalette() {
           <CommandItem
             onSelect={() => runCommand(() => window.open("/", "_blank"))}
           >
-            <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+            <ArrowTopRightOnSquareIcon className="h-4 w-4" />
             <span>Go to Site</span>
           </CommandItem>
         </CommandGroup>

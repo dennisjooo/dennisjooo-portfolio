@@ -38,17 +38,17 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card/50 backdrop-blur-xl hidden lg:flex flex-col">
-      <div className="p-8 border-b border-border">
-        <h1 className="font-caslon italic text-2xl">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col border-r border-border bg-card/50 backdrop-blur-xl lg:flex">
+      <div className="border-b border-border p-8">
+        <h1 className="font-caslon text-2xl italic">
           Dennis' Portfolio{" "}
-          <span className="font-sans font-bold not-italic text-sm tracking-widest uppercase block mt-1 text-muted-foreground">
+          <span className="mt-1 block font-sans text-sm font-bold uppercase not-italic tracking-widest text-muted-foreground">
             Mission Control
           </span>
         </h1>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 space-y-2 p-4">
         {navItems.map((item) => {
           const isActive =
             item.href === "/admin"
@@ -58,14 +58,14 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 group ${
+              className={`group flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-lg"
                   : "hover:bg-accent/10 hover:text-accent"
               }`}
             >
               <item.icon
-                className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`}
+                className={`h-5 w-5 ${isActive ? "" : "transition-transform group-hover:scale-110"}`}
               />
               <span className="font-sans font-medium tracking-wide">
                 {item.name}
@@ -75,14 +75,14 @@ export function AdminSidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-border">
+      <div className="border-t border-border p-4">
         {/* Theme Toggle */}
-        <ThemeToggle className="mt-2 ml-4" />
+        <ThemeToggle className="ml-4 mt-2" />
 
         {/* Sign Out */}
         <SignOutButton>
-          <button className="w-full flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors">
-            <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
+          <button className="mt-2 flex w-full items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive">
+            <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
             <span className="font-mono text-xs uppercase tracking-widest">
               Sign Out
             </span>
@@ -91,9 +91,9 @@ export function AdminSidebar() {
 
         <Link
           href="/"
-          className="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-2 flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
+          <ArrowLeftStartOnRectangleIcon className="h-5 w-5" />
           <span className="font-mono text-xs uppercase tracking-widest">
             Exit to Site
           </span>

@@ -14,7 +14,7 @@ export const FeaturedProjectsGrid: React.FC<FeaturedProjectsGridProps> = ({
   projects,
 }) => {
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+    <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:gap-10 lg:grid-cols-3">
       {projects.map(
         ({ title, description, date, imageUrl, blogPost, slug }, index) => (
           <ContentCard

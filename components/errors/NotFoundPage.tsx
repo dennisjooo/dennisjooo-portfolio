@@ -13,13 +13,13 @@ export function NotFoundPage() {
 
   return (
     <PublicShell>
-      <main className="relative h-screen w-full overflow-hidden bg-background text-foreground bg-noise selection:bg-accent selection:text-accent-foreground">
+      <main className="bg-noise relative h-screen w-full overflow-hidden bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
         <NotFoundBackground x={background.x} y={background.y} />
         <NotFoundContent x={foreground.x} y={foreground.y} />
         <NotFoundDiagnostics />
 
-        <div className="absolute bottom-0 right-12 w-px h-32 bg-gradient-to-t from-foreground/20 to-transparent hidden md:block" />
-        <div className="absolute top-0 left-12 w-px h-32 bg-gradient-to-b from-foreground/20 to-transparent hidden md:block" />
+        <div className="absolute bottom-0 right-12 hidden h-32 w-px bg-gradient-to-t from-foreground/20 to-transparent md:block" />
+        <div className="absolute left-12 top-0 hidden h-32 w-px bg-gradient-to-b from-foreground/20 to-transparent md:block" />
       </main>
     </PublicShell>
   );

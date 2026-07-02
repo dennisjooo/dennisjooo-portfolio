@@ -11,16 +11,16 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
   imageUrl = "/images/profile.webp",
 }) => (
   <div
-    className="w-full max-w-[300px] aspect-square flex-shrink-0 animate-fade-in-up"
+    className="animate-fade-in-up aspect-square w-full max-w-[300px] flex-shrink-0"
     style={{ animationDelay: "0.4s" }}
   >
     <HoverImageFrame
       rounded="2xl"
-      className="w-full h-full shadow-lg"
+      className="h-full w-full shadow-lg"
       frameClassName="relative w-full h-full"
     >
       <div
-        className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 z-10 opacity-20 mix-blend-overlay"
         style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
       />
       <Image
@@ -32,7 +32,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         sizes="300px"
         quality={70}
       />
-      <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10 pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
     </HoverImageFrame>
   </div>
 );

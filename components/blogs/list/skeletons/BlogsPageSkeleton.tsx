@@ -8,16 +8,16 @@ export function BlogsPageSkeleton() {
         id="projects-and-certifications"
         className="flex flex-col py-8 md:py-12"
       >
-        <div className="container max-w-7xl mx-auto px-6 pt-24 md:pt-20">
-          <header className="w-full mb-8 md:mb-10" aria-hidden="true">
-            <SkeletonBlock className="h-3 w-44 mb-4" />
-            <SkeletonBlock className="h-12 md:h-14 w-48 md:w-56 mb-4" />
+        <div className="container mx-auto max-w-7xl px-6 pt-24 md:pt-20">
+          <header className="mb-8 w-full md:mb-10" aria-hidden="true">
+            <SkeletonBlock className="mb-4 h-3 w-44" />
+            <SkeletonBlock className="mb-4 h-12 w-48 md:h-14 md:w-56" />
             <SkeletonBlock className="h-5 w-full max-w-xl" />
-            <SkeletonBlock className="h-5 w-4/5 max-w-md mt-2" />
+            <SkeletonBlock className="mt-2 h-5 w-4/5 max-w-md" />
           </header>
 
           <div
-            className="flex items-center gap-6 md:gap-10 mb-8 border-b border-border pb-4"
+            className="mb-8 flex items-center gap-6 border-b border-border pb-4 md:gap-10"
             aria-hidden="true"
           >
             <div className="space-y-1">
@@ -28,11 +28,11 @@ export function BlogsPageSkeleton() {
               <SkeletonBlock className="h-3 w-6" />
               <SkeletonBlock className="h-7 w-36" />
             </div>
-            <div className="flex-1 hidden md:block" />
-            <SkeletonBlock className="hidden md:block h-3 w-24" />
+            <div className="hidden flex-1 md:block" />
+            <SkeletonBlock className="hidden h-3 w-24 md:block" />
           </div>
 
-          <div className="w-full min-h-[50vh] mt-8">
+          <div className="mt-8 min-h-[50vh] w-full">
             <BlogsListSkeleton />
           </div>
         </div>

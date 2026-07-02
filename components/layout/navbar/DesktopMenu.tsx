@@ -21,13 +21,13 @@ export const DesktopMenu = ({
   onNavigate,
   textColorClass,
 }: DesktopMenuProps) => (
-  <ul className="hidden md:flex md:flex-row justify-around items-center w-full">
+  <ul className="hidden w-full items-center justify-around md:flex md:flex-row">
     {navItems.map((item) => {
       const hoverClass = scrolled ? HOVER_SCROLLED : HOVER_DEFAULT;
       const className = `${BASE_CLASSES} ${textColorClass} ${hoverClass}`;
 
       return (
-        <li key={item.id} className="w-full md:w-auto font-semibold">
+        <li key={item.id} className="w-full font-semibold md:w-auto">
           {item.href ? (
             <Link href={item.href} className={className}>
               {item.label}

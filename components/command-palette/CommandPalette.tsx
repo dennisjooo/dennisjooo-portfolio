@@ -103,15 +103,15 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
         onChangeScope={setSearchScope}
       />
 
-      <CommandList className="max-h-[340px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/50 hover:scrollbar-thumb-muted-foreground/30 pb-2">
+      <CommandList className="max-h-[340px] overflow-y-auto overflow-x-hidden pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/50 hover:scrollbar-thumb-muted-foreground/30">
         {/* No results message */}
         {search.trim() && !hasSearchResults && (
           <div className="py-10 text-center">
-            <SearchX className="mx-auto h-8 w-8 text-muted-foreground/70 mb-3" />
+            <SearchX className="mx-auto mb-3 h-8 w-8 text-muted-foreground/70" />
             <p className="text-sm font-medium text-muted-foreground">
               No results found
             </p>
-            <p className="text-xs text-muted-foreground/80 mt-1 font-mono">
+            <p className="mt-1 font-mono text-xs text-muted-foreground/80">
               Try adjusting your search or filters
             </p>
           </div>

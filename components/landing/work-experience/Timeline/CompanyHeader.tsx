@@ -16,14 +16,14 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
   isActive = false,
 }) => {
   return (
-    <div className="flex flex-col md:items-end gap-4 md:gap-6 w-full transition-all duration-500">
+    <div className="flex w-full flex-col gap-4 transition-all duration-500 md:items-end md:gap-6">
       {/* Logo */}
       <div
         className={cn(
-          "relative w-12 h-12 md:w-16 md:h-16 overflow-hidden shrink-0 transition-all duration-500",
+          "relative h-12 w-12 shrink-0 overflow-hidden transition-all duration-500 md:h-16 md:w-16",
           isActive
-            ? "opacity-100 grayscale-0 scale-105"
-            : "opacity-100 grayscale-0 md:opacity-40 md:grayscale md:scale-100",
+            ? "scale-105 opacity-100 grayscale-0"
+            : "opacity-100 grayscale-0 md:scale-100 md:opacity-40 md:grayscale",
         )}
       >
         <Image
@@ -35,7 +35,7 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
       </div>
 
       {/* Company Name */}
-      <h3 className="text-4xl md:text-6xl lg:text-7xl font-caslon italic text-foreground leading-[0.9] md:text-right tracking-tight">
+      <h3 className="font-caslon text-4xl italic leading-[0.9] tracking-tight text-foreground md:text-right md:text-6xl lg:text-7xl">
         {companyName}
       </h3>
     </div>

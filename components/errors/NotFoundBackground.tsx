@@ -12,7 +12,7 @@ export function NotFoundBackground({ x, y }: NotFoundBackgroundProps) {
   return (
     <>
       <div
-        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
         style={{
           backgroundImage:
             "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
@@ -21,14 +21,14 @@ export function NotFoundBackground({ x, y }: NotFoundBackgroundProps) {
       />
 
       <m.div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden"
+        className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden"
         style={{ x, y }}
       >
         <div className="relative whitespace-nowrap">
-          <h1 className="font-caslon italic font-normal text-[45vw] leading-none tracking-tight text-foreground/5 select-none mix-blend-overlay dark:text-foreground/10 dark:mix-blend-screen">
+          <h1 className="select-none font-caslon text-[45vw] font-normal italic leading-none tracking-tight text-foreground/5 mix-blend-overlay dark:text-foreground/10 dark:mix-blend-screen">
             404
           </h1>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vw] rounded-full border-[1px] border-foreground/5" />
+          <div className="absolute left-1/2 top-1/2 h-[35vw] w-[35vw] -translate-x-1/2 -translate-y-1/2 rounded-full border-[1px] border-foreground/5" />
         </div>
       </m.div>
     </>

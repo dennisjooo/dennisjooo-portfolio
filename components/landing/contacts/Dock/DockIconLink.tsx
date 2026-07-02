@@ -20,7 +20,7 @@ export const DockIconLink: React.FC<DockIconLinkProps> = ({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={ariaLabel}
-        className="flex items-center justify-center size-full text-muted-foreground hover:text-primary transition-colors duration-200"
+        className="flex size-full items-center justify-center text-muted-foreground transition-colors duration-200 hover:text-primary"
       >
         {icon}
       </Link>

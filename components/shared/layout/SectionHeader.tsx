@@ -28,17 +28,17 @@ function StaticSectionHeader({
   return (
     <div
       className={cn(
-        "relative w-full flex justify-between items-end border-b border-border pb-4",
+        "relative flex w-full items-end justify-between border-b border-border pb-4",
         className,
       )}
     >
-      <span className="font-caslon italic text-3xl md:text-4xl text-foreground">
+      <span className="font-caslon text-3xl italic text-foreground md:text-4xl">
         {number}
       </span>
-      <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-70 text-muted-foreground">
+      <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm">
         {title}
       </span>
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-accent" />
+      <div className="bg-gradient-accent absolute bottom-0 left-0 right-0 h-px" />
     </div>
   );
 }
@@ -57,25 +57,25 @@ function AnimatedSectionHeader({
       whileInView={prefersReducedMotion ? undefined : "visible"}
       viewport={viewportSettings.once}
       className={cn(
-        "relative w-full flex justify-between items-end border-b border-border pb-4",
+        "relative flex w-full items-end justify-between border-b border-border pb-4",
         className,
       )}
     >
       <m.span
         variants={prefersReducedMotion ? undefined : fadeUpItem}
-        className="font-caslon italic text-3xl md:text-4xl text-foreground"
+        className="font-caslon text-3xl italic text-foreground md:text-4xl"
       >
         {number}
       </m.span>
       <m.span
         variants={prefersReducedMotion ? undefined : fadeUpItem}
-        className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-70 text-muted-foreground"
+        className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm"
       >
         {title}
       </m.span>
       <m.div
         variants={prefersReducedMotion ? undefined : underlineReveal}
-        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-accent origin-left"
+        className="bg-gradient-accent absolute bottom-0 left-0 right-0 h-px origin-left"
         style={{ boxShadow: "0 0 8px var(--accent-shadow)" }}
       />
     </m.div>
@@ -116,12 +116,12 @@ export const SectionHeader = ({
       {(subtitle || description) && (
         <div className="relative w-full select-none pt-6">
           {subtitle && (
-            <h2 className="font-caslon italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-4">
+            <h2 className="mb-4 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
               {subtitle}
             </h2>
           )}
           {description && (
-            <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
+            <p className="max-w-xl font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
               {description}
             </p>
           )}

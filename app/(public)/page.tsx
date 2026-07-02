@@ -37,7 +37,7 @@ export default async function Home() {
 
   return (
     <>
-      <div id="home-hero" className="sticky top-0 h-screen w-full z-0">
+      <div id="home-hero" className="sticky top-0 z-0 h-screen w-full">
         <Hero />
       </div>
 

@@ -19,11 +19,11 @@ export default async function AdminDashboardLayout({
 
   return (
     <UnsavedChangesProvider>
-      <div className="min-h-screen bg-background text-foreground bg-noise relative flex overflow-x-hidden">
+      <div className="bg-noise relative flex min-h-screen overflow-x-hidden bg-background text-foreground">
         <AdminSidebar />
         <AdminCommandPalette />
-        <main className="flex-1 lg:ml-64 relative z-10 p-4 md:p-8 lg:p-12 min-h-screen min-w-0">
-          <div className="max-w-6xl mx-auto space-y-8 animate-fade-in w-full">
+        <main className="relative z-10 min-h-screen min-w-0 flex-1 p-4 md:p-8 lg:ml-64 lg:p-12">
+          <div className="animate-fade-in mx-auto w-full max-w-6xl space-y-8">
             <AdminMobileMenu />
 
             {children}

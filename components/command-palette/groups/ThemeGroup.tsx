@@ -17,7 +17,7 @@ export function ThemeGroup({ onSelect }: ThemeGroupProps) {
         <Sun className="h-4 w-4" />
         <span className="font-medium">Light</span>
         {theme === "light" && (
-          <span className="ml-auto font-mono text-[10px] text-accent uppercase tracking-wider">
+          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
             Active
           </span>
         )}
@@ -26,7 +26,7 @@ export function ThemeGroup({ onSelect }: ThemeGroupProps) {
         <Moon className="h-4 w-4" />
         <span className="font-medium">Dark</span>
         {theme === "dark" && (
-          <span className="ml-auto font-mono text-[10px] text-accent uppercase tracking-wider">
+          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
             Active
           </span>
         )}
@@ -35,7 +35,7 @@ export function ThemeGroup({ onSelect }: ThemeGroupProps) {
         <Laptop className="h-4 w-4" />
         <span className="font-medium">System</span>
         {theme === "system" && (
-          <span className="ml-auto font-mono text-[10px] text-accent uppercase tracking-wider">
+          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
             Active
           </span>
         )}

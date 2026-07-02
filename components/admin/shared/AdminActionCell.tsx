@@ -11,18 +11,18 @@ export function AdminActionCell({ editHref, onDelete }: AdminActionCellProps) {
     <div className="flex items-center justify-end gap-3">
       <Link
         href={editHref}
-        className="p-2 rounded-md hover:bg-accent/10 text-muted-foreground hover:text-accent transition-colors"
+        className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent/10 hover:text-accent"
         aria-label="Edit"
       >
-        <PencilSquareIcon className="w-4 h-4" />
+        <PencilSquareIcon className="h-4 w-4" />
       </Link>
       <button
         type="button"
         onClick={onDelete}
-        className="p-2 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+        className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
         aria-label="Delete"
       >
-        <TrashIcon className="w-4 h-4" />
+        <TrashIcon className="h-4 w-4" />
       </button>
     </div>
   );

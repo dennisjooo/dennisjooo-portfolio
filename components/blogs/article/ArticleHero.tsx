@@ -32,7 +32,7 @@ export const ArticleHero = ({
   slug,
 }: ArticleHeroProps) => {
   return (
-    <header className="w-full mb-12 md:mb-16">
+    <header className="mb-12 w-full md:mb-16">
       {/* Back Navigation */}
       <m.div
         initial={{ opacity: 0, x: -20 }}
@@ -42,9 +42,9 @@ export const ArticleHero = ({
       >
         <Link
           href="/blogs"
-          className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+          className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
           Back to Blogs
         </Link>
       </m.div>
@@ -54,16 +54,16 @@ export const ArticleHero = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="flex flex-wrap items-center gap-3 md:gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground mb-6"
+        className="mb-6 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted-foreground md:gap-4"
       >
-        <span className="px-2 py-1 rounded border border-border">
+        <span className="rounded border border-border px-2 py-1">
           {getBlogTypeLabel(type)}
         </span>
-        <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+        <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
         <time dateTime={date}>{date}</time>
-        <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+        <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
         <span>{wordCount.toLocaleString()} words</span>
-        <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+        <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
         <span>{readTime} min read</span>
       </m.div>
 
@@ -73,7 +73,7 @@ export const ArticleHero = ({
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="font-caslon italic text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-foreground mb-6"
+        className="mb-6 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
       >
         {title}
       </m.h1>
@@ -83,7 +83,7 @@ export const ArticleHero = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="font-sans text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-10"
+        className="mb-10 max-w-3xl font-sans text-lg leading-relaxed text-muted-foreground md:text-xl"
       >
         {description}
       </m.p>
@@ -134,7 +134,7 @@ function ArticleHeroImage({
             }
           >
             <div
-              className="absolute inset-0 z-10 pointer-events-none opacity-15 mix-blend-overlay"
+              className="pointer-events-none absolute inset-0 z-10 opacity-15 mix-blend-overlay"
               style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
             />
 
@@ -149,9 +149,9 @@ function ArticleHeroImage({
               onLoad={handleImageLoad}
             />
 
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10 pointer-events-none" />
+            <div className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
 
-            <span className="absolute bottom-4 right-4 z-20 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="absolute bottom-4 right-4 z-20 rounded-full border border-border bg-background/80 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
               Click to zoom
             </span>
           </m.div>

@@ -16,7 +16,7 @@ export function ListSkeleton({
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className={`bg-muted/20 animate-pulse rounded-xl ${height}`}
+          className={`animate-pulse rounded-xl bg-muted/20 ${height}`}
         />
       ))}
     </div>

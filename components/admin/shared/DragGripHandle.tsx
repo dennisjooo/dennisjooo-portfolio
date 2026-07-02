@@ -17,13 +17,13 @@ export function DragGripHandle({
       onDragStart={onDragStart}
       title="Drag to reorder"
       className={cn(
-        "self-stretch flex items-center justify-center shrink-0 px-1.5 py-2 rounded-md",
-        "text-muted-foreground hover:text-foreground hover:bg-muted",
-        "cursor-grab active:cursor-grabbing transition-colors",
+        "flex shrink-0 items-center justify-center self-stretch rounded-md px-1.5 py-2",
+        "text-muted-foreground hover:bg-muted hover:text-foreground",
+        "cursor-grab transition-colors active:cursor-grabbing",
         className,
       )}
     >
-      <GripVertical className="w-4 h-4" />
+      <GripVertical className="h-4 w-4" />
     </button>
   );
 }

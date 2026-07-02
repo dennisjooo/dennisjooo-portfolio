@@ -19,7 +19,7 @@ export function createBlogColumns(
       header: "Type",
       cell: (row: Blog) => (
         <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
+          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${
             row.type === "project"
               ? "bg-secondary text-foreground dark:bg-secondary/40 dark:text-foreground"
               : "bg-accent/20 text-foreground dark:bg-accent/25 dark:text-foreground"
@@ -35,7 +35,7 @@ export function createBlogColumns(
         return (
           <div className="flex flex-col gap-1">
             <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize w-fit ${BLOG_STATUS_STYLES[row.status] ?? BLOG_STATUS_STYLES.draft}`}
+              className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${BLOG_STATUS_STYLES[row.status] ?? BLOG_STATUS_STYLES.draft}`}
             >
               {row.status}
             </span>

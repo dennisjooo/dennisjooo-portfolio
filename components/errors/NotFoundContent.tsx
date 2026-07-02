@@ -12,7 +12,7 @@ interface NotFoundContentProps {
 export function NotFoundContent({ x, y }: NotFoundContentProps) {
   return (
     <m.div
-      className="absolute bottom-12 left-6 md:bottom-24 md:left-24 z-10 max-w-xl"
+      className="absolute bottom-12 left-6 z-10 max-w-xl md:bottom-24 md:left-24"
       style={{ x, y }}
     >
       <div className="flex flex-col gap-6">
@@ -24,7 +24,7 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
           <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:text-xs">
             Page Not Found
           </span>
-          <h2 className="mb-4 font-caslon italic text-6xl leading-[0.85] tracking-tight text-display md:text-7xl lg:text-8xl">
+          <h2 className="text-display mb-4 font-caslon text-6xl italic leading-[0.85] tracking-tight md:text-7xl lg:text-8xl">
             Lost
             <br />
             <span className="text-accent">Void</span>
@@ -35,7 +35,7 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="pl-2 border-l-2 border-accent/30"
+          className="border-l-2 border-accent/30 pl-2"
         >
           <p className="max-w-sm font-sans text-base font-light leading-relaxed text-muted-foreground md:text-lg">
             The page you are looking for has been moved, deleted, or consumed by

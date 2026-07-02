@@ -42,9 +42,9 @@ export const CodeBlock = ({ children, className }: CodeProps) => {
 
   return (
     <div className="not-prose my-6">
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="font-mono text-xs text-muted-foreground">
             {language || "code"}
           </span>
           <CopyButton text={codeString} title="Copy code" />
@@ -54,7 +54,7 @@ export const CodeBlock = ({ children, className }: CodeProps) => {
             style={vscDarkPlus}
             language={language || "text"}
             PreTag="div"
-            className="!m-0 !p-4 !bg-transparent text-sm leading-relaxed"
+            className="!m-0 !bg-transparent !p-4 text-sm leading-relaxed"
           >
             {codeString}
           </SyntaxHighlighter>

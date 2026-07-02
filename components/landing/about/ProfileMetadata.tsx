@@ -11,7 +11,7 @@ export function ProfileMetadata({
 }: ProfileMetadataProps) {
   return (
     <div
-      className={cn("text-center space-y-2 animate-fade-in-up", className)}
+      className={cn("animate-fade-in-up space-y-2 text-center", className)}
       style={{ animationDelay: "0.6s" }}
     >
       <p className={cn("font-caslon italic text-foreground", nameClassName)}>

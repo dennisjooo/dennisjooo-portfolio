@@ -189,45 +189,45 @@ export function MarkdownEditor({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/30">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/30 p-0.5">
           <button
             type="button"
             onClick={() => onEditorModeChange("write")}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+              "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
               editorMode === "write"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <PencilSquareIcon className="w-3.5 h-3.5" />
+            <PencilSquareIcon className="h-3.5 w-3.5" />
             Write
           </button>
           <button
             type="button"
             onClick={() => onEditorModeChange("preview")}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+              "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
               editorMode === "preview"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <EyeIcon className="w-3.5 h-3.5" />
+            <EyeIcon className="h-3.5 w-3.5" />
             Preview
           </button>
           <button
             type="button"
             onClick={() => onEditorModeChange("split")}
             className={cn(
-              "hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+              "hidden items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all md:flex",
               editorMode === "split"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <ViewColumnsIcon className="w-3.5 h-3.5" />
+            <ViewColumnsIcon className="h-3.5 w-3.5" />
             Split
           </button>
         </div>
@@ -242,11 +242,11 @@ export function MarkdownEditor({
             className={cn(
               "flex items-center gap-2 text-xs",
               canUploadImages
-                ? "text-primary cursor-pointer hover:underline"
-                : "text-muted-foreground/50 pointer-events-none",
+                ? "cursor-pointer text-primary hover:underline"
+                : "pointer-events-none text-muted-foreground/50",
             )}
           >
-            <DocumentPlusIcon className="w-4 h-4" />
+            <DocumentPlusIcon className="h-4 w-4" />
             <span>Add Image</span>
             <input
               type="file"
@@ -288,7 +288,7 @@ export function MarkdownEditor({
                 "font-mono text-sm leading-relaxed",
                 editorMode === "split"
                   ? "h-[700px] resize-y overflow-auto"
-                  : "resize-none overflow-hidden min-h-[500px]",
+                  : "min-h-[500px] resize-none overflow-hidden",
                 dragActive && "border-primary ring-2 ring-primary/20",
               )}
               placeholder="# Write your masterpiece here... (Drag & drop images supported)"
@@ -296,7 +296,7 @@ export function MarkdownEditor({
             {editorMode === "write" && (
               <div
                 className={cn(
-                  "absolute bottom-4 right-4 text-xs text-muted-foreground bg-background/80 backdrop-blur px-2 py-1 rounded border border-border pointer-events-none transition-opacity duration-300",
+                  "pointer-events-none absolute bottom-4 right-4 rounded border border-border bg-background/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur transition-opacity duration-300",
                   content ? "opacity-20" : "opacity-100",
                 )}
               >
@@ -304,8 +304,8 @@ export function MarkdownEditor({
               </div>
             )}
             {dragActive && (
-              <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px] border-2 border-primary border-dashed rounded-lg flex items-center justify-center pointer-events-none">
-                <span className="text-primary font-medium">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-primary bg-primary/10 backdrop-blur-[1px]">
+                <span className="font-medium text-primary">
                   Drop image to insert
                 </span>
               </div>
@@ -333,7 +333,7 @@ export function MarkdownEditor({
         )}
       </div>
 
-      <div className="flex items-center gap-4 mt-2 px-1 text-xs text-muted-foreground/60">
+      <div className="mt-2 flex items-center gap-4 px-1 text-xs text-muted-foreground/60">
         <span>{wordCount} words</span>
         <span className="text-border">•</span>
         <span>{content.length.toLocaleString()} chars</span>

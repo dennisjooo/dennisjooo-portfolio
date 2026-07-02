@@ -17,11 +17,11 @@ export default function ProjectLinks({ links }: ProjectLinksProps) {
   return (
     <div>
       {/* Section Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="mb-6 flex items-center gap-4">
         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Resources
         </span>
-        <div className="flex-1 h-px bg-border" />
+        <div className="h-px flex-1 bg-border" />
       </div>
 
       {/* Links Grid */}
@@ -48,22 +48,22 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
       rel="noopener noreferrer"
     >
       <div className="relative">
-        <div className="absolute -inset-px bg-gradient-accent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="bg-gradient-accent absolute -inset-px rounded-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        <span className="relative inline-flex items-center gap-3 px-5 py-3 rounded-lg border border-border bg-card transition-colors duration-500">
-          <span className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
+        <span className="relative inline-flex items-center gap-3 rounded-lg border border-border bg-card px-5 py-3 transition-colors duration-500">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-colors duration-300 group-hover:bg-accent/10">
             {isGitHubLink ? (
-              <BsGithub className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+              <BsGithub className="h-4 w-4 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
             ) : (
-              <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
             )}
           </span>
 
-          <span className="font-sans font-medium text-sm text-foreground group-hover:text-accent transition-colors duration-300">
+          <span className="font-sans text-sm font-medium text-foreground transition-colors duration-300 group-hover:text-accent">
             {text}
           </span>
 
-          <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+          <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
         </span>
       </div>
     </m.a>

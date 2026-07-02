@@ -36,10 +36,7 @@ export const MobileMenu = ({
 
   return (
     <div
-      className={`
-                md:hidden w-full transition-[grid-template-rows,padding] duration-200 ease-in-out grid
-                ${isMenuOpen ? "grid-rows-[1fr] pb-2" : "grid-rows-[0fr] pb-0"}
-            `}
+      className={`grid w-full transition-[grid-template-rows,padding] duration-200 ease-in-out md:hidden ${isMenuOpen ? "grid-rows-[1fr] pb-2" : "grid-rows-[0fr] pb-0"} `}
       aria-hidden={!isMenuOpen}
     >
       <div className="overflow-hidden">

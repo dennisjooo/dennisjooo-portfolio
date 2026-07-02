@@ -45,37 +45,37 @@ export function AdminMobileMenu() {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <div className="lg:hidden relative">
-      <div className="flex items-center justify-between py-4 px-2 border-b border-border mb-6">
-        <h1 className="font-caslon italic text-xl font-bold">
+    <div className="relative lg:hidden">
+      <div className="mb-6 flex items-center justify-between border-b border-border px-2 py-4">
+        <h1 className="font-caslon text-xl font-bold italic">
           Mission Control
         </h1>
         <button
           onClick={toggleMenu}
-          className="p-2.5 rounded-lg bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card transition-all duration-200"
+          className="rounded-lg bg-card/50 p-2.5 text-muted-foreground transition-all duration-200 hover:bg-card hover:text-foreground"
           aria-label="Toggle menu"
         >
-          <div className="relative w-5 h-5">
+          <div className="relative h-5 w-5">
             <XMarkIcon
-              className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${isOpen ? "opacity-100 rotate-0" : "opacity-0 rotate-90"}`}
+              className={`absolute inset-0 h-5 w-5 transition-all duration-300 ${isOpen ? "rotate-0 opacity-100" : "rotate-90 opacity-0"}`}
             />
             <Bars3Icon
-              className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${isOpen ? "opacity-0 -rotate-90" : "opacity-100 rotate-0"}`}
+              className={`absolute inset-0 h-5 w-5 transition-all duration-300 ${isOpen ? "-rotate-90 opacity-0" : "rotate-0 opacity-100"}`}
             />
           </div>
         </button>
       </div>
 
       <div
-        className={`fixed inset-0 bg-background/60 backdrop-blur-sm z-40 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 z-40 bg-background/60 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"}`}
         onClick={closeMenu}
       />
 
       <div
-        className={`absolute top-full left-0 right-0 z-50 transition-all duration-300 ease-out ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"}`}
+        className={`absolute left-0 right-0 top-full z-50 transition-all duration-300 ease-out ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"}`}
       >
-        <div className="mx-2 bg-card/95 backdrop-blur-xl border border-border rounded-xl shadow-2xl overflow-hidden">
-          <nav className="p-3 space-y-1">
+        <div className="mx-2 overflow-hidden rounded-xl border border-border bg-card/95 shadow-2xl backdrop-blur-xl">
+          <nav className="space-y-1 p-3">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/admin"
@@ -86,14 +86,14 @@ export function AdminMobileMenu() {
                   key={item.href}
                   href={item.href}
                   onClick={closeMenu}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                  className={`group flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
                     isActive
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-accent/10 hover:text-accent"
                   }`}
                 >
                   <item.icon
-                    className={`w-5 h-5 ${isActive ? "" : "group-hover:scale-110 transition-transform"}`}
+                    className={`h-5 w-5 ${isActive ? "" : "transition-transform group-hover:scale-110"}`}
                   />
                   <span className="font-sans font-medium tracking-wide">
                     {item.name}
@@ -102,23 +102,23 @@ export function AdminMobileMenu() {
               );
             })}
 
-            <div className="h-px bg-border/50 my-2" />
+            <div className="my-2 h-px bg-border/50" />
 
-            <div className="flex items-center justify-between px-4 py-3 rounded-lg">
+            <div className="flex items-center justify-between rounded-lg px-4 py-3">
               <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 Theme
               </span>
               <ThemeToggle />
             </div>
 
-            <div className="h-px bg-border/50 my-2" />
+            <div className="my-2 h-px bg-border/50" />
 
             <SignOutButton>
               <button
                 onClick={closeMenu}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 group"
+                className="group flex w-full items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
               >
-                <ArrowRightStartOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <ArrowRightStartOnRectangleIcon className="h-5 w-5 transition-transform group-hover:scale-110" />
                 <span className="font-mono text-xs uppercase tracking-widest">
                   Sign Out
                 </span>
@@ -128,9 +128,9 @@ export function AdminMobileMenu() {
             <Link
               href="/"
               onClick={closeMenu}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground transition-all duration-200 group"
+              className="group flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all duration-200 hover:text-foreground"
             >
-              <ArrowLeftStartOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <ArrowLeftStartOnRectangleIcon className="h-5 w-5 transition-transform group-hover:scale-110" />
               <span className="font-mono text-xs uppercase tracking-widest">
                 Exit to Site
               </span>

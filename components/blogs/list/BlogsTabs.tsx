@@ -44,7 +44,7 @@ export function BlogsTabs({
 
   return (
     <div
-      className={`container max-w-7xl mx-auto px-6 pt-24 md:pt-20 transition-opacity duration-300 ${
+      className={`container mx-auto max-w-7xl px-6 pt-24 transition-opacity duration-300 md:pt-20 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
     >
@@ -62,7 +62,7 @@ export function BlogsTabs({
 
       {/* Content Grid */}
       {availableTabs.length > 0 && (
-        <div className="w-full min-h-[50vh] mt-8">
+        <div className="mt-8 min-h-[50vh] w-full">
           {mounted ? (
             <AnimatePresence mode="wait">
               {activeTab === "blog" ? (

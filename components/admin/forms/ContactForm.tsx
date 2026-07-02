@@ -37,7 +37,7 @@ export default function ContactForm({
   return (
     <form
       onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
-      className={`${formStyles.panel} space-y-6 max-w-3xl`}
+      className={`${formStyles.panel} max-w-3xl space-y-6`}
     >
       <div className="space-y-4">
         <FormField label="Label">
@@ -66,7 +66,7 @@ export default function ContactForm({
           />
         </FormField>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField label="Icon">
             <select
               required

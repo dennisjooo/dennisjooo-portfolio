@@ -94,10 +94,10 @@ export default function AdminDashboard() {
           <Link
             key={action.href}
             href={action.href}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-card/30 hover:bg-card/60 hover:border-accent/40 text-sm font-medium transition-all duration-200 group"
+            className="group inline-flex items-center gap-2 rounded-lg border border-border bg-card/30 px-4 py-2 text-sm font-medium transition-all duration-200 hover:border-accent/40 hover:bg-card/60"
           >
-            <PlusIcon className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent transition-colors" />
-            <span className="group-hover:text-accent transition-colors">
+            <PlusIcon className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-accent" />
+            <span className="transition-colors group-hover:text-accent">
               {action.label}
             </span>
           </Link>
@@ -108,7 +108,7 @@ export default function AdminDashboard() {
 
       <NavigationCards counts={counts} countsLoading={countsLoading} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <RecentActivity />
         <SystemAnalytics
           statusData={statusData}

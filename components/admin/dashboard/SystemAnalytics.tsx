@@ -14,25 +14,25 @@ export function SystemAnalytics({
   error,
 }: SystemAnalyticsProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card/20 backdrop-blur-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
+      <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
         <h3 className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          <CircleStackIcon className="w-4 h-4" />
+          <CircleStackIcon className="h-4 w-4" />
           System Status
         </h3>
         <div className="flex items-center gap-3">
           {statusData?.timestamp && (
-            <span className="font-mono text-[11px] text-muted-foreground/60 tabular-nums">
+            <span className="font-mono text-[11px] tabular-nums text-muted-foreground/60">
               {new Date(statusData.timestamp).toLocaleTimeString()}
             </span>
           )}
           {statusData?.cached && (
-            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-muted/50 text-muted-foreground">
+            <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
               cached
             </span>
           )}
           {isLoading && (
-            <span className="font-mono text-[11px] text-muted-foreground animate-pulse">
+            <span className="animate-pulse font-mono text-[11px] text-muted-foreground">
               polling...
             </span>
           )}
@@ -44,7 +44,7 @@ export function SystemAnalytics({
         </div>
       </div>
 
-      <div className="px-6 py-2 divide-y divide-border/30">
+      <div className="divide-y divide-border/30 px-6 py-2">
         <StatusIndicator status={statusData?.database} label="Database" />
         <StatusIndicator status={statusData?.auth} label="Authentication" />
         <StatusIndicator

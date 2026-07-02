@@ -27,7 +27,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative z-40 w-full overflow-hidden border-t border-border bg-background bg-noise">
+    <footer className="bg-noise relative z-40 w-full overflow-hidden border-t border-border bg-background">
       <div className="absolute inset-x-0 top-0 h-px bg-border opacity-50" />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:text-sm">
@@ -39,7 +39,7 @@ const Footer = () => {
             className="cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-0"
             onClick={handleCopyrightClick}
           >
-            <span className="hover:text-accent transition-colors duration-300">
+            <span className="transition-colors duration-300 hover:text-accent">
               © {currentYear} Dennis Jonathan
             </span>
           </a>

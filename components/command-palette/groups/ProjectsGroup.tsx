@@ -44,16 +44,16 @@ export function ProjectsGroup({
             onSelect={() => onSelect(() => onNavigate(project.path))}
           >
             <FileText className="h-4 w-4 shrink-0" />
-            <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
               <div className="flex items-center gap-2">
-                <span className="font-medium truncate">{project.title}</span>
-                <span className="font-mono text-[9px] text-muted-foreground/80 uppercase tracking-wider shrink-0 px-1.5 py-0.5 bg-muted/50 rounded">
+                <span className="truncate font-medium">{project.title}</span>
+                <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground/80">
                   {project.type}
                 </span>
               </div>
               {project.context && (
                 <span
-                  className="text-xs text-muted-foreground/70 truncate max-w-full block mt-0.5"
+                  className="mt-0.5 block max-w-full truncate text-xs text-muted-foreground/70"
                   dangerouslySetInnerHTML={{
                     __html: highlightSearchTerm(
                       project.context,

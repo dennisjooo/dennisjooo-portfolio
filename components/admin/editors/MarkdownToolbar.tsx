@@ -64,12 +64,12 @@ export function MarkdownToolbar({
     {
       type: "bold",
       title: "Bold (Ctrl+B)",
-      icon: <span className="font-bold text-xs">B</span>,
+      icon: <span className="text-xs font-bold">B</span>,
     },
     {
       type: "italic",
       title: "Italic (Ctrl+I)",
-      icon: <span className="italic text-xs">I</span>,
+      icon: <span className="text-xs italic">I</span>,
     },
     {
       type: "heading",
@@ -119,7 +119,7 @@ export function MarkdownToolbar({
   ];
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/30 mb-2 overflow-x-auto">
+    <div className="mb-2 flex items-center gap-1 overflow-x-auto rounded-lg border border-border bg-muted/30 p-0.5">
       {toolbarButtons.map((btn) => (
         <ToolbarButton
           key={btn.type}

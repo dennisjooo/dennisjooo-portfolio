@@ -31,7 +31,7 @@ export const FeaturedCard = ({
   return (
     <Link
       href={`/blogs/${slug}`}
-      className="block group w-full cursor-pointer mb-12 md:mb-16"
+      className="group mb-12 block w-full cursor-pointer md:mb-16"
     >
       <m.div
         initial={prefersReducedMotion ? undefined : { opacity: 0, y: 40 }}
@@ -41,16 +41,16 @@ export const FeaturedCard = ({
         className="relative"
       >
         {/* Gradient border glow */}
-        <div className="absolute -inset-px bg-gradient-accent rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="bg-gradient-accent absolute -inset-px rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:rounded-2xl" />
 
-        <article className="relative grid grid-cols-1 md:grid-cols-5 md:gap-10 rounded-xl md:rounded-2xl border border-border bg-card md:p-6 overflow-hidden">
+        <article className="relative grid grid-cols-1 overflow-hidden rounded-xl border border-border bg-card md:grid-cols-5 md:gap-10 md:rounded-2xl md:p-6">
           {/* Image */}
           <m.div
             layoutId={`hero-image-${slug}`}
-            className="relative md:col-span-3 w-full aspect-[16/9] md:aspect-auto md:min-h-[320px] md:rounded-xl overflow-hidden bg-muted"
+            className="relative aspect-[16/9] w-full overflow-hidden bg-muted md:col-span-3 md:aspect-auto md:min-h-[320px] md:rounded-xl"
           >
             <div
-              className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay hidden md:block"
+              className="pointer-events-none absolute inset-0 z-10 hidden opacity-20 mix-blend-overlay md:block"
               style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
             />
             {imageUrl ? (
@@ -63,14 +63,14 @@ export const FeaturedCard = ({
                 priority
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
+              <div className="h-full w-full bg-gradient-to-br from-secondary to-muted" />
             )}
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-500 z-10" />
+            <div className="absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
 
             {/* Type badge overlaid on image (mobile only) */}
             {type && (
-              <div className="absolute top-3 left-3 z-20 md:hidden">
-                <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest bg-background/80 backdrop-blur-sm rounded border border-border text-muted-foreground">
+              <div className="absolute left-3 top-3 z-20 md:hidden">
+                <span className="rounded border border-border bg-background/80 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground backdrop-blur-sm">
                   {getBlogTypeLabel(type)}
                 </span>
               </div>
@@ -78,18 +78,18 @@ export const FeaturedCard = ({
           </m.div>
 
           {/* Content */}
-          <div className="md:col-span-2 flex flex-col justify-center gap-3 md:gap-4 p-4 md:p-0 md:py-4">
+          <div className="flex flex-col justify-center gap-3 p-4 md:col-span-2 md:gap-4 md:p-0 md:py-4">
             {/* Meta (desktop only) */}
-            <div className="hidden md:flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <div className="hidden flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground md:flex">
               {type && (
-                <span className="px-2 py-1 rounded border border-border bg-muted/50">
+                <span className="rounded border border-border bg-muted/50 px-2 py-1">
                   {getBlogTypeLabel(type)}
                 </span>
               )}
               <span>{date}</span>
               {readTime && (
                 <>
-                  <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+                  <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
                   <span>{readTime}</span>
                 </>
               )}
@@ -98,34 +98,34 @@ export const FeaturedCard = ({
             {/* Title */}
             <m.h3
               layoutId={`hero-title-${slug}`}
-              className="font-caslon italic text-xl md:text-4xl tracking-tight leading-tight md:leading-[1.1] text-foreground group-hover:text-accent transition-colors duration-300"
+              className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-4xl md:leading-[1.1]"
             >
               {title}
             </m.h3>
 
             {/* Description */}
-            <p className="font-sans text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-4">
+            <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:line-clamp-4 md:text-base">
               {description}
             </p>
 
             {/* Mobile footer - matches ContentCard */}
-            <div className="flex items-center justify-between pt-3 border-t border-border mt-auto md:hidden">
-              <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase tracking-widest">
+            <div className="mt-auto flex items-center justify-between border-t border-border pt-3 md:hidden">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 <span>{date}</span>
                 {readTime && (
                   <>
-                    <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+                    <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
                     <span>{readTime}</span>
                   </>
                 )}
               </div>
-              <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
             </div>
 
             {/* Desktop footer - read article link */}
-            <div className="hidden md:flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground group-hover:text-accent transition-colors duration-300 mt-2">
+            <div className="mt-2 hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent md:flex">
               <span>Read article</span>
-              <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
           </div>
         </article>

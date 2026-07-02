@@ -20,7 +20,7 @@ export function createCertificationColumns(
     {
       header: "Year",
       cell: (row: Certification) => (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
+        <span className="rounded bg-muted px-2 py-1 font-mono text-xs">
           {row.date}
         </span>
       ),

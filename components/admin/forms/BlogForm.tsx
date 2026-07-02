@@ -374,20 +374,20 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         textareaRef={textareaRef}
       />
 
-      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+      <div className="flex items-center justify-between border-t border-border/50 pt-4">
         <button
           type="button"
           onClick={handlePreview}
           disabled={previewing || !formData.title}
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
         >
-          <EyeIcon className="w-4 h-4" />
+          <EyeIcon className="h-4 w-4" />
           {previewing ? "Creating Preview..." : "Preview"}
         </button>
         <button
           type="submit"
           disabled={loading || uploading}
-          className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
         >
           {loading
             ? "Uploading & Saving..."

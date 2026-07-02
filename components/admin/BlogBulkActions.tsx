@@ -73,13 +73,13 @@ export function BlogBulkActions({
   if (selectedIds.size === 0) return null;
 
   return (
-    <div className="flex items-center gap-4 px-4 py-2.5 rounded-lg border border-border bg-muted/30 animate-fade-in">
+    <div className="animate-fade-in flex items-center gap-4 rounded-lg border border-border bg-muted/30 px-4 py-2.5">
       <span className="text-sm font-medium">{selectedIds.size} selected</span>
       <div className="flex items-center gap-2">
         <select
           value={bulkStatus}
           onChange={(e) => setBulkStatus(e.target.value)}
-          className="px-2.5 py-1.5 rounded-md border border-border bg-background text-xs focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+          className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-all focus:ring-2 focus:ring-accent/20"
         >
           <option value="">Set status...</option>
           <option value="draft">Draft</option>
@@ -91,14 +91,14 @@ export function BlogBulkActions({
             type="datetime-local"
             value={bulkPublishAt}
             onChange={(e) => setBulkPublishAt(e.target.value)}
-            className="px-2.5 py-1.5 rounded-md border border-border bg-background text-xs focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+            className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-all focus:ring-2 focus:ring-accent/20"
           />
         )}
         <button
           type="button"
           onClick={handleBulkStatusUpdate}
           disabled={bulkUpdating}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-foreground/5 rounded-md transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-foreground/5 disabled:opacity-50"
         >
           {bulkUpdating ? "Updating..." : "Update Status"}
         </button>
@@ -106,9 +106,9 @@ export function BlogBulkActions({
       <button
         type="button"
         onClick={onBulkDelete}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+        className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10"
       >
-        <TrashIcon className="w-3.5 h-3.5" />
+        <TrashIcon className="h-3.5 w-3.5" />
         Delete Selected
       </button>
     </div>

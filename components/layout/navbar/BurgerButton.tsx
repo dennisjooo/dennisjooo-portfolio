@@ -14,7 +14,7 @@ export const BurgerButton = ({
   textColorClass,
 }: BurgerButtonProps) => (
   <button
-    className={`md:hidden transition-transform duration-200 ${textColorClass}`}
+    className={`transition-transform duration-200 md:hidden ${textColorClass}`}
     onClick={() => onToggle(!isMenuOpen)}
     aria-label="Toggle menu"
     aria-expanded={isMenuOpen}

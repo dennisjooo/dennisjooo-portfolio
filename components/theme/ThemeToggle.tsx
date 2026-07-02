@@ -32,12 +32,12 @@ export const ThemeToggle = ({
     return (
       <button
         className={cn(
-          "relative w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300",
+          "relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-300",
           focusClasses,
         )}
         aria-label="Toggle theme"
       >
-        <div className="w-5 h-5" />
+        <div className="h-5 w-5" />
       </button>
     );
   }
@@ -47,7 +47,7 @@ export const ThemeToggle = ({
       ref={buttonRef}
       onClick={toggleTheme}
       className={cn(
-        "relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out",
+        "relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ease-in-out",
         focusClasses,
         hoverClass,
         className,
@@ -55,14 +55,14 @@ export const ThemeToggle = ({
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       {...props}
     >
-      <div className="relative w-5 h-5">
+      <div className="relative h-5 w-5">
         {isDark ? (
           <BsSun
-            className={`w-5 h-5 transition-all duration-300 ${textColorClass}`}
+            className={`h-5 w-5 transition-all duration-300 ${textColorClass}`}
           />
         ) : (
           <BsMoon
-            className={`w-5 h-5 transition-all duration-300 ${textColorClass}`}
+            className={`h-5 w-5 transition-all duration-300 ${textColorClass}`}
           />
         )}
       </div>

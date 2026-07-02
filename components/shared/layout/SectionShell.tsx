@@ -37,7 +37,7 @@ export function SectionShell({
       className={cn(
         spacingClasses[spacing],
         "w-full bg-background text-foreground",
-        minHeight && "relative min-h-[80vh] flex flex-col",
+        minHeight && "relative flex min-h-[80vh] flex-col",
         overflowHidden && "overflow-hidden",
         className,
       )}

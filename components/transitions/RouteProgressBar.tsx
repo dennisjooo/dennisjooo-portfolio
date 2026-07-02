@@ -47,9 +47,9 @@ export function RouteProgressBar() {
   if (prefersReducedMotion || !visible) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[9999] h-[2px] pointer-events-none">
+    <div className="pointer-events-none fixed left-0 right-0 top-0 z-[9999] h-[2px]">
       <m.div
-        className="h-full bg-gradient-accent"
+        className="bg-gradient-accent h-full"
         style={{ width: `${progress}%` }}
       />
     </div>

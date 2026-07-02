@@ -14,11 +14,11 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
   scrollContentRef,
   profileImageUrl,
 }) => (
-  <div className="hidden md:flex w-full h-full">
-    <div className="w-[40%] h-full flex flex-col justify-center items-center p-12 relative z-10">
-      <div className="absolute right-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
+  <div className="hidden h-full w-full md:flex">
+    <div className="relative z-10 flex h-full w-[40%] flex-col items-center justify-center p-12">
+      <div className="absolute bottom-1/4 right-0 top-1/4 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
 
-      <div className="w-full max-w-md flex flex-col items-center">
+      <div className="flex w-full max-w-md flex-col items-center">
         <ProfileImage imageUrl={profileImageUrl} />
         <ProfileMetadata className="mt-8" />
       </div>
@@ -26,22 +26,22 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
 
     <div
       ref={scrollContentRef}
-      className="w-[60%] h-full flex items-center relative pl-16 animate-fade-in-up"
+      className="animate-fade-in-up relative flex h-full w-[60%] items-center pl-16"
       style={{ animationDelay: "0.4s" }}
     >
       {contentSections.map((section) => (
         <div
           key={section.id}
-          className="absolute inset-x-16 top-1/2 -translate-y-1/2 flex flex-col justify-center"
+          className="absolute inset-x-16 top-1/2 flex -translate-y-1/2 flex-col justify-center"
         >
           <div className="about-title mb-8">
-            <h2 className="text-7xl xl:text-8xl font-caslon italic text-display leading-tight pb-4">
+            <h2 className="text-display pb-4 font-caslon text-7xl italic leading-tight xl:text-8xl">
               {section.title}
             </h2>
           </div>
 
           <div className="about-body max-w-xl">
-            <p className="text-xl xl:text-2xl font-light leading-relaxed text-muted-foreground">
+            <p className="text-xl font-light leading-relaxed text-muted-foreground xl:text-2xl">
               {section.body}
             </p>
           </div>

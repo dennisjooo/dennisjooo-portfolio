@@ -14,7 +14,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background font-sans text-foreground;
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
@@ -50,15 +50,15 @@
   }
 
   .glass-panel {
-    @apply bg-white/70 dark:bg-neutral-900/70 backdrop-blur-lg shadow-xl;
+    @apply bg-white/70 shadow-xl backdrop-blur-lg dark:bg-neutral-900/70;
   }
 
   .glass-panel-xl {
-    @apply bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-2xl shadow-accent/10;
+    @apply bg-white/90 shadow-2xl shadow-accent/10 backdrop-blur-xl dark:bg-neutral-900/90;
   }
 
   .code-copy-btn {
-    @apply flex items-center space-x-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-all duration-200 border border-border/50 hover:border-border;
+    @apply flex items-center space-x-1 rounded border border-border/50 bg-black/5 px-2 py-1 text-xs text-muted-foreground transition-all duration-200 hover:border-border hover:bg-black/10 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10;
   }
 
   .site-toast {
@@ -94,11 +94,11 @@
   }
 
   .site-toast--editorial [data-content] {
-    @apply gap-0 w-full;
+    @apply w-full gap-0;
   }
 
   .site-toast--editorial [data-title] {
-    @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] pb-2;
+    @apply pb-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em];
     color: hsl(var(--muted-foreground)) !important;
   }
 
@@ -108,7 +108,7 @@
   }
 
   .site-toast--playful [data-description] {
-    @apply font-caslon italic text-base font-normal leading-snug;
+    @apply font-caslon text-base font-normal italic leading-snug;
     color: hsl(var(--foreground)) !important;
   }
 

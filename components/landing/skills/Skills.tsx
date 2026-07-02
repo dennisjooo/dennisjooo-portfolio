@@ -34,21 +34,21 @@ const Skills: React.FC = () => {
         initial={prefersReducedMotion ? undefined : "hidden"}
         whileInView={prefersReducedMotion ? undefined : "visible"}
         viewport={viewportSettings.once}
-        className="w-full flex flex-col border-t border-border/30"
+        className="flex w-full flex-col border-t border-border/30"
       >
         {skillCategories.map((category, index) => (
           <m.div
             key={category.title}
             variants={prefersReducedMotion ? undefined : fadeUpItem}
-            className="relative group border-b border-border/30 overflow-hidden"
+            className="group relative overflow-hidden border-b border-border/30"
           >
-            <div className="absolute top-3 left-4 md:left-8 z-10 pointer-events-none">
-              <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-muted-foreground">
+            <div className="pointer-events-none absolute left-4 top-3 z-10 md:left-8">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:text-xs">
                 {category.title}
               </span>
             </div>
 
-            <div className="py-8 pt-12 w-full">
+            <div className="w-full py-8 pt-12">
               <Marquee
                 speed={
                   prefersReducedMotion ? 0 : rowSpeeds[index % rowSpeeds.length]
@@ -56,18 +56,18 @@ const Skills: React.FC = () => {
                 direction={index % 2 === 0 ? "left" : "right"}
                 pauseOnHover
               >
-                <div className="flex items-center gap-12 md:gap-20 px-4 md:px-8">
+                <div className="flex items-center gap-12 px-4 md:gap-20 md:px-8">
                   {category.skills.map((skill) => (
                     <div
                       key={skill}
-                      className="group/item flex items-center gap-3 md:gap-5 cursor-default"
+                      className="group/item flex cursor-default items-center gap-3 md:gap-5"
                     >
-                      <div className="w-8 h-8 md:w-10 md:h-10 relative grayscale opacity-30 group-hover/item:grayscale-0 group-hover/item:opacity-100 transition-all duration-300">
+                      <div className="relative h-8 w-8 opacity-30 grayscale transition-all duration-300 group-hover/item:opacity-100 group-hover/item:grayscale-0 md:h-10 md:w-10">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={`https://cdn.simpleicons.org/${getIconSlug(skill)}`}
                           alt={skill}
-                          className="w-full h-full object-contain dark:invert dark:group-hover/item:invert-0 transition-all duration-300"
+                          className="h-full w-full object-contain transition-all duration-300 dark:invert dark:group-hover/item:invert-0"
                           loading="lazy"
                           onError={(e) => {
                             (
@@ -76,7 +76,7 @@ const Skills: React.FC = () => {
                           }}
                         />
                       </div>
-                      <span className="text-3xl md:text-5xl font-bold font-sans uppercase tracking-tight text-foreground/20 group-hover/item:text-foreground transition-colors duration-300">
+                      <span className="font-sans text-3xl font-bold uppercase tracking-tight text-foreground/20 transition-colors duration-300 group-hover/item:text-foreground md:text-5xl">
                         {skill}
                       </span>
                     </div>

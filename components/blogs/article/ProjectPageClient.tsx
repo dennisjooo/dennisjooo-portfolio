@@ -39,7 +39,7 @@ export default function ProjectPageClient({
         speed={() => PHOTO_VIEWER_CONFIG.speed}
       >
         <div className="min-h-screen bg-background text-foreground">
-          <article className="w-full max-w-4xl mx-auto px-6 py-24 md:py-28">
+          <article className="mx-auto w-full max-w-4xl px-6 py-24 md:py-28">
             <ArticleHero
               title={project.title}
               description={project.description}
@@ -74,13 +74,13 @@ export default function ProjectPageClient({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-16 pt-8 border-t border-border flex justify-center"
+              className="mt-16 flex justify-center border-t border-border pt-8"
             >
               <Link
                 href="/blogs"
-                className="group inline-flex items-center gap-3 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-accent transition-colors duration-300"
+                className="group inline-flex items-center gap-3 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 hover:text-accent"
               >
-                <ArrowLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 Back to all posts
               </Link>
             </m.div>

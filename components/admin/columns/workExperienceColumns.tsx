@@ -10,7 +10,7 @@ export function createWorkExperienceColumns(
     {
       header: "Logo",
       cell: (row: WorkExperience) => (
-        <div className="w-10 h-10 relative rounded-lg overflow-hidden bg-muted/30 border border-border/50">
+        <div className="relative h-10 w-10 overflow-hidden rounded-lg border border-border/50 bg-muted/30">
           {row.imageSrc && (
             <Image
               src={row.imageSrc}
@@ -28,17 +28,17 @@ export function createWorkExperienceColumns(
       primary: true,
       cell: (row: WorkExperience) => (
         <div>
-          <span className="font-semibold text-foreground block">
+          <span className="block font-semibold text-foreground">
             {row.title}
           </span>
-          <span className="text-muted-foreground text-xs">{row.company}</span>
+          <span className="text-xs text-muted-foreground">{row.company}</span>
         </div>
       ),
     },
     {
       header: "Period",
       cell: (row: WorkExperience) => (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
+        <span className="rounded bg-muted px-2 py-1 font-mono text-xs">
           {row.date}
         </span>
       ),

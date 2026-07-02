@@ -36,31 +36,31 @@ const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
         {/* Wrapper for positioning */}
-        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
           <DialogPrimitive.Content
             data-lenis-prevent
-            className="pointer-events-auto w-full max-w-xl mx-4 p-0 border-0 glass-panel-xl rounded-2xl bg-noise duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
+            className="glass-panel-xl bg-noise pointer-events-auto mx-4 w-full max-w-xl rounded-2xl border-0 p-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
           >
             {/* Decorative top gradient highlight */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
             {/* Inner ring for glass effect */}
-            <div className="absolute inset-0 z-20 pointer-events-none rounded-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10" />
+            <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10" />
 
             <VisuallyHidden.Root asChild>
               <DialogPrimitive.Title>Command Palette</DialogPrimitive.Title>
             </VisuallyHidden.Root>
 
             {/* Header with branding */}
-            <div className="flex items-center justify-between px-4 pt-4 pb-2">
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            <div className="flex items-center justify-between px-4 pb-2 pt-4">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 <CommandIcon className="h-3.5 w-3.5" />
                 <span>Command Palette</span>
               </div>
               <button
                 onClick={handleClose}
                 tabIndex={-1}
-                className="pointer-events-auto hidden sm:flex h-5 select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+                className="pointer-events-auto hidden h-5 cursor-pointer select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:flex"
               >
                 <span className="text-xs">Esc</span>
               </button>
@@ -84,7 +84,7 @@ const CommandInput = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div
-    className="flex items-center border-b border-border/50 px-4 bg-muted/30"
+    className="flex items-center border-b border-border/50 bg-muted/30 px-4"
     cmdk-input-wrapper=""
   >
     <Search className="mr-3 h-4 w-4 shrink-0 text-muted-foreground" />
@@ -134,7 +134,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-hidden p-1.5 text-foreground [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted-foreground",
+      "overflow-hidden p-1.5 text-foreground [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted-foreground",
       className,
     )}
     {...props}
@@ -165,7 +165,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-pointer gap-3 select-none items-center rounded-xl px-3 py-2.5 text-sm outline-none transition-all duration-200",
+      "relative flex cursor-pointer select-none items-center gap-3 rounded-xl px-3 py-2.5 text-sm outline-none transition-all duration-200",
       "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       "data-[selected=true]:bg-accent/15 data-[selected=true]:text-foreground",
       "hover:bg-muted/50",

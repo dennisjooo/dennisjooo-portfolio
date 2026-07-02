@@ -28,7 +28,7 @@ export function MarkdownPreview({
 
   if (!debouncedContent) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+      <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
         Start writing to see the preview...
       </div>
     );

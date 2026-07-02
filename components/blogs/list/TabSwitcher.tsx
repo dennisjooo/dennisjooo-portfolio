@@ -26,7 +26,7 @@ export default function TabSwitcher({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="flex items-center gap-6 md:gap-10 mb-8 border-b border-border pb-4"
+      className="mb-8 flex items-center gap-6 border-b border-border pb-4 md:gap-10"
     >
       {tabs.map((tab, index) => (
         <m.button
@@ -35,24 +35,20 @@ export default function TabSwitcher({
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="relative group"
+          className="group relative"
         >
           {/* Index Number */}
-          <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">
+          <span className="mb-1 block font-mono text-xs uppercase tracking-wider text-muted-foreground">
             0{index + 1}.
           </span>
 
           {/* Tab Label */}
           <span
-            className={`
-                        font-sans font-bold text-lg md:text-xl uppercase tracking-wide
-                        transition-colors duration-300
-                        ${
-                          activeTab === tab
-                            ? "text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }
-                    `}
+            className={`font-sans text-lg font-bold uppercase tracking-wide transition-colors duration-300 md:text-xl ${
+              activeTab === tab
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            } `}
           >
             {tabLabels[tab]}
           </span>
@@ -70,7 +66,7 @@ export default function TabSwitcher({
 
       {/* Decorative Line */}
       <div className="flex-1" />
-      <span className="hidden md:block font-mono text-xs text-muted-foreground uppercase tracking-widest">
+      <span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground md:block">
         {tabs.length} Categories
       </span>
     </m.div>

@@ -154,7 +154,7 @@ export function HeroBackground() {
           style={{ background: fallbackBackground }}
         />
       )}
-      <div className="absolute inset-0 bg-background/20 pointer-events-none mix-blend-overlay"></div>
+      <div className="pointer-events-none absolute inset-0 bg-background/20 mix-blend-overlay"></div>
     </div>
   );
 }

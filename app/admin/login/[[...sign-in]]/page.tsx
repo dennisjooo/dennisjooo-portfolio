@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { LoadingSpinner } from "@/components/admin/shared";
 
 const SignInLoadingCard = () => (
-  <div className="w-full bg-card/80 backdrop-blur-xl border border-border shadow-2xl rounded-2xl min-h-[28rem] flex items-center justify-center">
+  <div className="flex min-h-[28rem] w-full items-center justify-center rounded-2xl border border-border bg-card/80 shadow-2xl backdrop-blur-xl">
     <LoadingSpinner className="h-12" />
   </div>
 );
@@ -19,14 +19,14 @@ const SignIn = dynamic(
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground bg-noise relative flex items-center justify-center">
+    <div className="bg-noise relative flex min-h-screen items-center justify-center bg-background text-foreground">
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-primary opacity-30" />
+      <div className="bg-gradient-primary absolute inset-0 opacity-30" />
 
-      <div className="relative z-10 w-full max-w-md mx-auto px-4">
+      <div className="relative z-10 mx-auto w-full max-w-md px-4">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="font-caslon italic text-3xl md:text-4xl mb-2">
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 font-caslon text-3xl italic md:text-4xl">
             Mission Control
           </h1>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
@@ -93,9 +93,9 @@ export default function AdminLoginPage() {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-mono text-xs uppercase tracking-widest"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
           >
-            <ArrowLeftIcon className="w-4 h-4" />
+            <ArrowLeftIcon className="h-4 w-4" />
             Back to Site
           </Link>
         </div>

@@ -248,7 +248,7 @@ const Grainient: React.FC<GrainientProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden grainient-container ${className}`.trim()}
+      className={`grainient-container relative h-full w-full overflow-hidden ${className}`.trim()}
     />
   );
 };

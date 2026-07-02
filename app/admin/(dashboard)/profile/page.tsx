@@ -48,19 +48,19 @@ export default function ProfileAdminPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-caslon italic text-3xl md:text-4xl text-foreground">
+        <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
           Profile{" "}
-          <span className="not-italic font-sans font-bold">Settings</span>
+          <span className="font-sans font-bold not-italic">Settings</span>
         </h1>
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mt-2">
+        <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Global configuration & identity
         </p>
       </div>
 
-      <div className="glass-panel p-8 rounded-2xl max-w-2xl border border-border/50">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          <div className="relative group">
-            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-background shadow-xl">
+      <div className="glass-panel max-w-2xl rounded-2xl border border-border/50 p-8">
+        <div className="flex flex-col items-start gap-8 md:flex-row">
+          <div className="group relative">
+            <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-background shadow-xl">
               {imageUrl && (
                 <Image
                   src={imageUrl}
@@ -71,17 +71,17 @@ export default function ProfileAdminPage() {
                 />
               )}
               {uploading && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                  <ArrowPathIcon className="w-8 h-8 text-white animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                  <ArrowPathIcon className="h-8 w-8 animate-spin text-white" />
                 </div>
               )}
             </div>
 
             <label
               htmlFor="profile-upload"
-              className="absolute bottom-0 right-0 p-3 bg-primary text-primary-foreground rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors group-hover:scale-110"
+              className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-colors group-hover:scale-110 hover:bg-primary/90"
             >
-              <CameraIcon className="w-5 h-5" />
+              <CameraIcon className="h-5 w-5" />
               <input
                 id="profile-upload"
                 type="file"
@@ -94,17 +94,17 @@ export default function ProfileAdminPage() {
           </div>
 
           <div className="flex-1 space-y-4">
-            <h3 className="text-xl font-bold font-sans">Profile Picture</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
+            <h3 className="font-sans text-xl font-bold">Profile Picture</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               This image will be displayed on your homepage and navigation bar.
               Recommended size: 500x500px. JPG, PNG or WebP.
             </p>
 
-            <div className="pt-4 border-t border-border/50">
-              <h4 className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            <div className="border-t border-border/50 pt-4">
+              <h4 className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 Current Source
               </h4>
-              <code className="block w-full p-3 bg-muted/50 rounded-lg text-xs font-mono text-muted-foreground break-all border border-border/50">
+              <code className="block w-full break-all rounded-lg border border-border/50 bg-muted/50 p-3 font-mono text-xs text-muted-foreground">
                 {imageUrl}
               </code>
             </div>
