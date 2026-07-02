@@ -18,5 +18,6 @@ export { useCommandPalette } from "./nav/useCommandPalette";
 export type { SearchScope } from "./nav/useCommandPalette";
 export { useAboutAnimations } from "./domain/useAboutAnimations";
 export { useConsoleEasterEgg } from "./domain/useConsoleEasterEgg";
+export { useEasterEggUnlock } from "./domain/useEasterEggUnlock";
 export { useImageUpload } from "./domain/useImageUpload";
 export { useCopyToClipboard } from "./domain/useCopyToClipboard";
