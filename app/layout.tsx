@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Urbanist, Roboto_Mono, Libre_Caslon_Text } from "next/font/google";
 import type { ReactNode } from "react";
+import { SITE_URL } from "@/lib/constants/site";
 import "./styles/tokens.css";
 import "./globals.css";
 import "./styles/animations.css";
@@ -52,25 +53,16 @@ export const metadata: Metadata = {
   },
   description:
     "AI enthusiast and problem solver with a background in math, stats, and machine learning. I build practical tools, explore weird ideas, and make complex stuff a little more approachable.",
-  keywords: [
-    "AI",
-    "Machine Learning",
-    "Data Science",
-    "Portfolio",
-    "Developer",
-    "Math",
-    "Statistics",
-  ],
-  authors: [{ name: "Dennis Jonathan", url: "https://dennisjooo.vercel.app" }],
+  authors: [{ name: "Dennis Jonathan", url: SITE_URL }],
   creator: "Dennis Jonathan",
-  metadataBase: new URL("https://dennisjooo.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://dennisjooo.vercel.app",
+    url: SITE_URL,
     title: "Dennis' Portfolio",
     description:
       "AI enthusiast and problem solver with a background in math, stats, and machine learning.",
@@ -95,6 +87,9 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 };
 
