@@ -25,10 +25,16 @@ export const ThemeToggle = ({
     ? "hover:bg-black/5 dark:hover:bg-white/10"
     : "hover:bg-black/10 dark:hover:bg-white/10";
 
+  const focusClasses =
+    "outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
   if (!mounted) {
     return (
       <button
-        className="relative w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+        className={cn(
+          "relative w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300",
+          focusClasses,
+        )}
         aria-label="Toggle theme"
       >
         <div className="w-5 h-5" />
@@ -42,6 +48,7 @@ export const ThemeToggle = ({
       onClick={toggleTheme}
       className={cn(
         "relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out",
+        focusClasses,
         hoverClass,
         className,
       )}

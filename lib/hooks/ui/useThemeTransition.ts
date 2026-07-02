@@ -34,6 +34,7 @@ export function useThemeTransition(
 
     if (!document.startViewTransition) {
       setTheme(newTheme);
+      buttonRef.current.blur();
       return;
     }
 
@@ -65,6 +66,8 @@ export function useThemeTransition(
         pseudoElement: "::view-transition-new(root)",
       },
     );
+
+    buttonRef.current.blur();
   }, [isDark, duration, setTheme]);
 
   return {
