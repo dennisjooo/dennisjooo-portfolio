@@ -61,7 +61,6 @@ export function UtilitiesGroup({
               <span className="font-medium">{file.label}</span>
               <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
                 {file.path}
-                <ExternalLink className="h-3 w-3" />
               </span>
             </CommandItem>
           );
