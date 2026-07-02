@@ -27,5 +27,9 @@ export const HERO_CONTENT: HeroContent = {
     "dark mode advocate",
     "licensed professional overthinker",
     "90% sure it works on my machine",
+    "ctrl+k → type 'sudo' (trust me)",
+    "404: secret not found (or is it?)",
+    "{{404>>200}} ok",
+    "licensed to overthink since 2000",
   ],
 };

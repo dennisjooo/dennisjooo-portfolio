@@ -1,5 +1,30 @@
+"use client";
+
+import { toast } from "sonner";
+import { FOOTER_SECRET_ID } from "@/lib/easter-eggs/constants";
+import { markSecretFound } from "@/lib/easter-eggs/unlock";
+
+const FOOTER_COPY =
+  "Built with curiosity. Found a secret? github.com/dennisjooo";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const handleCopyrightClick = async (
+    event: React.MouseEvent<HTMLAnchorElement>,
+  ) => {
+    if (!event.shiftKey) return;
+
+    event.preventDefault();
+
+    try {
+      await navigator.clipboard.writeText(FOOTER_COPY);
+      markSecretFound(FOOTER_SECRET_ID);
+      toast("Copied. You're one of us now.");
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
 
   return (
     <footer className="relative z-40 w-full overflow-hidden border-t border-border bg-background bg-noise">
@@ -12,6 +37,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="cursor-pointer"
+            onClick={handleCopyrightClick}
           >
             <span className="hover:text-accent transition-colors duration-300">
               © {currentYear} Dennis Jonathan
