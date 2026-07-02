@@ -9,6 +9,7 @@ import { extractHeadings } from "@/lib/utils/markdownHelpers";
 import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
 import { auth } from "@clerk/nextjs/server";
 import { PreviewBanner } from "@/components/blogs/article/PreviewBanner";
+import { SITE_URL, SITE_NAME } from "@/lib/constants/site";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -44,24 +45,22 @@ export async function generateMetadata({
   return {
     title: `${project.title} | Dennis' Portfolio`,
     description: project.description,
+    alternates: {
+      canonical: `/blogs/${slug}`,
+    },
     openGraph: {
       title: project.title,
       description: project.description,
       type: "article",
-      url: `https://dennisjooo.vercel.app/blogs/${slug}`,
-      ...(project.imageUrl && {
-        images: [
-          {
-            url: project.imageUrl,
-          },
-        ],
-      }),
+      url: `/blogs/${slug}`,
+      publishedTime: new Date(project.date).toISOString(),
+      authors: [SITE_NAME],
+      section: project.type === "project" ? "Project" : "Blog",
     },
     twitter: {
       card: "summary_large_image",
       title: project.title,
       description: project.description,
-      ...(project.imageUrl && { images: [project.imageUrl] }),
     },
   };
 }
@@ -87,8 +86,41 @@ export default async function Page({ params, searchParams }: ProjectPageProps) {
 
   const headings = extractHeadings(project.blogPost);
 
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: project.title,
+    description: project.description,
+    datePublished: new Date(project.date).toISOString(),
+    dateModified: project.updatedAt.toISOString(),
+    author: {
+      "@type": "Person",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Person",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/blogs/${slug}`,
+    },
+    ...(project.imageUrl && {
+      image: {
+        "@type": "ImageObject",
+        url: project.imageUrl,
+      },
+    }),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
       {isPreview && <PreviewBanner status={project.status} slug={slug} />}
       <ProjectPageClient project={project} headings={headings}>
         <ProjectContent content={project.blogPost} />
