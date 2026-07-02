@@ -36,7 +36,7 @@ const Footer = () => {
             href="https://dennisjooo.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
-            className="cursor-pointer"
+            className="cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-0"
             onClick={handleCopyrightClick}
           >
             <span className="hover:text-accent transition-colors duration-300">
