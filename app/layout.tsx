@@ -74,9 +74,6 @@ export const metadata: Metadata = {
     description:
       "AI enthusiast and problem solver with a background in math, stats, and machine learning.",
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
   robots: {
     index: true,
     follow: true,
