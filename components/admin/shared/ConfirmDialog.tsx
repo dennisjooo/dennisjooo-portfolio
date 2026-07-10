@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { formStyles } from "./formStyles";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -38,17 +37,21 @@ export function ConfirmDialog({
       open={open}
       onOpenChange={(nextOpen) => (!nextOpen ? onCancel() : null)}
     >
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+      <DialogContent className="glass-panel max-w-md gap-0 rounded-2xl border-border/50 p-8">
+        <DialogHeader className="space-y-3">
+          <DialogTitle className="font-caslon text-2xl italic tracking-tight text-foreground">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="max-w-[95%] text-base leading-relaxed text-muted-foreground/80">
+            {description}
+          </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="pt-2">
+        <DialogFooter className="flex-row justify-end gap-3 pt-6">
           <button
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className={formStyles.cancelButton}
+            className="rounded-lg border border-border px-5 py-2 font-sans text-xs font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
           >
             {cancelLabel}
           </button>
@@ -58,8 +61,8 @@ export function ConfirmDialog({
             disabled={loading}
             className={
               variant === "danger"
-                ? "rounded-lg bg-destructive px-6 py-2.5 font-medium text-destructive-foreground transition-all hover:bg-destructive/90 disabled:opacity-50"
-                : formStyles.submitButton
+                ? "rounded-lg bg-destructive px-5 py-2 font-sans text-xs font-bold uppercase tracking-widest text-destructive-foreground transition-all hover:bg-destructive/90 disabled:opacity-50"
+                : "rounded-lg bg-primary px-5 py-2 font-sans text-xs font-bold uppercase tracking-widest text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50"
             }
           >
             {loading ? "Deleting..." : confirmLabel}
