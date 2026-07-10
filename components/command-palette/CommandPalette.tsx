@@ -18,7 +18,6 @@ import {
 import { NavigationGroup } from "./groups/NavigationGroup";
 import { ProjectsGroup } from "./groups/ProjectsGroup";
 import { WorkExperienceGroup } from "./groups/WorkExperienceGroup";
-import { GalleryGroup } from "./groups/GalleryGroup";
 import { SocialsGroup } from "./groups/SocialsGroup";
 import { UtilitiesGroup } from "./groups/UtilitiesGroup";
 import { ThemeGroup } from "./groups/ThemeGroup";
@@ -49,7 +48,6 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     matchedSecrets,
     filteredProjects,
     filteredWorkExperience,
-    filteredGalleryImages,
     runCommand,
     copyUrl,
     router,
@@ -83,14 +81,13 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
   const hasSearchResults =
     filteredProjects.length > 0 ||
     filteredWorkExperience.length > 0 ||
-    filteredGalleryImages.length > 0 ||
     matchedSecrets.length > 0 ||
     showEasterEggProgress;
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput
-        placeholder="Search commands, projects, gallery, or work..."
+        placeholder="Search commands, projects, or work..."
         value={search}
         onValueChange={setSearch}
         autoFocus
@@ -133,13 +130,6 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
             />
             <WorkExperienceGroup
               workExperience={filteredWorkExperience}
-              searchTerm={search.trim()}
-              searchOptions={{ caseSensitive, exactMatch }}
-              onSelect={runCommand}
-              onNavigate={handleNavigate}
-            />
-            <GalleryGroup
-              images={filteredGalleryImages}
               searchTerm={search.trim()}
               searchOptions={{ caseSensitive, exactMatch }}
               onSelect={runCommand}

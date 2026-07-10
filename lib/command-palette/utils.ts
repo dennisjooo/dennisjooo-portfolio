@@ -8,7 +8,6 @@ import {
   Mail,
   Globe,
   FileText,
-  ImageIcon,
 } from "lucide-react";
 
 export interface ProcessedProject {
@@ -29,16 +28,6 @@ export interface ProcessedWorkExperience {
   company: string;
   date: string;
   responsibilities: string[];
-  rawContent: string;
-  context?: string | null;
-}
-
-export interface ProcessedGalleryImage {
-  id: string;
-  title: string;
-  description: string | null;
-  slug: string;
-  path: string;
   rawContent: string;
   context?: string | null;
 }
@@ -82,21 +71,6 @@ export function setProcessedWorkExperience(
       company: work.company,
       date: work.date,
       responsibilities: work.responsibilities,
-      rawContent,
-    };
-  });
-}
-
-export let processedGalleryImages: ProcessedGalleryImage[] = [];
-
-export function setProcessedGalleryImages(images: ProcessedGalleryImage[]) {
-  processedGalleryImages = images.map((image) => {
-    const path = "/gallery";
-    const rawContent = `${image.title} ${image.description ?? ""} ${image.slug} gallery photo`;
-
-    return {
-      ...image,
-      path,
       rawContent,
     };
   });
@@ -197,8 +171,6 @@ export function getIconForId(id: string) {
       return Mail;
     case "blogs":
       return FileText;
-    case "gallery":
-      return ImageIcon;
     default:
       return Globe;
   }

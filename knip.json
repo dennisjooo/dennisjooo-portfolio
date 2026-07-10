@@ -25,6 +25,9 @@
     "components/command-palette/index.ts",
     "components/layout/index.ts",
     "lib/content/index.ts",
-    "lib/hooks/index.ts"
+    "lib/hooks/index.ts",
+    "lib/hooks/ui/useMediaQuery.ts",
+    "lib/utils/imageResize.ts",
+    "scripts/export-favicon.tsx"
   ]
 }

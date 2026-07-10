@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { asc, desc } from "drizzle-orm";
-import { db, blogs, workExperiences, gallery, galleryDate } from "@/lib/db";
+import { db, blogs, workExperiences } from "@/lib/db";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { visibleBlogsFilter } from "@/lib/data/blogs";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
@@ -9,7 +9,7 @@ const SEARCH_BODY_LIMIT = 1200;
 
 export async function GET() {
   try {
-    const [projectRows, workRows, galleryRows] = await Promise.all([
+    const [projectRows, workRows] = await Promise.all([
       db
         .select({
           title: blogs.title,
@@ -34,16 +34,6 @@ export async function GET() {
         .from(workExperiences)
         .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt))
         .limit(40),
-      db
-        .select({
-          id: gallery.id,
-          title: gallery.title,
-          description: gallery.description,
-          slug: gallery.slug,
-        })
-        .from(gallery)
-        .orderBy(desc(galleryDate))
-        .limit(40),
     ]);
 
     const projects = projectRows.map((project) => {
@@ -60,18 +50,12 @@ export async function GET() {
       responsibilities: work.responsibilities ?? [],
     }));
 
-    const galleryImages = galleryRows.map((image) => ({
-      ...image,
-      description: image.description ?? null,
-    }));
-
     return withCacheHeaders(
       NextResponse.json({
         success: true,
         data: {
           projects,
           workExperience,
-          gallery: galleryImages,
         },
       }),
     );

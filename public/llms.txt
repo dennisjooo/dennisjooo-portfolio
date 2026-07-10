@@ -2,7 +2,7 @@
 
 > AI enthusiast and problem solver with a background in math, stats, and machine learning. I build practical tools, explore weird ideas, and make complex stuff a little more approachable.
 
-- **Build version:** v2026.06.03
+- **Build version:** v2026.07.10-d
 
 Hey, I'm Dennis. I like taking ideas apart, figuring out how they tick, and putting them back together in a way that feels a little smarter. I studied Business Mathematics, but these days my curiosity leans more toward data, AI, and building systems that make life flow a bit smoother. I like when logic meets intuition, when something just clicks and works better than it has any right to.
 
@@ -40,6 +40,15 @@ Outside of work, I'm usually buried in ML papers I only half understand (for now
 - Honored as a beneficiary of the prestigious Young Scholar Indonesia Scholarship.
 
 ## Projects
+
+### Get Ducked
+A Silly Landing Page for a Rubber Duck Company
+**Links:**
+- See It: https://get-ducked.vercel.app
+- Github: https://github.com/dennisjooo/duckco-landing
+- Portfolio: https://dennisjooo.vercel.app/blogs/get-ducked
+
+---
 
 ### Reality Check
 Animating Financial Delusion
@@ -82,7 +91,7 @@ Teaching AI to act human? Spoiler alert: it's beautifully chaotic.
 ---
 
 ### What is that Bird we're looking at?
-Ever wondered what bird you're looking at? This classifier has over 90k downloads on HuggingFace's model hub.
+Ever wondered what bird you're looking at? This classifier has over 100k downloads on HuggingFace's model hub.
 **Links:**
 - Github: https://github.com/dennisjooo/Birds-Classifier-EfficientNetB2
 - HuggingFace: https://huggingface.co/dennisjooo/Birds-Classifier-EfficientNetB2
@@ -158,6 +167,6 @@ A personal exploration of modern web design. What inspired it, what broke, and w
 
 ## Optional
 
-- [Homepage](https://dennisjooo.vercel.app/): Developer & Problem Solver
+- [Homepage](https://dennisjooo.vercel.app/): Okay Developer & Human Being
 - [Projects & Certifications](https://dennisjooo.vercel.app/blogs): Full project list and certification cards
 - [Skills Section](https://dennisjooo.vercel.app/#skills): Interactive skills marquee

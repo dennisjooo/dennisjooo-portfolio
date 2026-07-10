@@ -61,9 +61,7 @@ export const NavbarClient = () => {
           />
           <DesktopMenu
             navItems={navItems.filter((item) =>
-              ["home", "about", "projects", "gallery", "blogs"].includes(
-                item.id,
-              ),
+              ["home", "about", "projects", "blogs"].includes(item.id),
             )}
             scrolled={scrolled}
             onNavigate={handleNavigation}

@@ -5,7 +5,6 @@ import {
   BriefcaseIcon,
   LinkIcon,
   IdentificationIcon,
-  PhotoIcon,
 } from "@heroicons/react/24/outline";
 
 export const navigationCards = [
@@ -35,13 +34,6 @@ export const navigationCards = [
     description: "Social links, email, and other contact channels.",
     href: "/admin/contacts",
     icon: LinkIcon,
-    stat: "View All",
-  },
-  {
-    title: "Gallery",
-    description: "Photography uploads, thumbnails, and EXIF metadata.",
-    href: "/admin/gallery",
-    icon: PhotoIcon,
     stat: "View All",
   },
   {
