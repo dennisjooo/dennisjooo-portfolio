@@ -10,6 +10,8 @@ export function createBlogColumns(
   return [
     {
       header: "Title",
+      accessorKey: "title",
+      sortable: true,
       primary: true,
       cell: (row: Blog) => (
         <span className="font-semibold text-foreground">{row.title}</span>
@@ -17,6 +19,8 @@ export function createBlogColumns(
     },
     {
       header: "Type",
+      accessorKey: "type",
+      sortable: true,
       cell: (row: Blog) => (
         <span
           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${
@@ -31,6 +35,8 @@ export function createBlogColumns(
     },
     {
       header: "Status",
+      accessorKey: "status",
+      sortable: true,
       cell: (row: Blog) => {
         return (
           <div className="flex flex-col gap-1">
@@ -55,10 +61,25 @@ export function createBlogColumns(
       },
     },
     {
-      header: "Updated",
+      header: "Created",
+      accessorKey: "createdAt",
+      sortable: true,
       cell: (row: Blog) => (
         <span
-          className="text-muted-foreground"
+          className="text-xs text-muted-foreground"
+          title={row.createdAt ? new Date(row.createdAt).toLocaleString() : ""}
+        >
+          {row.createdAt ? formatRelativeTime(row.createdAt) : ""}
+        </span>
+      ),
+    },
+    {
+      header: "Updated",
+      accessorKey: "updatedAt",
+      sortable: true,
+      cell: (row: Blog) => (
+        <span
+          className="text-xs text-muted-foreground"
           title={
             row.updatedAt ? new Date(row.updatedAt).toLocaleString() : row.date
           }

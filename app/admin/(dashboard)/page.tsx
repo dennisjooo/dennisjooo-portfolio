@@ -17,6 +17,7 @@ import {
   BriefcaseIcon,
   AcademicCapIcon,
   LinkIcon,
+  PhotoIcon,
 } from "@heroicons/react/24/outline";
 
 const quickActions = [
@@ -32,6 +33,7 @@ const quickActions = [
     icon: AcademicCapIcon,
   },
   { label: "New Contact", href: "/admin/contacts/new", icon: LinkIcon },
+  { label: "New Gallery Image", href: "/admin/gallery/new", icon: PhotoIcon },
 ];
 
 const countEndpoints = [
@@ -39,6 +41,7 @@ const countEndpoints = [
   { key: "/admin/certifications", url: "/api/certifications?limit=1" },
   { key: "/admin/work-experience", url: "/api/work-experience?limit=1" },
   { key: "/admin/contacts", url: "/api/contacts?limit=1" },
+  { key: "/admin/gallery", url: "/api/gallery?limit=1" },
 ];
 
 function extractCount(data: Record<string, unknown> | null): number {

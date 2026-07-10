@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
-import { desc, count, eq, and, ilike, not, like } from "drizzle-orm";
+import { desc, asc, count, eq, and, ilike, not, like } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
 import { getBlogs, visibleBlogsFilter } from "@/lib/data/blogs";
@@ -68,8 +68,25 @@ export async function GET(request: Request) {
       ? db.select({ count: count() }).from(blogs).where(whereClause)
       : db.select({ count: count() }).from(blogs);
 
+    const sortByParam = searchParams.get("sortBy");
+    const sortOrderParam = searchParams.get("sortOrder") === "asc" ? asc : desc;
+
+    let orderByClause = desc(blogs.date);
+
+    if (sortByParam) {
+      if (sortByParam === "title") orderByClause = sortOrderParam(blogs.title);
+      else if (sortByParam === "type")
+        orderByClause = sortOrderParam(blogs.type);
+      else if (sortByParam === "status")
+        orderByClause = sortOrderParam(blogs.status);
+      else if (sortByParam === "createdAt")
+        orderByClause = sortOrderParam(blogs.createdAt);
+      else if (sortByParam === "updatedAt")
+        orderByClause = sortOrderParam(blogs.updatedAt);
+    }
+
     const [blogResults, totalResult] = await Promise.all([
-      baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
+      baseQuery.orderBy(orderByClause).offset(offset).limit(limit),
       countQuery,
     ]);
 

@@ -13,6 +13,7 @@ import {
   BriefcaseIcon,
   IdentificationIcon,
   LinkIcon,
+  PhotoIcon,
   ArrowLeftStartOnRectangleIcon,
   ArrowRightStartOnRectangleIcon,
   Bars3Icon,
@@ -33,6 +34,7 @@ const navItems = [
     icon: AcademicCapIcon,
   },
   { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
+  { name: "Gallery", href: "/admin/gallery", icon: PhotoIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
 ];

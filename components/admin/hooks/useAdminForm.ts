@@ -82,6 +82,11 @@ export function useAdminForm<T>({
         });
 
         if (!res.ok) {
+          const errBody = await res.text().catch(() => "");
+          console.error(
+            `[useAdminForm] ${method} ${url} → ${res.status}`,
+            errBody,
+          );
           throw new Error(
             `Failed to ${isEditing ? "update" : "create"} ${itemName}`,
           );

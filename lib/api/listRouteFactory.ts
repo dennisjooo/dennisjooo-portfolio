@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { count, SQL } from "drizzle-orm";
+import { count, SQL, asc, desc } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import {
   requireAuth,
@@ -30,7 +30,15 @@ export function createListRouteHandler({
       const { searchParams } = new URL(request.url);
       const { page, limit, offset } = parsePagination(searchParams);
 
-      const orderByClause = Array.isArray(orderBy) ? orderBy : [orderBy];
+      const sortByParam = searchParams.get("sortBy");
+      const sortOrderParam =
+        searchParams.get("sortOrder") === "asc" ? asc : desc;
+
+      let orderByClause = Array.isArray(orderBy) ? orderBy : [orderBy];
+
+      if (sortByParam && table[sortByParam]) {
+        orderByClause = [sortOrderParam(table[sortByParam])];
+      }
 
       const [results, totalResult] = await Promise.all([
         db

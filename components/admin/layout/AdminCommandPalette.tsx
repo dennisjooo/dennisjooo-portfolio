@@ -19,6 +19,7 @@ import {
   BriefcaseIcon,
   IdentificationIcon,
   LinkIcon,
+  PhotoIcon,
   PlusIcon,
   ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
@@ -37,6 +38,7 @@ const navItems = [
     icon: AcademicCapIcon,
   },
   { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
+  { name: "Gallery", href: "/admin/gallery", icon: PhotoIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
 ];
@@ -44,6 +46,7 @@ const navItems = [
 const quickActions = [
   { name: "New Blog Post", href: "/admin/blogs/new", icon: PlusIcon },
   { name: "New Contact", href: "/admin/contacts/new", icon: PlusIcon },
+  { name: "New Gallery Image", href: "/admin/gallery/new", icon: PlusIcon },
   {
     name: "New Work Experience",
     href: "/admin/work-experience/new",

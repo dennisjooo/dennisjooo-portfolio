@@ -7,6 +7,7 @@ import {
   uuid,
   json,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // Enums
 export const blogTypeEnum = pgEnum("blog_type", ["project", "blog"]);
@@ -78,6 +79,32 @@ export const certifications = pgTable("certifications", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export type GalleryExif = {
+  camera?: string;
+  lens?: string;
+  focalLength?: string;
+  aperture?: string;
+  shutter?: string;
+  iso?: string | number;
+  dateTaken?: string;
+  location?: string;
+};
+
+// Gallery table
+export const gallery = pgTable("gallery", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  slug: text("slug").unique().notNull(),
+  thumbUrl: text("thumb_url").notNull(),
+  fullUrl: text("full_url").notNull(),
+  width: integer("width"),
+  height: integer("height"),
+  exif: json("exif").$type<GalleryExif>(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Site Config table (singleton)
 export const siteConfig = pgTable("site_config", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -89,6 +116,9 @@ export const siteConfig = pgTable("site_config", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Sort by EXIF capture date when available, falling back to upload date
+export const galleryDate = sql<string>`coalesce((${gallery.exif}->>'dateTaken')::timestamptz, ${gallery.createdAt})`;
 
 // Type exports for use in application
 export type Blog = typeof blogs.$inferSelect;
@@ -105,3 +135,6 @@ export type NewCertification = typeof certifications.$inferInsert;
 
 export type SiteConfig = typeof siteConfig.$inferSelect;
 export type NewSiteConfig = typeof siteConfig.$inferInsert;
+
+export type GalleryImage = typeof gallery.$inferSelect;
+export type NewGalleryImage = typeof gallery.$inferInsert;

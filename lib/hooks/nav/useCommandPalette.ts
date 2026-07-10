@@ -7,10 +7,13 @@ import {
   setProcessedProjects,
   processedWorkExperience,
   setProcessedWorkExperience,
+  processedGalleryImages,
+  setProcessedGalleryImages,
   getContextSnippet,
   matchesSearch,
   type ProcessedProject,
   type ProcessedWorkExperience,
+  type ProcessedGalleryImage,
   type SearchOptions,
 } from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
@@ -25,6 +28,10 @@ export interface FilteredProject extends ProcessedProject {
 }
 
 export interface FilteredWorkExperience extends ProcessedWorkExperience {
+  context: string | null;
+}
+
+export interface FilteredGalleryImage extends ProcessedGalleryImage {
   context: string | null;
 }
 
@@ -46,6 +53,7 @@ export interface UseCommandPaletteReturn {
   matchedSecrets: SecretDefinition[];
   filteredProjects: FilteredProject[];
   filteredWorkExperience: FilteredWorkExperience[];
+  filteredGalleryImages: FilteredGalleryImage[];
 
   // Actions
   runCommand: (command: () => unknown) => void;
@@ -66,7 +74,8 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     if (open) {
       if (
         processedProjects.length === 0 ||
-        processedWorkExperience.length === 0
+        processedWorkExperience.length === 0 ||
+        processedGalleryImages.length === 0
       ) {
         fetch("/api/search-index")
           .then((res) => res.json())
@@ -74,6 +83,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
             if (data.success) {
               setProcessedProjects(data.data.projects);
               setProcessedWorkExperience(data.data.workExperience);
+              setProcessedGalleryImages(data.data.gallery ?? []);
               return;
             }
             throw new Error("Search index payload missing success flag");
@@ -86,13 +96,17 @@ export function useCommandPalette(): UseCommandPaletteReturn {
             Promise.all([
               fetch("/api/blogs").then((res) => res.json()),
               fetch("/api/work-experience").then((res) => res.json()),
+              fetch("/api/gallery?limit=50").then((res) => res.json()),
             ])
-              .then(([blogsData, workData]) => {
+              .then(([blogsData, workData, galleryData]) => {
                 if (blogsData?.data) {
                   setProcessedProjects(blogsData.data);
                 }
                 if (workData?.success && workData?.data) {
                   setProcessedWorkExperience(workData.data);
+                }
+                if (galleryData?.success && galleryData?.data) {
+                  setProcessedGalleryImages(galleryData.data);
                 }
               })
               .catch((fallbackError) => {
@@ -181,6 +195,31 @@ export function useCommandPalette(): UseCommandPaletteReturn {
       .filter((w): w is FilteredWorkExperience => w !== null);
   }, [search, searchOptions, searchScope]);
 
+  const filteredGalleryImages = React.useMemo((): FilteredGalleryImage[] => {
+    if (
+      !search.trim() ||
+      searchScope === "projects" ||
+      searchScope === "work"
+    ) {
+      return [];
+    }
+
+    const term = search.trim();
+
+    return processedGalleryImages
+      .map((image) => {
+        if (!matchesSearch(image.rawContent, term, searchOptions)) return null;
+
+        const context = getContextSnippet(
+          image.rawContent,
+          term,
+          searchOptions,
+        );
+        return { ...image, context };
+      })
+      .filter((image): image is FilteredGalleryImage => image !== null);
+  }, [search, searchOptions, searchScope]);
+
   return {
     open,
     setOpen,
@@ -196,6 +235,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     matchedSecrets,
     filteredProjects,
     filteredWorkExperience,
+    filteredGalleryImages,
     runCommand,
     copyUrl,
     router,

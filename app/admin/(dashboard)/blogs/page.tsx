@@ -30,6 +30,9 @@ export default function AdminBlogsList() {
     toggleSelectAll,
     clearSelection,
     refresh,
+    sortBy,
+    sortOrder,
+    handleSort,
   } = useAdminList<Blog>({
     endpoint: "/api/blogs",
     pageSize: 10,
@@ -105,6 +108,9 @@ export default function AdminBlogsList() {
         selectedIds={selectedIds}
         onToggleSelect={toggleSelect}
         onToggleSelectAll={toggleSelectAll}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSortChange={handleSort}
       />
 
       <ConfirmDialog

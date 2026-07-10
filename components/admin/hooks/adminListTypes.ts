@@ -27,11 +27,14 @@ export interface UseAdminListReturn<T> {
   totalItems: number;
   searchQuery: string;
   filters: Record<string, string>;
+  sortBy: string | null;
+  sortOrder: "asc" | "desc" | null;
   selectedIds: Set<string>;
   deleteDialog: DeleteDialogState;
   handlePageChange: (page: number) => void;
   handleSearch: (query: string) => void;
   handleFilter: (key: string, value: string) => void;
+  handleSort: (key: string) => void;
   handleDelete: (id: string) => void;
   confirmDelete: () => Promise<void>;
   cancelDelete: () => void;

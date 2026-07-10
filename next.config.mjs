@@ -78,6 +78,7 @@ const createConfig = (phase) => {
       ],
     },
     experimental: {
+      proxyClientMaxBodySize: "25mb",
       optimizePackageImports: [
         "framer-motion",
         "gsap",

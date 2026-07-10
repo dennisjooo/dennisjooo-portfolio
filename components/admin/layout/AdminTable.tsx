@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { cn } from "@/lib/utils";
 import { AdminTablePagination } from "./AdminTablePagination";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 export interface Column<T> {
   header: string;
@@ -12,6 +13,7 @@ export interface Column<T> {
   className?: string;
   hideOnMobile?: boolean;
   primary?: boolean;
+  sortable?: boolean;
 }
 
 interface AdminTableProps<T> {
@@ -27,6 +29,9 @@ interface AdminTableProps<T> {
   selectedIds?: Set<string>;
   onToggleSelect?: (id: string) => void;
   onToggleSelectAll?: () => void;
+  sortBy?: string | null;
+  sortOrder?: "asc" | "desc" | null;
+  onSortChange?: (key: string) => void;
 }
 
 export function AdminTable<T extends { id?: string | number }>({
@@ -42,6 +47,9 @@ export function AdminTable<T extends { id?: string | number }>({
   selectedIds,
   onToggleSelect,
   onToggleSelectAll,
+  sortBy,
+  sortOrder,
+  onSortChange,
 }: AdminTableProps<T>) {
   const [localData, setLocalData] = useState<T[]>(data || []);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -221,9 +229,29 @@ export function AdminTable<T extends { id?: string | number }>({
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground ${col.className || ""}`}
+                    className={`px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground ${col.className || ""} ${col.sortable ? "cursor-pointer hover:text-foreground" : ""}`}
+                    onClick={() => {
+                      if (col.sortable && col.accessorKey && onSortChange) {
+                        onSortChange(col.accessorKey as string);
+                      }
+                    }}
                   >
-                    {col.header}
+                    <div className="flex items-center gap-1.5">
+                      {col.header}
+                      {col.sortable && col.accessorKey && (
+                        <span className="text-muted-foreground/50">
+                          {sortBy === col.accessorKey ? (
+                            sortOrder === "asc" ? (
+                              <ArrowUp className="h-3.5 w-3.5 text-primary" />
+                            ) : (
+                              <ArrowDown className="h-3.5 w-3.5 text-primary" />
+                            )
+                          ) : (
+                            <ArrowUpDown className="h-3.5 w-3.5" />
+                          )}
+                        </span>
+                      )}
+                    </div>
                   </th>
                 ))}
               </tr>

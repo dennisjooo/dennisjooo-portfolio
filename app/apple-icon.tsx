@@ -8,18 +8,15 @@ export const contentType = "image/png";
 export default async function AppleIcon() {
   const caslon = await loadCaslonItalicFont();
 
-  return new ImageResponse(
-    <FaviconImage canvasSize={size.width} />,
-    {
-      ...size,
-      fonts: [
-        {
-          name: caslonFontFamily,
-          data: caslon,
-          style: "italic",
-          weight: 400,
-        },
-      ],
-    },
-  );
+  return new ImageResponse(<FaviconImage canvasSize={size.width} />, {
+    ...size,
+    fonts: [
+      {
+        name: caslonFontFamily,
+        data: caslon,
+        style: "italic",
+        weight: 400,
+      },
+    ],
+  });
 }

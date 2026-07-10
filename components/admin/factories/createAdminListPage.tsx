@@ -62,6 +62,9 @@ export function createAdminListPage<
       deleteDialog: dialogState,
       confirmDelete,
       cancelDelete,
+      sortBy,
+      sortOrder,
+      handleSort,
     } = useAdminList<T>({
       endpoint,
       pageSize,
@@ -92,6 +95,9 @@ export function createAdminListPage<
           onPageChange={disablePagination ? () => {} : handlePageChange}
           enableReorder={enableReorder}
           onReorder={enableReorder ? handleReorder : undefined}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSortChange={handleSort}
         />
 
         {enableReorder && <AdminReorderHint />}

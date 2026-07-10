@@ -12,6 +12,7 @@ import {
   BriefcaseIcon,
   IdentificationIcon,
   LinkIcon,
+  PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { SignOutButton } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme";
@@ -30,6 +31,7 @@ const navItems = [
     icon: AcademicCapIcon,
   },
   { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
+  { name: "Gallery", href: "/admin/gallery", icon: PhotoIcon },
   { name: "About", href: "/admin/about", icon: IdentificationIcon },
   { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
 ];

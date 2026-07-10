@@ -13,21 +13,18 @@ const TARGETS = [
 
 async function exportIcon(path: string, size: number): Promise<void> {
   const caslon = await loadCaslonItalicFont();
-  const response = new ImageResponse(
-    <FaviconImage canvasSize={size} />,
-    {
-      width: size,
-      height: size,
-      fonts: [
-        {
-          name: caslonFontFamily,
-          data: caslon,
-          style: "italic",
-          weight: 400,
-        },
-      ],
-    },
-  );
+  const response = new ImageResponse(<FaviconImage canvasSize={size} />, {
+    width: size,
+    height: size,
+    fonts: [
+      {
+        name: caslonFontFamily,
+        data: caslon,
+        style: "italic",
+        weight: 400,
+      },
+    ],
+  });
 
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, Buffer.from(await response.arrayBuffer()));

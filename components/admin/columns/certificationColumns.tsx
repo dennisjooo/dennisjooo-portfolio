@@ -8,6 +8,8 @@ export function createCertificationColumns(
   return [
     {
       header: "Title",
+      accessorKey: "title",
+      sortable: true,
       primary: true,
       cell: (row: Certification) => (
         <span className="font-semibold text-foreground">{row.title}</span>
@@ -16,9 +18,12 @@ export function createCertificationColumns(
     {
       header: "Issuer",
       accessorKey: "issuer",
+      sortable: true,
     },
     {
       header: "Year",
+      accessorKey: "date",
+      sortable: true,
       cell: (row: Certification) => (
         <span className="rounded bg-muted px-2 py-1 font-mono text-xs">
           {row.date}

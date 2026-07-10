@@ -30,6 +30,8 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
   const [totalItems, setTotalItems] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
@@ -50,6 +52,8 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
       showLoading = true,
       query?: string,
       currentFilters?: Record<string, string>,
+      currentSortBy?: string | null,
+      currentSortOrder?: "asc" | "desc" | null,
     ) => {
       if (showLoading) setLoading(true);
       try {
@@ -63,6 +67,9 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
           filters,
           query,
           currentFilters,
+          sortBy: currentSortBy !== undefined ? currentSortBy : sortBy,
+          sortOrder:
+            currentSortOrder !== undefined ? currentSortOrder : sortOrder,
         });
 
         if (result) {
@@ -84,7 +91,16 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
         if (showLoading) setLoading(false);
       }
     },
-    [endpoint, pageSize, enableReorder, itemName, searchQuery, filters],
+    [
+      endpoint,
+      pageSize,
+      enableReorder,
+      itemName,
+      searchQuery,
+      filters,
+      sortBy,
+      sortOrder,
+    ],
   );
 
   useEffect(() => {
@@ -127,6 +143,24 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
       });
     },
     [fetchItems],
+  );
+
+  const handleSort = useCallback(
+    (key: string) => {
+      let nextSortOrder: "asc" | "desc" | null = "asc";
+
+      if (sortBy === key) {
+        if (sortOrder === "asc") nextSortOrder = "desc";
+        else nextSortOrder = null;
+      }
+
+      const nextSortBy = nextSortOrder ? key : null;
+
+      setSortBy(nextSortBy);
+      setSortOrder(nextSortOrder);
+      fetchItems(1, true, undefined, undefined, nextSortBy, nextSortOrder);
+    },
+    [sortBy, sortOrder, fetchItems],
   );
 
   const handleDelete = useCallback((id: string) => {
@@ -270,11 +304,14 @@ export function useAdminList<T extends { id: string; order?: number | null }>({
     totalItems,
     searchQuery,
     filters,
+    sortBy,
+    sortOrder,
     selectedIds,
     deleteDialog: bulkDeleteMode ? { ...deleteDialog, id: null } : deleteDialog,
     handlePageChange,
     handleSearch,
     handleFilter,
+    handleSort,
     handleDelete,
     confirmDelete: bulkDeleteMode ? confirmBulkDelete : confirmDelete,
     cancelDelete,

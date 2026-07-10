@@ -5,6 +5,7 @@ export { useMounted } from "./ui/useMounted";
 export { useThemeTransition } from "./ui/useThemeTransition";
 export { useTypingEffect } from "./ui/useTypingEffect";
 export { useTabState } from "./ui/useTabState";
+export { useMediaQuery } from "./ui/useMediaQuery";
 export { usePaginatedList } from "./data/usePaginatedList";
 export { useInfiniteScroll } from "./data/useInfiniteScroll";
 export { useSiteConfig } from "./data/useSiteConfig";

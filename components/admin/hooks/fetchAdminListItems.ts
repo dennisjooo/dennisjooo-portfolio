@@ -11,6 +11,8 @@ interface FetchAdminListParams {
   filters: Record<string, string>;
   query?: string;
   currentFilters?: Record<string, string>;
+  sortBy?: string | null;
+  sortOrder?: "asc" | "desc" | null;
 }
 
 interface FetchAdminListResult<T> {
@@ -28,6 +30,8 @@ export async function fetchAdminListItems<T>({
   filters,
   query,
   currentFilters,
+  sortBy,
+  sortOrder,
 }: FetchAdminListParams): Promise<FetchAdminListResult<T> | null> {
   const params = new URLSearchParams();
   if (!enableReorder) {
@@ -36,6 +40,9 @@ export async function fetchAdminListItems<T>({
   }
   const q = query ?? searchQuery;
   if (q) params.set("q", q);
+
+  if (sortBy) params.set("sortBy", sortBy);
+  if (sortOrder) params.set("sortOrder", sortOrder);
 
   const activeFilters = currentFilters ?? filters;
   Object.entries(activeFilters).forEach(([key, value]) => {

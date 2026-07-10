@@ -7,12 +7,37 @@ import {
   errorResponse,
 } from "@/lib/api/apiHelpers";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const experiences = await db
-      .select()
-      .from(workExperiences)
-      .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt));
+    const { searchParams } = new URL(request.url);
+    const sortByParam = searchParams.get("sortBy");
+    const sortOrderParam = searchParams.get("sortOrder") === "asc" ? asc : desc;
+
+    let orderByClause;
+
+    if (sortByParam) {
+      if (sortByParam === "title")
+        orderByClause = sortOrderParam(workExperiences.title);
+      else if (sortByParam === "date")
+        orderByClause = sortOrderParam(workExperiences.date);
+      else if (sortByParam === "createdAt")
+        orderByClause = sortOrderParam(workExperiences.createdAt);
+      else if (sortByParam === "updatedAt")
+        orderByClause = sortOrderParam(workExperiences.updatedAt);
+    }
+
+    const query = db.select().from(workExperiences);
+
+    if (orderByClause) {
+      query.orderBy(orderByClause);
+    } else {
+      query.orderBy(
+        asc(workExperiences.order),
+        desc(workExperiences.createdAt),
+      );
+    }
+
+    const experiences = await query;
     return successResponse(experiences);
   } catch (error) {
     console.error("Failed to fetch work experiences:", error);
