@@ -195,13 +195,20 @@ export function AdminSidebar({
         {/* Toggle */}
         <button
           onClick={onToggle}
-          className="flex w-full items-center justify-center rounded py-1.5 text-muted-foreground/50 transition-colors hover:text-muted-foreground"
+          className={`flex w-full items-center rounded py-1.5 text-muted-foreground/50 transition-all hover:text-muted-foreground ${
+            isCollapsed ? "justify-center px-0" : "gap-3 pl-[10px] pr-3"
+          }`}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? (
-            <ChevronRightIcon className="h-3.5 w-3.5" />
+            <ChevronRightIcon className="h-3.5 w-3.5 flex-shrink-0" />
           ) : (
-            <ChevronLeftIcon className="h-3.5 w-3.5" />
+            <>
+              <ChevronLeftIcon className="h-3.5 w-3.5 flex-shrink-0" />
+              <span className="whitespace-nowrap font-mono text-xs uppercase tracking-widest">
+                Collapse
+              </span>
+            </>
           )}
         </button>
       </div>
