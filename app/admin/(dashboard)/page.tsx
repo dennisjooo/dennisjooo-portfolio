@@ -91,10 +91,12 @@ export default function AdminDashboard() {
 
       <ContentStats />
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-8 md:gap-y-3">
         {quickActions.map((action, i) => (
           <Fragment key={action.href}>
-            {i > 0 && <span className="text-border">·</span>}
+            {i > 0 && (
+              <span className="hidden text-border sm:inline-block">·</span>
+            )}
             <Link
               href={action.href}
               className="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-accent"
