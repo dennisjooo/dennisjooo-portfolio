@@ -23,7 +23,7 @@ export function AdminTablePagination({
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="rounded-lg border border-border bg-card/50 p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg border border-border bg-card p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronLeftIcon className="h-4 w-4" />
         </button>
@@ -31,7 +31,7 @@ export function AdminTablePagination({
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="rounded-lg border border-border bg-card/50 p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg border border-border bg-card p-2 transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronRightIcon className="h-4 w-4" />
         </button>

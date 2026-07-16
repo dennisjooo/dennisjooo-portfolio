@@ -25,16 +25,18 @@ function StatPill({
   return (
     <Link
       href={href}
-      className="group flex items-center gap-2.5 rounded-xl border border-border bg-card/20 px-4 py-3 transition-all hover:border-accent/30 hover:bg-card/40"
+      className="flex flex-col items-start gap-1 transition-opacity hover:opacity-70"
     >
-      <span className={`h-2 w-2 rounded-full ${color}`} />
-      <span className="font-sans text-lg font-bold tabular-nums transition-colors group-hover:text-accent">
-        {loading ? (
-          <span className="inline-block h-5 w-5 animate-pulse rounded bg-muted/40" />
-        ) : (
-          count
-        )}
-      </span>
+      <div className="flex items-center gap-2">
+        <span className={`h-1.5 w-1.5 rounded-full ${color}`} />
+        <span className="font-sans text-3xl font-bold tabular-nums">
+          {loading ? (
+            <span className="inline-block h-6 w-8 animate-pulse rounded bg-muted/40" />
+          ) : (
+            count
+          )}
+        </span>
+      </div>
       <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
         {label}
       </span>
@@ -79,9 +81,9 @@ export function ContentStats() {
   return (
     <div className="space-y-3">
       <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        Content Pipeline
+        01 — Content Pipeline
       </h3>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap items-center gap-6">
         <StatPill
           label="Drafts"
           count={counts.draft}
@@ -89,6 +91,7 @@ export function ContentStats() {
           color="bg-muted-foreground"
           loading={loading}
         />
+        <div className="h-8 w-px bg-border/50" />
         <StatPill
           label="Scheduled"
           count={counts.scheduled}
@@ -96,6 +99,7 @@ export function ContentStats() {
           color="bg-accent"
           loading={loading}
         />
+        <div className="h-8 w-px bg-border/50" />
         <StatPill
           label="Published"
           count={counts.published}

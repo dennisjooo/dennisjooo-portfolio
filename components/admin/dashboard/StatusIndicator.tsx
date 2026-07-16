@@ -31,7 +31,7 @@ export function StatusIndicator({ status, label }: StatusIndicatorProps) {
           </span>
         )}
         <span
-          className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-widest ${config.pill} ${config.textColor}`}
+          className={`inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[10px] uppercase tracking-widest ${config.pill} ${config.textColor}`}
         >
           <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} />
           {config.text}

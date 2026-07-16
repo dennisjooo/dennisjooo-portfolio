@@ -101,7 +101,7 @@ export function AdminTable<T extends { id?: string | number }>({
 
   if (isLoading) {
     return (
-      <div className="flex h-64 w-full animate-pulse items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
+      <div className="flex h-64 w-full animate-pulse items-center justify-center rounded-lg border border-border bg-card/30">
         <div className="font-mono text-sm text-muted-foreground">
           Loading Data stream...
         </div>
@@ -111,7 +111,7 @@ export function AdminTable<T extends { id?: string | number }>({
 
   if (!localData || localData.length === 0) {
     return (
-      <div className="flex h-40 w-full items-center justify-center rounded-xl border border-border bg-card/30 backdrop-blur-sm">
+      <div className="flex h-40 w-full items-center justify-center rounded-lg border border-border bg-card/30">
         <div className="font-mono text-sm text-muted-foreground">
           No records found in database.
         </div>
@@ -143,7 +143,7 @@ export function AdminTable<T extends { id?: string | number }>({
               key={row.id || rowIdx}
               data-card
               className={cn(
-                "flex items-stretch gap-2 rounded-xl border border-border bg-card/30 p-4 backdrop-blur-sm transition-all duration-200",
+                "flex items-stretch gap-2 rounded-lg border border-border bg-card/30 p-4 transition-all duration-200",
                 isDragging && "bg-muted/50 opacity-50",
                 isDragOver && "ring-2 ring-primary",
               )}
@@ -203,11 +203,11 @@ export function AdminTable<T extends { id?: string | number }>({
       </div>
 
       {/* Desktop Table Layout */}
-      <div className="hidden overflow-hidden rounded-xl border border-border bg-card/30 shadow-sm backdrop-blur-sm md:block">
+      <div className="hidden overflow-hidden rounded-lg border border-border bg-card md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border/50 bg-muted/20">
+              <tr className="border-b border-border/50 bg-muted/10">
                 {enableSelect && (
                   <th className="w-[40px] px-4 py-4">
                     <input

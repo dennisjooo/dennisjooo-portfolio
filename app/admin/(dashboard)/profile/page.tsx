@@ -79,7 +79,7 @@ export default function ProfileAdminPage() {
 
             <label
               htmlFor="profile-upload"
-              className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-colors group-hover:scale-110 hover:bg-primary/90"
+              className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-primary p-3 text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <CameraIcon className="h-5 w-5" />
               <input

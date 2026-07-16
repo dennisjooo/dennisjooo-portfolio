@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useUnsavedChanges } from "@/components/admin/hooks";
 
 interface AdminFormLayoutProps {
@@ -21,19 +20,19 @@ export function AdminFormLayout({
   const { requestNavigation } = useUnsavedChanges();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={() => requestNavigation(() => router.back())}
-          className="rounded-full p-2 transition-colors hover:bg-muted/50"
+          className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-accent"
           aria-label="Go back"
         >
-          <ArrowLeftIcon className="h-5 w-5 text-muted-foreground" />
+          ← Back
         </button>
         <div>
-          <h1 className="font-caslon text-3xl font-bold italic text-foreground">
-            {title} <span className="font-sans not-italic">{titleAccent}</span>
+          <h1 className="font-caslon text-3xl italic text-foreground">
+            {title} {titleAccent}
           </h1>
           <p className="mt-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {subtitle}

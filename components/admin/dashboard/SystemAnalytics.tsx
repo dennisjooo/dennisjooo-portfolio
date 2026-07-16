@@ -1,4 +1,3 @@
-import { CircleStackIcon } from "@heroicons/react/24/outline";
 import { StatusIndicator } from "./StatusIndicator";
 import { StatusData } from "./types";
 
@@ -14,11 +13,10 @@ export function SystemAnalytics({
   error,
 }: SystemAnalyticsProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
-        <h3 className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          <CircleStackIcon className="h-4 w-4" />
-          System Status
+        <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          03 — System Status
         </h3>
         <div className="flex items-center gap-3">
           {statusData?.timestamp && (

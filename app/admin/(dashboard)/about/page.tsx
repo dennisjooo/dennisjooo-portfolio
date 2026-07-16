@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
-import { LoadingSpinner } from "@/components/admin/shared";
+import { AdminPageHeader, LoadingSpinner } from "@/components/admin/shared";
 import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { useFormDirty } from "@/components/admin/hooks";
@@ -62,26 +62,22 @@ export default function AboutAdminPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
-            About{" "}
-            <span className="font-sans font-bold not-italic">Section</span>
-          </h1>
-          <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Tell your story
-          </p>
-        </div>
+      <AdminPageHeader
+        title="About"
+        titleAccent="Section"
+        subtitle="Tell your story"
+      />
 
+      <div className="flex justify-end">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-sans font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:opacity-90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:text-accent/70 disabled:opacity-50"
         >
           {saving ? (
-            <ArrowPathIcon className="h-5 w-5 animate-spin" />
+            <ArrowPathIcon className="h-3.5 w-3.5 animate-spin" />
           ) : saved ? (
-            <CheckIcon className="h-5 w-5" />
+            <CheckIcon className="h-3.5 w-3.5" />
           ) : null}
           {saving ? "Saving..." : saved ? "Saved!" : "Save Changes"}
         </button>

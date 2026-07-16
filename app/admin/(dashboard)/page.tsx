@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import {
@@ -89,22 +89,22 @@ export default function AdminDashboard() {
         statusLoading={isLoading}
       />
 
-      <div className="flex flex-wrap items-center gap-2">
-        {quickActions.map((action) => (
-          <Link
-            key={action.href}
-            href={action.href}
-            className="group inline-flex items-center gap-2 rounded-lg border border-border bg-card/30 px-4 py-2 text-sm font-medium transition-all duration-200 hover:border-accent/40 hover:bg-card/60"
-          >
-            <PlusIcon className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-accent" />
-            <span className="transition-colors group-hover:text-accent">
+      <ContentStats />
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        {quickActions.map((action, i) => (
+          <Fragment key={action.href}>
+            {i > 0 && <span className="text-border">·</span>}
+            <Link
+              href={action.href}
+              className="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-accent"
+            >
+              <PlusIcon className="h-3 w-3" />
               {action.label}
-            </span>
-          </Link>
+            </Link>
+          </Fragment>
         ))}
       </div>
-
-      <ContentStats />
 
       <NavigationCards counts={counts} countsLoading={countsLoading} />
 

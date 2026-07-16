@@ -7,7 +7,6 @@ import {
   BriefcaseIcon,
   AcademicCapIcon,
   LinkIcon,
-  ClockIcon,
 } from "@heroicons/react/24/outline";
 import { formatRelativeTime } from "@/lib/utils/relativeTime";
 
@@ -76,13 +75,10 @@ export function RecentActivity() {
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
-      <div className="flex items-center gap-2 border-b border-border/50 px-6 py-4">
-        <ClockIcon className="h-4 w-4 text-muted-foreground" />
-        <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Recent Activity
-        </h3>
-      </div>
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
+      <h3 className="border-b border-border/50 px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        02 — Recent Activity
+      </h3>
 
       <div className="max-h-[240px] divide-y divide-border/30 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/40">
         {loading && (
@@ -112,7 +108,7 @@ export function RecentActivity() {
                 className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/5"
               >
                 <div
-                  className={`flex-shrink-0 rounded-lg bg-muted/30 p-1.5 ${config.color}`}
+                  className={`flex-shrink-0 rounded bg-muted/20 p-1.5 ${config.color}`}
                 >
                   <Icon className="h-4 w-4" />
                 </div>

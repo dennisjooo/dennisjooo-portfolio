@@ -48,9 +48,9 @@ export function DashboardHeader({
   const isPending = statusLoading || !statusData;
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div className="space-y-2">
-        <h1 className="font-caslon text-4xl italic text-foreground md:text-5xl lg:text-6xl">
+    <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div className="space-y-3">
+        <h1 className="font-caslon text-4xl italic md:text-5xl lg:text-6xl">
           {greeting},{" "}
           <span className="text-display font-sans font-bold not-italic">
             {userName || "Admin"}.
@@ -66,12 +66,9 @@ export function DashboardHeader({
             {status.label}
           </span>
           <span className="text-border">|</span>
-          <kbd className="hidden items-center gap-1 rounded border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-flex">
+          <kbd className="inline-flex items-center gap-1 rounded border border-border bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
             Ctrl K
           </kbd>
-          <span className="hidden font-mono text-xs text-muted-foreground sm:inline">
-            to jump anywhere
-          </span>
         </div>
       </div>
     </div>
