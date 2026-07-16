@@ -15,12 +15,14 @@ export function AdminThemeToggle({ isCollapsed }: AdminThemeToggleProps) {
     <button
       ref={buttonRef}
       onClick={toggleTheme}
-      className="flex w-full items-center gap-3 rounded px-3 py-2 text-muted-foreground transition-colors hover:text-foreground"
+      className={`flex w-full items-center rounded py-2 text-muted-foreground transition-all hover:text-foreground ${
+        isCollapsed ? "justify-center px-0" : "gap-3 pl-[10px] pr-3"
+      }`}
     >
       <Icon className="h-4 w-4 flex-shrink-0" />
       <span
-        className={`whitespace-nowrap font-mono text-xs uppercase tracking-widest transition-opacity duration-200 ${
-          isCollapsed ? "opacity-0" : "opacity-100"
+        className={`whitespace-nowrap font-mono text-xs uppercase tracking-widest transition-all duration-200 ${
+          isCollapsed ? "w-0 overflow-hidden opacity-0" : "opacity-100"
         }`}
       >
         {mounted ? (isDark ? "Light Mode" : "Dark Mode") : "Theme"}
