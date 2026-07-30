@@ -2,7 +2,7 @@ import type { TimelineItemData } from "@/lib/types/workExperience";
 import { SectionHeader } from "@/components/shared/layout/SectionHeader";
 import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { DesktopTimeline } from "./Timeline/DesktopTimeline";
-import { WorkExperienceMobileClient } from "./WorkExperienceMobileClient";
+import { MobileTimeline } from "./Timeline/MobileTimeline";
 
 export type { TimelineItemData };
 
@@ -22,7 +22,7 @@ export default function WorkExperience({
       <SectionHeader number="03." title="Work Experience" className="mb-16" />
 
       <DesktopTimeline items={items} />
-      <WorkExperienceMobileClient items={items} />
+      <MobileTimeline items={items} />
     </SectionShell>
   );
 }

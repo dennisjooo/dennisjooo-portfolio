@@ -3,55 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  HomeIcon,
-  DocumentTextIcon,
-  AcademicCapIcon,
-  UserCircleIcon,
   PowerIcon,
   ArrowTopRightOnSquareIcon,
-  BriefcaseIcon,
-  IdentificationIcon,
-  LinkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { SignOutButton } from "@clerk/nextjs";
+import { adminNavGroups } from "@/lib/constants/adminNav";
 import { AdminThemeToggle } from "./AdminThemeToggle";
-
-const navGroups = [
-  {
-    label: null,
-    items: [{ name: "Dashboard", href: "/admin", icon: HomeIcon }],
-  },
-  {
-    label: "Content",
-    items: [
-      {
-        name: "Blogs & Projects",
-        href: "/admin/blogs",
-        icon: DocumentTextIcon,
-      },
-      {
-        name: "Work Experience",
-        href: "/admin/work-experience",
-        icon: BriefcaseIcon,
-      },
-      {
-        name: "Certifications",
-        href: "/admin/certifications",
-        icon: AcademicCapIcon,
-      },
-    ],
-  },
-  {
-    label: "Settings",
-    items: [
-      { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
-      { name: "About", href: "/admin/about", icon: IdentificationIcon },
-      { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
-    ],
-  },
-];
 
 interface AdminSidebarProps {
   collapsed: boolean;
@@ -102,7 +61,7 @@ export function AdminSidebar({
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden pt-3">
-        {navGroups.map((group, groupIndex) => (
+        {adminNavGroups.map((group, groupIndex) => (
           <div key={group.label ?? "dashboard"}>
             {group.label && (
               <div className="relative">
