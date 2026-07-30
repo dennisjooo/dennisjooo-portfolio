@@ -17,6 +17,11 @@ interface ListRouteConfig {
   entityName: string;
   orderBy: SQL | SQL[];
   cache?: boolean;
+  paginate?: boolean;
+  defaultOrderBy?: SQL[];
+  onBeforeInsert?: (
+    body: Record<string, unknown>,
+  ) => Promise<Record<string, unknown>> | Record<string, unknown>;
 }
 
 export function createListRouteHandler({
@@ -24,6 +29,9 @@ export function createListRouteHandler({
   entityName,
   orderBy,
   cache = false,
+  paginate = true,
+  defaultOrderBy,
+  onBeforeInsert,
 }: ListRouteConfig) {
   async function GET(request: Request) {
     try {
@@ -34,27 +42,38 @@ export function createListRouteHandler({
       const sortOrderParam =
         searchParams.get("sortOrder") === "asc" ? asc : desc;
 
-      let orderByClause = Array.isArray(orderBy) ? orderBy : [orderBy];
+      let orderByClause =
+        defaultOrderBy ?? (Array.isArray(orderBy) ? orderBy : [orderBy]);
 
       if (sortByParam && table[sortByParam]) {
         orderByClause = [sortOrderParam(table[sortByParam])];
       }
 
-      const [results, totalResult] = await Promise.all([
-        db
-          .select()
-          .from(table)
-          .orderBy(...orderByClause)
-          .offset(offset)
-          .limit(limit),
-        db.select({ count: count() }).from(table),
-      ]);
+      const query = db
+        .select()
+        .from(table)
+        .orderBy(...orderByClause);
 
-      const total = totalResult[0]?.count ?? 0;
+      if (paginate) {
+        const [results, totalResult] = await Promise.all([
+          query.offset(offset).limit(limit),
+          db.select({ count: count() }).from(table),
+        ]);
+
+        const total = totalResult[0]?.count ?? 0;
+        const response = NextResponse.json({
+          success: true,
+          data: results,
+          pagination: buildPagination(total, page, limit),
+        });
+
+        return cache ? withCacheHeaders(response) : response;
+      }
+
+      const results = await query;
       const response = NextResponse.json({
         success: true,
         data: results,
-        pagination: buildPagination(total, page, limit),
       });
 
       return cache ? withCacheHeaders(response) : response;
@@ -69,7 +88,11 @@ export function createListRouteHandler({
     if (isAuthError(authResult)) return authResult;
 
     try {
-      const body = await request.json();
+      let body = (await request.json()) as Record<string, unknown>;
+      if (onBeforeInsert) {
+        body = await onBeforeInsert(body);
+      }
+
       const [item] = (await db
         .insert(table)
         .values(body)

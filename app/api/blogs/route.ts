@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { db, blogs } from "@/lib/db";
-import { desc, asc, count, eq, and, ilike, not, like } from "drizzle-orm";
+import { blogs } from "@/lib/db";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { auth } from "@clerk/nextjs/server";
-import { getBlogs, visibleBlogsFilter } from "@/lib/data/blogs";
+import { getBlogs } from "@/lib/data/blogs";
 import { validateAndPrepareBlogBody } from "@/lib/api/blogHelpers";
+import { queryBlogList } from "@/lib/db/blogQueries";
 import {
   requireAuth,
   isAuthError,
@@ -13,6 +13,7 @@ import {
   parsePagination,
   buildPagination,
 } from "@/lib/api/apiHelpers";
+import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
   try {
@@ -47,55 +48,28 @@ export async function GET(request: Request) {
       );
     }
 
-    const conditions = [];
-    if (type) conditions.push(eq(blogs.type, type));
-    if (searchQuery) conditions.push(ilike(blogs.title, `%${searchQuery}%`));
-    conditions.push(not(like(blogs.slug, "%-preview")));
-
-    if (adminStatus) {
-      conditions.push(eq(blogs.status, adminStatus));
-    } else if (!userId) {
-      conditions.push(visibleBlogsFilter());
-    }
-
-    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
-
-    const baseQuery = whereClause
-      ? db.select().from(blogs).where(whereClause)
-      : db.select().from(blogs);
-
-    const countQuery = whereClause
-      ? db.select({ count: count() }).from(blogs).where(whereClause)
-      : db.select({ count: count() }).from(blogs);
-
-    const sortByParam = searchParams.get("sortBy");
-    const sortOrderParam = searchParams.get("sortOrder") === "asc" ? asc : desc;
-
-    let orderByClause = desc(blogs.date);
-
-    if (sortByParam) {
-      if (sortByParam === "title") orderByClause = sortOrderParam(blogs.title);
-      else if (sortByParam === "type")
-        orderByClause = sortOrderParam(blogs.type);
-      else if (sortByParam === "status")
-        orderByClause = sortOrderParam(blogs.status);
-      else if (sortByParam === "createdAt")
-        orderByClause = sortOrderParam(blogs.createdAt);
-      else if (sortByParam === "updatedAt")
-        orderByClause = sortOrderParam(blogs.updatedAt);
-    }
-
-    const [blogResults, totalResult] = await Promise.all([
-      baseQuery.orderBy(orderByClause).offset(offset).limit(limit),
-      countQuery,
-    ]);
-
-    const total = totalResult[0]?.count ?? 0;
+    const sortOrderParam = searchParams.get("sortOrder");
+    const { rows, total } = await queryBlogList({
+      page,
+      limit,
+      offset,
+      type,
+      status: adminStatus,
+      searchQuery,
+      sortBy: searchParams.get("sortBy"),
+      sortOrder: sortOrderParam === "asc" ? "asc" : "desc",
+      visibility: adminStatus
+        ? "admin-status"
+        : userId
+          ? "admin-all"
+          : "public",
+      isAuthenticated: Boolean(userId),
+    });
 
     return withCacheHeaders(
       NextResponse.json({
         success: true,
-        data: blogResults,
+        data: rows,
         pagination: buildPagination(total, page, limit),
       }),
     );
