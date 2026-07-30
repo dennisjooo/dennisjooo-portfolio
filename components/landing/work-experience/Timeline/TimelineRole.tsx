@@ -8,9 +8,14 @@ import { RoleResponsibilitiesList } from "../RoleResponsibilitiesList";
 interface TimelineRoleProps {
   role: TimelineItemData;
   index: number;
+  variant?: "desktop" | "mobile";
 }
 
-export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
+export const TimelineRole: React.FC<TimelineRoleProps> = ({
+  role,
+  index,
+  variant = "desktop",
+}) => {
   return (
     <m.div
       className="relative ml-4 border-l border-foreground/10 py-4 pl-8 md:ml-0 md:border-none md:pl-0"
@@ -35,6 +40,8 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({ role, index }) => {
       <RoleResponsibilitiesList
         responsibilities={role.responsibilities}
         itemKeyPrefix={role.id ?? role.title}
+        variant={variant}
+        initialCount={variant === "mobile" ? 2 : 3}
       />
     </m.div>
   );

@@ -24,7 +24,7 @@ const variantStyles = {
   },
   mobile: {
     list: "space-y-2",
-    item: "flex items-start text-sm font-light text-muted-foreground leading-relaxed",
+    item: "flex items-start text-base font-light text-muted-foreground leading-relaxed",
     bullet: "mr-3 mt-2 w-1 h-1 rounded-full bg-foreground/40 shrink-0",
     button:
       "flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors pt-1",
