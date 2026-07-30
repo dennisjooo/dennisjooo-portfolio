@@ -53,7 +53,10 @@ export const NavbarClient = () => {
     >
       <div className={navbarContainerClasses}>
         <div className="flex min-h-[3rem] items-center gap-2 px-4 py-3">
-          <NavLogo onNavigate={handleNavigation} />
+          <NavLogo
+            onNavigate={handleNavigation}
+            showCircle={!isHeroSection || scrolled || isMenuOpen}
+          />
           <div className="ml-auto flex items-center gap-2">
             <CommandMenuTrigger
               textColorClass={textColorClass}

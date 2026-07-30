@@ -8,14 +8,16 @@ import {
 } from "@/lib/easter-eggs/constants";
 import { getFoundSecretIds, markSecretFound } from "@/lib/easter-eggs/unlock";
 import { siteToast } from "@/lib/ui/siteToast";
+import { cn } from "@/lib/utils";
 
 interface NavLogoProps {
   onNavigate: (sectionId: string) => void;
+  showCircle: boolean;
 }
 
 const TRIPLE_CLICK_WINDOW_MS = 500;
 
-export const NavLogo = ({ onNavigate }: NavLogoProps) => {
+export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
   const [hasCrown, setHasCrown] = useState(false);
   const [animateCrown, setAnimateCrown] = useState(false);
   const clickCountRef = useRef(0);
@@ -66,19 +68,31 @@ export const NavLogo = ({ onNavigate }: NavLogoProps) => {
   return (
     <div className="relative shrink-0">
       {hasCrown ? (
-        <Crown
-          className={`absolute -top-2.5 left-1/2 h-3.5 w-5 -translate-x-1/2 text-accent ${
-            animateCrown ? "animate-fade-in-down" : ""
-          }`}
+        <div
+          className="pointer-events-none absolute inset-x-0 -top-2.5 flex justify-center"
           aria-hidden
-        />
+        >
+          <Crown
+            className={`h-3.5 w-5 text-accent ${
+              animateCrown ? "animate-fade-in-down" : ""
+            }`}
+          />
+        </div>
       ) : null}
       <button
         onClick={handleClick}
         aria-label="Navigate to home"
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground transition-colors duration-200"
+        className={cn(
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ease-in-out",
+          showCircle ? "bg-foreground" : "bg-transparent",
+        )}
       >
-        <span className="-ml-[3px] font-caslon text-xs italic leading-none text-background">
+        <span
+          className={cn(
+            "-ml-[3px] font-caslon text-xs italic leading-none transition-colors duration-200 ease-in-out",
+            showCircle ? "text-background" : "text-foreground",
+          )}
+        >
           DJ
         </span>
       </button>
