@@ -1,42 +1,47 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Contact } from "@/lib/db";
 import { CONTACT_ICON_OPTIONS } from "@/lib/constants/contactIcons";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
 import { FormField } from "@/components/admin/shared/FormField";
-import { useFormSubmit } from "@/components/admin/hooks/useFormSubmit";
 import {
-  useFormDirty,
-  useUnsavedChanges,
-} from "@/components/admin/hooks/useUnsavedChanges";
+  useAdminEntityForm,
+  useAdminSubmitHandler,
+} from "@/components/admin/hooks";
 
 interface ContactFormProps {
   initialData?: Contact;
   onSubmit: (data: Partial<Contact>) => Promise<void>;
 }
 
+const defaultFormState: {
+  label: string;
+  href: string;
+  icon: Contact["icon"];
+  order: number;
+} = {
+  label: "",
+  href: "",
+  icon: "mail",
+  order: 0,
+};
+
 export default function ContactForm({
   initialData,
   onSubmit,
 }: ContactFormProps) {
-  const { loading, handleSubmit } = useFormSubmit();
-  const router = useRouter();
-  const { requestNavigation } = useUnsavedChanges();
-  const [formData, setFormData] = useState({
-    label: initialData?.label ?? "",
-    href: initialData?.href ?? "",
+  const { formData, setFormData } = useAdminEntityForm(defaultFormState, {
+    label: initialData?.label,
+    href: initialData?.href,
     icon: initialData?.icon ?? "mail",
     order: initialData?.order ?? 0,
   });
-
-  useFormDirty(formData);
+  const { submitting, handleFormSubmit } = useAdminSubmitHandler(onSubmit);
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
+      onSubmit={handleFormSubmit(() => formData)}
       className={`${formStyles.panel} max-w-3xl space-y-6`}
     >
       <div className="space-y-4">
@@ -105,9 +110,8 @@ export default function ContactForm({
       </div>
 
       <FormActions
-        loading={loading}
+        loading={submitting}
         submitLabel={initialData ? "Update Contact" : "Create Contact"}
-        onCancel={() => requestNavigation(() => router.back())}
       />
     </form>
   );

@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import {
   ArrowPathIcon,
   PlusIcon,
   TrashIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
 import type { WorkExperience } from "@/lib/db";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
@@ -17,11 +15,10 @@ import { FormField } from "@/components/admin/shared/FormField";
 import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
-import { useFormSubmit } from "@/components/admin/hooks/useFormSubmit";
 import {
-  useFormDirty,
-  useUnsavedChanges,
-} from "@/components/admin/hooks/useUnsavedChanges";
+  useAdminEntityForm,
+  useAdminSubmitHandler,
+} from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
 
 interface WorkExperienceFormProps {
@@ -29,25 +26,30 @@ interface WorkExperienceFormProps {
   onSubmit: (data: Partial<WorkExperience>) => Promise<void>;
 }
 
+const defaultFormState = {
+  title: "",
+  company: "",
+  date: "",
+  imageSrc: "",
+  responsibilities: [""],
+  order: 0,
+};
+
 export default function WorkExperienceForm({
   initialData,
   onSubmit,
 }: WorkExperienceFormProps) {
-  const { loading, handleSubmit } = useFormSubmit();
-  const router = useRouter();
-  const { requestNavigation } = useUnsavedChanges();
-  const [formData, setFormData] = useState({
-    title: initialData?.title ?? "",
-    company: initialData?.company ?? "",
-    date: initialData?.date ?? "",
-    imageSrc: initialData?.imageSrc ?? "",
+  const { formData, setFormData } = useAdminEntityForm(defaultFormState, {
+    title: initialData?.title,
+    company: initialData?.company,
+    date: initialData?.date,
+    imageSrc: initialData?.imageSrc,
     responsibilities: initialData?.responsibilities ?? [""],
     order: initialData?.order ?? 0,
   });
+  const { submitting, handleFormSubmit } = useAdminSubmitHandler(onSubmit);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
-  useFormDirty(formData);
 
   const { uploading, upload } = useImageUpload({
     folder: "work",
@@ -59,21 +61,10 @@ export default function WorkExperienceForm({
     await upload(e.target.files[0]);
   };
 
-  const submitWorkExperience = async () => {
-    const cleanedData = {
-      ...formData,
-      responsibilities: formData.responsibilities.filter(
-        (r) => r.trim() !== "",
-      ),
-    };
-    try {
-      await onSubmit(cleanedData);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to save work experience: ${message}`);
-      throw error;
-    }
-  };
+  const getSubmitData = () => ({
+    ...formData,
+    responsibilities: formData.responsibilities.filter((r) => r.trim() !== ""),
+  });
 
   const addResponsibility = () => {
     setFormData((prev) => ({
@@ -135,7 +126,7 @@ export default function WorkExperienceForm({
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, submitWorkExperience)}
+      onSubmit={handleFormSubmit(getSubmitData)}
       className={cn(formStyles.panel, "max-w-3xl space-y-6")}
     >
       <FormField label="Company Logo">
@@ -318,9 +309,8 @@ export default function WorkExperienceForm({
       </div>
 
       <FormActions
-        loading={loading}
+        loading={submitting}
         submitLabel={initialData ? "Update Record" : "Create Record"}
-        onCancel={() => requestNavigation(() => router.back())}
       />
     </form>
   );

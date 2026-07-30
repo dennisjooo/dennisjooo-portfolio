@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { formStyles } from "./formStyles";
+import { useUnsavedChanges } from "@/components/admin/hooks";
 
 interface FormActionsProps {
   loading: boolean;
@@ -15,13 +16,14 @@ export function FormActions({
   onCancel,
 }: FormActionsProps) {
   const router = useRouter();
+  const { requestNavigation } = useUnsavedChanges();
 
   const handleCancel = () => {
     if (onCancel) {
       onCancel();
-    } else {
-      router.back();
+      return;
     }
+    requestNavigation(() => router.back());
   };
 
   return (

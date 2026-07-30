@@ -1,6 +1,7 @@
 export { useAdminList } from "./useAdminList";
 export { useAdminForm } from "./useAdminForm";
-export { useFormSubmit } from "./useFormSubmit";
+export { useAdminSubmitHandler } from "./useAdminSubmitHandler";
+export { useAdminEntityForm } from "./useAdminEntityForm";
 export { useStatusData } from "./useStatusData";
 export {
   useUnsavedChanges,

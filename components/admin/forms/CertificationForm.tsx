@@ -1,42 +1,43 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Certification } from "@/lib/db";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
 import { FormField } from "@/components/admin/shared/FormField";
-import { useFormSubmit } from "@/components/admin/hooks/useFormSubmit";
 import {
-  useFormDirty,
-  useUnsavedChanges,
-} from "@/components/admin/hooks/useUnsavedChanges";
+  useAdminEntityForm,
+  useAdminSubmitHandler,
+} from "@/components/admin/hooks";
 
 interface CertificationFormProps {
   initialData?: Certification;
   onSubmit: (data: Partial<Certification>) => Promise<void>;
 }
 
+const defaultFormState = {
+  title: "",
+  issuer: "",
+  date: new Date().getFullYear().toString(),
+  description: "",
+  link: "",
+};
+
 export default function CertificationForm({
   initialData,
   onSubmit,
 }: CertificationFormProps) {
-  const { loading, handleSubmit } = useFormSubmit();
-  const router = useRouter();
-  const { requestNavigation } = useUnsavedChanges();
-  const [formData, setFormData] = useState({
-    title: initialData?.title ?? "",
-    issuer: initialData?.issuer ?? "",
-    date: initialData?.date ?? new Date().getFullYear().toString(),
-    description: initialData?.description ?? "",
-    link: initialData?.link ?? "",
+  const { formData, setFormData } = useAdminEntityForm(defaultFormState, {
+    title: initialData?.title,
+    issuer: initialData?.issuer,
+    date: initialData?.date ?? defaultFormState.date,
+    description: initialData?.description,
+    link: initialData?.link,
   });
-
-  useFormDirty(formData);
+  const { submitting, handleFormSubmit } = useAdminSubmitHandler(onSubmit);
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, () => onSubmit(formData))}
+      onSubmit={handleFormSubmit(() => formData)}
       className={`${formStyles.panel} max-w-3xl space-y-6`}
     >
       <div className="space-y-4">
@@ -109,9 +110,8 @@ export default function CertificationForm({
       </div>
 
       <FormActions
-        loading={loading}
+        loading={submitting}
         submitLabel={initialData ? "Update Record" : "Create Record"}
-        onCancel={() => requestNavigation(() => router.back())}
       />
     </form>
   );

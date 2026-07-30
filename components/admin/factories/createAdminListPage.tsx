@@ -1,12 +1,10 @@
 "use client";
 
-import { AdminTable, Column } from "@/components/admin/layout/AdminTable";
-import {
-  AdminPageHeader,
-  AdminReorderHint,
-  ConfirmDialog,
-} from "@/components/admin/shared";
+import type { ReactNode } from "react";
+import { AdminListPageLayout } from "./AdminListPageLayout";
+import { Column } from "@/components/admin/layout/AdminTable";
 import { useAdminList } from "@/components/admin/hooks";
+import type { UseAdminListReturn } from "@/components/admin/hooks/adminListTypes";
 
 interface ListPageHeaderConfig {
   title: string;
@@ -32,6 +30,15 @@ interface AdminListPageConfig<T extends { id: string; order?: number | null }> {
   deleteDialog: ListPageDeleteDialogConfig;
   createColumns: (handleDelete: (id: string) => void) => Column<T>[];
   disablePagination?: boolean;
+  spacing?: "default" | "compact";
+  enableSelect?: boolean;
+  toolbar?: (ctx: UseAdminListReturn<T>) => ReactNode;
+  bulkActions?: (ctx: UseAdminListReturn<T>) => ReactNode;
+  getSubtitle?: (ctx: UseAdminListReturn<T>) => string;
+  getDeleteDialog?: (ctx: UseAdminListReturn<T>) => {
+    title: string;
+    description: string;
+  };
 }
 
 export function createAdminListPage<
@@ -48,9 +55,24 @@ export function createAdminListPage<
     deleteDialog,
     createColumns,
     disablePagination = false,
+    spacing = "default",
+    enableSelect = false,
+    toolbar,
+    bulkActions,
+    getSubtitle,
+    getDeleteDialog,
   } = config;
 
   return function AdminListPage() {
+    const listContext = useAdminList<T>({
+      endpoint,
+      pageSize,
+      enableReorder,
+      reorderEndpoint,
+      itemName,
+      deleteSuccessMessage,
+    });
+
     const {
       items,
       loading,
@@ -65,54 +87,46 @@ export function createAdminListPage<
       sortBy,
       sortOrder,
       handleSort,
-    } = useAdminList<T>({
-      endpoint,
-      pageSize,
-      enableReorder,
-      reorderEndpoint,
-      itemName,
-      deleteSuccessMessage,
-    });
+      selectedIds,
+      toggleSelect,
+      toggleSelectAll,
+    } = listContext;
 
     const columns = createColumns(handleDelete);
+    const dialogCopy = getDeleteDialog?.(listContext) ?? deleteDialog;
 
     return (
-      <div className="space-y-8">
-        <AdminPageHeader
-          title={header.title}
-          titleAccent={header.titleAccent}
-          subtitle={header.subtitle}
-          actionHref={header.actionHref}
-          actionLabel={header.actionLabel}
-        />
-
-        <AdminTable
-          columns={columns}
-          data={items}
-          isLoading={loading}
-          currentPage={disablePagination ? 1 : currentPage}
-          totalPages={disablePagination ? 1 : totalPages}
-          onPageChange={disablePagination ? () => {} : handlePageChange}
-          enableReorder={enableReorder}
-          onReorder={enableReorder ? handleReorder : undefined}
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onSortChange={handleSort}
-        />
-
-        {enableReorder && <AdminReorderHint />}
-
-        <ConfirmDialog
-          open={dialogState.open}
-          title={deleteDialog.title}
-          description={deleteDialog.description}
-          confirmLabel="Delete"
-          variant="danger"
-          loading={dialogState.loading}
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
-        />
-      </div>
+      <AdminListPageLayout
+        header={header}
+        subtitle={getSubtitle?.(listContext)}
+        spacing={spacing}
+        toolbar={toolbar?.(listContext)}
+        bulkActions={bulkActions?.(listContext)}
+        columns={columns}
+        items={items}
+        loading={loading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        enableReorder={enableReorder}
+        onReorder={enableReorder ? handleReorder : undefined}
+        disablePagination={disablePagination}
+        enableSelect={enableSelect}
+        selectedIds={selectedIds}
+        onToggleSelect={toggleSelect}
+        onToggleSelectAll={toggleSelectAll}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSortChange={handleSort}
+        deleteDialog={{
+          open: dialogState.open,
+          title: dialogCopy.title,
+          description: dialogCopy.description,
+          loading: dialogState.loading,
+          onConfirm: confirmDelete,
+          onCancel: cancelDelete,
+        }}
+      />
     );
   };
 }
