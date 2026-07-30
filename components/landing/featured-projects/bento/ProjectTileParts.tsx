@@ -1,53 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import {
-  m,
-  useReducedMotion,
-  springConfigs,
-  viewportSettings,
-} from "@/components/motion";
-import { NOISE_OVERLAY_LIGHT } from "@/lib/constants/noiseOverlay";
+  BlogLinkCardGlow,
+  BlogLinkCardImage,
+} from "@/components/shared/list/BlogLinkCard";
+import { m, useFadeUpInView } from "@/components/motion";
 
 export function useProjectTileMotion(animationIndex: number, hoverY: number) {
-  const prefersReducedMotion = useReducedMotion();
-
-  const variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        ...springConfigs.smooth,
-        delay: Math.min(animationIndex * 0.08, 0.24),
-      },
-    },
-  };
-
-  return {
-    motionProps: {
-      variants: prefersReducedMotion ? undefined : variants,
-      initial: prefersReducedMotion ? undefined : ("hidden" as const),
-      whileInView: prefersReducedMotion ? undefined : ("visible" as const),
-      viewport: viewportSettings.once,
-      whileHover: prefersReducedMotion
-        ? undefined
-        : { y: hoverY, transition: springConfigs.snappy },
-    },
-  };
+  return useFadeUpInView({ index: animationIndex, y: 30, hoverY });
 }
 
 export function ProjectTileGlow({ large = false }: { large?: boolean }) {
-  return (
-    <div
-      className={cn(
-        "bg-gradient-accent absolute -inset-px rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100",
-        large && "md:rounded-2xl",
-      )}
-    />
-  );
+  return <BlogLinkCardGlow large={large} />;
 }
 
 export function ProjectTileImage({
@@ -59,27 +25,7 @@ export function ProjectTileImage({
   title: string;
   sizes: string;
 }) {
-  return (
-    <>
-      {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          loading="lazy"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          sizes={sizes}
-        />
-      ) : (
-        <div className="h-full w-full bg-gradient-to-br from-secondary to-muted" />
-      )}
-      <div
-        className="pointer-events-none absolute inset-0 z-10 opacity-20 mix-blend-overlay"
-        style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
-      />
-      <div className="absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
-    </>
-  );
+  return <BlogLinkCardImage imageUrl={imageUrl} title={title} sizes={sizes} />;
 }
 
 export function ProjectTileIndex({ label }: { label: string }) {

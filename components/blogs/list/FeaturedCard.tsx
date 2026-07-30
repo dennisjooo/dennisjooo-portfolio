@@ -3,7 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { m, useReducedMotion, springConfigs } from "@/components/motion";
+import {
+  m,
+  springConfigs,
+  featuredCardVariants,
+  useMotionSafeProps,
+} from "@/components/motion";
+import {
+  BlogLinkCardGlow,
+  BlogLinkCardShell,
+  BlogLinkCardTypeBadge,
+} from "@/components/shared/list/BlogLinkCard";
 import { NOISE_OVERLAY_LIGHT } from "@/lib/constants/noiseOverlay";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 
@@ -26,24 +36,22 @@ export const FeaturedCard = ({
   type,
   readTime,
 }: FeaturedCardProps) => {
-  const prefersReducedMotion = useReducedMotion();
+  const heroMotion = useMotionSafeProps({
+    initial: featuredCardVariants.initial,
+    whileInView: featuredCardVariants.whileInView,
+    viewport: { once: true, margin: "-50px" },
+    transition: springConfigs.smooth,
+  });
 
   return (
     <Link
       href={`/blogs/${slug}`}
       className="group mb-12 block w-full cursor-pointer md:mb-16"
     >
-      <m.div
-        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 40 }}
-        whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={springConfigs.smooth}
-        className="relative"
-      >
-        {/* Gradient border glow */}
-        <div className="bg-gradient-accent absolute -inset-px rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:rounded-2xl" />
+      <m.div {...heroMotion} className="relative">
+        <BlogLinkCardGlow large />
 
-        <article className="relative grid grid-cols-1 overflow-hidden rounded-xl border border-border bg-card md:grid-cols-5 md:gap-10 md:rounded-2xl md:p-6">
+        <BlogLinkCardShell variant="featured">
           {/* Image */}
           <m.div
             layoutId={`hero-image-${slug}`}
@@ -70,9 +78,7 @@ export const FeaturedCard = ({
             {/* Type badge overlaid on image (mobile only) */}
             {type && (
               <div className="absolute left-3 top-3 z-20 md:hidden">
-                <span className="rounded border border-border bg-background/80 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground backdrop-blur-sm">
-                  {getBlogTypeLabel(type)}
-                </span>
+                <BlogLinkCardTypeBadge type={type} />
               </div>
             )}
           </m.div>
@@ -128,7 +134,7 @@ export const FeaturedCard = ({
               <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
           </div>
-        </article>
+        </BlogLinkCardShell>
       </m.div>
     </Link>
   );

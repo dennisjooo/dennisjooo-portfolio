@@ -13,6 +13,7 @@ import {
   ProjectTileTitle,
   useProjectTileMotion,
 } from "./ProjectTileParts";
+import { BlogLinkCardShell } from "@/components/shared/list/BlogLinkCard";
 
 export function ProjectCompactTile({
   title,
@@ -35,7 +36,7 @@ export function ProjectCompactTile({
       <m.div {...motionProps} className="relative h-full">
         <ProjectTileGlow />
 
-        <article className="relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 group-hover:border-foreground/30 lg:flex-row">
+        <BlogLinkCardShell variant="bento-compact">
           <m.div
             layoutId={`hero-image-${slug}`}
             className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[200px] lg:w-[40%]"
@@ -61,7 +62,7 @@ export function ProjectCompactTile({
 
             <ProjectTileFooter date={date} readTime={readTime} compact />
           </div>
-        </article>
+        </BlogLinkCardShell>
       </m.div>
     </Link>
   );

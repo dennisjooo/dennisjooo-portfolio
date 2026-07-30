@@ -14,6 +14,7 @@ import {
   ProjectTileTitle,
   useProjectTileMotion,
 } from "./ProjectTileParts";
+import { BlogLinkCardShell } from "@/components/shared/list/BlogLinkCard";
 
 export function ProjectFeaturedTile({
   title,
@@ -36,7 +37,10 @@ export function ProjectFeaturedTile({
       <m.div {...motionProps} className="relative h-full">
         <ProjectTileGlow large />
 
-        <article className="relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 group-hover:border-foreground/30 md:rounded-2xl lg:min-h-[420px]">
+        <BlogLinkCardShell
+          variant="bento-featured"
+          className="min-h-[320px] md:rounded-2xl lg:min-h-[420px]"
+        >
           <m.div
             layoutId={`hero-image-${slug}`}
             className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[240px] lg:flex-1"
@@ -67,7 +71,7 @@ export function ProjectFeaturedTile({
 
             <ProjectTileFooter date={date} readTime={readTime} />
           </div>
-        </article>
+        </BlogLinkCardShell>
       </m.div>
     </Link>
   );

@@ -13,5 +13,3 @@ export const navItems: NavItem[] = [
   { id: "contact", label: "Contact" },
   { id: "blogs", label: "Blog", href: "/blogs" },
 ];
-
-export const navbarItems: NavItem[] = [];

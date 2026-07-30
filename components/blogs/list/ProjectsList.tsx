@@ -1,6 +1,7 @@
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { formatProjectDate } from "@/lib/utils/projectFormatting";
 import { ContentCard, PaginatedList } from "@/components/shared";
+import { InlineSpinner } from "@/components/shared/feedback/InlineSpinner";
 import { FeaturedCard } from "./FeaturedCard";
 import { BlogsListSkeleton } from "./skeletons";
 import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
@@ -16,15 +17,7 @@ interface ProjectsListProps {
 }
 
 function LoadMoreFallback() {
-  return (
-    <div
-      className="flex justify-center py-6"
-      aria-busy="true"
-      aria-label="Loading more posts"
-    >
-      <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
-    </div>
-  );
+  return <InlineSpinner label="Loading more posts" />;
 }
 
 export default function ProjectsList({
@@ -105,7 +98,6 @@ export default function ProjectsList({
             index={index}
             type={itemType}
             readTime={`${readTimeMinutes} min`}
-            variant="standard"
           />
         )}
       />

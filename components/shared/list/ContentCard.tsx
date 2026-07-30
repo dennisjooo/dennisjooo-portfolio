@@ -2,15 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { cn } from "@/lib/utils";
+import { m, useFadeUpInView } from "@/components/motion";
 import {
-  m,
-  useReducedMotion,
-  springConfigs,
-  viewportSettings,
-} from "@/components/motion";
+  BlogLinkCardMeta,
+  BlogLinkCardShell,
+} from "@/components/shared/list/BlogLinkCard";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
+
 interface ContentCardProps {
   title: string;
   description: string;
@@ -20,7 +18,6 @@ interface ContentCardProps {
   index: number;
   type?: "project" | "blog";
   readTime?: string;
-  variant?: "featured" | "standard";
 }
 
 export const ContentCard = ({
@@ -32,62 +29,16 @@ export const ContentCard = ({
   index,
   type,
   readTime,
-  variant = "standard",
 }: ContentCardProps) => {
-  const isFeatured = variant === "featured";
-  const prefersReducedMotion = useReducedMotion();
-
-  const animationDelay = isFeatured
-    ? index * 0.15
-    : Math.min(index * 0.08, 0.24);
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: isFeatured ? 50 : 30,
-      scale: isFeatured ? 0.95 : 1,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        ...springConfigs.smooth,
-        delay: animationDelay,
-      },
-    },
-  };
-
-  const hoverY = -6;
+  const { motionProps } = useFadeUpInView({ index, y: 30, hoverY: -6 });
 
   return (
     <Link
       href={`/blogs/${slug}`}
       className="group block h-full w-full cursor-pointer"
     >
-      <m.div
-        variants={
-          prefersReducedMotion
-            ? undefined
-            : isFeatured
-              ? undefined
-              : cardVariants
-        }
-        initial={
-          prefersReducedMotion ? undefined : isFeatured ? undefined : "hidden"
-        }
-        whileInView={
-          prefersReducedMotion ? undefined : isFeatured ? undefined : "visible"
-        }
-        viewport={isFeatured ? undefined : viewportSettings.once}
-        whileHover={
-          prefersReducedMotion
-            ? undefined
-            : { y: hoverY, transition: springConfigs.snappy }
-        }
-        className="relative h-full"
-      >
-        <article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 group-hover:border-foreground/30">
+      <m.div {...motionProps} className="relative h-full">
+        <BlogLinkCardShell variant="grid">
           <m.div
             layoutId={`hero-image-${slug}`}
             className="relative aspect-[16/9] w-full overflow-hidden bg-muted"
@@ -119,12 +70,7 @@ export const ContentCard = ({
           <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">
             <m.h3
               layoutId={`hero-title-${slug}`}
-              className={cn(
-                "font-caslon italic tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent",
-                isFeatured
-                  ? "text-2xl leading-[0.9] md:text-3xl"
-                  : "text-xl leading-tight md:text-2xl",
-              )}
+              className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-2xl"
             >
               {title}
             </m.h3>
@@ -133,21 +79,9 @@ export const ContentCard = ({
               {description}
             </p>
 
-            <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                <span>{date}</span>
-                {readTime && (
-                  <>
-                    <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
-                    <span>{readTime}</span>
-                  </>
-                )}
-              </div>
-
-              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
-            </div>
+            <BlogLinkCardMeta date={date} readTime={readTime} />
           </div>
-        </article>
+        </BlogLinkCardShell>
       </m.div>
     </Link>
   );

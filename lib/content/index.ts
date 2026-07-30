@@ -1,5 +1,5 @@
 export { HERO_CONTENT } from "./heroContent";
-export { navItems, navbarItems, type NavItem } from "./navbarContent";
+export { navItems, type NavItem } from "./navbarContent";
 export { skillCategories } from "./skillContent";
 export {
   defaultContactLinks,
