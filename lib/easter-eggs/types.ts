@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
 export type SecretAction =
-  | { type: "openUrl"; url: string }
+  | { type: "openUrl"; url: string; toastMessage?: string }
   | { type: "navigate"; path: string }
   | { type: "toast"; message: string }
   | { type: "copy"; text: string; toastMessage?: string };

@@ -4,6 +4,9 @@ import type { SecretAction } from "./types";
 export async function executeSecretAction(action: SecretAction): Promise<void> {
   switch (action.type) {
     case "openUrl":
+      if (action.toastMessage) {
+        siteToast.playful(action.toastMessage);
+      }
       window.open(action.url, "_blank", "noopener,noreferrer");
       break;
     case "navigate":

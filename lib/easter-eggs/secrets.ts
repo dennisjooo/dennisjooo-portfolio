@@ -64,8 +64,8 @@ export const PALETTE_SECRETS: SecretDefinition[] = [
     icon: Coffee,
     action: {
       type: "copy",
-      text: "Thanks for the coffee thought! github.com/dennisjooo",
-      toastMessage: "Copied. You're fueling the codebase.",
+      text: "0xf2a8b4b693579e0839dc30fd0a471bf7d169e125",
+      toastMessage: "Copied ETH wallet. You're fueling the codebase.",
     },
   },
   {
@@ -75,9 +75,9 @@ export const PALETTE_SECRETS: SecretDefinition[] = [
     searchValue: "hire available work contact",
     icon: Briefcase,
     action: {
-      type: "copy",
-      text: "Dennis Jonathan — full-stack developer available for work. dennisjonathan78@gmail.com",
-      toastMessage: "Copied pitch + email.",
+      type: "openUrl",
+      url: "https://www.linkedin.com/in/dennisjooo/",
+      toastMessage: "DM me lol",
     },
   },
   {
