@@ -44,6 +44,25 @@ const ASCII_STYLE =
 const HINT_STYLE =
   "color: #777; font-size: 11px; font-family: monospace; font-style: italic;";
 
+function getSecretProgressMessage(): string | null {
+  const found = getFoundSecretCount();
+  if (found === 0) return null;
+
+  const total = getTotalSecretCount();
+  if (found >= total) {
+    return `You've found all ${total} secrets. Absolute legend.`;
+  }
+
+  return `You've found ${found}/${total} secrets. Keep digging.`;
+}
+
+export function logSecretProgress(): void {
+  const message = getSecretProgressMessage();
+  if (message) {
+    console.log(`%c${message}`, HINT_STYLE);
+  }
+}
+
 export function logConsoleEasterEggs(): void {
   console.log(ASCII_ART, ASCII_STYLE);
   console.log(WELCOME_MESSAGE, MONO_STYLE);
@@ -62,12 +81,5 @@ export function logConsoleEasterEggs(): void {
   }
 
   console.log(`%c${pickRotatingConsoleHint()}`, HINT_STYLE);
-
-  const found = getFoundSecretCount();
-  if (found > 0) {
-    console.log(
-      `%cYou've found ${found}/${getTotalSecretCount()} secrets. Keep digging.`,
-      HINT_STYLE,
-    );
-  }
+  logSecretProgress();
 }
