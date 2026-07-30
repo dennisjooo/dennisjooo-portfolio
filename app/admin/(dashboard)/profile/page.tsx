@@ -1,61 +1,39 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { CameraIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
-import { buildUploadPayload } from "@/lib/utils/blobUpload";
 import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
-import { LoadingSpinner } from "@/components/admin/shared";
+import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
+import { AdminPageHeader, LoadingSpinner } from "@/components/admin/shared";
 
 export default function ProfileAdminPage() {
   const { config, loading, updateConfig } = useSiteConfig();
-  const [uploading, setUploading] = useState(false);
+  const { uploading, upload } = useImageUpload({
+    filename: "profile.webp",
+    onSuccess: async (url) => {
+      await updateConfig({ profileImageUrl: url });
+      toast.success("Profile updated!");
+    },
+  });
 
   const imageUrl = config?.profileImageUrl || "/images/profile.webp";
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-
-    setUploading(true);
-    const file = e.target.files[0];
-
-    try {
-      const { contentHash, body } = await buildUploadPayload(file);
-
-      const response = await fetch(
-        `/api/upload?filename=profile.webp&contentHash=${contentHash}`,
-        {
-          method: "POST",
-          body,
-        },
-      );
-
-      const newBlob = await response.json();
-
-      await updateConfig({ profileImageUrl: newBlob.url });
-      toast.success("Profile updated!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update profile");
-    } finally {
-      setUploading(false);
-    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await upload(file);
   };
 
   if (loading) return <LoadingSpinner />;
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
-          Profile{" "}
-          <span className="font-sans font-bold not-italic">Settings</span>
-        </h1>
-        <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Global configuration & identity
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Profile"
+        titleAccent="Settings"
+        subtitle="Global configuration & identity"
+      />
 
       <div className="glass-panel max-w-2xl rounded-2xl border border-border/50 p-8">
         <div className="flex flex-col items-start gap-8 md:flex-row">

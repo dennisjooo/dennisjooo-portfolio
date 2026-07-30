@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { AdminDialogShell } from "./AdminDialogShell";
 
 interface UnsavedChangesDialogProps {
   open: boolean;
@@ -21,21 +14,13 @@ export function UnsavedChangesDialog({
   onCancel,
 }: UnsavedChangesDialogProps) {
   return (
-    <Dialog
+    <AdminDialogShell
       open={open}
       onOpenChange={(nextOpen) => (!nextOpen ? onCancel() : null)}
-    >
-      <DialogContent className="glass-panel max-w-md gap-0 rounded-2xl border-border/50 p-8">
-        <DialogHeader className="space-y-3">
-          <DialogTitle className="font-caslon text-2xl italic tracking-tight text-foreground">
-            Leave without saving?
-          </DialogTitle>
-          <DialogDescription className="max-w-[95%] text-base leading-relaxed text-muted-foreground/80">
-            You have unsaved changes. If you leave now, your updates will be
-            lost.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex-row justify-end gap-3 pt-6">
+      title="Leave without saving?"
+      description="You have unsaved changes. If you leave now, your updates will be lost."
+      footer={
+        <>
           <button
             type="button"
             onClick={onCancel}
@@ -50,8 +35,8 @@ export function UnsavedChangesDialog({
           >
             Leave
           </button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </>
+      }
+    />
   );
 }

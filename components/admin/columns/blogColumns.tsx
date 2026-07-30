@@ -1,8 +1,8 @@
 import { Column } from "@/components/admin/layout/AdminTable";
 import { BLOG_STATUS_STYLES } from "@/lib/constants/blogStatus";
-import { formatRelativeTime } from "@/lib/utils/relativeTime";
 import type { Blog } from "@/lib/db";
 import { createActionsColumn } from "./createActionsColumn";
+import { createTimestampColumn } from "./createTimestampColumn";
 
 export function createBlogColumns(
   handleDelete: (id: string) => void,
@@ -60,34 +60,8 @@ export function createBlogColumns(
         );
       },
     },
-    {
-      header: "Created",
-      accessorKey: "createdAt",
-      sortable: true,
-      cell: (row: Blog) => (
-        <span
-          className="text-xs text-muted-foreground"
-          title={row.createdAt ? new Date(row.createdAt).toLocaleString() : ""}
-        >
-          {row.createdAt ? formatRelativeTime(row.createdAt) : ""}
-        </span>
-      ),
-    },
-    {
-      header: "Updated",
-      accessorKey: "updatedAt",
-      sortable: true,
-      cell: (row: Blog) => (
-        <span
-          className="text-xs text-muted-foreground"
-          title={
-            row.updatedAt ? new Date(row.updatedAt).toLocaleString() : row.date
-          }
-        >
-          {row.updatedAt ? formatRelativeTime(row.updatedAt) : row.date}
-        </span>
-      ),
-    },
+    createTimestampColumn<Blog>("createdAt", "Created"),
+    createTimestampColumn<Blog>("updatedAt", "Updated"),
     createActionsColumn<Blog>("/admin/blogs", handleDelete),
   ];
 }

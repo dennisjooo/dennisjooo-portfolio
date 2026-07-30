@@ -4,6 +4,7 @@ import { buildUploadPayload } from "@/lib/utils/blobUpload";
 
 interface UseImageUploadOptions {
   folder?: string;
+  filename?: string;
   onSuccess?: (url: string) => void;
   onError?: (error: Error) => void;
 }
@@ -16,7 +17,7 @@ interface UseImageUploadReturn {
 export function useImageUpload(
   options: UseImageUploadOptions = {},
 ): UseImageUploadReturn {
-  const { folder, onSuccess, onError } = options;
+  const { folder, filename, onSuccess, onError } = options;
   const [uploading, setUploading] = useState(false);
 
   const upload = useCallback(
@@ -26,7 +27,7 @@ export function useImageUpload(
         const { contentHash, body } = await buildUploadPayload(file);
 
         const params = new URLSearchParams({
-          filename: file.name,
+          filename: filename ?? file.name,
           contentHash,
         });
         if (folder) {
@@ -57,7 +58,7 @@ export function useImageUpload(
         setUploading(false);
       }
     },
-    [folder, onSuccess, onError],
+    [folder, filename, onSuccess, onError],
   );
 
   return { uploading, upload };

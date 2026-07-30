@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { AdminDialogShell } from "./AdminDialogShell";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -33,20 +26,13 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   return (
-    <Dialog
+    <AdminDialogShell
       open={open}
       onOpenChange={(nextOpen) => (!nextOpen ? onCancel() : null)}
-    >
-      <DialogContent className="glass-panel max-w-md gap-0 rounded-2xl border-border/50 p-8">
-        <DialogHeader className="space-y-3">
-          <DialogTitle className="font-caslon text-2xl italic tracking-tight text-foreground">
-            {title}
-          </DialogTitle>
-          <DialogDescription className="max-w-[95%] text-base leading-relaxed text-muted-foreground/80">
-            {description}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex-row justify-end gap-3 pt-6">
+      title={title}
+      description={description}
+      footer={
+        <>
           <button
             type="button"
             onClick={onCancel}
@@ -67,8 +53,8 @@ export function ConfirmDialog({
           >
             {loading ? "Deleting..." : confirmLabel}
           </button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </>
+      }
+    />
   );
 }

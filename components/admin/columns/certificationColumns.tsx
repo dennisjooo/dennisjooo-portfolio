@@ -1,6 +1,7 @@
 import { Column } from "@/components/admin/layout/AdminTable";
 import type { Certification } from "@/lib/db";
 import { createActionsColumn } from "./createActionsColumn";
+import { createMonoBadgeColumn } from "./createMonoBadgeColumn";
 
 export function createCertificationColumns(
   handleDelete: (id: string) => void,
@@ -20,16 +21,7 @@ export function createCertificationColumns(
       accessorKey: "issuer",
       sortable: true,
     },
-    {
-      header: "Year",
-      accessorKey: "date",
-      sortable: true,
-      cell: (row: Certification) => (
-        <span className="rounded bg-muted px-2 py-1 font-mono text-xs">
-          {row.date}
-        </span>
-      ),
-    },
+    createMonoBadgeColumn<Certification>("date", "Year"),
     createActionsColumn<Certification>("/admin/certifications", handleDelete),
   ];
 }

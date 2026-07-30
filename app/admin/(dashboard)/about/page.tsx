@@ -66,22 +66,21 @@ export default function AboutAdminPage() {
         title="About"
         titleAccent="Section"
         subtitle="Tell your story"
+        actions={
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:text-accent/70 disabled:opacity-50"
+          >
+            {saving ? (
+              <ArrowPathIcon className="h-3.5 w-3.5 animate-spin" />
+            ) : saved ? (
+              <CheckIcon className="h-3.5 w-3.5" />
+            ) : null}
+            {saving ? "Saving..." : saved ? "Saved!" : "Save Changes"}
+          </button>
+        }
       />
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:text-accent/70 disabled:opacity-50"
-        >
-          {saving ? (
-            <ArrowPathIcon className="h-3.5 w-3.5 animate-spin" />
-          ) : saved ? (
-            <CheckIcon className="h-3.5 w-3.5" />
-          ) : null}
-          {saving ? "Saving..." : saved ? "Saved!" : "Save Changes"}
-        </button>
-      </div>
 
       <div className="space-y-6">
         {ABOUT_SECTIONS.map((section) => (

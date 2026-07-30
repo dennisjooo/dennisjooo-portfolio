@@ -2,7 +2,8 @@ import Image from "next/image";
 import { Column } from "@/components/admin/layout/AdminTable";
 import type { WorkExperience } from "@/lib/db";
 import { createActionsColumn } from "./createActionsColumn";
-import { formatRelativeTime } from "@/lib/utils/relativeTime";
+import { createTimestampColumn } from "./createTimestampColumn";
+import { createMonoBadgeColumn } from "./createMonoBadgeColumn";
 
 export function createWorkExperienceColumns(
   handleDelete: (id: string) => void,
@@ -38,42 +39,9 @@ export function createWorkExperienceColumns(
         </div>
       ),
     },
-    {
-      header: "Period",
-      accessorKey: "date",
-      sortable: true,
-      cell: (row: WorkExperience) => (
-        <span className="rounded bg-muted px-2 py-1 font-mono text-xs">
-          {row.date}
-        </span>
-      ),
-    },
-    {
-      header: "Created",
-      accessorKey: "createdAt",
-      sortable: true,
-      cell: (row: WorkExperience) => (
-        <span
-          className="text-xs text-muted-foreground"
-          title={row.createdAt ? new Date(row.createdAt).toLocaleString() : ""}
-        >
-          {row.createdAt ? formatRelativeTime(row.createdAt) : ""}
-        </span>
-      ),
-    },
-    {
-      header: "Updated",
-      accessorKey: "updatedAt",
-      sortable: true,
-      cell: (row: WorkExperience) => (
-        <span
-          className="text-xs text-muted-foreground"
-          title={row.updatedAt ? new Date(row.updatedAt).toLocaleString() : ""}
-        >
-          {row.updatedAt ? formatRelativeTime(row.updatedAt) : ""}
-        </span>
-      ),
-    },
+    createMonoBadgeColumn<WorkExperience>("date", "Period"),
+    createTimestampColumn<WorkExperience>("createdAt", "Created"),
+    createTimestampColumn<WorkExperience>("updatedAt", "Updated"),
     createActionsColumn<WorkExperience>("/admin/work-experience", handleDelete),
   ];
 }

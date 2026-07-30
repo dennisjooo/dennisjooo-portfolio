@@ -1,6 +1,10 @@
 export const formStyles = {
   input:
     "w-full p-3 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none",
+  searchInput:
+    "w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20",
+  select:
+    "rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-accent/20",
   label: "block text-sm font-medium text-muted-foreground mb-1.5",
   panel: "rounded-lg border border-border bg-card p-8",
   cancelButton:
