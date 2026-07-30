@@ -32,13 +32,10 @@ export function SecretGroup({ secrets, onSelect }: SecretGroupProps) {
               value={secret.searchValue}
               className="bg-gradient-to-r from-accent/10 to-transparent"
               onSelect={() =>
-                onSelect(
-                  () => {
-                    markSecretFound(secret.id);
-                    void executeSecretAction(secret.action);
-                  },
-                  secret.action.type === "navigate",
-                )
+                onSelect(() => {
+                  markSecretFound(secret.id);
+                  void executeSecretAction(secret.action);
+                }, secret.action.type === "navigate")
               }
             >
               <Icon className="h-4 w-4 text-accent" />

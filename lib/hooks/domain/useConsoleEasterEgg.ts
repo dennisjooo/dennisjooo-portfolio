@@ -22,19 +22,16 @@ export function useConsoleEasterEgg() {
 
     const onAllSecretsFound = () => {
       const total = getTotalSecretCount();
-      siteToast.playful(
-        `You found all ${total} secrets. Absolute legend.`,
-        { label: "COMPLETE", duration: 5000 },
-      );
+      siteToast.playful(`You found all ${total} secrets. Absolute legend.`, {
+        label: "COMPLETE",
+        duration: 5000,
+      });
     };
     window.addEventListener(EASTER_EGG_COMPLETE_EVENT, onAllSecretsFound);
 
     return () => {
       window.removeEventListener(EASTER_EGG_FOUND_EVENT, onSecretFound);
-      window.removeEventListener(
-        EASTER_EGG_COMPLETE_EVENT,
-        onAllSecretsFound,
-      );
+      window.removeEventListener(EASTER_EGG_COMPLETE_EVENT, onAllSecretsFound);
     };
   }, []);
 }
