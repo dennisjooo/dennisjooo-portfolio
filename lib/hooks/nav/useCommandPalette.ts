@@ -50,7 +50,9 @@ export interface UseCommandPaletteReturn {
 
   // Actions
   runCommand: (command: () => unknown) => void;
-  runSecretCommand: (command: () => unknown) => void;
+  runSecretCommand: (command: () => unknown, closePalette?: boolean) => void;
+  pendingSecretsFocus: boolean;
+  clearPendingSecretsFocus: () => void;
   copyUrl: () => void;
   router: ReturnType<typeof useRouter>;
 }
@@ -61,6 +63,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
   const [exactMatch, setExactMatch] = React.useState(false);
   const [caseSensitive, setCaseSensitive] = React.useState(false);
   const [searchScope, setSearchScope] = React.useState<SearchScope>("all");
+  const [pendingSecretsFocus, setPendingSecretsFocus] = React.useState(false);
   const router = useRouter();
   const { copied, copyToClipboard } = useCopyToClipboard();
 
@@ -131,14 +134,27 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     command();
   }, []);
 
-  const runSecretCommand = React.useCallback((command: () => unknown) => {
-    setSearch("");
-    setOpen(false);
-    command();
+  const clearPendingSecretsFocus = React.useCallback(() => {
+    setPendingSecretsFocus(false);
   }, []);
 
+  const runSecretCommand = React.useCallback(
+    (command: () => unknown, closePalette = false) => {
+      setSearch("");
+      setPendingSecretsFocus(true);
+      if (closePalette) {
+        setOpen(false);
+      }
+      command();
+    },
+    [],
+  );
+
   React.useEffect(() => {
-    const onSecretFound = () => setSearch("");
+    const onSecretFound = () => {
+      setSearch("");
+      setPendingSecretsFocus(true);
+    };
     window.addEventListener(EASTER_EGG_FOUND_EVENT, onSecretFound);
     return () =>
       window.removeEventListener(EASTER_EGG_FOUND_EVENT, onSecretFound);
@@ -213,6 +229,8 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     filteredWorkExperience,
     runCommand,
     runSecretCommand,
+    pendingSecretsFocus,
+    clearPendingSecretsFocus,
     copyUrl,
     router,
   };

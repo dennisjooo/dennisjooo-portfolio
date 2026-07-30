@@ -13,7 +13,7 @@ import type { SecretDefinition } from "@/lib/easter-eggs/types";
 
 interface SecretGroupProps {
   secrets: SecretDefinition[];
-  onSelect: (command: () => unknown) => void;
+  onSelect: (command: () => unknown, closePalette?: boolean) => void;
 }
 
 export function SecretGroup({ secrets, onSelect }: SecretGroupProps) {
@@ -32,10 +32,13 @@ export function SecretGroup({ secrets, onSelect }: SecretGroupProps) {
               value={secret.searchValue}
               className="bg-gradient-to-r from-accent/10 to-transparent"
               onSelect={() =>
-                onSelect(() => {
-                  markSecretFound(secret.id);
-                  void executeSecretAction(secret.action);
-                })
+                onSelect(
+                  () => {
+                    markSecretFound(secret.id);
+                    void executeSecretAction(secret.action);
+                  },
+                  secret.action.type === "navigate",
+                )
               }
             >
               <Icon className="h-4 w-4 text-accent" />

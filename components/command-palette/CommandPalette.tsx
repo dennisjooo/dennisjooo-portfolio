@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { SearchX } from "lucide-react";
 import {
@@ -50,9 +50,13 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     filteredWorkExperience,
     runCommand,
     runSecretCommand,
+    pendingSecretsFocus,
+    clearPendingSecretsFocus,
     copyUrl,
     router,
   } = useCommandPalette();
+
+  const secretsSectionRef = useRef<HTMLDivElement>(null);
 
   const handleNavigate = useCallback(
     (path: string) => {
@@ -78,6 +82,25 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     search,
     matchedSecrets.length,
   );
+
+  useEffect(() => {
+    if (!open || !pendingSecretsFocus || !showEasterEggProgress) return;
+
+    const timeout = window.setTimeout(() => {
+      secretsSectionRef.current?.scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+      clearPendingSecretsFocus();
+    }, 50);
+
+    return () => window.clearTimeout(timeout);
+  }, [
+    open,
+    pendingSecretsFocus,
+    showEasterEggProgress,
+    clearPendingSecretsFocus,
+  ]);
 
   const hasSearchResults =
     filteredProjects.length > 0 ||
@@ -151,7 +174,11 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
 
         <SecretGroup secrets={matchedSecrets} onSelect={runSecretCommand} />
 
-        {showEasterEggProgress ? <EasterEggProgressGroup open={open} /> : null}
+        {showEasterEggProgress ? (
+          <div ref={secretsSectionRef}>
+            <EasterEggProgressGroup open={open} />
+          </div>
+        ) : null}
       </CommandList>
     </CommandDialog>
   );

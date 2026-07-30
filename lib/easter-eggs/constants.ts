@@ -9,3 +9,4 @@ export const HIDDEN_SECRET_IDS = [
 ] as const;
 
 export const EASTER_EGG_FOUND_EVENT = "portfolio:easter-egg-found";
+export const EASTER_EGG_COMPLETE_EVENT = "portfolio:easter-egg-complete";

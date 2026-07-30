@@ -43,9 +43,20 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
               <Sparkles className="h-3.5 w-3.5 shrink-0 text-accent" />
             ) : null}
           </div>
-          <p className="w-full font-mono text-[11px] leading-snug text-muted-foreground">
-            {hint}
-          </p>
+          {isComplete ? (
+            <div className="flex w-full flex-col gap-1">
+              <p className="font-caslon text-sm italic leading-snug text-display">
+                Congratulations — you found them all.
+              </p>
+              <p className="font-mono text-[11px] leading-snug text-muted-foreground">
+                Absolute legend. The hunt is complete.
+              </p>
+            </div>
+          ) : (
+            <p className="w-full font-mono text-[11px] leading-snug text-muted-foreground">
+              {hint}
+            </p>
+          )}
         </CommandItem>
       </CommandGroup>
     </>
