@@ -3,14 +3,10 @@
 import CertificationsList from "./CertificationsList";
 import ProjectsList from "./ProjectsList";
 import TabSwitcher from "./TabSwitcher";
-const tabContentVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
-  transition: { duration: 0.3 },
-};
+import { tabContentVariants } from "@/components/motion";
 import { useTabState } from "@/lib/hooks/ui/useTabState";
 import { AnimatePresence, m } from "@/components/motion";
+import { sectionInnerClasses } from "@/components/shared/layout/SectionShell";
 import { BlogsHero } from "./BlogsHero";
 import { TabType } from "./TabSwitcher";
 import { useMemo, useEffect } from "react";
@@ -44,7 +40,7 @@ export function BlogsTabs({
 
   return (
     <div
-      className={`container mx-auto max-w-7xl px-6 pt-24 transition-opacity duration-300 md:pt-20 ${
+      className={`${sectionInnerClasses} pt-24 transition-opacity duration-300 md:pt-20 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
     >

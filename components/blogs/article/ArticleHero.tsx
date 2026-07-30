@@ -1,6 +1,14 @@
 "use client";
 
-import { m } from "@/components/motion";
+import {
+  m,
+  articleHeroBackVariants,
+  articleHeroMetaVariants,
+  articleHeroTitleVariants,
+  articleHeroDescriptionVariants,
+  articleHeroImageVariants,
+  useMotionSafeProps,
+} from "@/components/motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -31,15 +39,14 @@ export const ArticleHero = ({
   type,
   slug,
 }: ArticleHeroProps) => {
+  const backMotion = useMotionSafeProps(articleHeroBackVariants);
+  const metaMotion = useMotionSafeProps(articleHeroMetaVariants);
+  const titleMotion = useMotionSafeProps(articleHeroTitleVariants);
+  const descriptionMotion = useMotionSafeProps(articleHeroDescriptionVariants);
+
   return (
     <header className="mb-12 w-full md:mb-16">
-      {/* Back Navigation */}
-      <m.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-      >
+      <m.div {...backMotion} className="mb-8">
         <Link
           href="/blogs"
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
@@ -49,11 +56,8 @@ export const ArticleHero = ({
         </Link>
       </m.div>
 
-      {/* Meta Bar */}
       <m.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
+        {...metaMotion}
         className="mb-6 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted-foreground md:gap-4"
       >
         <span className="rounded border border-border px-2 py-1">
@@ -67,28 +71,21 @@ export const ArticleHero = ({
         <span>{readTime} min read</span>
       </m.div>
 
-      {/* Title - Editorial Style */}
       <m.h1
         layoutId={`hero-title-${slug}`}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        {...titleMotion}
         className="mb-6 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
       >
         {title}
       </m.h1>
 
-      {/* Description */}
       <m.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
+        {...descriptionMotion}
         className="mb-10 max-w-3xl font-sans text-lg leading-relaxed text-muted-foreground md:text-xl"
       >
         {description}
       </m.p>
 
-      {/* Hero Image - Full Bleed */}
       {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} slug={slug} />}
     </header>
   );
@@ -104,6 +101,7 @@ function ArticleHeroImage({
   slug: string;
 }) {
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+  const imageMotion = useMotionSafeProps(articleHeroImageVariants);
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
@@ -114,12 +112,7 @@ function ArticleHeroImage({
 
   return (
     <PhotoView src={src}>
-      <m.figure
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="cursor-zoom-in"
-      >
+      <m.figure {...imageMotion} className="cursor-zoom-in">
         <HoverImageFrame frameClassName="shadow-lg">
           <m.div
             layoutId={`hero-image-${slug}`}

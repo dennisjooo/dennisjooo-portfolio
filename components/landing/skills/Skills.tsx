@@ -15,6 +15,8 @@ import {
   viewportSettings,
   staggerContainerTight,
   fadeUpItem,
+  useInViewReveal,
+  useMotionSafe,
 } from "@/components/motion";
 
 /** Speed per row (seconds) — stagger slightly for visual variety */
@@ -22,6 +24,8 @@ const rowSpeeds = [45, 55, 50, 48];
 
 const Skills: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
+  const containerMotion = useInViewReveal(staggerContainerTight);
+  const fadeUp = useMotionSafe(fadeUpItem);
 
   return (
     <SectionShell id="skills" spacing="compact" fullBleed overflowHidden>
@@ -30,16 +34,14 @@ const Skills: React.FC = () => {
       </SectionShellHeader>
 
       <m.div
-        variants={prefersReducedMotion ? undefined : staggerContainerTight}
-        initial={prefersReducedMotion ? undefined : "hidden"}
-        whileInView={prefersReducedMotion ? undefined : "visible"}
+        {...containerMotion}
         viewport={viewportSettings.once}
         className="flex w-full flex-col border-t border-border/30"
       >
         {skillCategories.map((category, index) => (
           <m.div
             key={category.title}
-            variants={prefersReducedMotion ? undefined : fadeUpItem}
+            variants={fadeUp}
             className="group relative overflow-hidden border-b border-border/30"
           >
             <div className="pointer-events-none absolute left-4 top-3 z-10 md:left-8">

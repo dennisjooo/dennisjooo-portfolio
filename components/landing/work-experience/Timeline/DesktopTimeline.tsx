@@ -6,51 +6,30 @@ import { groupItemsByCompany } from "@/lib/utils/workExperience";
 import { TimelineGroup } from "./TimelineGroup";
 import {
   m,
-  useReducedMotion,
-  springConfigs,
   viewportSettings,
+  timelineDesktopContainer,
+  timelineDesktopItem,
+  useInViewReveal,
+  useMotionSafe,
 } from "@/components/motion";
 
 interface DesktopTimelineProps {
   items: TimelineItemData[];
 }
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: springConfigs.smooth,
-  },
-};
-
 export const DesktopTimeline: React.FC<DesktopTimelineProps> = ({ items }) => {
   const groupedItems = useMemo(() => groupItemsByCompany(items), [items]);
-  const prefersReducedMotion = useReducedMotion();
+  const containerMotion = useInViewReveal(timelineDesktopContainer);
+  const itemVariants = useMotionSafe(timelineDesktopItem);
 
   return (
     <m.div
-      variants={prefersReducedMotion ? undefined : containerVariants}
-      initial={prefersReducedMotion ? undefined : "hidden"}
-      whileInView={prefersReducedMotion ? undefined : "visible"}
+      {...containerMotion}
       viewport={viewportSettings.once}
       className="relative hidden w-full flex-col md:flex"
     >
       {groupedItems.map((group, index) => (
-        <m.div
-          key={index}
-          variants={prefersReducedMotion ? undefined : itemVariants}
-        >
+        <m.div key={index} variants={itemVariants}>
           <TimelineGroup
             group={group}
             isLast={index === groupedItems.length - 1}

@@ -3,11 +3,12 @@
 import { cn } from "@/lib/utils";
 import {
   m,
-  useReducedMotion,
   viewportSettings,
   headerStaggerContainer,
   fadeUpItem,
   underlineReveal,
+  useInViewReveal,
+  useMotionSafe,
 } from "@/components/motion";
 
 interface SectionHeaderProps {
@@ -48,13 +49,13 @@ function AnimatedSectionHeader({
   title,
   className,
 }: Pick<SectionHeaderProps, "number" | "title" | "className">) {
-  const prefersReducedMotion = useReducedMotion();
+  const containerMotion = useInViewReveal(headerStaggerContainer);
+  const fadeUp = useMotionSafe(fadeUpItem);
+  const underline = useMotionSafe(underlineReveal);
 
   return (
     <m.div
-      variants={prefersReducedMotion ? undefined : headerStaggerContainer}
-      initial={prefersReducedMotion ? undefined : "hidden"}
-      whileInView={prefersReducedMotion ? undefined : "visible"}
+      {...containerMotion}
       viewport={viewportSettings.once}
       className={cn(
         "relative flex w-full items-end justify-between border-b border-border pb-4",
@@ -62,19 +63,19 @@ function AnimatedSectionHeader({
       )}
     >
       <m.span
-        variants={prefersReducedMotion ? undefined : fadeUpItem}
+        variants={fadeUp}
         className="font-caslon text-3xl italic text-foreground md:text-4xl"
       >
         {number}
       </m.span>
       <m.span
-        variants={prefersReducedMotion ? undefined : fadeUpItem}
+        variants={fadeUp}
         className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm"
       >
         {title}
       </m.span>
       <m.div
-        variants={prefersReducedMotion ? undefined : underlineReveal}
+        variants={underline}
         className="bg-gradient-accent absolute bottom-0 left-0 right-0 h-px origin-left"
         style={{ boxShadow: "0 0 8px var(--accent-shadow)" }}
       />

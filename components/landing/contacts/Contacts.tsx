@@ -10,11 +10,12 @@ import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import type { ContactLinkData } from "@/lib/types/contacts";
 import {
   m,
-  useReducedMotion,
   viewportSettings,
   staggerContainer,
   fadeUpItem,
   fadeUpItemLarge,
+  useInViewReveal,
+  useMotionSafe,
 } from "@/components/motion";
 
 interface ContactsProps {
@@ -22,7 +23,11 @@ interface ContactsProps {
 }
 
 const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const headingMotion = useInViewReveal(staggerContainer);
+  const dockMotion = useInViewReveal(staggerContainer);
+  const fadeUp = useMotionSafe(fadeUpItem);
+  const fadeUpLarge = useMotionSafe(fadeUpItemLarge);
+
   const dockLinks = resolveContactLinks(contacts).map((contact) => {
     const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
     return {
@@ -40,21 +45,19 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
 
       <div className="flex min-h-[50vh] w-full flex-1 flex-col items-center justify-center">
         <m.div
-          variants={prefersReducedMotion ? undefined : staggerContainer}
-          initial={prefersReducedMotion ? undefined : "hidden"}
-          whileInView={prefersReducedMotion ? undefined : "visible"}
+          {...headingMotion}
           viewport={viewportSettings.onceDeep}
           className="relative mb-12 flex flex-col items-center text-center"
         >
           <m.span
-            variants={prefersReducedMotion ? undefined : fadeUpItem}
+            variants={fadeUp}
             className="mb-6 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:text-xs"
           >
             Get In Touch
           </m.span>
 
           <m.h2
-            variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
+            variants={fadeUpLarge}
             className="select-none font-caslon text-6xl italic leading-tight text-foreground md:text-7xl lg:text-8xl"
           >
             Let&apos;s Talk
@@ -62,21 +65,19 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
         </m.div>
 
         <m.div
-          variants={prefersReducedMotion ? undefined : staggerContainer}
-          initial={prefersReducedMotion ? undefined : "hidden"}
-          whileInView={prefersReducedMotion ? undefined : "visible"}
+          {...dockMotion}
           viewport={viewportSettings.once}
           className="flex flex-col items-center gap-8"
         >
           <m.p
-            variants={prefersReducedMotion ? undefined : fadeUpItemLarge}
+            variants={fadeUpLarge}
             className="max-w-md px-4 text-center font-sans text-base font-light text-muted-foreground md:text-xl"
           >
             Have a cool idea? Want to geek out over AI, or just want to say hi?
             Drop a line.
           </m.p>
 
-          <m.div variants={prefersReducedMotion ? undefined : fadeUpItemLarge}>
+          <m.div variants={fadeUpLarge}>
             <Dock className="mx-auto">
               {dockLinks.map(({ href, ariaLabel, icon }) => (
                 <DockIconLink

@@ -4,7 +4,7 @@ import {
   AnimatePresence,
   m,
   springConfigs,
-  useReducedMotion,
+  useMotionSafe,
 } from "@/components/motion";
 
 interface BlogsHeroProps {
@@ -22,7 +22,10 @@ const tabCaptions: Record<"blog" | "certifications", string> = {
 };
 
 export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
-  const prefersReducedMotion = useReducedMotion();
+  const titleExit = useMotionSafe({ opacity: 0, x: 24 });
+  const captionExit = useMotionSafe({ opacity: 0, y: 6 });
+  const titleInitial = useMotionSafe({ opacity: 0, x: -24 });
+  const captionInitial = useMotionSafe({ opacity: 0, y: 12 });
 
   return (
     <header className="mb-8 w-full md:mb-10">
@@ -33,12 +36,10 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
       <AnimatePresence mode="wait">
         <m.h1
           key={activeTab}
-          initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }}
+          initial={titleInitial ?? false}
           animate={{ opacity: 1, x: 0 }}
-          exit={prefersReducedMotion ? undefined : { opacity: 0, x: 24 }}
-          transition={
-            prefersReducedMotion ? { duration: 0 } : springConfigs.snappy
-          }
+          exit={titleExit}
+          transition={titleInitial ? springConfigs.snappy : { duration: 0 }}
           className="mb-4 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
         >
           {tabTitles[activeTab]}
@@ -48,13 +49,13 @@ export const BlogsHero = ({ activeTab }: BlogsHeroProps) => {
       <AnimatePresence mode="wait">
         <m.p
           key={activeTab}
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          initial={captionInitial ?? false}
           animate={{ opacity: 1, y: 0 }}
-          exit={prefersReducedMotion ? undefined : { opacity: 0, y: 6 }}
+          exit={captionExit}
           transition={
-            prefersReducedMotion
-              ? { duration: 0 }
-              : { ...springConfigs.snappy, delay: 0.05 }
+            captionInitial
+              ? { ...springConfigs.snappy, delay: 0.05 }
+              : { duration: 0 }
           }
           className="max-w-xl font-sans text-base leading-relaxed text-muted-foreground md:text-lg"
         >
