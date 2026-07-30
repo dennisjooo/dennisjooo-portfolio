@@ -49,6 +49,7 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     filteredProjects,
     filteredWorkExperience,
     runCommand,
+    runSecretCommand,
     copyUrl,
     router,
   } = useCommandPalette();
@@ -148,7 +149,7 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
 
         <ThemeGroup onSelect={runCommand} />
 
-        <SecretGroup secrets={matchedSecrets} onSelect={runCommand} />
+        <SecretGroup secrets={matchedSecrets} onSelect={runSecretCommand} />
 
         {showEasterEggProgress ? <EasterEggProgressGroup open={open} /> : null}
       </CommandList>

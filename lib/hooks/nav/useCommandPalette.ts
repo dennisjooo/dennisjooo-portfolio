@@ -14,6 +14,7 @@ import {
   type SearchOptions,
 } from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
+import { EASTER_EGG_FOUND_EVENT } from "@/lib/easter-eggs/constants";
 import { matchSecrets } from "@/lib/easter-eggs/matchSecrets";
 import { PALETTE_SECRETS } from "@/lib/easter-eggs/secrets";
 import type { SecretDefinition } from "@/lib/easter-eggs/types";
@@ -49,6 +50,7 @@ export interface UseCommandPaletteReturn {
 
   // Actions
   runCommand: (command: () => unknown) => void;
+  runSecretCommand: (command: () => unknown) => void;
   copyUrl: () => void;
   router: ReturnType<typeof useRouter>;
 }
@@ -129,6 +131,19 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     command();
   }, []);
 
+  const runSecretCommand = React.useCallback((command: () => unknown) => {
+    setSearch("");
+    setOpen(false);
+    command();
+  }, []);
+
+  React.useEffect(() => {
+    const onSecretFound = () => setSearch("");
+    window.addEventListener(EASTER_EGG_FOUND_EVENT, onSecretFound);
+    return () =>
+      window.removeEventListener(EASTER_EGG_FOUND_EVENT, onSecretFound);
+  }, []);
+
   const matchedSecrets = React.useMemo(
     () => matchSecrets(search, PALETTE_SECRETS),
     [search],
@@ -197,6 +212,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
     filteredProjects,
     filteredWorkExperience,
     runCommand,
+    runSecretCommand,
     copyUrl,
     router,
   };
