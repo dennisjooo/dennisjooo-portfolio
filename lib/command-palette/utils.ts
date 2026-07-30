@@ -1,13 +1,13 @@
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import {
-  Home,
+  Undo2,
   User,
-  Briefcase,
-  FolderGit2,
-  Cpu,
-  Mail,
-  Globe,
-  FileText,
+  Landmark,
+  Folder,
+  Zap,
+  AtSign,
+  ArrowUpRight,
+  Feather,
 } from "lucide-react";
 
 export interface ProcessedProject {
@@ -158,20 +158,20 @@ export function highlightSearchTerm(
 export function getIconForId(id: string) {
   switch (id) {
     case "home":
-      return Home;
+      return Undo2;
     case "about":
       return User;
     case "work":
-      return Briefcase;
+      return Landmark;
     case "projects":
-      return FolderGit2;
+      return Folder;
     case "skills":
-      return Cpu;
+      return Zap;
     case "contact":
-      return Mail;
+      return AtSign;
     case "blogs":
-      return FileText;
+      return Feather;
     default:
-      return Globe;
+      return ArrowUpRight;
   }
 }

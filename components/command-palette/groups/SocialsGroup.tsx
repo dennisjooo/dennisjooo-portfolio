@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -31,7 +32,7 @@ export function SocialsGroup({ contacts, onSelect }: SocialsGroupProps) {
               onSelect={() => onSelect(() => window.open(link.href, "_blank"))}
             >
               <Icon className="h-4 w-4" />
-              <span className="font-medium">{link.ariaLabel}</span>
+              <CommandItemLabel>{link.ariaLabel}</CommandItemLabel>
               <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/70" />
             </CommandItem>
           );

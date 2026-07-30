@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { NavLogo } from "./NavLogo";
 import { BurgerButton } from "./BurgerButton";
-import { DesktopMenu } from "./DesktopMenu";
 import { CommandMenuTrigger } from "./CommandMenuTrigger";
 import { MobileMenu } from "./MobileMenu";
 import { ThemeToggle } from "@/components/theme";
@@ -34,7 +34,6 @@ export const NavbarClient = () => {
     isHeroSection,
     scrolled,
     isMenuOpen,
-    pathname,
   });
 
   const isGlass = bgClass === "glass-panel";
@@ -53,26 +52,19 @@ export const NavbarClient = () => {
       className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-all duration-200 ease-in-out ${navWidth}`}
     >
       <div className={navbarContainerClasses}>
-        <div className="flex min-h-[3rem] items-center justify-between px-4 py-3">
-          <BurgerButton
-            isMenuOpen={isMenuOpen}
-            onToggle={(nextIsMenuOpen) => setIsMenuOpen(nextIsMenuOpen)}
-            textColorClass={textColorClass}
-          />
-          <DesktopMenu
-            navItems={navItems.filter((item) =>
-              ["home", "about", "projects", "blogs"].includes(item.id),
-            )}
-            scrolled={scrolled}
-            onNavigate={handleNavigation}
-            textColorClass={textColorClass}
-          />
-          <CommandMenuTrigger
-            textColorClass={textColorClass}
-            scrolled={scrolled}
-          />
-          <div className="ml-2">
+        <div className="flex min-h-[3rem] items-center gap-2 px-4 py-3">
+          <NavLogo onNavigate={handleNavigation} />
+          <div className="ml-auto flex items-center gap-2">
+            <CommandMenuTrigger
+              textColorClass={textColorClass}
+              scrolled={scrolled}
+            />
             <ThemeToggle textColorClass={textColorClass} scrolled={scrolled} />
+            <BurgerButton
+              isMenuOpen={isMenuOpen}
+              onToggle={(nextIsMenuOpen) => setIsMenuOpen(nextIsMenuOpen)}
+              textColorClass={textColorClass}
+            />
           </div>
         </div>
         <MobileMenu

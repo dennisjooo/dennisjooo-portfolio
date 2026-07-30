@@ -1,6 +1,7 @@
 "use client";
 
 import { Sparkles } from "lucide-react";
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -38,7 +39,9 @@ export function SecretGroup({ secrets, onSelect }: SecretGroupProps) {
               }
             >
               <Icon className="h-4 w-4 text-accent" />
-              <span className="text-display font-medium">{secret.label}</span>
+              <CommandItemLabel className="text-display">
+                {secret.label}
+              </CommandItemLabel>
               <Sparkles className="ml-auto h-3 w-3 animate-pulse text-accent" />
             </CommandItem>
           );

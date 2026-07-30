@@ -1,5 +1,6 @@
 "use client";
 
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -44,7 +45,7 @@ export function NavigationGroup({
               }
             >
               <Icon className="h-4 w-4" />
-              <span className="font-medium">{item.label}</span>
+              <CommandItemLabel>{item.label}</CommandItemLabel>
               {item.href && (
                 <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
                   {item.href}

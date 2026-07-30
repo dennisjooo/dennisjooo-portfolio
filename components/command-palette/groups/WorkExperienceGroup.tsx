@@ -1,6 +1,7 @@
 "use client";
 
 import { Briefcase } from "lucide-react";
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -46,7 +47,9 @@ export function WorkExperienceGroup({
             <Briefcase className="h-4 w-4 shrink-0" />
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
               <div className="flex items-center gap-2">
-                <span className="truncate font-medium">{work.title}</span>
+                <CommandItemLabel className="truncate">
+                  {work.title}
+                </CommandItemLabel>
               </div>
               <span className="truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
                 {work.company} / {work.date}

@@ -1,6 +1,7 @@
 "use client";
 
 import { FileText } from "lucide-react";
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -46,7 +47,9 @@ export function ProjectsGroup({
             <FileText className="h-4 w-4 shrink-0" />
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
               <div className="flex items-center gap-2">
-                <span className="truncate font-medium">{project.title}</span>
+                <CommandItemLabel className="truncate">
+                  {project.title}
+                </CommandItemLabel>
                 <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground/80">
                   {project.type}
                 </span>

@@ -102,7 +102,6 @@ interface NavbarStylesParams {
   isHeroSection: boolean;
   scrolled: boolean;
   isMenuOpen: boolean;
-  pathname: string;
 }
 
 interface NavbarStyles {
@@ -115,7 +114,6 @@ export const useNavbarStyles = ({
   isHeroSection,
   scrolled,
   isMenuOpen,
-  pathname,
 }: NavbarStylesParams): NavbarStyles =>
   useMemo(() => {
     const bgClass =
@@ -123,12 +121,9 @@ export const useNavbarStyles = ({
         ? "glass-panel"
         : "bg-transparent";
 
-    const navWidth =
-      isHeroSection && !scrolled && pathname === "/"
-        ? "w-11/12 lg:w-5/6"
-        : "w-11/12 lg:w-3/4 xl:w-2/3";
+    const navWidth = "w-11/12 md:w-auto md:min-w-[540px]";
 
     const textColorClass = "text-foreground";
 
     return { bgClass, navWidth, textColorClass };
-  }, [isHeroSection, isMenuOpen, pathname, scrolled]);
+  }, [isHeroSection, isMenuOpen, scrolled]);

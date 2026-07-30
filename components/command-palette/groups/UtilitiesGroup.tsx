@@ -1,6 +1,7 @@
 "use client";
 
 import { Copy, Check, FileText, Map } from "lucide-react";
+import { CommandItemLabel } from "../CommandItemLabel";
 import {
   CommandGroup,
   CommandItem,
@@ -42,9 +43,9 @@ export function UtilitiesGroup({
           ) : (
             <Copy className="h-4 w-4" />
           )}
-          <span className="font-medium">
+          <CommandItemLabel>
             {copied ? "Copied!" : "Copy Current URL"}
-          </span>
+          </CommandItemLabel>
         </CommandItem>
         {siteFiles.map((file) => {
           const Icon = file.icon;
@@ -58,7 +59,7 @@ export function UtilitiesGroup({
               }
             >
               <Icon className="h-4 w-4" />
-              <span className="font-medium">{file.label}</span>
+              <CommandItemLabel>{file.label}</CommandItemLabel>
               <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
                 {file.path}
               </span>
