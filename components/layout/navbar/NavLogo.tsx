@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Crown } from "lucide-react";
 import {
   EASTER_EGG_FOUND_EVENT,
+  EASTER_EGG_RESET_EVENT,
   NAV_LOGO_SECRET_ID,
 } from "@/lib/easter-eggs/constants";
 import { getFoundSecretIds, markSecretFound } from "@/lib/easter-eggs/unlock";
@@ -33,8 +34,17 @@ export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
       if (id === NAV_LOGO_SECRET_ID) setHasCrown(true);
     };
 
+    const onReset = () => {
+      setHasCrown(false);
+      setAnimateCrown(false);
+    };
+
     window.addEventListener(EASTER_EGG_FOUND_EVENT, onFound);
-    return () => window.removeEventListener(EASTER_EGG_FOUND_EVENT, onFound);
+    window.addEventListener(EASTER_EGG_RESET_EVENT, onReset);
+    return () => {
+      window.removeEventListener(EASTER_EGG_FOUND_EVENT, onFound);
+      window.removeEventListener(EASTER_EGG_RESET_EVENT, onReset);
+    };
   }, []);
 
   const unlockCrown = useCallback(() => {

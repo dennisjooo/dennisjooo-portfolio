@@ -10,6 +10,8 @@ const EASTER_EGG_QUERY_TERMS = [
   "scavenger",
   "unlock",
   "hidden",
+  "reset",
+  "restart",
 ];
 
 export function isEasterEggSearch(search: string): boolean {

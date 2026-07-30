@@ -2,6 +2,7 @@ import {
   EASTER_EGG_STORAGE_KEY,
   EASTER_EGG_FOUND_EVENT,
   EASTER_EGG_COMPLETE_EVENT,
+  EASTER_EGG_RESET_EVENT,
   HIDDEN_SECRET_IDS,
 } from "./constants";
 import { PALETTE_SECRETS } from "./secrets";
@@ -35,6 +36,13 @@ export function getFoundSecretCount(): number {
 
 export function getFoundSecretIds(): string[] {
   return readFoundIds();
+}
+
+export function resetFoundSecrets(): void {
+  if (typeof window === "undefined") return;
+
+  writeFoundIds([]);
+  window.dispatchEvent(new CustomEvent(EASTER_EGG_RESET_EVENT));
 }
 
 export function markSecretFound(id: string): void {

@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { getEasterEggHint } from "@/lib/easter-eggs/hints";
-import { EASTER_EGG_FOUND_EVENT } from "@/lib/easter-eggs/constants";
+import {
+  EASTER_EGG_FOUND_EVENT,
+  EASTER_EGG_RESET_EVENT,
+} from "@/lib/easter-eggs/constants";
 import {
   getFoundSecretIds,
   getTotalSecretCount,
@@ -36,9 +39,13 @@ export function useEasterEggProgress(isOpen: boolean) {
   }, [isOpen, refresh]);
 
   useEffect(() => {
-    const onFound = () => refresh();
-    window.addEventListener(EASTER_EGG_FOUND_EVENT, onFound);
-    return () => window.removeEventListener(EASTER_EGG_FOUND_EVENT, onFound);
+    const onProgressChange = () => refresh();
+    window.addEventListener(EASTER_EGG_FOUND_EVENT, onProgressChange);
+    window.addEventListener(EASTER_EGG_RESET_EVENT, onProgressChange);
+    return () => {
+      window.removeEventListener(EASTER_EGG_FOUND_EVENT, onProgressChange);
+      window.removeEventListener(EASTER_EGG_RESET_EVENT, onProgressChange);
+    };
   }, [refresh]);
 
   return progress;

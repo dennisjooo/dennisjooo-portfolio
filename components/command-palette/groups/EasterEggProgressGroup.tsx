@@ -7,6 +7,8 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { useEasterEggProgress } from "@/lib/hooks/domain/useEasterEggProgress";
+import { resetFoundSecrets } from "@/lib/easter-eggs/unlock";
+import { siteToast } from "@/lib/ui/siteToast";
 
 interface EasterEggProgressGroupProps {
   open: boolean;
@@ -26,11 +28,29 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
         className="[&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-1.5"
       >
         <CommandItem
-          value="easter-egg-progress scavenger hunt secrets hints"
+          value={
+            isComplete
+              ? "easter-egg-progress reset secrets hunt restart scavenger"
+              : "easter-egg-progress scavenger hunt secrets hints"
+          }
           forceMount
-          disabled
+          disabled={!isComplete}
           aria-live="polite"
-          className="cursor-default select-none flex-col items-stretch gap-1.5 !py-1.5 data-[disabled=true]:pointer-events-none data-[selected=true]:bg-transparent data-[disabled=true]:opacity-100 hover:bg-transparent"
+          onSelect={
+            isComplete
+              ? () => {
+                  resetFoundSecrets();
+                  siteToast.playful("The hunt begins again.", {
+                    label: "RESET",
+                  });
+                }
+              : undefined
+          }
+          className={
+            isComplete
+              ? "flex-col items-stretch gap-1.5 !py-1.5"
+              : "cursor-default select-none flex-col items-stretch gap-1.5 !py-1.5 data-[disabled=true]:pointer-events-none data-[selected=true]:bg-transparent data-[disabled=true]:opacity-100 hover:bg-transparent"
+          }
         >
           <div className="flex w-full items-center gap-2">
             <div className="relative h-1 min-w-0 flex-1 overflow-hidden rounded-full bg-border/60">
@@ -49,7 +69,7 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
                 Congratulations — you found them all.
               </p>
               <p className="font-mono text-[11px] leading-snug text-muted-foreground">
-                Absolute legend. The hunt is complete.
+                Absolute legend. Click to reset the hunt.
               </p>
             </div>
           ) : (
