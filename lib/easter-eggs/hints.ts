@@ -1,4 +1,8 @@
-import { FOOTER_SECRET_ID } from "./constants";
+import {
+  FOOTER_SECRET_ID,
+  HIDDEN_SECRET_IDS,
+  NAV_LOGO_SECRET_ID,
+} from "./constants";
 import { PALETTE_SECRETS } from "./secrets";
 
 const SECRET_HINTS: Record<string, string> = {
@@ -10,6 +14,7 @@ const SECRET_HINTS: Record<string, string> = {
   hire: "Search hire, available, or work",
   build: "Try version, build, or commit",
   [FOOTER_SECRET_ID]: "Shift+click the footer copyright",
+  [NAV_LOGO_SECRET_ID]: "Triple-click the navbar logo",
 };
 
 const GENERAL_HINTS = [
@@ -19,7 +24,7 @@ const GENERAL_HINTS = [
 ];
 
 export function getEasterEggHint(foundIds: string[]): string {
-  const allIds = [...PALETTE_SECRETS.map((s) => s.id), FOOTER_SECRET_ID];
+  const allIds = [...PALETTE_SECRETS.map((s) => s.id), ...HIDDEN_SECRET_IDS];
   const unfound = allIds.filter((id) => !foundIds.includes(id));
 
   if (unfound.length === 0) {

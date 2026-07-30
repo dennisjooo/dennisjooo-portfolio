@@ -1,4 +1,8 @@
-import { EASTER_EGG_STORAGE_KEY, EASTER_EGG_FOUND_EVENT } from "./constants";
+import {
+  EASTER_EGG_STORAGE_KEY,
+  EASTER_EGG_FOUND_EVENT,
+  HIDDEN_SECRET_IDS,
+} from "./constants";
 import { PALETTE_SECRETS } from "./secrets";
 
 function readFoundIds(): string[] {
@@ -21,7 +25,7 @@ function writeFoundIds(ids: string[]): void {
 }
 
 export function getTotalSecretCount(): number {
-  return PALETTE_SECRETS.length + 1;
+  return PALETTE_SECRETS.length + HIDDEN_SECRET_IDS.length;
 }
 
 export function getFoundSecretCount(): number {
