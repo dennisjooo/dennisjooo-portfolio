@@ -1,7 +1,5 @@
 "use client";
 
-import { BsList, BsX } from "react-icons/bs";
-
 interface BurgerButtonProps {
   isMenuOpen: boolean;
   onToggle: (isOpen: boolean) => void;
@@ -14,11 +12,11 @@ export const BurgerButton = ({
   textColorClass,
 }: BurgerButtonProps) => (
   <button
-    className={`transition-transform duration-200 md:hidden ${textColorClass}`}
+    className={`rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors duration-200 hover:bg-black/5 dark:hover:bg-white/10 md:hidden ${textColorClass}`}
     onClick={() => onToggle(!isMenuOpen)}
-    aria-label="Toggle menu"
+    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
     aria-expanded={isMenuOpen}
   >
-    {isMenuOpen ? <BsX size={24} /> : <BsList size={24} />}
+    {isMenuOpen ? "Close" : "Menu"}
   </button>
 );

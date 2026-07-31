@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme";
 import { NavItem } from "@/lib/content/navbarContent";
 
 interface MobileMenuProps {
@@ -74,6 +75,27 @@ export const MobileMenu = ({
               );
             })}
           </ul>
+
+          <div
+            className={`${ITEM_ANIMATION_BASE} my-3 h-px bg-border ${
+              isMenuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-2 opacity-0"
+            }`}
+          />
+
+          <div
+            className={`${ITEM_ANIMATION_BASE} flex items-center justify-between px-4 py-2 ${
+              isMenuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-2 opacity-0"
+            }`}
+          >
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+              Theme
+            </span>
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
     </div>

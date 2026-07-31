@@ -62,7 +62,11 @@ export const NavbarClient = () => {
               textColorClass={textColorClass}
               scrolled={scrolled}
             />
-            <ThemeToggle textColorClass={textColorClass} scrolled={scrolled} />
+            <ThemeToggle
+              className="hidden md:flex"
+              textColorClass={textColorClass}
+              scrolled={scrolled}
+            />
             <BurgerButton
               isMenuOpen={isMenuOpen}
               onToggle={(nextIsMenuOpen) => setIsMenuOpen(nextIsMenuOpen)}
