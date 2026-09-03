@@ -1,25 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import {
-  ArrowPathIcon,
-  PlusIcon,
-  TrashIcon,
-  PhotoIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowPathIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import type { WorkExperience } from "@/lib/db";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
 import { FormField } from "@/components/admin/shared/FormField";
-import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
-import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import {
   useAdminEntityForm,
   useAdminSubmitHandler,
 } from "@/components/admin/hooks";
 import { cn } from "@/lib/utils";
+import { ResponsibilityList } from "./ResponsibilityList";
 
 interface WorkExperienceFormProps {
   initialData?: WorkExperience;
@@ -48,8 +41,6 @@ export default function WorkExperienceForm({
     order: initialData?.order ?? 0,
   });
   const { submitting, handleFormSubmit } = useAdminSubmitHandler(onSubmit);
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   const { uploading, upload } = useImageUpload({
     folder: "work",
@@ -88,40 +79,13 @@ export default function WorkExperienceForm({
     });
   };
 
-  const handleDragStart = (event: React.DragEvent, index: number) => {
-    setDragIndex(index);
-    const row = (event.target as HTMLElement).closest(
-      "[data-responsibility-row]",
-    );
-    if (row && event.dataTransfer) {
-      event.dataTransfer.setDragImage(row, 0, 0);
-      event.dataTransfer.effectAllowed = "move";
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent, index: number) => {
-    if (dragIndex === null) return;
-    event.preventDefault();
-    setDragOverIndex(index);
-  };
-
-  const handleDrop = (index: number) => {
-    if (dragIndex === null) return;
-    if (dragIndex !== index) {
-      setFormData((prev) => {
-        const next = [...prev.responsibilities];
-        const [moved] = next.splice(dragIndex, 1);
-        next.splice(index, 0, moved);
-        return { ...prev, responsibilities: next };
-      });
-    }
-    setDragIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragEnd = () => {
-    setDragIndex(null);
-    setDragOverIndex(null);
+  const reorderResponsibilities = (fromIndex: number, toIndex: number) => {
+    setFormData((prev) => {
+      const next = [...prev.responsibilities];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return { ...prev, responsibilities: next };
+    });
   };
 
   return (
@@ -241,72 +205,13 @@ export default function WorkExperienceForm({
         </FormField>
       </div>
 
-      <div>
-        <div className="mb-1 flex items-center justify-between">
-          <label className={formStyles.label}>Responsibilities</label>
-          <button
-            type="button"
-            onClick={addResponsibility}
-            className="inline-flex items-center gap-1 text-xs text-accent transition-colors hover:text-accent/80"
-          >
-            <PlusIcon className="h-4 w-4" />
-            Add Item
-          </button>
-        </div>
-        {formData.responsibilities.length > 1 && (
-          <p className="mb-3 text-xs text-muted-foreground">
-            Drag the grip to reorder items.
-          </p>
-        )}
-        <div className="space-y-3">
-          {formData.responsibilities.map((resp, index) => {
-            const isDragging = dragIndex === index;
-            const isDragOver =
-              dragOverIndex === index &&
-              dragIndex !== null &&
-              dragIndex !== index;
-
-            return (
-              <div
-                key={index}
-                data-responsibility-row
-                className={cn(
-                  "flex items-stretch gap-2 rounded-lg transition-all duration-200",
-                  isDragging && "bg-muted/50 opacity-50",
-                  isDragOver && "ring-2 ring-primary",
-                )}
-                onDragOver={(e) => handleDragOver(e, index)}
-                onDrop={() => handleDrop(index)}
-                onDragEnd={handleDragEnd}
-              >
-                {formData.responsibilities.length > 1 && (
-                  <DragGripHandle
-                    onDragStart={(e) => handleDragStart(e, index)}
-                  />
-                )}
-                <span className="w-6 shrink-0 self-center text-right font-mono text-sm text-muted-foreground">
-                  {index + 1}.
-                </span>
-                <AutoResizeTextarea
-                  className={cn(formStyles.input, "min-h-[4.5rem]")}
-                  placeholder="Describe a responsibility or achievement..."
-                  value={resp}
-                  onValueChange={(value) => updateResponsibility(index, value)}
-                />
-                {formData.responsibilities.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeResponsibility(index)}
-                    className="shrink-0 self-center p-2 text-muted-foreground transition-colors hover:text-destructive"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <ResponsibilityList
+        responsibilities={formData.responsibilities}
+        onAdd={addResponsibility}
+        onRemove={removeResponsibility}
+        onUpdate={updateResponsibility}
+        onReorder={reorderResponsibilities}
+      />
 
       <FormActions
         loading={submitting}
