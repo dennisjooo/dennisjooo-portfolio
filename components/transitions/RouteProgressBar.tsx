@@ -47,12 +47,12 @@ export function RouteProgressBar() {
   if (prefersReducedMotion || !visible) return null;
 
   return (
-    <div className="pointer-events-none fixed left-0 right-0 top-0 z-[9999] h-[2px]">
+    <div className="pointer-events-none fixed left-0 right-0 top-0 z-[9999] h-0.5">
       <m.div
         className="h-full overflow-hidden"
         style={{ width: `${progress}%` }}
       >
-        <div className="h-full w-full bg-gradient-to-r from-foreground from-90% to-transparent" />
+        <div className="progress-bar-fill" />
       </m.div>
     </div>
   );

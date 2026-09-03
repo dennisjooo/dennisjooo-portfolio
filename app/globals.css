@@ -40,6 +40,30 @@
     @apply text-foreground;
   }
 
+  .progress-bar-fill {
+    @apply h-full w-full;
+    background: linear-gradient(
+      to right,
+      hsl(var(--foreground)) 0%,
+      hsl(var(--foreground)) 90%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 18%,
+      black 82%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 18%,
+      black 82%,
+      transparent
+    );
+  }
+
   .bg-gradient-accent {
     background: linear-gradient(
       to right,
