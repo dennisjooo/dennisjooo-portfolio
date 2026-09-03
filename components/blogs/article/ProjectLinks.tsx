@@ -48,7 +48,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
       rel="noopener noreferrer"
     >
       <div className="relative">
-        <div className="bg-gradient-accent absolute -inset-px rounded-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute -inset-px rounded-lg bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         <span className="relative inline-flex items-center gap-3 rounded-lg border border-border bg-card px-5 py-3 transition-colors duration-500">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-colors duration-300 group-hover:bg-accent/10">

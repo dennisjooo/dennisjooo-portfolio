@@ -9,13 +9,7 @@ export default function ReadingProgress() {
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 h-1 bg-muted/30">
-      <m.div
-        className="bg-gradient-accent h-full origin-left"
-        style={{
-          scaleX,
-          boxShadow: "0 0 10px var(--accent-shadow)",
-        }}
-      />
+      <m.div className="h-full origin-left bg-foreground" style={{ scaleX }} />
     </div>
   );
 }

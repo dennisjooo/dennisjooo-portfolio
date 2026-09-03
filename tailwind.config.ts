@@ -69,6 +69,7 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        "accent-border": "var(--accent-border)",
       },
     },
   },

@@ -11,7 +11,7 @@ export const ViewAllButton = () => {
         prefetch
         className="group relative inline-flex cursor-pointer items-center gap-4 rounded-xl border border-border bg-card px-7 py-3 transition-all duration-300 hover:border-accent/40"
       >
-        <div className="bg-gradient-accent absolute -inset-px -z-10 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute -inset-px -z-10 rounded-xl bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors duration-300 group-hover:text-accent">
           All Projects

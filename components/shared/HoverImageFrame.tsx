@@ -14,7 +14,7 @@ const roundedClasses = {
   "2xl": "rounded-2xl",
 } as const;
 
-/** Gradient border hover frame matching featured project cards (no blur glow). */
+/** Solid border hover frame matching featured project cards. */
 export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
   function HoverImageFrame(
     { children, className, frameClassName, rounded = "xl", ...frameProps },
@@ -26,7 +26,7 @@ export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
       <div className={cn("group relative", className)}>
         <div
           className={cn(
-            "bg-gradient-accent absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100",
+            "absolute -inset-px bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100",
             roundedClass,
           )}
         />

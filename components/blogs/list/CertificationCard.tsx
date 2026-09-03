@@ -27,7 +27,7 @@ export const CertificationCard = ({
       viewport={{ once: true, margin: "-50px" }}
     >
       <div className="relative h-full">
-        <div className="bg-gradient-accent absolute -inset-px rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute -inset-px rounded-xl bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         <article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 group-hover:border-foreground/30">
           <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-3 md:px-5">

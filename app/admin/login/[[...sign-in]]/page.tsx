@@ -20,8 +20,7 @@ const SignIn = dynamic(
 export default function AdminLoginPage() {
   return (
     <div className="bg-noise relative flex min-h-screen items-center justify-center bg-background text-foreground">
-      {/* Background gradient effect */}
-      <div className="bg-gradient-primary absolute inset-0 opacity-30" />
+      <div className="absolute inset-0 bg-muted/30" />
 
       <div className="relative z-10 mx-auto w-full max-w-md px-4">
         {/* Header */}
