@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import type { Program } from "ogl";
 import { mountGrainientScene, updateGrainientColors } from "./grainientScene";
 
+import type { GrainientUniforms } from "./grainientTypes";
+
 export type { GrainientControl, GrainientUniforms } from "./grainientTypes";
 
 export function useGrainientRenderer(
