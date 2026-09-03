@@ -1,15 +1,11 @@
-import { useState, useCallback, useRef, useMemo } from "react";
-import {
-  DocumentPlusIcon,
-  EyeIcon,
-  PencilSquareIcon,
-  ViewColumnsIcon,
-} from "@heroicons/react/24/outline";
+import { useState, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { MarkdownPreview } from "./MarkdownPreview";
 import { MarkdownToolbar } from "./MarkdownToolbar";
-import { applyFormatting } from "./markdownFormatting";
+import { MarkdownEditorModeTabs } from "./MarkdownEditorModeTabs";
+import { useMarkdownEditorScrollSync } from "./useMarkdownEditorScrollSync";
+import { useMarkdownEditorKeyboard } from "./useMarkdownEditorKeyboard";
 
 export type EditorMode = "write" | "preview" | "split";
 
@@ -36,44 +32,15 @@ export function MarkdownEditor({
 }: MarkdownEditorProps) {
   const [dragActive, setDragActive] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
-  const isScrollSyncing = useRef(false);
 
   const wordCount = useMemo(() => {
     if (!content.trim()) return 0;
     return content.trim().split(/\s+/).length;
   }, [content]);
 
-  const handleEditorScroll = useCallback(() => {
-    if (editorMode !== "split" || isScrollSyncing.current) return;
-    const textarea = textareaRef.current;
-    const preview = previewRef.current;
-    if (!textarea || !preview) return;
-
-    isScrollSyncing.current = true;
-    const scrollRatio =
-      textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight || 1);
-    preview.scrollTop =
-      scrollRatio * (preview.scrollHeight - preview.clientHeight);
-    requestAnimationFrame(() => {
-      isScrollSyncing.current = false;
-    });
-  }, [editorMode, textareaRef]);
-
-  const handlePreviewScroll = useCallback(() => {
-    if (editorMode !== "split" || isScrollSyncing.current) return;
-    const textarea = textareaRef.current;
-    const preview = previewRef.current;
-    if (!textarea || !preview) return;
-
-    isScrollSyncing.current = true;
-    const scrollRatio =
-      preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
-    textarea.scrollTop =
-      scrollRatio * (textarea.scrollHeight - textarea.clientHeight);
-    requestAnimationFrame(() => {
-      isScrollSyncing.current = false;
-    });
-  }, [editorMode, textareaRef]);
+  const { handleEditorScroll, handlePreviewScroll } =
+    useMarkdownEditorScrollSync(editorMode, textareaRef, previewRef);
+  const handleKeyDown = useMarkdownEditorKeyboard(onContentChange);
 
   const handlePaste = (e: React.ClipboardEvent) => {
     if (!canUploadImages) return;
@@ -121,144 +88,14 @@ export function MarkdownEditor({
     }
   };
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      const textarea = e.currentTarget;
-
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const { selectionStart, selectionEnd, value } = textarea;
-
-        if (e.shiftKey) {
-          const lineStart = value.lastIndexOf("\n", selectionStart - 1) + 1;
-          const linePrefix = value.substring(lineStart, lineStart + 2);
-          const spacesToRemove =
-            linePrefix === "  " ? 2 : linePrefix.startsWith(" ") ? 1 : 0;
-          if (spacesToRemove > 0) {
-            const newText =
-              value.substring(0, lineStart) +
-              value.substring(lineStart + spacesToRemove);
-            onContentChange(newText);
-            setTimeout(() => {
-              textarea.focus();
-              textarea.setSelectionRange(
-                selectionStart - spacesToRemove,
-                selectionEnd - spacesToRemove,
-              );
-            }, 0);
-          }
-        } else {
-          const newText =
-            value.substring(0, selectionStart) +
-            "  " +
-            value.substring(selectionEnd);
-          onContentChange(newText);
-          setTimeout(() => {
-            textarea.focus();
-            textarea.setSelectionRange(selectionStart + 2, selectionStart + 2);
-          }, 0);
-        }
-        return;
-      }
-
-      if ((e.ctrlKey || e.metaKey) && !e.altKey) {
-        if (e.shiftKey && e.key.toLowerCase() === "k") {
-          e.preventDefault();
-          applyFormatting(textarea, "codeBlock", onContentChange);
-          return;
-        }
-
-        switch (e.key.toLowerCase()) {
-          case "b":
-            e.preventDefault();
-            applyFormatting(textarea, "bold", onContentChange);
-            break;
-          case "i":
-            e.preventDefault();
-            applyFormatting(textarea, "italic", onContentChange);
-            break;
-          case "k":
-            e.preventDefault();
-            applyFormatting(textarea, "link", onContentChange);
-            break;
-        }
-      }
-    },
-    [onContentChange],
-  );
-
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/30 p-0.5">
-          <button
-            type="button"
-            onClick={() => onEditorModeChange("write")}
-            className={cn(
-              "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
-              editorMode === "write"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            <PencilSquareIcon className="h-3.5 w-3.5" />
-            Write
-          </button>
-          <button
-            type="button"
-            onClick={() => onEditorModeChange("preview")}
-            className={cn(
-              "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
-              editorMode === "preview"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            <EyeIcon className="h-3.5 w-3.5" />
-            Preview
-          </button>
-          <button
-            type="button"
-            onClick={() => onEditorModeChange("split")}
-            className={cn(
-              "hidden items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all md:flex",
-              editorMode === "split"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            <ViewColumnsIcon className="h-3.5 w-3.5" />
-            Split
-          </button>
-        </div>
-
-        {editorMode !== "preview" && (
-          <label
-            title={
-              !canUploadImages
-                ? "Add a title to enable image uploads"
-                : undefined
-            }
-            className={cn(
-              "flex items-center gap-2 text-xs",
-              canUploadImages
-                ? "cursor-pointer text-primary hover:underline"
-                : "pointer-events-none text-muted-foreground/50",
-            )}
-          >
-            <DocumentPlusIcon className="h-4 w-4" />
-            <span>Add Image</span>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleMarkdownImageUpload}
-              disabled={!canUploadImages}
-              className="hidden"
-            />
-          </label>
-        )}
-      </div>
+      <MarkdownEditorModeTabs
+        editorMode={editorMode}
+        onEditorModeChange={onEditorModeChange}
+        canUploadImages={canUploadImages}
+        onImageUpload={handleMarkdownImageUpload}
+      />
 
       {editorMode !== "preview" && (
         <MarkdownToolbar
