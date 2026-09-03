@@ -2,35 +2,25 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import {
-  processedProjects,
-  setProcessedProjects,
-  processedWorkExperience,
-  setProcessedWorkExperience,
-  getContextSnippet,
-  matchesSearch,
-  type ProcessedProject,
-  type ProcessedWorkExperience,
-  type SearchOptions,
-} from "@/lib/command-palette/utils";
 import { useCopyToClipboard } from "@/lib/hooks/domain/useCopyToClipboard";
 import { EASTER_EGG_FOUND_EVENT } from "@/lib/easter-eggs/constants";
 import { matchSecrets } from "@/lib/easter-eggs/matchSecrets";
 import { PALETTE_SECRETS } from "@/lib/easter-eggs/secrets";
 import type { SecretDefinition } from "@/lib/easter-eggs/types";
+import {
+  useCommandPaletteSearchIndex,
+  useCommandPaletteShortcut,
+} from "./useCommandPaletteSearchIndex";
+import {
+  useCommandPaletteFiltering,
+  type FilteredProject,
+  type FilteredWorkExperience,
+  type SearchScope,
+} from "./useCommandPaletteFiltering";
 
-export type SearchScope = "all" | "projects" | "work";
-
-export interface FilteredProject extends ProcessedProject {
-  context: string | null;
-}
-
-export interface FilteredWorkExperience extends ProcessedWorkExperience {
-  context: string | null;
-}
+export type { FilteredProject, FilteredWorkExperience, SearchScope };
 
 export interface UseCommandPaletteReturn {
-  // State
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   search: string;
@@ -42,13 +32,9 @@ export interface UseCommandPaletteReturn {
   setCaseSensitive: React.Dispatch<React.SetStateAction<boolean>>;
   searchScope: SearchScope;
   setSearchScope: React.Dispatch<React.SetStateAction<SearchScope>>;
-
-  // Derived state
   matchedSecrets: SecretDefinition[];
   filteredProjects: FilteredProject[];
   filteredWorkExperience: FilteredWorkExperience[];
-
-  // Actions
   runCommand: (command: () => unknown) => void;
   runSecretCommand: (command: () => unknown, closePalette?: boolean) => void;
   pendingSecretsFocus: boolean;
@@ -67,67 +53,8 @@ export function useCommandPalette(): UseCommandPaletteReturn {
   const router = useRouter();
   const { copied, copyToClipboard } = useCopyToClipboard();
 
-  React.useEffect(() => {
-    if (open) {
-      if (
-        processedProjects.length === 0 ||
-        processedWorkExperience.length === 0
-      ) {
-        fetch("/api/search-index")
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              setProcessedProjects(data.data.projects);
-              setProcessedWorkExperience(data.data.workExperience);
-              return;
-            }
-            throw new Error("Search index payload missing success flag");
-          })
-          .catch((err) => {
-            console.error(
-              "Failed to fetch search index for command palette",
-              err,
-            );
-            Promise.all([
-              fetch("/api/blogs").then((res) => res.json()),
-              fetch("/api/work-experience").then((res) => res.json()),
-            ])
-              .then(([blogsData, workData]) => {
-                if (blogsData?.data) {
-                  setProcessedProjects(blogsData.data);
-                }
-                if (workData?.success && workData?.data) {
-                  setProcessedWorkExperience(workData.data);
-                }
-              })
-              .catch((fallbackError) => {
-                console.error(
-                  "Failed to fetch fallback command palette data",
-                  fallbackError,
-                );
-              });
-          });
-      }
-    }
-  }, [open]);
-
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-
-    const openPalette = () => setOpen(true);
-
-    document.addEventListener("keydown", down);
-    document.addEventListener("openCommandPalette", openPalette);
-    return () => {
-      document.removeEventListener("keydown", down);
-      document.removeEventListener("openCommandPalette", openPalette);
-    };
-  }, []);
+  useCommandPaletteSearchIndex(open);
+  useCommandPaletteShortcut(setOpen);
 
   const runCommand = React.useCallback((command: () => unknown) => {
     setOpen(false);
@@ -173,44 +100,12 @@ export function useCommandPalette(): UseCommandPaletteReturn {
   }, [copyToClipboard, runCommand]);
 
   const searchOptions = React.useMemo(
-    (): SearchOptions => ({ caseSensitive, exactMatch }),
+    () => ({ caseSensitive, exactMatch }),
     [caseSensitive, exactMatch],
   );
 
-  const filteredProjects = React.useMemo((): FilteredProject[] => {
-    if (!search.trim() || searchScope === "work") return [];
-
-    const term = search.trim();
-
-    return processedProjects
-      .map((project) => {
-        if (!matchesSearch(project.rawContent, term, searchOptions))
-          return null;
-
-        const context = getContextSnippet(
-          project.rawContent,
-          term,
-          searchOptions,
-        );
-        return { ...project, context };
-      })
-      .filter((p): p is FilteredProject => p !== null);
-  }, [search, searchOptions, searchScope]);
-
-  const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
-    if (!search.trim() || searchScope === "projects") return [];
-
-    const term = search.trim();
-
-    return processedWorkExperience
-      .map((work) => {
-        if (!matchesSearch(work.rawContent, term, searchOptions)) return null;
-
-        const context = getContextSnippet(work.rawContent, term, searchOptions);
-        return { ...work, context };
-      })
-      .filter((w): w is FilteredWorkExperience => w !== null);
-  }, [search, searchOptions, searchScope]);
+  const { filteredProjects, filteredWorkExperience } =
+    useCommandPaletteFiltering(search, searchScope, searchOptions);
 
   return {
     open,
