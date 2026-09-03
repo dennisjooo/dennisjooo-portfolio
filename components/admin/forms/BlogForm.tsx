@@ -1,339 +1,40 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import type { Blog } from "@/lib/db";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
-import { buildUploadPayload } from "@/lib/utils/blobUpload";
 import { cn } from "@/lib/utils";
 import { formStyles } from "@/components/admin/shared/formStyles";
-import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import { useFormDirty } from "@/components/admin/hooks/useUnsavedChanges";
+import { useBlogForm } from "@/components/admin/hooks/useBlogForm";
 import { BlogFormFields } from "./BlogFormFields";
 import { LinkManager } from "./LinkManager";
-import {
-  MarkdownEditor,
-  EditorMode,
-} from "@/components/admin/editors/MarkdownEditor";
+import { MarkdownEditor } from "@/components/admin/editors/MarkdownEditor";
 
 interface BlogFormProps {
   initialData?: Blog;
   onSubmit: (data: Partial<Blog>) => Promise<void>;
 }
 
-interface PendingImage {
-  id: string;
-  file: File;
-  previewUrl: string;
-}
-
 export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Partial<Blog>>({
-    title: initialData?.title || "",
-    description: initialData?.description || "",
-    type: initialData?.type || "blog",
-    date: initialData?.date || new Date().toISOString().split("T")[0],
-    imageUrl: initialData?.imageUrl || "",
-    blogPost: initialData?.blogPost || "",
-    links: initialData?.links || [],
-    slug: initialData?.slug || "",
-    status: initialData?.status || "draft",
-    publishAt: initialData?.publishAt || null,
-  });
-
-  const [editorMode, setEditorMode] = useState<EditorMode>("write");
-  const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const slugManuallyEdited = useRef(Boolean(initialData?.slug));
-
-  useFormDirty(formData);
-
-  const effectiveSlug = formData.slug || createUrlSlug(formData.title || "");
-  const canUploadImages = Boolean(effectiveSlug);
-  const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
-
-  const { uploading, upload: uploadCoverImage } = useImageUpload({
-    folder: imageFolder,
-    onSuccess: (url) => setFormData((prev) => ({ ...prev, imageUrl: url })),
-  });
-
-  useEffect(() => {
-    return () => {
-      pendingImages.forEach((img) => URL.revokeObjectURL(img.previewUrl));
-    };
-  }, [pendingImages]);
-
-  useEffect(() => {
-    if (!effectiveSlug) return;
-    const previewSlug = `${effectiveSlug}-preview`;
-    fetch("/api/blogs/preview", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug: previewSlug }),
-    }).catch(() => {});
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (editorMode === "split") return;
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-    }
-  }, [formData.blogPost, editorMode]);
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-
-    if (name === "slug") {
-      if (value.length === 0) {
-        slugManuallyEdited.current = false;
-        setFormData((prev) => ({
-          ...prev,
-          slug: createUrlSlug(prev.title || ""),
-        }));
-      } else {
-        slugManuallyEdited.current = true;
-        setFormData((prev) => ({ ...prev, slug: value }));
-      }
-      return;
-    }
-
-    if (name === "title" && !slugManuallyEdited.current) {
-      setFormData((prev) => ({
-        ...prev,
-        title: value,
-        slug: createUrlSlug(value),
-      }));
-      return;
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCoverImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (!e.target.files?.[0]) return;
-    await uploadCoverImage(e.target.files[0]);
-  };
-
-  const addLink = (link: { text: string; url: string }) => {
-    setFormData((prev) => ({
-      ...prev,
-      links: [...(prev.links || []), link],
-    }));
-  };
-
-  const removeLink = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      links: prev.links?.filter((_, i) => i !== index),
-    }));
-  };
-
-  const updateLink = (index: number, link: { text: string; url: string }) => {
-    setFormData((prev) => {
-      const next = [...(prev.links || [])];
-      next[index] = link;
-      return { ...prev, links: next };
-    });
-  };
-
-  const reorderLinks = (links: { text: string; url: string }[]) => {
-    setFormData((prev) => ({ ...prev, links }));
-  };
-
-  const insertImageToMarkdown = (file: File) => {
-    const id = Math.random().toString(36).substring(7);
-    const previewUrl = URL.createObjectURL(file);
-
-    setPendingImages((prev) => [...prev, { id, file, previewUrl }]);
-
-    const imageMarkdown = `![Image](${previewUrl})`;
-
-    const textarea = textareaRef.current;
-    if (textarea) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = formData.blogPost || "";
-      const newText =
-        text.substring(0, start) + imageMarkdown + text.substring(end);
-
-      setFormData((prev) => ({ ...prev, blogPost: newText }));
-
-      setTimeout(() => {
-        textarea.focus();
-        textarea.setSelectionRange(
-          start + imageMarkdown.length,
-          start + imageMarkdown.length,
-        );
-      }, 0);
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        blogPost: (prev.blogPost || "") + "\n" + imageMarkdown,
-      }));
-    }
-  };
-
-  const processContent = async (content: string) => {
-    let processedContent = content;
-    const uploadPromises: Promise<void>[] = [];
-
-    const blobRegex = /!\[.*?\]\((blob:.*?)\)/g;
-    let match;
-
-    const matches: { fullMatch: string; url: string }[] = [];
-    while ((match = blobRegex.exec(content)) !== null) {
-      matches.push({ fullMatch: match[0], url: match[1] });
-    }
-
-    const uniqueUrls = Array.from(new Set(matches.map((m) => m.url)));
-
-    for (const url of uniqueUrls) {
-      const cleanBlobUrl = url
-        .replace(/\s+=\d*x\d*$/, "")
-        .replace(/#dim=\d*x\d*$/, "");
-      const pendingImage = pendingImages.find(
-        (img) => img.previewUrl === cleanBlobUrl,
-      );
-      if (pendingImage) {
-        const uploadPromise = (async () => {
-          try {
-            const { contentHash, body } = await buildUploadPayload(
-              pendingImage.file,
-            );
-
-            const filename = formData.title
-              ? `${formData.title
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, "-")
-                  .replace(/(^-|-$)/g, "")}-${pendingImage.file.name}`
-              : pendingImage.file.name;
-
-            const slug = formData.slug || createUrlSlug(formData.title || "");
-            const folder = slug ? `blog/${slug}` : undefined;
-            const params = new URLSearchParams({ filename, contentHash });
-            if (folder) params.set("folder", folder);
-
-            const response = await fetch(`/api/upload?${params.toString()}`, {
-              method: "POST",
-              body,
-            });
-            if (!response.ok) throw new Error("Upload failed");
-            const blob = await response.json();
-
-            const dimInfo =
-              url.match(/\s+=(\d*x\d*)$/) || url.match(/#dim=(\d*x\d*)$/);
-            const uploadedUrl = dimInfo
-              ? `${blob.url}#dim=${dimInfo[1]}`
-              : blob.url;
-
-            processedContent = processedContent.split(url).join(uploadedUrl);
-          } catch (error) {
-            console.error(
-              "Failed to upload image:",
-              pendingImage.file.name,
-              error,
-            );
-          }
-        })();
-        uploadPromises.push(uploadPromise);
-      }
-    }
-
-    await Promise.all(uploadPromises);
-    return processedContent;
-  };
-
-  const extractImages = (content: string) => {
-    const regex = /!\[.*?\]\((.*?)\)/g;
-    const matches = [];
-    let match;
-    while ((match = regex.exec(content)) !== null) {
-      const cleanUrl = match[1]
-        .replace(/#dim=\d*x\d*$/, "")
-        .replace(/\s+=\d*x\d*$/, "");
-      matches.push(cleanUrl);
-    }
-    return matches;
-  };
-
-  const [previewing, setPreviewing] = useState(false);
-
-  const handlePreview = async () => {
-    if (!formData.title) {
-      toast.error("Add a title before previewing");
-      return;
-    }
-
-    setPreviewing(true);
-    try {
-      const previewContent = await processContent(formData.blogPost || "");
-      const response = await fetch("/api/blogs/preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, blogPost: previewContent }),
-      });
-
-      if (!response.ok) throw new Error("Failed to create preview");
-      const { data } = await response.json();
-      window.open(`/blogs/${data.slug}?preview=true`, "_blank");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to create preview");
-    } finally {
-      setPreviewing(false);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const finalContent = await processContent(formData.blogPost || "");
-
-      if (initialData) {
-        const initialImages = extractImages(initialData.blogPost || "");
-        if (initialData.imageUrl) initialImages.push(initialData.imageUrl);
-
-        const currentImages = extractImages(finalContent);
-        if (formData.imageUrl) currentImages.push(formData.imageUrl);
-
-        const imagesToDelete = initialImages.filter(
-          (url) =>
-            !currentImages.includes(url) && url.includes("vercel-storage.com"),
-        );
-
-        if (imagesToDelete.length > 0) {
-          await fetch("/api/upload", {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ urls: imagesToDelete }),
-          });
-        }
-      }
-
-      const submitData = { ...formData, blogPost: finalContent };
-      if (submitData.status !== "scheduled") {
-        submitData.publishAt = null;
-      }
-      await onSubmit(submitData);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to save blog post");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    formData,
+    setFormData,
+    editorMode,
+    setEditorMode,
+    loading,
+    previewing,
+    uploading,
+    canUploadImages,
+    textareaRef,
+    handleChange,
+    handleCoverImageUpload,
+    addLink,
+    removeLink,
+    updateLink,
+    reorderLinks,
+    insertImageToMarkdown,
+    handlePreview,
+    handleSubmit,
+  } = useBlogForm({ initialData, onSubmit });
 
   return (
     <form
