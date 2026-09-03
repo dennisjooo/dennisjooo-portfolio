@@ -6,8 +6,8 @@ interface ResponsibilityFormState {
   responsibilities: string[];
 }
 
-export function createResponsibilityHandlers(
-  setFormData: Dispatch<SetStateAction<ResponsibilityFormState>>,
+export function createResponsibilityHandlers<T extends ResponsibilityFormState>(
+  setFormData: Dispatch<SetStateAction<T>>,
 ) {
   return {
     addResponsibility: () => {

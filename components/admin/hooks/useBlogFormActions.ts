@@ -37,7 +37,7 @@ export function useBlogFormActions({
       const previewContent = await processBlogContent(
         formData.blogPost || "",
         pendingImages,
-        { title: formData.title, slug: formData.slug },
+        { title: formData.title, slug: formData.slug ?? undefined },
       );
       const response = await fetch("/api/blogs/preview", {
         method: "POST",
@@ -65,7 +65,7 @@ export function useBlogFormActions({
         const finalContent = await processBlogContent(
           formData.blogPost || "",
           pendingImages,
-          { title: formData.title, slug: formData.slug },
+          { title: formData.title, slug: formData.slug ?? undefined },
         );
 
         if (initialData) {

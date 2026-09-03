@@ -6,7 +6,6 @@ import {
 } from "@/lib/constants/aboutScroll";
 
 type GsapInstance = typeof import("gsap").default;
-type ScrollTriggerInstance = typeof import("gsap/ScrollTrigger").ScrollTrigger;
 
 export function setupAboutMobileAnimations(
   gsap: GsapInstance,
@@ -132,6 +131,6 @@ export async function initAboutGsapAnimations(
 
   return () => {
     mm.revert();
-    ScrollTrigger.getAll().forEach((st: ScrollTriggerInstance) => st.kill());
+    ScrollTrigger.getAll().forEach((st) => st.kill());
   };
 }
