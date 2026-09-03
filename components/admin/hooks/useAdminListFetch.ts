@@ -3,6 +3,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { fetchAdminListItems } from "./fetchAdminListItems";
+import {
+  useAdminListQueryHandlers,
+  reorderAdminListItems,
+} from "./useAdminListQueryHandlers";
 
 interface UseAdminListFetchOptions {
   endpoint: string;
@@ -94,56 +98,22 @@ export function useAdminListFetch<T>({
     fetchItems(1);
   }, [fetchItems]);
 
+  const { handleSearch, handleFilter, handleSort } = useAdminListQueryHandlers({
+    fetchItems,
+    setSearchQuery,
+    setFilters,
+    setSortBy,
+    setSortOrder,
+    sortBy,
+    sortOrder,
+    searchDebounceRef,
+  });
+
   const handlePageChange = useCallback(
     (page: number) => {
       fetchItems(page);
     },
     [fetchItems],
-  );
-
-  const handleSearch = useCallback(
-    (query: string) => {
-      setSearchQuery(query);
-      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
-      searchDebounceRef.current = setTimeout(() => {
-        fetchItems(1, true, query);
-      }, 300);
-    },
-    [fetchItems],
-  );
-
-  const handleFilter = useCallback(
-    (key: string, value: string) => {
-      setFilters((prev) => {
-        const next = { ...prev };
-        if (value) {
-          next[key] = value;
-        } else {
-          delete next[key];
-        }
-        fetchItems(1, true, undefined, next);
-        return next;
-      });
-    },
-    [fetchItems],
-  );
-
-  const handleSort = useCallback(
-    (key: string) => {
-      let nextSortOrder: "asc" | "desc" | null = "asc";
-
-      if (sortBy === key) {
-        if (sortOrder === "asc") nextSortOrder = "desc";
-        else nextSortOrder = null;
-      }
-
-      const nextSortBy = nextSortOrder ? key : null;
-
-      setSortBy(nextSortBy);
-      setSortOrder(nextSortOrder);
-      fetchItems(1, true, undefined, undefined, nextSortBy, nextSortOrder);
-    },
-    [sortBy, sortOrder, fetchItems],
   );
 
   const refresh = useCallback(
@@ -156,34 +126,14 @@ export function useAdminListFetch<T>({
   const handleReorder = useCallback(
     async (nextItems: T[], reorderEndpoint: string | undefined) => {
       if (!enableReorder || !reorderEndpoint) return;
-
-      const payload = nextItems.map((item, index) => ({
-        id: (item as { id: string }).id,
-        order: index,
-      }));
-
-      setItems(
-        nextItems.map((item, index) => ({
-          ...item,
-          order: index,
-        })) as T[],
+      await reorderAdminListItems(
+        nextItems,
+        reorderEndpoint,
+        setItems,
+        fetchItems,
+        currentPage,
+        itemName,
       );
-
-      try {
-        const res = await fetch(reorderEndpoint, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items: payload }),
-        });
-
-        if (!res.ok) throw new Error("Failed to reorder");
-        toast.success("Order updated");
-        fetchItems(currentPage, false);
-      } catch (error) {
-        console.error(`Failed to reorder ${itemName}s:`, error);
-        toast.error("Failed to update order");
-        fetchItems(currentPage, false);
-      }
     },
     [enableReorder, currentPage, fetchItems, itemName],
   );
