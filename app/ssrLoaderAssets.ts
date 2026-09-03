@@ -1,0 +1,27 @@
+export const SSR_CRITICAL_CSS = [
+  "html,body{background-color:#fff}",
+  "@media(prefers-color-scheme:dark){html,body{background-color:#000}}",
+  "html.dark,html.dark body{background-color:#000!important}",
+  "html.light,html.light body{background-color:#fff!important}",
+  "#__ssr_cover{position:fixed;inset:0;z-index:99999;background:#fff;transition:opacity .4s ease;display:flex;flex-direction:column;align-items:center;justify-content:center}",
+  "@media(prefers-color-scheme:dark){#__ssr_cover{background:#000}}",
+  "html.dark #__ssr_cover{background:#000!important}",
+  "html.light #__ssr_cover{background:#fff!important}",
+  "#__ssr_cover.hidden{opacity:0;pointer-events:none;visibility:hidden}",
+  "#__ssr_loader{display:flex;flex-direction:column;align-items:center;gap:2.5rem;padding:0 1.5rem}",
+  "#__ssr_loader .ssr-name{display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--font-caslon),Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;font-size:clamp(1.875rem,5vw,3rem);line-height:.85;letter-spacing:-.025em;color:#0a0a0a}",
+  "@media(prefers-color-scheme:dark){#__ssr_loader .ssr-name{color:#fafafa}}",
+  "html.dark #__ssr_loader .ssr-name{color:#fafafa!important}",
+  "html.light #__ssr_loader .ssr-name{color:#0a0a0a!important}",
+  "#__ssr_loader .ssr-bar{width:12rem;height:1px;background:#e0e0e0;border-radius:9999px;overflow:hidden}",
+  "@media(min-width:768px){#__ssr_loader .ssr-bar{width:16rem}}",
+  "@media(prefers-color-scheme:dark){#__ssr_loader .ssr-bar{background:#262626}}",
+  "html.dark #__ssr_loader .ssr-bar{background:#262626!important}",
+  "#__ssr_loader .ssr-fill{height:100%;width:100%;background:linear-gradient(90deg,#3c3c3c,#afafaf,#3c3c3c);animation:ssr-flash 1.2s ease-in-out infinite}",
+  "@keyframes ssr-flash{0%,100%{opacity:.35}50%{opacity:1}}",
+  "#__ssr_loader .ssr-pct{font-family:ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:#666;opacity:.8}",
+  "@media(prefers-color-scheme:dark){#__ssr_loader .ssr-pct{color:#a3a3a3}}",
+  "html.dark #__ssr_loader .ssr-pct{color:#a3a3a3!important}",
+].join("");
+
+export const SSR_THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme'),d=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches),c=d?'#000':'#fff',h=document.documentElement;h.style.backgroundColor=c;h.style.colorScheme=d?'dark':'light';if(d)h.classList.add('dark');else h.classList.add('light');var v=document.getElementById('__ssr_cover');if(v){v.style.background=c;if(sessionStorage.getItem('portfolio-has-visited')==='true')v.classList.add('hidden')}}catch(e){}})()`;
