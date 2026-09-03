@@ -49,9 +49,11 @@ export function RouteProgressBar() {
   return (
     <div className="pointer-events-none fixed left-0 right-0 top-0 z-[9999] h-[2px]">
       <m.div
-        className="h-full bg-foreground"
+        className="h-full overflow-hidden"
         style={{ width: `${progress}%` }}
-      />
+      >
+        <div className="h-full w-full bg-gradient-to-r from-foreground from-90% to-transparent" />
+      </m.div>
     </div>
   );
 }
