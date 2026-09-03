@@ -7,6 +7,7 @@ import { BurgerButton } from "./BurgerButton";
 import { CommandMenuTrigger } from "./CommandMenuTrigger";
 import { MobileMenu } from "./MobileMenu";
 import { ThemeToggle } from "@/components/theme";
+import { useReducedMotion } from "@/components/motion";
 import { navItems } from "@/lib/content/navbarContent";
 import {
   useHeroSectionState,
@@ -19,9 +20,14 @@ export const NavbarClient = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname() ?? "/";
   const isClientReady = useMounted();
-  const { scrolled, isHeroSection } = useHeroSectionState(
+  const prefersReducedMotion = useReducedMotion();
+  const { scrolled, isHeroSection, isNavbarVisible } = useHeroSectionState(
     isClientReady,
     pathname,
+    {
+      isMenuOpen,
+      prefersReducedMotion: prefersReducedMotion ?? false,
+    },
   );
 
   const handleNavigation = useSectionNavigation({
@@ -47,9 +53,13 @@ export const NavbarClient = () => {
     "transition-all duration-200 ease-in-out overflow-hidden",
   ].join(" ");
 
+  const visibilityClass = isNavbarVisible
+    ? "translate-y-0 opacity-100"
+    : "-translate-y-[calc(100%+1.25rem)] opacity-0 pointer-events-none";
+
   return (
     <nav
-      className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-all duration-200 ease-in-out ${navWidth}`}
+      className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-all duration-200 ease-in-out ${navWidth} ${visibilityClass}`}
     >
       <div className={navbarContainerClasses}>
         <div className="flex min-h-[3rem] items-center gap-2 px-4 py-3">
