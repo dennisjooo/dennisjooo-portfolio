@@ -1,38 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
-import { SearchX } from "lucide-react";
-import {
-  CommandDialog,
-  CommandInput,
-  CommandList,
-} from "@/components/ui/command";
+import { CommandDialog, CommandInput } from "@/components/ui/command";
 import { useCommandPalette } from "@/lib/hooks/nav/useCommandPalette";
-import {
-  scrollToTop,
-  scrollToSection,
-  setPendingSectionScroll,
-} from "@/lib/utils/scrollHelpers";
-
-import { NavigationGroup } from "./groups/NavigationGroup";
-import { ProjectsGroup } from "./groups/ProjectsGroup";
-import { WorkExperienceGroup } from "./groups/WorkExperienceGroup";
-import { SocialsGroup } from "./groups/SocialsGroup";
-import { UtilitiesGroup } from "./groups/UtilitiesGroup";
-import { ThemeGroup } from "./groups/ThemeGroup";
-import { SecretGroup } from "./groups/SecretGroup";
-import { SearchOptionsBar } from "./groups/SearchOptionsBar";
-import { EasterEggProgressGroup } from "./groups/EasterEggProgressGroup";
 import { shouldShowEasterEggProgress } from "@/lib/easter-eggs/search";
 import type { ContactLinkData } from "@/lib/types/contacts";
+import { SearchOptionsBar } from "./groups/SearchOptionsBar";
+import { CommandPaletteList } from "./CommandPaletteList";
+import { useCommandPaletteNavigation } from "./useCommandPaletteNavigation";
 
 interface CommandPaletteProps {
   contacts?: ContactLinkData[];
 }
 
 export function CommandPalette({ contacts }: CommandPaletteProps) {
-  const pathname = usePathname() ?? "/";
   const {
     open,
     setOpen,
@@ -56,57 +36,12 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
     router,
   } = useCommandPalette();
 
-  const secretsSectionRef = useRef<HTMLDivElement>(null);
-
-  const handleNavigate = useCallback(
-    (path: string) => {
-      if (path.startsWith("/#")) {
-        const sectionId = path.slice(2);
-        if (pathname === "/") {
-          if (sectionId === "home") {
-            scrollToTop(true);
-          } else {
-            scrollToSection(sectionId);
-          }
-          return;
-        }
-
-        setPendingSectionScroll(sectionId);
-      }
-      router.push(path);
-    },
-    [pathname, router],
-  );
+  const handleNavigate = useCommandPaletteNavigation(router);
 
   const showEasterEggProgress = shouldShowEasterEggProgress(
     search,
     matchedSecrets.length,
   );
-
-  useEffect(() => {
-    if (!open || !pendingSecretsFocus || !showEasterEggProgress) return;
-
-    const timeout = window.setTimeout(() => {
-      secretsSectionRef.current?.scrollIntoView({
-        block: "nearest",
-        behavior: "smooth",
-      });
-      clearPendingSecretsFocus();
-    }, 50);
-
-    return () => window.clearTimeout(timeout);
-  }, [
-    open,
-    pendingSecretsFocus,
-    showEasterEggProgress,
-    clearPendingSecretsFocus,
-  ]);
-
-  const hasSearchResults =
-    filteredProjects.length > 0 ||
-    filteredWorkExperience.length > 0 ||
-    matchedSecrets.length > 0 ||
-    showEasterEggProgress;
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -127,59 +62,24 @@ export function CommandPalette({ contacts }: CommandPaletteProps) {
         onChangeScope={setSearchScope}
       />
 
-      <CommandList className="max-h-[340px] overflow-y-auto overflow-x-hidden pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border/50 hover:scrollbar-thumb-muted-foreground/30">
-        {/* No results message */}
-        {search.trim() && !hasSearchResults && (
-          <div className="py-10 text-center">
-            <SearchX className="mx-auto mb-3 h-8 w-8 text-muted-foreground/70" />
-            <p className="text-sm font-medium text-muted-foreground">
-              No results found
-            </p>
-            <p className="mt-1 font-mono text-xs text-muted-foreground/80">
-              Try adjusting your search or filters
-            </p>
-          </div>
-        )}
-
-        <NavigationGroup onSelect={runCommand} onNavigate={handleNavigate} />
-
-        {search.trim() && (
-          <>
-            <ProjectsGroup
-              projects={filteredProjects}
-              searchTerm={search.trim()}
-              searchOptions={{ caseSensitive, exactMatch }}
-              onSelect={runCommand}
-              onNavigate={handleNavigate}
-            />
-            <WorkExperienceGroup
-              workExperience={filteredWorkExperience}
-              searchTerm={search.trim()}
-              searchOptions={{ caseSensitive, exactMatch }}
-              onSelect={runCommand}
-              onNavigate={handleNavigate}
-            />
-          </>
-        )}
-
-        <SocialsGroup contacts={contacts} onSelect={runCommand} />
-
-        <UtilitiesGroup
-          copied={copied}
-          onCopyUrl={copyUrl}
-          onSelect={runCommand}
-        />
-
-        <ThemeGroup onSelect={runCommand} />
-
-        <SecretGroup secrets={matchedSecrets} onSelect={runSecretCommand} />
-
-        {showEasterEggProgress ? (
-          <div ref={secretsSectionRef}>
-            <EasterEggProgressGroup open={open} />
-          </div>
-        ) : null}
-      </CommandList>
+      <CommandPaletteList
+        open={open}
+        search={search}
+        copied={copied}
+        exactMatch={exactMatch}
+        caseSensitive={caseSensitive}
+        filteredProjects={filteredProjects}
+        filteredWorkExperience={filteredWorkExperience}
+        matchedSecrets={matchedSecrets}
+        showEasterEggProgress={showEasterEggProgress}
+        pendingSecretsFocus={pendingSecretsFocus}
+        clearPendingSecretsFocus={clearPendingSecretsFocus}
+        contacts={contacts}
+        onCopyUrl={copyUrl}
+        onSelect={runCommand}
+        onSecretSelect={runSecretCommand}
+        onNavigate={handleNavigate}
+      />
     </CommandDialog>
   );
 }
