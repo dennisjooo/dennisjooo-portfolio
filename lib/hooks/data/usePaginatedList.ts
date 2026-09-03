@@ -1,12 +1,9 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useInfiniteScroll } from "@/lib/hooks/data/useInfiniteScroll";
 import type { PaginationResult } from "@/lib/data/blogs";
-import {
-  type PaginationState,
-  buildPaginatedFetchUrl,
-  parsePaginatedResponse,
-} from "./paginatedListUtils";
+import { type PaginationState } from "./paginatedListUtils";
 import { usePaginatedListPrefetch } from "./usePaginatedListPrefetch";
+import { usePaginatedListFetch } from "./usePaginatedListFetch";
 
 interface UsePaginatedListOptions<T> {
   endpoint: string;
@@ -53,7 +50,6 @@ export function usePaginatedList<T>({
   });
 
   const initialFetchSkipped = useRef(hasInitialData);
-  const fetchAbortRef = useRef<AbortController | null>(null);
 
   const {
     prefetchPage,
@@ -71,61 +67,19 @@ export function usePaginatedList<T>({
     paginationKey,
   });
 
-  const fetchItems = useCallback(
-    async (page: number, reset = false) => {
-      if (fetchAbortRef.current) {
-        fetchAbortRef.current.abort();
-      }
-
-      const abortController = new AbortController();
-      fetchAbortRef.current = abortController;
-
-      if (page === 1) {
-        setLoading(true);
-      } else {
-        setLoadingMore(true);
-      }
-
-      try {
-        const res = await fetch(
-          buildPaginatedFetchUrl(endpoint, page, pageSize, stableQueryParams),
-          { signal: abortController.signal },
-        );
-        const data = await res.json();
-        const parsed = parsePaginatedResponse(
-          data,
-          resolveData,
-          dataKey,
-          paginationKey,
-        );
-
-        setItems((prev) => (reset ? parsed.items : [...prev, ...parsed.items]));
-
-        if (parsed.pagination) {
-          setPagination(parsed.pagination);
-          schedulePrefetch(parsed.pagination.page, parsed.pagination.hasMore);
-        }
-      } catch (error: unknown) {
-        if (error instanceof Error && error.name !== "AbortError") {
-          console.error(`Failed to fetch items from ${endpoint}`, error);
-        }
-      } finally {
-        if (!abortController.signal.aborted) {
-          setLoading(false);
-          setLoadingMore(false);
-        }
-      }
-    },
-    [
-      endpoint,
-      pageSize,
-      stableQueryParams,
-      resolveData,
-      dataKey,
-      paginationKey,
-      schedulePrefetch,
-    ],
-  );
+  const { fetchItems, abortFetch } = usePaginatedListFetch({
+    endpoint,
+    pageSize,
+    stableQueryParams,
+    resolveData,
+    dataKey,
+    paginationKey,
+    schedulePrefetch,
+    setItems,
+    setPagination,
+    setLoading,
+    setLoadingMore,
+  });
 
   useEffect(() => {
     clearPrefetchCache();
@@ -158,10 +112,10 @@ export function usePaginatedList<T>({
 
   useEffect(() => {
     return () => {
-      fetchAbortRef.current?.abort();
+      abortFetch();
       abortPrefetch();
     };
-  }, [abortPrefetch]);
+  }, [abortFetch, abortPrefetch]);
 
   const loadMore = useCallback(() => {
     if (loadingMore || !pagination.hasMore) return;
