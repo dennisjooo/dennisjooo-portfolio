@@ -6,10 +6,7 @@ import {
   resolveSectionScrollTarget,
   setScrollAnimationsReady,
 } from "@/lib/utils/scrollHelpers";
-import {
-  ABOUT_SCROLL_MOBILE,
-  ABOUT_SCROLL_DESKTOP,
-} from "@/lib/constants/aboutScroll";
+import { initAboutGsapAnimations } from "./aboutAnimationSetup";
 
 interface UseAboutAnimationsProps {
   sectionRef: RefObject<HTMLDivElement | null>;
@@ -32,117 +29,22 @@ export const useAboutAnimations = ({
       if (gsapLoaded) return;
       gsapLoaded = true;
 
-      const [gsap, { ScrollTrigger }] = await Promise.all([
-        import("gsap").then((m) => m.default),
-        import("gsap/ScrollTrigger"),
-      ]);
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(max-width: 767px)", () => {
-        const mobileContainer = document.querySelector(
-          ".mobile-scroll-container",
-        ) as HTMLElement;
-        if (!mobileContainer) return;
-
-        const totalSections = 5; // Profile + 4 content sections
-
-        const scrollTriggerInstance = gsap.to(mobileContainer, {
-          xPercent: -((100 * (totalSections - 1)) / totalSections),
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            pin: true,
-            pinSpacing: false,
-            scrub: 0.5,
-            snap: {
-              snapTo: 1 / (totalSections - 1),
-              duration: { min: 0.15, max: 0.3 },
-              ease: "power2.out",
-              inertia: false,
-            },
-            end: `+=${ABOUT_SCROLL_MOBILE}`,
-            fastScrollEnd: true,
-            preventOverlaps: true,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        return () => {
-          scrollTriggerInstance.scrollTrigger?.kill();
-        };
-      });
-
-      mm.add("(min-width: 768px)", () => {
-        const titles = gsap.utils.toArray<HTMLElement>(".about-title");
-        const bodies = gsap.utils.toArray<HTMLElement>(".about-body");
-
-        titles.forEach((title, i) => {
-          if (i !== 0) gsap.set(title, { opacity: 0, y: -30 });
-          else gsap.set(title, { opacity: 1, y: 0 });
-        });
-        bodies.forEach((body, i) => {
-          if (i !== 0) gsap.set(body, { opacity: 0, y: 20 });
-          else gsap.set(body, { opacity: 1, y: 0 });
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: `+=${ABOUT_SCROLL_DESKTOP}`,
-            pin: true,
-            pinSpacing: false,
-            scrub: 0.5,
-            anticipatePin: 1,
-          },
-        });
-
-        contentSections.forEach((_, i) => {
-          if (i === contentSections.length - 1) return;
-
-          const currentTitle = titles[i];
-          const nextTitle = titles[i + 1];
-          const currentBody = bodies[i];
-          const nextBody = bodies[i + 1];
-
-          tl.to(
-            currentTitle,
-            { opacity: 0, y: -30, duration: 0.6, ease: "power2.in" },
-            `step-${i}`,
-          )
-            .to(
-              currentBody,
-              { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" },
-              `step-${i}`,
-            )
-            .to(
-              nextTitle,
-              { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-              `step-${i}+=0.3`,
-            )
-            .to(
-              nextBody,
-              { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-              `step-${i}+=0.5`,
-            );
-
-          tl.to({}, { duration: 0.4 });
-        });
-      });
+      const gsapCleanup = await initAboutGsapAnimations(
+        sectionRef,
+        contentSections,
+      );
 
       cleanup = () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((st) => st.kill());
+        gsapCleanup();
         setScrollAnimationsReady(false);
       };
 
       requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-        setScrollAnimationsReady(true);
-        window.dispatchEvent(new Event("portfolio:scroll-animations-ready"));
+        void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+          ScrollTrigger.refresh();
+          setScrollAnimationsReady(true);
+          window.dispatchEvent(new Event("portfolio:scroll-animations-ready"));
+        });
       });
     };
 
