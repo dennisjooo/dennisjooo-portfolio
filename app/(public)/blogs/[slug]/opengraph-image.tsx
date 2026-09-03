@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
-import { SITE_NAME } from "@/lib/constants/site";
+import { getSiteHostname, SITE_NAME } from "@/lib/constants/site";
+import { loadOgFonts } from "@/lib/og/caslonFont";
 import {
   OG_SIZE,
   OgBackground,
@@ -17,6 +18,7 @@ export default async function OgImage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const fonts = await loadOgFonts();
   const { slug } = await params;
   const blog = await findBlogBySlug(slug, visibleBlogsFilter());
 
@@ -48,7 +50,7 @@ export default async function OgImage({
           </div>
         </div>
       </OgBackground>,
-      { ...size },
+      { ...size, fonts },
     );
   }
 
@@ -120,10 +122,10 @@ export default async function OgImage({
           >
             {SITE_NAME}
           </div>
-          <OgMonoLabel>dennisjooo.vercel.app</OgMonoLabel>
+          <OgMonoLabel>{getSiteHostname()}</OgMonoLabel>
         </div>
       </div>
     </OgBackground>,
-    { ...size },
+    { ...size, fonts },
   );
 }

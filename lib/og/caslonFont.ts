@@ -16,3 +16,16 @@ export async function loadCaslonItalicFont(): Promise<ArrayBuffer> {
 }
 
 export const caslonFontFamily = "Libre Caslon Text";
+
+export async function loadOgFonts() {
+  const caslon = await loadCaslonItalicFont();
+
+  return [
+    {
+      name: caslonFontFamily,
+      data: caslon,
+      style: "italic" as const,
+      weight: 400 as const,
+    },
+  ];
+}

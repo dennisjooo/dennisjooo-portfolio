@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
+import { caslonFontFamily } from "@/lib/og/caslonFont";
 
 export const OG_SIZE = { width: 1200, height: 630 };
+
+const OG_HERO_GRADIENT =
+  "linear-gradient(135deg, #404040 0%, #505050 45%, #606060 100%)";
 
 export const OG_NOISE_BACKGROUND =
   "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")";
@@ -8,9 +12,11 @@ export const OG_NOISE_BACKGROUND =
 export function OgBackground({
   children,
   backgroundImage,
+  variant = "default",
 }: {
   children: ReactNode;
   backgroundImage?: string | null;
+  variant?: "default" | "hero";
 }) {
   return (
     <div
@@ -24,6 +30,19 @@ export function OgBackground({
         overflow: "hidden",
       }}
     >
+      {variant === "hero" && !backgroundImage && (
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: OG_HERO_GRADIENT,
+          }}
+        />
+      )}
       {backgroundImage && (
         // eslint-disable-next-line @next/next/no-img-element -- OG ImageResponse requires native img
         <img
@@ -53,7 +72,9 @@ export function OgBackground({
           bottom: 0,
           background: backgroundImage
             ? "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,26,26,0.9) 0%, rgba(10,10,10,0.95) 100%)"
-            : "radial-gradient(ellipse 80% 60% at 50% 40%, #1a1a1a 0%, #0a0a0a 100%)",
+            : variant === "hero"
+              ? "linear-gradient(to bottom, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.35) 100%)"
+              : "radial-gradient(ellipse 80% 60% at 50% 40%, #1a1a1a 0%, #0a0a0a 100%)",
         }}
       />
 
@@ -71,6 +92,21 @@ export function OgBackground({
       />
 
       {children}
+
+      {variant === "hero" && (
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            background:
+              "linear-gradient(to right, transparent, rgba(250,250,250,0.2), transparent)",
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -100,7 +136,7 @@ export function OgCaslonTitle({
     <div
       style={{
         display: "flex",
-        fontFamily: "Georgia, 'Times New Roman', serif",
+        fontFamily: caslonFontFamily,
         fontStyle: "italic",
         fontSize,
         fontWeight: 400,
@@ -115,17 +151,26 @@ export function OgCaslonTitle({
   );
 }
 
-export function OgMonoLabel({ children }: { children: ReactNode }) {
+export function OgMonoLabel({
+  children,
+  size = "sm",
+  muted = false,
+}: {
+  children: ReactNode;
+  size?: "sm" | "md";
+  muted?: boolean;
+}) {
   return (
     <div
       style={{
         display: "flex",
         fontFamily: "'SF Mono', 'Roboto Mono', 'Courier New', monospace",
-        fontSize: 11,
+        fontSize: size === "md" ? 14 : 11,
         fontWeight: 400,
-        color: "#525252",
+        color: muted ? "#a3a3a3" : "#525252",
         letterSpacing: "0.12em",
         textTransform: "uppercase",
+        opacity: muted ? 0.8 : 1,
       }}
     >
       {children}
