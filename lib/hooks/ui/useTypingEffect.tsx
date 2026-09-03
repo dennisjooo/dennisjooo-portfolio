@@ -1,38 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { shuffleArray } from "@/lib/utils/array";
+import { parseRollback, type RollbackPhase } from "./typingRollback";
+import { useTypingEffectReady } from "./useTypingEffectReady";
 
-interface RollbackConfig {
-  prefix: string;
-  oldText: string;
-  newText: string;
-  suffix: string;
-}
-
-type RollbackPhase =
-  "typing-to-old" | "pausing" | "deleting-old" | "typing-new" | "done";
-
-const parseRollback = (text: string): RollbackConfig | null => {
-  const rollbackRegex = /^(.*){{(.+?)>>(.+?)}}(.*)$/;
-  const match = text.match(rollbackRegex);
-
-  if (match) {
-    return {
-      prefix: match[1],
-      oldText: match[2],
-      newText: match[3],
-      suffix: match[4],
-    };
-  }
-  return null;
-};
-
-export const resolveTypingDescription = (text: string): string => {
-  const parsed = parseRollback(text);
-  if (parsed) {
-    return parsed.prefix + parsed.newText + parsed.suffix;
-  }
-  return text;
-};
+export { resolveTypingDescription } from "./typingRollback";
 
 type UseTypingEffectOptions = {
   enabled?: boolean;
@@ -48,6 +19,13 @@ export const useTypingEffect = (
     () => shuffleArray(descriptions),
     [descriptions],
   );
+  const firstDescription = shuffledDescriptions[0] ?? "";
+  const { isReady, disabledDescription } = useTypingEffectReady(
+    enabled,
+    initialDelay,
+    firstDescription,
+  );
+
   const [description, setDescription] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
@@ -55,34 +33,12 @@ export const useTypingEffect = (
   const [rollbackPhase, setRollbackPhase] = useState<RollbackPhase | null>(
     null,
   );
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!enabled) {
-      const first = shuffledDescriptions[0] ?? "";
-      setDescription(resolveTypingDescription(first));
-      setIsReady(true);
-      return;
+      setDescription(disabledDescription);
     }
-
-    const start = () => setIsReady(true);
-
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(start, {
-        timeout: initialDelay + 500,
-      });
-      const timer = setTimeout(() => {
-        if (!isReady) start();
-      }, initialDelay);
-      return () => {
-        window.cancelIdleCallback(id);
-        clearTimeout(timer);
-      };
-    } else {
-      const timer = setTimeout(start, initialDelay);
-      return () => clearTimeout(timer);
-    }
-  }, [enabled, initialDelay, isReady, shuffledDescriptions]);
+  }, [enabled, disabledDescription]);
 
   const handleTyping = useCallback(() => {
     if (!enabled || !isReady) return;
