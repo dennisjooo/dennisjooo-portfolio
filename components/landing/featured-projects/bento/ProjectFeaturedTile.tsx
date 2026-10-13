@@ -41,10 +41,7 @@ export function ProjectFeaturedTile({
           variant="bento-featured"
           className="min-h-[320px] md:rounded-2xl lg:min-h-[420px]"
         >
-          <m.div
-            layoutId={`hero-image-${slug}`}
-            className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[240px] lg:flex-1"
-          >
+          <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[240px] lg:flex-1">
             <ProjectTileImage
               imageUrl={imageUrl}
               title={title}
@@ -56,11 +53,10 @@ export function ProjectFeaturedTile({
                 {getBlogTypeLabel("project")}
               </span>
             </div>
-          </m.div>
+          </div>
 
           <div className="flex flex-col gap-3 p-4 md:gap-4 md:p-5 lg:p-6">
             <ProjectTileTitle
-              slug={slug}
               title={title}
               className="text-2xl leading-tight md:text-3xl lg:text-4xl lg:leading-[1.1]"
             />

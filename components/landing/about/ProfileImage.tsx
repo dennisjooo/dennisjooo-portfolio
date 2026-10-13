@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
-import { NOISE_OVERLAY_LIGHT } from "@/lib/constants/noiseOverlay";
 
 interface ProfileImageProps {
   imageUrl?: string;
@@ -19,10 +18,6 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
       className="h-full w-full shadow-lg"
       frameClassName="relative w-full h-full"
     >
-      <div
-        className="pointer-events-none absolute inset-0 z-10 opacity-20 mix-blend-overlay"
-        style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
-      />
       <Image
         src={imageUrl}
         alt="Profile picture"
@@ -32,7 +27,6 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         sizes="300px"
         quality={70}
       />
-      <div className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
     </HoverImageFrame>
   </div>
 );

@@ -15,8 +15,8 @@ interface UseFadeUpInViewOptions {
 export function useFadeUpInView({
   index = 0,
   y = 30,
-  maxDelay = 0.24,
-  delayMultiplier = 0.08,
+  maxDelay = 0.12,
+  delayMultiplier = 0.04,
   scale,
 }: UseFadeUpInViewOptions = {}) {
   const delay = Math.min(index * delayMultiplier, maxDelay);

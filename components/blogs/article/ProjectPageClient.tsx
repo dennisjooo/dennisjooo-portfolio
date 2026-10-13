@@ -48,7 +48,6 @@ export default function ProjectPageClient({
               readTime={readTime}
               imageUrl={project.imageUrl ?? undefined}
               type={project.type}
-              slug={project.slug ?? ""}
             />
 
             <m.div
@@ -80,7 +79,7 @@ export default function ProjectPageClient({
                 href="/blogs"
                 className="group inline-flex items-center gap-3 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 hover:text-accent"
               >
-                <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                <ArrowLeftIcon className="h-4 w-4" />
                 Back to all posts
               </Link>
             </m.div>

@@ -26,7 +26,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
 
     <div
       ref={scrollContentRef}
-      className="animate-fade-in-up relative flex h-full w-[60%] items-center pl-16"
+      className="animate-fade-in relative flex h-full w-[60%] items-center pl-16"
       style={{ animationDelay: "0.4s" }}
     >
       {contentSections.map((section) => (

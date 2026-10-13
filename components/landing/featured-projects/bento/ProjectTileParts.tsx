@@ -6,7 +6,7 @@ import {
   BlogLinkCardGlow,
   BlogLinkCardImage,
 } from "@/components/shared/list/BlogLinkCard";
-import { m, useFadeUpInView } from "@/components/motion";
+import { useFadeUpInView } from "@/components/motion";
 
 export function useProjectTileMotion(animationIndex: number) {
   return useFadeUpInView({ index: animationIndex, y: 30 });
@@ -61,29 +61,26 @@ export function ProjectTileFooter({
           </>
         )}
       </div>
-      <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+      <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-200 group-hover:text-accent" />
     </div>
   );
 }
 
 export function ProjectTileTitle({
-  slug,
   title,
   className,
 }: {
-  slug: string;
   title: string;
   className?: string;
 }) {
   return (
-    <m.h3
-      layoutId={`hero-title-${slug}`}
+    <h3
       className={cn(
-        "font-caslon italic tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent",
+        "font-caslon italic tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent",
         className,
       )}
     >
       {title}
-    </m.h3>
+    </h3>
   );
 }

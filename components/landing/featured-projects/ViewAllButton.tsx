@@ -17,7 +17,7 @@ export const ViewAllButton = () => {
           All Projects
         </span>
 
-        <ArrowRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-accent" />
+        <ArrowRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-200 group-hover:text-accent" />
       </Link>
     </div>
   );

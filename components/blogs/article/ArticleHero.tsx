@@ -15,7 +15,6 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { PhotoView } from "react-photo-view";
 import { useState } from "react";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
-import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 
 interface ArticleHeroProps {
@@ -26,7 +25,6 @@ interface ArticleHeroProps {
   readTime: number;
   imageUrl?: string;
   type: "project" | "blog";
-  slug: string;
 }
 
 export const ArticleHero = ({
@@ -37,7 +35,6 @@ export const ArticleHero = ({
   readTime,
   imageUrl,
   type,
-  slug,
 }: ArticleHeroProps) => {
   const backMotion = useMotionSafeProps(articleHeroBackVariants);
   const metaMotion = useMotionSafeProps(articleHeroMetaVariants);
@@ -51,7 +48,7 @@ export const ArticleHero = ({
           href="/blogs"
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+          <ArrowLeftIcon className="h-4 w-4" />
           Back to Blogs
         </Link>
       </m.div>
@@ -72,7 +69,6 @@ export const ArticleHero = ({
       </m.div>
 
       <m.h1
-        layoutId={`hero-title-${slug}`}
         {...titleMotion}
         className="mb-6 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
       >
@@ -86,20 +82,12 @@ export const ArticleHero = ({
         {description}
       </m.p>
 
-      {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} slug={slug} />}
+      {imageUrl && <ArticleHeroImage src={imageUrl} alt={title} />}
     </header>
   );
 };
 
-function ArticleHeroImage({
-  src,
-  alt,
-  slug,
-}: {
-  src: string;
-  alt: string;
-  slug: string;
-}) {
+function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
   const imageMotion = useMotionSafeProps(articleHeroImageVariants);
 
@@ -114,8 +102,7 @@ function ArticleHeroImage({
     <PhotoView src={src}>
       <m.figure {...imageMotion} className="cursor-zoom-in">
         <HoverImageFrame frameClassName="shadow-lg">
-          <m.div
-            layoutId={`hero-image-${slug}`}
+          <div
             className="relative w-full"
             style={
               aspectRatio
@@ -126,11 +113,6 @@ function ArticleHeroImage({
                 : { minHeight: "300px", maxHeight: "70vh" }
             }
           >
-            <div
-              className="pointer-events-none absolute inset-0 z-10 opacity-15 mix-blend-overlay"
-              style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
-            />
-
             <Image
               src={src}
               alt={alt}
@@ -140,13 +122,7 @@ function ArticleHeroImage({
               priority
               onLoad={handleImageLoad}
             />
-
-            <div className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
-
-            <span className="absolute bottom-4 right-4 z-20 rounded-full border border-border bg-background/80 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-              Click to zoom
-            </span>
-          </m.div>
+          </div>
         </HoverImageFrame>
       </m.figure>
     </PhotoView>

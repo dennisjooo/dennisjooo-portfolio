@@ -13,7 +13,6 @@ import {
   BlogLinkCardShell,
   BlogLinkCardTypeBadge,
 } from "@/components/shared/list/BlogLinkCard";
-import { NOISE_OVERLAY_LIGHT } from "@/lib/constants/noiseOverlay";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 
 interface FeaturedCardProps {
@@ -52,14 +51,7 @@ export const FeaturedCard = ({
 
         <BlogLinkCardShell variant="featured">
           {/* Image */}
-          <m.div
-            layoutId={`hero-image-${slug}`}
-            className="relative aspect-[16/9] w-full overflow-hidden bg-muted md:col-span-3 md:aspect-auto md:min-h-[320px] md:rounded-xl"
-          >
-            <div
-              className="pointer-events-none absolute inset-0 z-10 hidden opacity-20 mix-blend-overlay md:block"
-              style={{ backgroundImage: NOISE_OVERLAY_LIGHT }}
-            />
+          <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted md:col-span-3 md:aspect-auto md:min-h-[320px] md:rounded-xl">
             {imageUrl ? (
               <Image
                 src={imageUrl}
@@ -72,7 +64,6 @@ export const FeaturedCard = ({
             ) : (
               <div className="h-full w-full bg-gradient-to-br from-secondary to-muted" />
             )}
-            <div className="absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
 
             {/* Type badge overlaid on image (mobile only) */}
             {type && (
@@ -80,7 +71,7 @@ export const FeaturedCard = ({
                 <BlogLinkCardTypeBadge type={type} />
               </div>
             )}
-          </m.div>
+          </div>
 
           {/* Content */}
           <div className="flex flex-col justify-center gap-3 p-4 md:col-span-2 md:gap-4 md:p-0 md:py-4">
@@ -101,12 +92,9 @@ export const FeaturedCard = ({
             </div>
 
             {/* Title */}
-            <m.h3
-              layoutId={`hero-title-${slug}`}
-              className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-4xl md:leading-[1.1]"
-            >
+            <h3 className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-4xl md:leading-[1.1]">
               {title}
-            </m.h3>
+            </h3>
 
             {/* Description */}
             <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:line-clamp-4 md:text-base">
@@ -124,13 +112,13 @@ export const FeaturedCard = ({
                   </>
                 )}
               </div>
-              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-200 group-hover:text-accent" />
             </div>
 
             {/* Desktop footer - read article link */}
             <div className="mt-2 hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent md:flex">
               <span>Read article</span>
-              <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRightIcon className="h-4 w-4" />
             </div>
           </div>
         </BlogLinkCardShell>

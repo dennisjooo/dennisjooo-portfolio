@@ -37,21 +37,17 @@ export function ProjectCompactTile({
         <ProjectTileGlow />
 
         <BlogLinkCardShell variant="bento-compact">
-          <m.div
-            layoutId={`hero-image-${slug}`}
-            className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[200px] lg:w-[40%]"
-          >
+          <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted lg:aspect-auto lg:min-h-[200px] lg:w-[40%]">
             <ProjectTileImage
               imageUrl={imageUrl}
               title={title}
               sizes="(max-width: 1024px) 100vw, 20vw"
             />
             <ProjectTileIndex label={formatDisplayIndex(displayIndex)} />
-          </m.div>
+          </div>
 
           <div className="flex flex-1 flex-col gap-2 p-4 md:gap-3 md:p-5">
             <ProjectTileTitle
-              slug={slug}
               title={title}
               className="line-clamp-2 text-xl leading-tight md:text-2xl"
             />

@@ -32,15 +32,15 @@ export function createFadeUpItem(
   };
 }
 
-export const staggerContainer = createStaggerContainer(0.12, 0.1);
-export const staggerContainerTight = createStaggerContainer(0.1, 0.15);
-export const headerStaggerContainer = createStaggerContainer(0.12, 0.05);
+export const staggerContainer = createStaggerContainer(0.06, 0.05);
+export const staggerContainerTight = createStaggerContainer(0.05, 0.06);
+export const headerStaggerContainer = createStaggerContainer(0.06, 0.03);
 export const fadeUpItem = createFadeUpItem(20);
 export const fadeUpItemLarge = createFadeUpItem(30);
 
-export const timelineDesktopContainer = createStaggerContainer(0.15, 0.1);
+export const timelineDesktopContainer = createStaggerContainer(0.08, 0.05);
 export const timelineDesktopItem = createFadeUpItem(40);
-export const timelineMobileContainer = createStaggerContainer(0.12, 0.1);
+export const timelineMobileContainer = createStaggerContainer(0.06, 0.05);
 export const timelineMobileItem = createFadeUpItem(30);
 
 export const dashboardContainerVariants = {

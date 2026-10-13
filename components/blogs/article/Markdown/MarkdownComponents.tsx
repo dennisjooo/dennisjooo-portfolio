@@ -6,7 +6,6 @@ import { CodeBlock, type CodeProps } from "./CodeBlock";
 import { MermaidBlock } from "./MermaidBlock";
 import { PhotoView } from "react-photo-view";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
-import { NOISE_OVERLAY_HEAVY } from "@/lib/constants/noiseOverlay";
 
 export const markdownComponents: Components = {
   h1: ({ children, ...props }) => (
@@ -169,10 +168,6 @@ export const markdownComponents: Components = {
                 ...(imgHeight ? { height: `${imgHeight}px` } : {}),
               }}
             >
-              <span
-                className="pointer-events-none absolute inset-0 z-10 opacity-15 mix-blend-overlay"
-                style={{ backgroundImage: NOISE_OVERLAY_HEAVY }}
-              />
               <PhotoView src={cleanSrc}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -183,7 +178,6 @@ export const markdownComponents: Components = {
                   {...rest}
                 />
               </PhotoView>
-              <span className="pointer-events-none absolute inset-0 z-10 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
             </span>
           </HoverImageFrame>
           {title ? (

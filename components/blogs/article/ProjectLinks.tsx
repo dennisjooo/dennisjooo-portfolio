@@ -63,7 +63,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
             {text}
           </span>
 
-          <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+          <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-200 group-hover:text-accent" />
         </span>
       </div>
     </m.a>
