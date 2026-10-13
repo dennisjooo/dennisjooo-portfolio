@@ -26,7 +26,7 @@ export function ProjectCompactTile({
   animationIndex,
   className,
 }: ProjectTileProps) {
-  const { motionProps } = useProjectTileMotion(animationIndex, -3);
+  const { motionProps } = useProjectTileMotion(animationIndex);
 
   return (
     <Link

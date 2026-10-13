@@ -136,7 +136,6 @@ function ArticleHeroImage({
               alt={alt}
               fill
               style={{ objectFit: "contain" }}
-              className="transition-transform duration-700 ease-out group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
               priority
               onLoad={handleImageLoad}

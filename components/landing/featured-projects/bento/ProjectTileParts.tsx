@@ -8,8 +8,8 @@ import {
 } from "@/components/shared/list/BlogLinkCard";
 import { m, useFadeUpInView } from "@/components/motion";
 
-export function useProjectTileMotion(animationIndex: number, hoverY: number) {
-  return useFadeUpInView({ index: animationIndex, y: 30, hoverY });
+export function useProjectTileMotion(animationIndex: number) {
+  return useFadeUpInView({ index: animationIndex, y: 30 });
 }
 
 export function ProjectTileGlow({ large = false }: { large?: boolean }) {

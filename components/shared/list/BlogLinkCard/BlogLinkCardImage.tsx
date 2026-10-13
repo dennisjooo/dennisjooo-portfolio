@@ -20,7 +20,7 @@ export function BlogLinkCardImage({
           alt={title}
           fill
           loading="lazy"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="object-cover"
           sizes={sizes}
         />
       ) : (

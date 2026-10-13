@@ -1,4 +1,4 @@
-import { springConfigs } from "./config";
+const fadeEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function createStaggerContainer(
   staggerChildren: number,
@@ -16,25 +16,16 @@ export function createStaggerContainer(
 }
 
 export function createFadeUpItem(
-  y: number,
+  _y?: number,
   options?: { scale?: number; delay?: number },
 ) {
-  const hidden: { opacity: number; y: number; scale?: number } = {
-    opacity: 0,
-    y,
-  };
-  if (options?.scale !== undefined) {
-    hidden.scale = options.scale;
-  }
-
   return {
-    hidden,
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      scale: 1,
       transition: {
-        ...springConfigs.smooth,
+        duration: 0.4,
+        ease: fadeEase,
         ...(options?.delay !== undefined ? { delay: options.delay } : {}),
       },
     },
@@ -63,8 +54,8 @@ export const dashboardContainerVariants = {
 };
 
 export const dashboardItemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
 };
 
 export const underlineReveal = {
@@ -72,48 +63,48 @@ export const underlineReveal = {
   visible: {
     scaleX: 1,
     opacity: 1,
-    transition: { ...springConfigs.smooth, delay: 0.3 },
+    transition: { duration: 0.4, ease: fadeEase, delay: 0.3 },
   },
 };
 
 export const tabContentVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
   transition: { duration: 0.3 },
 };
 
 export const articleHeroBackVariants = {
-  initial: { opacity: 0, x: -20 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.5 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.4 },
 };
 
 export const articleHeroMetaVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay: 0.1 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.4, delay: 0.1 },
 };
 
 export const articleHeroTitleVariants = {
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay: 0.2 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.45, delay: 0.15 },
 };
 
 export const articleHeroDescriptionVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay: 0.3 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.4, delay: 0.2 },
 };
 
 export const articleHeroImageVariants = {
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay: 0.4 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.45, delay: 0.25 },
 };
 
 export const featuredCardVariants = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
 };

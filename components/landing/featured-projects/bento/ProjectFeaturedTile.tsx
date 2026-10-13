@@ -27,7 +27,7 @@ export function ProjectFeaturedTile({
   animationIndex,
   className,
 }: ProjectTileProps) {
-  const { motionProps } = useProjectTileMotion(animationIndex, -4);
+  const { motionProps } = useProjectTileMotion(animationIndex);
 
   return (
     <Link

@@ -44,7 +44,7 @@ export default function ProfileAdminPage() {
                   src={imageUrl}
                   alt="Profile"
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover"
                   unoptimized={imageUrl.startsWith("http")}
                 />
               )}

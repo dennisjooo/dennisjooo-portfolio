@@ -11,7 +11,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
   imageUrl = "/images/profile.webp",
 }) => (
   <div
-    className="animate-fade-in-up aspect-square w-full max-w-[300px] flex-shrink-0"
+    className="animate-fade-in aspect-square w-full max-w-[300px] flex-shrink-0"
     style={{ animationDelay: "0.4s" }}
   >
     <HoverImageFrame
@@ -27,7 +27,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         src={imageUrl}
         alt="Profile picture"
         fill
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        className="object-cover"
         priority
         sizes="300px"
         quality={70}

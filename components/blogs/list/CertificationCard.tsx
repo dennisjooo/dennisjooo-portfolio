@@ -21,8 +21,8 @@ export const CertificationCard = ({
       target="_blank"
       rel="noopener noreferrer"
       className="group block h-full"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
       viewport={{ once: true, margin: "-50px" }}
     >

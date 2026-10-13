@@ -179,7 +179,7 @@ export const markdownComponents: Components = {
                   src={cleanSrc}
                   alt={alt ?? ""}
                   loading="lazy"
-                  className="block h-auto w-full cursor-zoom-in transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="block h-auto w-full cursor-zoom-in"
                   {...rest}
                 />
               </PhotoView>

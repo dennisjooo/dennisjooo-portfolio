@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import {
   m,
-  springConfigs,
   featuredCardVariants,
   useMotionSafeProps,
 } from "@/components/motion";
@@ -40,7 +39,7 @@ export const FeaturedCard = ({
     initial: featuredCardVariants.initial,
     whileInView: featuredCardVariants.whileInView,
     viewport: { once: true, margin: "-50px" },
-    transition: springConfigs.smooth,
+    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
   });
 
   return (
@@ -66,7 +65,7 @@ export const FeaturedCard = ({
                 src={imageUrl}
                 alt={title}
                 fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, 60vw"
                 priority
               />

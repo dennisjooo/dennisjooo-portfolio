@@ -23,18 +23,17 @@ export default function TabSwitcher({
 }: TabSwitcherProps) {
   return (
     <m.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, delay: 0.2 }}
       className="mb-8 flex items-center gap-6 border-b border-border pb-4 md:gap-10"
     >
       {tabs.map((tab, index) => (
         <m.button
           key={tab}
           onClick={() => onTabChange(tab)}
-          whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          transition={{ duration: 0.15 }}
           className="group relative"
         >
           {/* Index Number */}
@@ -58,7 +57,7 @@ export default function TabSwitcher({
             <m.div
               layoutId="tab-indicator"
               className="absolute -bottom-4 left-0 right-0 h-[2px] bg-foreground"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              transition={{ type: "spring", bounce: 0, duration: 0.35 }}
             />
           )}
         </m.button>

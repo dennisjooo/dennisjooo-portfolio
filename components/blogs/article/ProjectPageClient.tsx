@@ -52,8 +52,8 @@ export default function ProjectPageClient({
             />
 
             <m.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
               className="mb-16"
             >
@@ -62,8 +62,8 @@ export default function ProjectPageClient({
 
             {project.links && project.links.length > 0 && (
               <m.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <ProjectLinks links={project.links} />

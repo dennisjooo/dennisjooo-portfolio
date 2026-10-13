@@ -17,8 +17,8 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
     >
       <div className="flex flex-col gap-6">
         <m.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:text-xs">
@@ -44,8 +44,8 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
         </m.div>
 
         <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
           <Link

@@ -6,7 +6,7 @@ export {
   LayoutGroup,
 } from "framer-motion";
 
-export { springConfigs, viewportSettings } from "./config";
+export { viewportSettings } from "./config";
 
 export {
   createStaggerContainer,

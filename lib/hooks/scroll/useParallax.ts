@@ -29,7 +29,7 @@ interface ParallaxResult {
 }
 
 const DEFAULT_CONFIG: Required<ParallaxConfig> = {
-  damping: 30,
+  damping: 40,
   stiffness: 200,
   foregroundRange: [40, -40],
   backgroundRange: [-20, 20],

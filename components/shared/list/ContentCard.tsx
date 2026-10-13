@@ -30,7 +30,7 @@ export const ContentCard = ({
   type,
   readTime,
 }: ContentCardProps) => {
-  const { motionProps } = useFadeUpInView({ index, y: 30, hoverY: -6 });
+  const { motionProps } = useFadeUpInView({ index, y: 30 });
 
   return (
     <Link
@@ -49,7 +49,7 @@ export const ContentCard = ({
                 alt={title}
                 fill
                 loading="lazy"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="object-cover"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             ) : (

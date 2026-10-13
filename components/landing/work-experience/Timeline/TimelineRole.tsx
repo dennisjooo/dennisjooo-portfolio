@@ -19,8 +19,8 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({
   return (
     <m.div
       className="relative ml-4 border-l border-foreground/10 py-4 pl-8 md:ml-0 md:border-none md:pl-0"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >

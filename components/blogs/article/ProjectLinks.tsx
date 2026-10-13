@@ -40,8 +40,8 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
   return (
     <m.a
       href={url}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       className="group inline-block"
       target="_blank"
