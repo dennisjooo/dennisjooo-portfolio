@@ -19,7 +19,7 @@ export default function ProjectLinks({ links }: ProjectLinksProps) {
       {/* Section Header */}
       <div className="mb-6 flex items-center gap-4">
         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Resources
+          Resources & Stuffs
         </span>
         <div className="h-px flex-1 bg-border" />
       </div>

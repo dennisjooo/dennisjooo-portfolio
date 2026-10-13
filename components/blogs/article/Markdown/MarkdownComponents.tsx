@@ -22,7 +22,6 @@ export const markdownComponents: Components = {
       className="mb-4 mt-14 flex items-center gap-4 font-caslon text-2xl font-normal italic tracking-tight text-foreground md:text-3xl"
       {...props}
     >
-      <span className="h-8 w-[2px] shrink-0 rounded-full bg-accent" />
       {children}
     </h2>
   ),
