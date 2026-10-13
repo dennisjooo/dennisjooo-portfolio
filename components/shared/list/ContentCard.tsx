@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { m, useFadeUpInView } from "@/components/motion";
 import {
+  BlogLinkCardGlow,
   BlogLinkCardMeta,
   BlogLinkCardShell,
 } from "@/components/shared/list/BlogLinkCard";
@@ -38,6 +39,7 @@ export const ContentCard = ({
       className="group block h-full w-full cursor-pointer"
     >
       <m.div {...motionProps} className="relative h-full">
+        <BlogLinkCardGlow />
         <BlogLinkCardShell variant="grid">
           <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
             {imageUrl ? (

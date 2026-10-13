@@ -13,5 +13,6 @@ export * from "./list/ListSkeleton";
 export * from "./list/EmptyState";
 export * from "./list/ListFooter";
 export * from "./SectionSkeleton";
+export * from "./HoverGlow";
 export * from "./HoverImageFrame";
 export * from "./feedback/InlineSpinner";

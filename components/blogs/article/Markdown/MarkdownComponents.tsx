@@ -6,6 +6,7 @@ import { CodeBlock, type CodeProps } from "./CodeBlock";
 import { MermaidBlock } from "./MermaidBlock";
 import { PhotoView } from "react-photo-view";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
+import { wrapDropCap } from "./wrapDropCap";
 
 export const markdownComponents: Components = {
   h1: ({ children, ...props }) => (
@@ -48,8 +49,23 @@ export const markdownComponents: Components = {
     if (hasImage) {
       return <div className="mb-5">{children}</div>;
     }
+
+    const leadClass = node?.properties?.className;
+    const isLead =
+      (typeof leadClass === "string" &&
+        leadClass.split(/\s+/).includes("article-lead")) ||
+      (Array.isArray(leadClass) && leadClass.includes("article-lead"));
+
     return (
-      <p className="mb-5 leading-relaxed text-muted-foreground">{children}</p>
+      <p
+        className={
+          isLead
+            ? "article-lead mb-5 leading-relaxed text-muted-foreground"
+            : "mb-5 leading-relaxed text-muted-foreground"
+        }
+      >
+        {isLead ? wrapDropCap(children) : children}
+      </p>
     );
   },
   strong: ({ children }) => (

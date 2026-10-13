@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import { markdownComponents } from "./Markdown/MarkdownComponents";
+import { rehypeLeadParagraph } from "@/lib/utils/dropCap";
 
 function preprocessImageSizes(markdown: string): string {
   return markdown.replace(
@@ -31,7 +32,7 @@ export default function ProjectContent({ content }: ProjectContentProps) {
       <ReactMarkdown
         components={markdownComponents}
         remarkPlugins={[remarkMath, remarkGfm]}
-        rehypePlugins={[rehypeSlug, rehypeKatex]}
+        rehypePlugins={[rehypeSlug, rehypeKatex, rehypeLeadParagraph]}
       >
         {processed}
       </ReactMarkdown>

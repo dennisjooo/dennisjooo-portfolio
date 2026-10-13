@@ -1,29 +1,25 @@
-import { DockIcon, type DockIconProps } from "./DockIcon";
+import { DockIcon } from "./DockIcon";
 import Link from "next/link";
 import type { ReactNode } from "react";
-interface DockIconLinkProps extends Partial<DockIconProps> {
+
+interface DockIconLinkProps {
   href: string;
   ariaLabel: string;
   icon: ReactNode;
 }
 
-export const DockIconLink: React.FC<DockIconLinkProps> = ({
-  href,
-  ariaLabel,
-  icon,
-  ...dockProps
-}) => {
+export function DockIconLink({ href, ariaLabel, icon }: DockIconLinkProps) {
   return (
-    <DockIcon {...dockProps}>
+    <DockIcon>
       <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={ariaLabel}
-        className="flex size-full items-center justify-center text-muted-foreground transition-colors duration-200 hover:text-primary"
+        className="flex size-full items-center justify-center text-muted-foreground transition-colors duration-200 hover:text-foreground"
       >
         {icon}
       </Link>
     </DockIcon>
   );
-};
+}

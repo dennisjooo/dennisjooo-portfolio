@@ -37,8 +37,8 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
               className={cn(
                 "absolute right-[-4.5rem] top-6 z-10 hidden h-4 w-4 rounded-full border-2 transition-all duration-500 lg:block",
                 isActive
-                  ? "scale-110 border-foreground bg-foreground shadow-[0_0_0_4px_hsl(var(--foreground)/0.15),0_0_16px_hsl(var(--foreground)/0.25)]"
-                  : "scale-100 border-foreground/25 bg-background",
+                  ? "glow-dot border-foreground bg-foreground"
+                  : "border-foreground/25 bg-background",
               )}
             />
           </div>

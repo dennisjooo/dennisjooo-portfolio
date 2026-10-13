@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import { HoverGlow } from "@/components/shared/HoverGlow";
 
 export type HoverImageFrameProps = {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ const roundedClasses = {
   "2xl": "rounded-2xl",
 } as const;
 
-/** Solid border hover frame matching featured project cards. */
+/** Hover frame with the shared hairline-and-bloom glow. */
 export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
   function HoverImageFrame(
     { children, className, frameClassName, rounded = "xl", ...frameProps },
@@ -24,12 +25,7 @@ export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
 
     return (
       <div className={cn("group relative", className)}>
-        <div
-          className={cn(
-            "absolute -inset-px bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100",
-            roundedClass,
-          )}
-        />
+        <HoverGlow rounded={rounded} />
         <div
           ref={ref}
           {...frameProps}

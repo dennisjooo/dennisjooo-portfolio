@@ -39,7 +39,7 @@ function StaticSectionHeader({
       <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm">
         {title}
       </span>
-      <div className="bg-gradient-accent absolute bottom-0 left-0 right-0 h-px" />
+      <div className="glow-line bg-gradient-accent absolute bottom-0 left-0 right-0 h-px" />
     </div>
   );
 }
@@ -76,8 +76,7 @@ function AnimatedSectionHeader({
       </m.span>
       <m.div
         variants={underline}
-        className="bg-gradient-accent absolute bottom-0 left-0 right-0 h-px origin-left"
-        style={{ boxShadow: "0 0 8px var(--accent-shadow)" }}
+        className="glow-line bg-gradient-accent absolute bottom-0 left-0 right-0 h-px origin-left"
       />
     </m.div>
   );

@@ -3,6 +3,7 @@
 import { m } from "@/components/motion";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { BsGithub } from "react-icons/bs";
+import { HoverGlow } from "@/components/shared/HoverGlow";
 
 interface Link {
   url: string;
@@ -48,9 +49,9 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
       rel="noopener noreferrer"
     >
       <div className="relative">
-        <div className="absolute -inset-px rounded-lg bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <HoverGlow rounded="lg" />
 
-        <span className="relative inline-flex items-center gap-3 rounded-lg border border-border bg-card px-5 py-3 transition-colors duration-500">
+        <span className="relative inline-flex items-center gap-3 rounded-lg border border-border bg-card px-5 py-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-colors duration-300 group-hover:bg-accent/10">
             {isGitHubLink ? (
               <BsGithub className="h-4 w-4 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />

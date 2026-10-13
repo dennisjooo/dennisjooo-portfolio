@@ -1,11 +1,31 @@
-import { NAVBAR_OFFSET } from "@/lib/constants/scrolling";
+import {
+  NAVBAR_OFFSET,
+  SCROLL_ANIMATION_DURATION,
+} from "@/lib/constants/scrolling";
 
 const PENDING_SECTION_KEY = "portfolio-pending-section";
 const SCROLL_ANIMATIONS_READY = "portfolio:scroll-animations-ready";
 const LENIS_READY = "portfolio:lenis-ready";
 const CONTENT_REVEALED = "portfolio:content-revealed";
+const INSTANT_SCROLL_LOCK_MS = 400;
 
 let scrollAnimationsReady = false;
+let programmaticScrollUntil = 0;
+
+export function beginProgrammaticScroll(
+  durationMs = INSTANT_SCROLL_LOCK_MS,
+): void {
+  if (typeof performance === "undefined") return;
+  programmaticScrollUntil = Math.max(
+    programmaticScrollUntil,
+    performance.now() + durationMs,
+  );
+}
+
+export function isProgrammaticScroll(): boolean {
+  if (typeof performance === "undefined") return false;
+  return performance.now() < programmaticScrollUntil;
+}
 
 export function setScrollAnimationsReady(ready: boolean): void {
   scrollAnimationsReady = ready;
@@ -55,6 +75,9 @@ export function scrollToCentered(
   element: HTMLElement,
   smooth: boolean = false,
 ): void {
+  beginProgrammaticScroll(
+    smooth ? SCROLL_ANIMATION_DURATION : INSTANT_SCROLL_LOCK_MS,
+  );
   const scrollPosition = calculateCenteredScrollPosition(element);
 
   if (window.lenis) {
@@ -68,6 +91,9 @@ export function scrollToCentered(
 }
 
 export function scrollToTop(instant: boolean = false): void {
+  beginProgrammaticScroll(
+    instant ? INSTANT_SCROLL_LOCK_MS : SCROLL_ANIMATION_DURATION,
+  );
   if (window.lenis) {
     if (instant) {
       window.lenis.stop();
@@ -84,6 +110,7 @@ export function scrollToTop(instant: boolean = false): void {
 }
 
 export function forceScrollToTop(): void {
+  beginProgrammaticScroll(INSTANT_SCROLL_LOCK_MS);
   window.scrollTo(0, 0);
 
   if (window.lenis) {
@@ -124,6 +151,9 @@ export function scrollToSection(sectionId: string, instant = true): void {
   const el = document.getElementById(sectionId);
   if (!el) return;
 
+  beginProgrammaticScroll(
+    instant ? INSTANT_SCROLL_LOCK_MS : SCROLL_ANIMATION_DURATION,
+  );
   const top = getSectionScrollTop(el);
 
   if (window.lenis) {

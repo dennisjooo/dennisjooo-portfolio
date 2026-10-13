@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { isProgrammaticScroll } from "@/lib/utils/scrollHelpers";
 
 const SCROLL_THRESHOLD = 20;
 const SCROLL_DIRECTION_THRESHOLD = 10;
@@ -59,7 +60,10 @@ export const useHeroSectionState = (
         const delta = scrollY - prevScrollY;
         if (delta > SCROLL_DIRECTION_THRESHOLD) {
           isNavbarVisible = false;
-        } else if (delta < -SCROLL_DIRECTION_THRESHOLD) {
+        } else if (
+          delta < -SCROLL_DIRECTION_THRESHOLD &&
+          !isProgrammaticScroll()
+        ) {
           isNavbarVisible = true;
         }
       }

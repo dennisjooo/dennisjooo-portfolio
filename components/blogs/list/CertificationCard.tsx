@@ -2,6 +2,7 @@
 
 import { m } from "@/components/motion";
 import { ArrowUpRightIcon, AcademicCapIcon } from "@heroicons/react/24/outline";
+import { HoverGlow } from "@/components/shared/HoverGlow";
 import type { Certification } from "@/lib/db";
 
 interface CertificationCardProps {
@@ -27,9 +28,9 @@ export const CertificationCard = ({
       viewport={{ once: true, margin: "-50px" }}
     >
       <div className="relative h-full">
-        <div className="absolute -inset-px rounded-xl bg-accent-border opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <HoverGlow />
 
-        <article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 group-hover:border-foreground/30">
+        <article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card">
           <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-3 md:px-5">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-colors duration-300 group-hover:bg-accent/10">
               <AcademicCapIcon className="h-4 w-4 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />

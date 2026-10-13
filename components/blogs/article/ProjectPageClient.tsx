@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ProjectLinks from "@/components/blogs/article/ProjectLinks";
+import { BackToBlogsLink } from "@/components/blogs/article/BackToBlogsLink";
 import TableOfContents from "@/components/blogs/article/TableOfContents";
 import { ReadingProgress } from "@/components/shared";
 import { ArticleHero } from "@/components/blogs/article/ArticleHero";
@@ -75,13 +74,7 @@ export default function ProjectPageClient({
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-16 flex justify-center border-t border-border pt-8"
             >
-              <Link
-                href="/blogs"
-                className="group inline-flex items-center gap-3 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 hover:text-accent"
-              >
-                <ArrowLeftIcon className="h-4 w-4" />
-                Back to all posts
-              </Link>
+              <BackToBlogsLink>Back to all posts</BackToBlogsLink>
             </m.div>
           </article>
         </div>

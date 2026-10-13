@@ -23,6 +23,7 @@ export const caslon = Libre_Caslon_Text({
   display: "swap",
   variable: "--font-caslon",
   weight: "400",
+  style: ["normal", "italic"],
   preload: true,
   adjustFontFallback: true,
 });

@@ -10,9 +10,8 @@ import {
   useMotionSafeProps,
 } from "@/components/motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { PhotoView } from "react-photo-view";
+import { BackToBlogsLink } from "@/components/blogs/article/BackToBlogsLink";
 import { useState } from "react";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
@@ -44,13 +43,7 @@ export const ArticleHero = ({
   return (
     <header className="mb-12 w-full md:mb-16">
       <m.div {...backMotion} className="mb-8">
-        <Link
-          href="/blogs"
-          className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-          Back to Blogs
-        </Link>
+        <BackToBlogsLink>Back to Blogs</BackToBlogsLink>
       </m.div>
 
       <m.div

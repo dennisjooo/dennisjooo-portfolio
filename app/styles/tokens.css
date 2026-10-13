@@ -35,9 +35,8 @@ html.dark {
   --gradient-accent-from: rgb(60, 60, 60);
   --gradient-accent-via: rgb(175, 175, 175);
   --gradient-accent-to: rgb(60, 60, 60);
-  --accent-border: rgb(160, 160, 160);
-  --accent-shadow: rgba(0, 0, 0, 0.1);
-  --default-border: rgb(229, 231, 235);
+  --glow-ring: hsl(var(--foreground) / 0.2);
+  --glow-bloom: hsl(var(--foreground) / 0.1);
 }
 
 .dark {
@@ -66,7 +65,6 @@ html.dark {
   --gradient-accent-from: rgb(210, 210, 210);
   --gradient-accent-via: rgb(100, 100, 100);
   --gradient-accent-to: rgb(210, 210, 210);
-  --accent-border: rgb(80, 80, 80);
-  --accent-shadow: rgba(255, 255, 255, 0.06);
-  --default-border: rgb(31, 41, 55);
+  --glow-ring: hsl(var(--foreground) / 0.32);
+  --glow-bloom: hsl(var(--foreground) / 0.18);
 }
