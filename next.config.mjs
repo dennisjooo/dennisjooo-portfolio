@@ -67,6 +67,9 @@ const createConfig = (phase) => {
     reactStrictMode: true,
     poweredByHeader: false,
     compress: true,
+    turbopack: {
+      root: import.meta.dirname,
+    },
     images: {
       formats: ["image/avif", "image/webp"],
       qualities: [70, 75],

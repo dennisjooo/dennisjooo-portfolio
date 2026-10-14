@@ -1,8 +1,8 @@
 import type { RefObject } from "react";
 import type { ContentSection } from "@/lib/content/aboutContent";
 import {
-  ABOUT_SCROLL_MOBILE,
-  ABOUT_SCROLL_DESKTOP,
+  aboutDesktopScrollDistance,
+  aboutMobileScrollDistance,
 } from "@/lib/constants/aboutScroll";
 
 type GsapInstance = typeof import("gsap").default;
@@ -10,13 +10,15 @@ type GsapInstance = typeof import("gsap").default;
 export function setupAboutMobileAnimations(
   gsap: GsapInstance,
   sectionRef: RefObject<HTMLDivElement | null>,
+  contentSectionCount: number,
 ) {
   const mobileContainer = document.querySelector(
     ".mobile-scroll-container",
   ) as HTMLElement;
   if (!mobileContainer) return;
 
-  const totalSections = 5;
+  const totalSections = 1 + Math.max(contentSectionCount, 1);
+  const lastIndex = Math.max(totalSections - 1, 1);
 
   const scrollTriggerInstance = gsap.to(mobileContainer, {
     xPercent: -((100 * (totalSections - 1)) / totalSections),
@@ -27,12 +29,12 @@ export function setupAboutMobileAnimations(
       pinSpacing: false,
       scrub: 0.5,
       snap: {
-        snapTo: 1 / (totalSections - 1),
+        snapTo: 1 / lastIndex,
         duration: { min: 0.15, max: 0.3 },
         ease: "power2.out",
         inertia: false,
       },
-      end: `+=${ABOUT_SCROLL_MOBILE}`,
+      end: `+=${aboutMobileScrollDistance(contentSectionCount)}`,
       fastScrollEnd: true,
       preventOverlaps: true,
       invalidateOnRefresh: true,
@@ -65,7 +67,7 @@ export function setupAboutDesktopAnimations(
     scrollTrigger: {
       trigger: sectionRef.current,
       start: "top top",
-      end: `+=${ABOUT_SCROLL_DESKTOP}`,
+      end: `+=${aboutDesktopScrollDistance(contentSections.length)}`,
       pin: true,
       pinSpacing: false,
       scrub: 0.5,
@@ -121,7 +123,11 @@ export async function initAboutGsapAnimations(
   let mobileCleanup: (() => void) | undefined;
 
   mm.add("(max-width: 767px)", () => {
-    mobileCleanup = setupAboutMobileAnimations(gsap, sectionRef);
+    mobileCleanup = setupAboutMobileAnimations(
+      gsap,
+      sectionRef,
+      contentSections.length,
+    );
     return mobileCleanup;
   });
 

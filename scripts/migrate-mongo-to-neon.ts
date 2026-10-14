@@ -20,6 +20,7 @@ import {
   certifications,
   siteConfig,
 } from "../lib/db/schema";
+import { defaultAboutContent } from "../lib/content/aboutContent";
 
 // Load environment variables
 dotenv.config({ path: ".env.local" });
@@ -191,10 +192,9 @@ async function migrateSiteConfig(mongoDb: Db) {
   try {
     await db.insert(siteConfig).values({
       profileImageUrl: mongoConfig.profileImageUrl || "/images/profile.webp",
-      aboutIntro: mongoConfig.aboutIntro || null,
-      aboutExperience: mongoConfig.aboutExperience || null,
-      aboutPersonal: mongoConfig.aboutPersonal || null,
-      aboutOutro: mongoConfig.aboutOutro || null,
+      aboutSections: Array.isArray(mongoConfig.aboutSections)
+        ? mongoConfig.aboutSections
+        : defaultAboutContent,
       createdAt: mongoConfig.createdAt
         ? new Date(mongoConfig.createdAt)
         : new Date(),

@@ -1,6 +1,6 @@
 import packageJson from "@/package.json";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/constants/site";
-import { defaultAboutContent } from "@/lib/content/aboutContent";
+import { resolveAboutContent } from "@/lib/content/aboutContent";
 import { skillCategories } from "@/lib/content/skillContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import type { SiteManifestData } from "./types";
@@ -78,19 +78,11 @@ ${urls}
 `;
 }
 
-function aboutText(data: SiteManifestData): {
-  intro: string;
-  experience: string;
-  personal: string;
-  outro: string;
-} {
-  const config = data.siteConfig;
-  return {
-    intro: config?.aboutIntro || defaultAboutContent.intro,
-    experience: config?.aboutExperience || defaultAboutContent.experience,
-    personal: config?.aboutPersonal || defaultAboutContent.personal,
-    outro: config?.aboutOutro || defaultAboutContent.outro,
-  };
+function aboutText(data: SiteManifestData): string {
+  const sections = resolveAboutContent(data.siteConfig?.aboutSections);
+  return sections
+    .map((section) => `## ${section.title}\n\n${section.body}`)
+    .join("\n\n");
 }
 
 function formatProjectSection(data: SiteManifestData): string {
@@ -205,9 +197,7 @@ export function buildLlmsTxt(
     `# ${SITE_NAME}'s Portfolio`,
     `> ${siteDescription}`,
     `- **Build version:** v${packageJson.version}`,
-    about.intro,
-    about.experience,
-    about.personal,
+    about,
     formatWorkExperience(data),
     formatProjectSection(data),
     formatBlogSection(data),

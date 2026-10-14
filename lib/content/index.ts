@@ -9,5 +9,5 @@ export {
   type ContentSection,
   type AboutContent,
   defaultAboutContent,
-  createContentSections,
+  resolveAboutContent,
 } from "./aboutContent";

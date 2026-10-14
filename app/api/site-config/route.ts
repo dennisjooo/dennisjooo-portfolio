@@ -6,7 +6,17 @@ import {
   successResponse,
   errorResponse,
 } from "@/lib/api/apiHelpers";
-import { defaultAboutContent } from "@/lib/content/aboutContent";
+import {
+  defaultAboutContent,
+  parseAboutSections,
+  type AboutContent,
+} from "@/lib/content/aboutContent";
+
+function hasAboutSections(
+  sections: AboutContent | null | undefined,
+): sections is AboutContent {
+  return Array.isArray(sections) && sections.length > 0;
+}
 
 export async function GET() {
   try {
@@ -17,13 +27,19 @@ export async function GET() {
         .insert(siteConfig)
         .values({
           profileImageUrl: "/images/profile.webp",
-          aboutIntro: defaultAboutContent.intro,
-          aboutExperience: defaultAboutContent.experience,
-          aboutPersonal: defaultAboutContent.personal,
-          aboutOutro: defaultAboutContent.outro,
+          aboutSections: defaultAboutContent,
         })
         .returning();
       return successResponse(newConfig);
+    }
+
+    if (!hasAboutSections(config.aboutSections)) {
+      const [seeded] = await db
+        .update(siteConfig)
+        .set({ aboutSections: defaultAboutContent, updatedAt: new Date() })
+        .where(eq(siteConfig.id, config.id))
+        .returning();
+      return successResponse(seeded);
     }
 
     return successResponse(config);
@@ -33,12 +49,41 @@ export async function GET() {
   }
 }
 
+function parseSiteConfigUpdate(body: unknown) {
+  if (!body || typeof body !== "object") {
+    return { ok: false as const, error: "Invalid payload" };
+  }
+
+  const payload = body as Record<string, unknown>;
+  const updates: {
+    profileImageUrl?: string;
+    aboutSections?: AboutContent;
+    updatedAt: Date;
+  } = { updatedAt: new Date() };
+
+  if (payload.profileImageUrl !== undefined) {
+    if (typeof payload.profileImageUrl !== "string") {
+      return { ok: false as const, error: "Invalid profile image URL" };
+    }
+    updates.profileImageUrl = payload.profileImageUrl;
+  }
+
+  if (payload.aboutSections !== undefined) {
+    const parsed = parseAboutSections(payload.aboutSections);
+    if (!parsed.ok) return parsed;
+    updates.aboutSections = parsed.value;
+  }
+
+  return { ok: true as const, value: updates };
+}
+
 export async function PUT(request: Request) {
   const authResult = await requireAuth();
   if (isAuthError(authResult)) return authResult;
 
   try {
-    const body = await request.json();
+    const parsed = parseSiteConfigUpdate(await request.json());
+    if (!parsed.ok) return errorResponse(parsed.error);
 
     const [existingConfig] = await db.select().from(siteConfig).limit(1);
 
@@ -46,19 +91,16 @@ export async function PUT(request: Request) {
     if (existingConfig) {
       [config] = await db
         .update(siteConfig)
-        .set({ ...body, updatedAt: new Date() })
+        .set(parsed.value)
         .where(eq(siteConfig.id, existingConfig.id))
         .returning();
     } else {
       [config] = await db
         .insert(siteConfig)
         .values({
-          profileImageUrl: body.profileImageUrl ?? "/images/profile.webp",
-          aboutIntro: body.aboutIntro ?? defaultAboutContent.intro,
-          aboutExperience:
-            body.aboutExperience ?? defaultAboutContent.experience,
-          aboutPersonal: body.aboutPersonal ?? defaultAboutContent.personal,
-          aboutOutro: body.aboutOutro ?? defaultAboutContent.outro,
+          profileImageUrl:
+            parsed.value.profileImageUrl ?? "/images/profile.webp",
+          aboutSections: parsed.value.aboutSections ?? defaultAboutContent,
         })
         .returning();
     }

@@ -13,8 +13,10 @@ export const MobileView: React.FC<MobileViewProps> = ({
   profileImageUrl,
 }) => (
   <div className="h-full w-full touch-pan-y overflow-hidden md:hidden">
-    <div className="mobile-scroll-container backface-hidden flex h-full w-[500%] transform-gpu">
-      {/* Card 1: Profile */}
+    <div
+      className="mobile-scroll-container backface-hidden flex h-full transform-gpu"
+      style={{ width: `${(contentSections.length + 1) * 100}%` }}
+    >
       <div className="flex h-full w-screen flex-col items-center justify-center gap-6 px-8">
         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-50">
           Swipe to Explore
@@ -23,7 +25,6 @@ export const MobileView: React.FC<MobileViewProps> = ({
         <ProfileMetadata nameClassName="text-4xl" />
       </div>
 
-      {/* Cards 2-5: Content */}
       {contentSections.map((section) => (
         <div
           key={section.id}

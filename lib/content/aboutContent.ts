@@ -1,29 +1,68 @@
-import { ABOUT_SECTIONS } from "@/lib/constants/aboutSections";
-
 export interface ContentSection {
+  id: string;
   title: string;
   body: string;
-  id: string;
 }
 
-export interface AboutContent {
-  intro: string;
-  experience: string;
-  personal: string;
-  outro: string;
+export type AboutContent = ContentSection[];
+
+export const ABOUT_SECTION_MIN = 1;
+export const ABOUT_SECTION_MAX = 6;
+export const ABOUT_BODY_SOFT_LIMIT = 420;
+
+export const defaultAboutContent: AboutContent = [
+  {
+    id: "hello",
+    title: "Hello",
+    body: `Hey, I'm Dennis. I take ideas apart, figure out how they tick, and put them back together a little smarter. Business Mathematics by training; data, AI, and systems that make life flow by obsession. I like when logic meets intuition — when something just clicks.`,
+  },
+  {
+    id: "craft",
+    title: "Craft",
+    body: `I've shipped ML apps, orchestrated chatbots, and tools that turn chaos into clarity. I live in the messy space between a rough sketch and something people actually use. Less hype, more quiet progress: automations that save time, systems that scale, ideas that grow legs.`,
+  },
+  {
+    id: "play",
+    title: "Play",
+    body: `Off the clock I'm half-lost in papers I only half understand, sketching side projects that may never ship, or running laps in a sim rig like there's a trophy at stake. Comics, science books, strange ideas. Building isn't just utility — it's curiosity, rhythm, and play.`,
+  },
+];
+
+function isAboutSection(value: unknown): value is ContentSection {
+  if (!value || typeof value !== "object") return false;
+  const section = value as Record<string, unknown>;
+  return (
+    typeof section.id === "string" &&
+    section.id.length > 0 &&
+    typeof section.title === "string" &&
+    typeof section.body === "string"
+  );
 }
 
-export const defaultAboutContent: AboutContent = {
-  intro: `Hey, I'm Dennis. I like taking ideas apart, figuring out how they tick, and putting them back together in a way that feels a little smarter. I studied Business Mathematics, but these days my curiosity leans more toward data, AI, and building systems that make life flow a bit smoother. I like when logic meets intuition, when something just clicks and works better than it has any right to.`,
-  experience: `I've built and shipped ML apps, orchestrated chatbots, and pieced together tools that turn chaos into clarity. I'm drawn to projects that live in the messy space between idea and execution, where a rough sketch becomes something people actually use. I care less about chasing hype and more about quiet, useful progress: automations that save time, systems that scale well, and ideas that grow legs on their own.`,
-  personal: `Outside of work, I'm usually buried in ML papers I only half understand (for now), sketching side projects that may or may not see daylight, or running laps in a sim rig like there's a trophy at stake. I love comics, science books, and strange ideas that don't fit anywhere yet. For me, building isn't just about utility, it's about curiosity, rhythm, and play.`,
-  outro: `If you're into AI, design, or building things that make people pause and go "oh, that's clever," let's talk. I'm always down to share ideas, trade experiments, or spin up something new, half for the fun of it, half to see what it might become.`,
-};
+export function parseAboutSections(
+  value: unknown,
+): { ok: true; value: AboutContent } | { ok: false; error: string } {
+  if (!Array.isArray(value)) {
+    return { ok: false, error: "About sections must be an array" };
+  }
+  if (value.length < ABOUT_SECTION_MIN || value.length > ABOUT_SECTION_MAX) {
+    return {
+      ok: false,
+      error: `About sections must have between ${ABOUT_SECTION_MIN} and ${ABOUT_SECTION_MAX} items`,
+    };
+  }
+  if (!value.every(isAboutSection)) {
+    return {
+      ok: false,
+      error: "Each about section needs an id, title, and body",
+    };
+  }
+  return { ok: true, value };
+}
 
-export function createContentSections(content: AboutContent): ContentSection[] {
-  return ABOUT_SECTIONS.map((section) => ({
-    title: section.title,
-    body: content[section.key],
-    id: section.sectionId,
-  }));
+export function resolveAboutContent(
+  sections?: AboutContent | null,
+): AboutContent {
+  if (sections && sections.length > 0) return sections;
+  return defaultAboutContent;
 }

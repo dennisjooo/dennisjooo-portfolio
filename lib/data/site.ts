@@ -11,6 +11,10 @@ import {
 import { CACHE_CONFIG } from "@/lib/constants/cache";
 import type { TimelineItemData } from "@/lib/types/workExperience";
 import type { ContactLinkData } from "@/lib/types/contacts";
+import {
+  resolveAboutContent,
+  type AboutContent,
+} from "@/lib/content/aboutContent";
 
 export const getSiteConfig = unstable_cache(
   async (): Promise<SiteConfig | null> => {
@@ -70,13 +74,6 @@ export const getContacts = unstable_cache(
   { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["contacts"] },
 );
 
-export function buildAboutContent(config: SiteConfig | null) {
-  if (!config) return undefined;
-
-  return {
-    intro: config.aboutIntro ?? "",
-    experience: config.aboutExperience ?? "",
-    personal: config.aboutPersonal ?? "",
-    outro: config.aboutOutro ?? "",
-  };
+export function buildAboutContent(config: SiteConfig | null): AboutContent {
+  return resolveAboutContent(config?.aboutSections);
 }

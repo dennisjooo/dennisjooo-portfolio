@@ -82,10 +82,9 @@ export const certifications = pgTable("certifications", {
 export const siteConfig = pgTable("site_config", {
   id: uuid("id").defaultRandom().primaryKey(),
   profileImageUrl: text("profile_image_url").default("/images/profile.webp"),
-  aboutIntro: text("about_intro"),
-  aboutExperience: text("about_experience"),
-  aboutPersonal: text("about_personal"),
-  aboutOutro: text("about_outro"),
+  aboutSections: json("about_sections")
+    .$type<Array<{ id: string; title: string; body: string }>>()
+    .default([]),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

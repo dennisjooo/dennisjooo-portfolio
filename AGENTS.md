@@ -41,7 +41,7 @@ All landing sections (except About's scroll container) use `SectionShell` from `
 - **Inner container:** `container mx-auto px-6 max-w-7xl`
 - **Full bleed:** Skills marquee rows break out via `fullBleed` + `SectionShellHeader`
 
-About keeps its GSAP pin/scrub outer wrapper but uses the same inner container classes via `sectionInnerClasses`.
+About keeps its GSAP pin/scrub outer wrapper but uses the same inner container classes via `sectionInnerClasses`. Slides come from `site_config.about_sections` JSON (title + body, 1–6 items), edited at `/admin/about`.
 
 ### The "Peel" Effect
 
@@ -61,7 +61,7 @@ The site uses a vertical stacking context to create depth.
 
 - **CSS keyframes:** Hero LCP animations only (`animate-fade-in`, `animate-letter-reveal`) — run before JS hydration.
 - **Framer Motion:** Section entrances, card hovers, and micro-interactions. Shared variants live in `components/motion/variants.ts`.
-- **GSAP:** Scroll-driven effects only (hero peel, About pin/scrub). Scroll distances are tunable via `lib/constants/aboutScroll.ts`.
+- **GSAP:** Scroll-driven effects only (hero peel, About pin/scrub). About scroll distance scales with CMS section count via `lib/constants/aboutScroll.ts`.
 - **Page transitions:** Smooth transitions; avoid wipe-up plus fade combinations.
 
 ## 4. Component Guidelines
@@ -157,4 +157,5 @@ The same content entity uses different names by layer. Use this table when namin
 - Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
 - Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
 - SSR loader critical CSS in `app/layout.tsx` must use `var(--font-caslon)` so the name matches hero Libre Caslon Text
+- About landing slides are CMS JSON on `site_config.about_sections` (not four named columns); public fallback is Hello / Craft / Play in `lib/content/aboutContent.ts`
 - Prettier uses `prettier-plugin-tailwindcss` and `prettier-plugin-packagejson` (see `.prettierrc`)
