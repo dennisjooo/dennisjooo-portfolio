@@ -76,7 +76,7 @@ export const FeaturedCard = ({
           )}
         >
           <TileMeta parts={[type && getBlogTypeLabel(type), date, readTime]} />
-          <h3 className="font-caslon text-3xl italic leading-[1.05] tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-4xl xl:text-5xl">
+          <h3 className="font-caslon text-2xl italic leading-[1.1] tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl xl:text-4xl">
             {title}
           </h3>
           <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-lg">
