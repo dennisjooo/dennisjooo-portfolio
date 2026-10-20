@@ -39,11 +39,7 @@ export function BlogsTabs({
   }, [mounted, activeTab, availableTabs, setActiveTab]);
 
   return (
-    <div
-      className={`${sectionInnerClasses} pt-24 transition-opacity duration-300 md:pt-20 ${
-        mounted ? "opacity-100" : "opacity-0"
-      }`}
-    >
+    <div className={`${sectionInnerClasses} pt-24 md:pt-20`}>
       {/* Editorial Hero Section */}
       <BlogsHero
         activeTab={activeTab}
@@ -64,31 +60,21 @@ export function BlogsTabs({
       {/* Content Grid */}
       {availableTabs.length > 0 && (
         <div className="mt-8 min-h-[50vh] w-full">
-          {mounted ? (
-            <AnimatePresence mode="wait">
-              {activeTab === "blog" ? (
-                <m.div key="blog" {...tabContentVariants}>
-                  <ProjectsList
-                    type="all"
-                    initialData={initialProjects}
-                    initialPagination={initialPagination}
-                  />
-                </m.div>
-              ) : (
-                <m.div key="certifications" {...tabContentVariants}>
-                  <CertificationsList />
-                </m.div>
-              )}
-            </AnimatePresence>
-          ) : (
-            <m.div key="blog" {...tabContentVariants}>
-              <ProjectsList
-                type="all"
-                initialData={initialProjects}
-                initialPagination={initialPagination}
-              />
-            </m.div>
-          )}
+          <AnimatePresence mode="wait" initial={false}>
+            {activeTab === "blog" ? (
+              <m.div key="blog" {...tabContentVariants}>
+                <ProjectsList
+                  type="all"
+                  initialData={initialProjects}
+                  initialPagination={initialPagination}
+                />
+              </m.div>
+            ) : (
+              <m.div key="certifications" {...tabContentVariants}>
+                <CertificationsList />
+              </m.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </div>

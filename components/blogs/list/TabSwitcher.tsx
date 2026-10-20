@@ -22,12 +22,7 @@ export default function TabSwitcher({
   tabs,
 }: TabSwitcherProps) {
   return (
-    <m.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4, delay: 0.2 }}
-      className="mb-8 flex items-center gap-6 border-b border-border pb-4 md:gap-10"
-    >
+    <m.div className="mb-8 flex items-center gap-6 border-b border-border pb-4 md:gap-10">
       {tabs.map((tab, index) => (
         <m.button
           key={tab}

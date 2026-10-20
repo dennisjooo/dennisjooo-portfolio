@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { m, useFadeUpInView } from "@/components/motion";
 import { cn } from "@/lib/utils";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
@@ -35,6 +36,13 @@ export function TileImage({
   priority,
   className,
 }: TileImageProps) {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
+
   return (
     <div
       className={cn(
@@ -44,12 +52,17 @@ export function TileImage({
     >
       {imageUrl ? (
         <Image
+          ref={imgRef}
           src={imageUrl}
           alt={title}
           fill
           priority={priority}
           loading={priority ? undefined : "lazy"}
-          className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+          onLoad={() => setLoaded(true)}
+          className={cn(
+            "object-cover transition-[opacity,transform] duration-500 ease-out motion-safe:group-hover:scale-[1.04]",
+            loaded ? "opacity-100" : "opacity-0",
+          )}
           sizes={sizes}
         />
       ) : (

@@ -10,10 +10,10 @@ export function BlogsPageSkeleton() {
       >
         <div className="container mx-auto max-w-7xl px-6 pt-24 md:pt-20">
           <header className="mb-8 w-full md:mb-10" aria-hidden="true">
-            <SkeletonBlock className="mb-4 h-3 w-44" />
-            <SkeletonBlock className="mb-4 h-12 w-48 md:h-14 md:w-56" />
-            <SkeletonBlock className="h-5 w-full max-w-xl" />
-            <SkeletonBlock className="mt-2 h-5 w-4/5 max-w-md" />
+            <SkeletonBlock className="mb-4 h-4 w-44" />
+            <SkeletonBlock className="mb-4 h-[60px] w-48 md:h-24 md:w-72" />
+            <SkeletonBlock className="h-[26px] w-full max-w-xl md:h-7" />
+            <SkeletonBlock className="mt-1 h-[26px] w-4/5 max-w-md md:h-7" />
           </header>
 
           <div

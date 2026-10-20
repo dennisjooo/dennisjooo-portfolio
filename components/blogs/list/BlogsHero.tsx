@@ -31,7 +31,7 @@ export const BlogsHero = ({ activeTab, meta }: BlogsHeroProps) => {
         {meta && <p className="hidden md:block">{meta}</p>}
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <m.h1
           key={activeTab}
           initial={titleInitial ?? false}
@@ -44,7 +44,7 @@ export const BlogsHero = ({ activeTab, meta }: BlogsHeroProps) => {
         </m.h1>
       </AnimatePresence>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <m.p
           key={activeTab}
           initial={captionInitial ?? false}
