@@ -110,19 +110,16 @@ export const ContentCard = ({
   date,
   imageUrl,
   slug,
-  index,
   displayIndex,
   type,
   readTime,
 }: ContentCardProps) => {
-  const { motionProps } = useFadeUpInView({ index, y: 30 });
-
   return (
     <Link
       href={`/blogs/${slug}`}
       className="group block h-full w-full cursor-pointer rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
     >
-      <m.div {...motionProps}>
+      <div>
         <TileImage
           imageUrl={imageUrl}
           title={title}
@@ -140,7 +137,7 @@ export const ContentCard = ({
             {description}
           </p>
         </div>
-      </m.div>
+      </div>
     </Link>
   );
 };
