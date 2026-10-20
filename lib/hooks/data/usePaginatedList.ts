@@ -49,7 +49,7 @@ export function usePaginatedList<T>({
     total: initialPagination?.total ?? 0,
   });
 
-  const initialFetchSkipped = useRef(hasInitialData);
+  const initialDataKey = useRef(hasInitialData ? serializedParams : null);
 
   const {
     prefetchPage,
@@ -86,15 +86,13 @@ export function usePaginatedList<T>({
   }, [serializedParams, clearPrefetchCache]);
 
   useEffect(() => {
-    if (initialFetchSkipped.current) {
-      initialFetchSkipped.current = false;
-      return;
-    }
+    if (initialDataKey.current === serializedParams) return;
+    initialDataKey.current = null;
 
     setItems([]);
     setPagination({ page: 1, hasMore: true, total: 0 });
     fetchItems(1, true);
-  }, [fetchItems]);
+  }, [fetchItems, serializedParams]);
 
   useEffect(() => {
     if (!prefetchNextPage || !hasInitialData || !initialPagination?.hasMore) {
