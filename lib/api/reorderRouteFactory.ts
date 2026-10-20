@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import {
   requireAuth,
   isAuthError,
-  successResponse,
+  mutationResponse,
   errorResponse,
 } from "./apiHelpers";
 
@@ -38,7 +38,7 @@ export function createReorderHandler(
         ),
       );
 
-      return successResponse({});
+      return mutationResponse({});
     } catch (error) {
       console.error(`Failed to reorder ${entityName}:`, error);
       return errorResponse(`Failed to reorder ${entityName}`);

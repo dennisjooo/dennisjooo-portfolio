@@ -4,6 +4,7 @@ import {
   requireAuth,
   isAuthError,
   successResponse,
+  mutationResponse,
   errorResponse,
 } from "./apiHelpers";
 
@@ -45,7 +46,7 @@ export function createCrudHandlers(
       if (!item) {
         return errorResponse(`${entityName} not found`, 404);
       }
-      return successResponse(item);
+      return mutationResponse(item);
     } catch (error) {
       console.error(`Failed to update ${entityName}:`, error);
       return errorResponse(`Failed to update ${entityName}`);
@@ -66,7 +67,7 @@ export function createCrudHandlers(
       if (!result[0]) {
         return errorResponse(`${entityName} not found`, 404);
       }
-      return successResponse({});
+      return mutationResponse({});
     } catch (error) {
       console.error(`Failed to delete ${entityName}:`, error);
       return errorResponse(`Failed to delete ${entityName}`);

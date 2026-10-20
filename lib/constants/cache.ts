@@ -14,11 +14,3 @@ export function withCacheHeaders<T>(
   response.headers.set("Cache-Control", CACHE_CONTROL_HEADER);
   return response;
 }
-
-export function cachedJsonResponse<T>(
-  data: T,
-  init?: ResponseInit,
-): NextResponse<T> {
-  const response = NextResponse.json(data, init);
-  return withCacheHeaders(response);
-}

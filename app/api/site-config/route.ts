@@ -4,6 +4,7 @@ import {
   requireAuth,
   isAuthError,
   successResponse,
+  mutationResponse,
   errorResponse,
 } from "@/lib/api/apiHelpers";
 import {
@@ -105,7 +106,7 @@ export async function PUT(request: Request) {
         .returning();
     }
 
-    return successResponse(config);
+    return mutationResponse(config);
   } catch (error) {
     console.error("Failed to update site config:", error);
     return errorResponse("Failed to update site config", 500);

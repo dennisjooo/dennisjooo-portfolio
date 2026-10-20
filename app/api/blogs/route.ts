@@ -8,7 +8,8 @@ import { queryBlogList } from "@/lib/db/blogQueries";
 import {
   requireAuth,
   isAuthError,
-  successResponse,
+  mutationResponse,
+  NO_STORE_HEADERS,
   errorResponse,
   parsePagination,
   buildPagination,
@@ -66,12 +67,13 @@ export async function GET(request: Request) {
       isAuthenticated: Boolean(userId),
     });
 
-    return withCacheHeaders(
-      NextResponse.json({
+    return NextResponse.json(
+      {
         success: true,
         data: rows,
         pagination: buildPagination(total, page, limit),
-      }),
+      },
+      { headers: userId ? NO_STORE_HEADERS : undefined },
     );
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -92,7 +94,7 @@ export async function POST(request: Request) {
     if (validationError) return validationError;
 
     const [blog] = await db.insert(blogs).values(body).returning();
-    return successResponse(blog, 201);
+    return mutationResponse(blog, 201);
   } catch (error) {
     console.error("Error creating blog:", error);
     return errorResponse("Failed to create blog", 500);

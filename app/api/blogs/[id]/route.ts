@@ -1,12 +1,13 @@
+import { NextResponse } from "next/server";
 import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { cachedJsonResponse } from "@/lib/constants/cache";
 import { del } from "@vercel/blob";
 import { migrateAllBlogImages } from "@/lib/utils/blobMigration";
 import {
   requireAuth,
   isAuthError,
-  successResponse,
+  mutationResponse,
+  NO_STORE_HEADERS,
   errorResponse,
 } from "@/lib/api/apiHelpers";
 import {
@@ -25,7 +26,10 @@ export async function GET(
       return errorResponse("Blog not found", 404);
     }
 
-    return cachedJsonResponse({ success: true, data: blog });
+    return NextResponse.json(
+      { success: true, data: blog },
+      { headers: NO_STORE_HEADERS },
+    );
   } catch (error) {
     console.error("Error fetching blog:", error);
     return errorResponse("Failed to fetch blog", 500);
@@ -123,7 +127,7 @@ export async function PUT(
     if (!blog) {
       return errorResponse("Blog not found", 404);
     }
-    return successResponse(blog);
+    return mutationResponse(blog);
   } catch (error) {
     console.error("Error updating blog:", error);
     return errorResponse("Failed to update blog", 500);
@@ -155,7 +159,7 @@ export async function DELETE(
       );
     }
 
-    return successResponse({ message: "Blog deleted successfully" });
+    return mutationResponse({ message: "Blog deleted successfully" });
   } catch (error) {
     console.error("Error deleting blog:", error);
     return errorResponse("Failed to delete blog", 500);

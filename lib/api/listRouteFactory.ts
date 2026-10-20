@@ -1,11 +1,13 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { count, SQL, asc, desc } from "drizzle-orm";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import {
   requireAuth,
   isAuthError,
-  successResponse,
+  mutationResponse,
+  NO_STORE_HEADERS,
   errorResponse,
   parsePagination,
   buildPagination,
@@ -37,6 +39,16 @@ export function createListRouteHandler({
     try {
       const { searchParams } = new URL(request.url);
       const { page, limit, offset } = parsePagination(searchParams);
+      const { userId } = await auth();
+      const withCache = (response: NextResponse) => {
+        if (userId) {
+          Object.entries(NO_STORE_HEADERS).forEach(([k, v]) =>
+            response.headers.set(k, v),
+          );
+          return response;
+        }
+        return cache ? withCacheHeaders(response) : response;
+      };
 
       const sortByParam = searchParams.get("sortBy");
       const sortOrderParam =
@@ -67,7 +79,7 @@ export function createListRouteHandler({
           pagination: buildPagination(total, page, limit),
         });
 
-        return cache ? withCacheHeaders(response) : response;
+        return withCache(response);
       }
 
       const results = await query;
@@ -76,7 +88,7 @@ export function createListRouteHandler({
         data: results,
       });
 
-      return cache ? withCacheHeaders(response) : response;
+      return withCache(response);
     } catch (error) {
       console.error(`Failed to fetch ${entityName}:`, error);
       return errorResponse(`Failed to fetch ${entityName}`);
@@ -97,7 +109,7 @@ export function createListRouteHandler({
         .insert(table)
         .values(body)
         .returning()) as unknown[];
-      return successResponse(item, 201);
+      return mutationResponse(item, 201);
     } catch (error) {
       console.error(`Failed to create ${entityName}:`, error);
       return errorResponse(`Failed to create ${entityName}`);

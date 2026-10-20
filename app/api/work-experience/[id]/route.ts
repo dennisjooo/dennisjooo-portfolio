@@ -5,7 +5,7 @@ import { del } from "@vercel/blob";
 import {
   requireAuth,
   isAuthError,
-  successResponse,
+  mutationResponse,
   errorResponse,
 } from "@/lib/api/apiHelpers";
 
@@ -59,7 +59,7 @@ export async function DELETE(
       );
     }
 
-    return successResponse({});
+    return mutationResponse({});
   } catch (error) {
     console.error("Failed to delete work experience:", error);
     return errorResponse("Failed to delete work experience");
