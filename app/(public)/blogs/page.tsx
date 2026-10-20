@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsAndCertificationsPage() {
-  const initialBlogsData = await getBlogs(1, 7, "all");
+  const initialBlogsData = await getBlogs(1, 9, "all");
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

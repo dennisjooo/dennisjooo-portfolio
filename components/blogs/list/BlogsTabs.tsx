@@ -45,7 +45,12 @@ export function BlogsTabs({
       }`}
     >
       {/* Editorial Hero Section */}
-      <BlogsHero activeTab={activeTab} />
+      <BlogsHero
+        activeTab={activeTab}
+        meta={
+          initialPagination ? `${initialPagination.total} posts` : undefined
+        }
+      />
 
       {/* Tab Navigation */}
       {availableTabs.length > 0 && (
@@ -53,9 +58,6 @@ export function BlogsTabs({
           activeTab={activeTab}
           onTabChange={setActiveTab}
           tabs={availableTabs}
-          meta={
-            initialPagination ? `${initialPagination.total} posts` : undefined
-          }
         />
       )}
 

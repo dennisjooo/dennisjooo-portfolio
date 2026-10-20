@@ -8,7 +8,7 @@ import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
 import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { useMemo } from "react";
 
-const PAGE_SIZE = 7;
+const PAGE_SIZE = 9;
 
 interface ProjectsListProps {
   type?: "project" | "blog" | "all";
@@ -50,8 +50,7 @@ export default function ProjectsList({
         ? "No writing yet"
         : "No projects found";
 
-  const featuredItem = paginatedList.items[0];
-  const remainingItems = paginatedList.items.slice(1);
+  const [featuredItem, ...gridItems] = paginatedList.items;
 
   if (paginatedList.loading) {
     return <BlogsListSkeleton gridCount={PAGE_SIZE - 1} />;
@@ -60,47 +59,55 @@ export default function ProjectsList({
   return (
     <div className="w-full">
       {featuredItem && (
-        <FeaturedCard
-          title={featuredItem.title}
-          description={featuredItem.description}
-          slug={featuredItem.slug || createUrlSlug(featuredItem.title)}
-          date={formatProjectDate(featuredItem.date, true)}
-          imageUrl={featuredItem.imageUrl ?? undefined}
-          type={featuredItem.type}
-          readTime={`${featuredItem.readTimeMinutes} min`}
-        />
+        <div className="mb-12 md:mb-16">
+          <FeaturedCard
+            wide
+            title={featuredItem.title}
+            description={featuredItem.description}
+            slug={featuredItem.slug || createUrlSlug(featuredItem.title)}
+            date={formatProjectDate(featuredItem.date, true)}
+            imageUrl={featuredItem.imageUrl ?? undefined}
+            displayIndex={1}
+            type={featuredItem.type}
+            readTime={`${featuredItem.readTimeMinutes} min`}
+          />
+        </div>
       )}
 
-      <PaginatedList
-        {...paginatedList}
-        items={remainingItems}
-        emptyMessage={emptyMessage}
-        loadingMoreSkeleton={<LoadMoreFallback />}
-        keyExtractor={(p) => `${p.title}_${p.date}`}
-        renderItem={(
-          {
-            title,
-            description,
-            date,
-            imageUrl,
-            type: itemType,
-            slug,
-            readTimeMinutes,
-          },
-          index,
-        ) => (
-          <ContentCard
-            title={title}
-            description={description}
-            slug={slug || createUrlSlug(title)}
-            date={formatProjectDate(date, true)}
-            imageUrl={imageUrl ?? undefined}
-            index={index}
-            type={itemType}
-            readTime={`${readTimeMinutes} min`}
-          />
-        )}
-      />
+      {(gridItems.length > 0 || !featuredItem) && (
+        <PaginatedList
+          {...paginatedList}
+          items={gridItems}
+          gridClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          emptyMessage={emptyMessage}
+          loadingMoreSkeleton={<LoadMoreFallback />}
+          keyExtractor={(p) => `${p.title}_${p.date}`}
+          renderItem={(
+            {
+              title,
+              description,
+              date,
+              imageUrl,
+              type: itemType,
+              slug,
+              readTimeMinutes,
+            },
+            index,
+          ) => (
+            <ContentCard
+              title={title}
+              description={description}
+              slug={slug || createUrlSlug(title)}
+              date={formatProjectDate(date, true)}
+              imageUrl={imageUrl ?? undefined}
+              index={index}
+              displayIndex={index + 2}
+              type={itemType}
+              readTime={`${readTimeMinutes} min`}
+            />
+          )}
+        />
+      )}
     </div>
   );
 }

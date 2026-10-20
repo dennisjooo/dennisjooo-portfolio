@@ -5,7 +5,6 @@ export { SmoothScroll } from "./scroll/SmoothScroll";
 export { ScrollToTop } from "./scroll/ScrollToTop";
 export * from "./layout/SectionHeader";
 export * from "./layout/SectionShell";
-export * from "./list/BlogLinkCard";
 export * from "./list/ContentCard";
 export * from "./CopyButton";
 export * from "./list/PaginatedList";

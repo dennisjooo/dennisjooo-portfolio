@@ -9,7 +9,6 @@ interface TabSwitcherProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
   tabs: TabType[];
-  meta?: string;
 }
 
 const tabLabels: Record<TabType, string> = {
@@ -21,7 +20,6 @@ export default function TabSwitcher({
   activeTab,
   onTabChange,
   tabs,
-  meta,
 }: TabSwitcherProps) {
   return (
     <m.div
@@ -45,7 +43,7 @@ export default function TabSwitcher({
 
           {/* Tab Label */}
           <span
-            className={`font-sans text-lg font-bold uppercase tracking-wide transition-colors duration-300 md:text-xl ${
+            className={`font-mono text-sm uppercase tracking-widest transition-colors duration-300 md:text-base ${
               activeTab === tab
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"
@@ -64,14 +62,6 @@ export default function TabSwitcher({
           )}
         </m.button>
       ))}
-
-      {/* Decorative Line */}
-      <div className="flex-1" />
-      {meta && (
-        <span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground md:block">
-          {meta}
-        </span>
-      )}
     </m.div>
   );
 }

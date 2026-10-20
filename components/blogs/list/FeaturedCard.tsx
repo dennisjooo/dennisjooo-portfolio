@@ -1,18 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import {
   m,
   featuredCardVariants,
   useMotionSafeProps,
 } from "@/components/motion";
-import {
-  BlogLinkCardGlow,
-  BlogLinkCardShell,
-  BlogLinkCardTypeBadge,
-} from "@/components/shared/list/BlogLinkCard";
+import { cn } from "@/lib/utils";
+import { TileImage, TileMeta } from "@/components/shared/list/ContentCard";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 
 interface FeaturedCardProps {
@@ -23,6 +19,9 @@ interface FeaturedCardProps {
   slug: string;
   type?: "project" | "blog";
   readTime?: string;
+  displayIndex?: number;
+  priority?: boolean;
+  wide?: boolean;
 }
 
 export const FeaturedCard = ({
@@ -33,6 +32,9 @@ export const FeaturedCard = ({
   slug,
   type,
   readTime,
+  displayIndex,
+  priority = true,
+  wide = false,
 }: FeaturedCardProps) => {
   const heroMotion = useMotionSafeProps({
     initial: featuredCardVariants.initial,
@@ -44,84 +46,52 @@ export const FeaturedCard = ({
   return (
     <Link
       href={`/blogs/${slug}`}
-      className="group mb-12 block w-full cursor-pointer md:mb-16"
+      className="group flex w-full cursor-pointer rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
     >
-      <m.div {...heroMotion} className="relative">
-        <BlogLinkCardGlow large />
+      <m.div
+        {...heroMotion}
+        className={cn(
+          "flex w-full flex-col gap-5",
+          wide && "md:grid md:grid-cols-12 md:items-center md:gap-10",
+        )}
+      >
+        <TileImage
+          imageUrl={imageUrl}
+          title={title}
+          displayIndex={displayIndex}
+          priority={priority}
+          className={cn(
+            "aspect-[16/9]",
+            wide
+              ? "md:col-span-7 md:aspect-[16/10]"
+              : "lg:aspect-auto lg:min-h-[340px] lg:flex-1",
+          )}
+          sizes="(max-width: 768px) 100vw, 58vw"
+        />
 
-        <BlogLinkCardShell variant="featured">
-          {/* Image */}
-          <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted md:col-span-3 md:aspect-auto md:min-h-[320px] md:rounded-xl">
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 60vw"
-                priority
-              />
-            ) : (
-              <div className="h-full w-full bg-gradient-to-br from-secondary to-muted" />
+        <div
+          className={cn(
+            "flex flex-col gap-3",
+            wide && "md:col-span-5 md:gap-4",
+          )}
+        >
+          <TileMeta parts={[type && getBlogTypeLabel(type), date, readTime]} />
+          <h3
+            className={cn(
+              "font-caslon text-3xl italic leading-[1.05] tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-4xl",
+              wide ? "lg:text-5xl" : "lg:text-5xl xl:text-6xl",
             )}
-
-            {/* Type badge overlaid on image (mobile only) */}
-            {type && (
-              <div className="absolute left-3 top-3 z-20 md:hidden">
-                <BlogLinkCardTypeBadge type={type} />
-              </div>
-            )}
+          >
+            {title}
+          </h3>
+          <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-lg">
+            {description}
+          </p>
+          <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent">
+            <span>Read article</span>
+            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </div>
-
-          {/* Content */}
-          <div className="flex flex-col justify-center gap-3 p-4 md:col-span-2 md:gap-4 md:p-0 md:py-4">
-            {/* Meta (desktop only) */}
-            <div className="hidden flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground md:flex">
-              {type && (
-                <span className="rounded border border-border bg-muted/50 px-2 py-1">
-                  {getBlogTypeLabel(type)}
-                </span>
-              )}
-              <span>{date}</span>
-              {readTime && (
-                <>
-                  <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
-                  <span>{readTime}</span>
-                </>
-              )}
-            </div>
-
-            {/* Title */}
-            <h3 className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-4xl md:leading-[1.1]">
-              {title}
-            </h3>
-
-            {/* Description */}
-            <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:line-clamp-4 md:text-base">
-              {description}
-            </p>
-
-            {/* Mobile footer - matches ContentCard */}
-            <div className="mt-auto flex items-center justify-between border-t border-border pt-3 md:hidden">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                <span>{date}</span>
-                {readTime && (
-                  <>
-                    <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
-                    <span>{readTime}</span>
-                  </>
-                )}
-              </div>
-              <ArrowUpRightIcon className="h-4 w-4 text-muted-foreground transition-colors duration-200 group-hover:text-accent" />
-            </div>
-
-            {/* Desktop footer - read article link */}
-            <div className="mt-2 hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent md:flex">
-              <span>Read article</span>
-              <ArrowRightIcon className="h-4 w-4" />
-            </div>
-          </div>
-        </BlogLinkCardShell>
+        </div>
       </m.div>
     </Link>
   );
