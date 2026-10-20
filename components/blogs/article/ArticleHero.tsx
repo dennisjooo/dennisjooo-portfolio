@@ -81,12 +81,20 @@ export const ArticleHero = ({
 };
 
 function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
-  const [loaded, setLoaded] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  const readRatio = (img: HTMLImageElement) => {
+    if (img.naturalWidth && img.naturalHeight) {
+      setAspectRatio(img.naturalWidth / img.naturalHeight);
+    }
+  };
+
   useEffect(() => {
-    if (imgRef.current?.complete) setLoaded(true);
+    if (imgRef.current?.complete) readRatio(imgRef.current);
   }, []);
+
+  const loaded = aspectRatio !== null;
 
   return (
     <PhotoView src={src}>
@@ -94,9 +102,12 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
         <HoverImageFrame frameClassName="shadow-lg">
           <div
             className={cn(
-              "relative aspect-video w-full",
-              !loaded && "animate-pulse",
+              "relative w-full transition-[aspect-ratio] duration-500 ease-out",
+              !loaded && "aspect-video animate-pulse",
             )}
+            style={
+              loaded ? { aspectRatio: `${aspectRatio}`, maxHeight: "70vh" } : {}
+            }
           >
             <Image
               ref={imgRef}
@@ -109,7 +120,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
               )}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
               priority
-              onLoad={() => setLoaded(true)}
+              onLoad={(e) => readRatio(e.currentTarget)}
             />
           </div>
         </HoverImageFrame>
