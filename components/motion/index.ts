@@ -28,7 +28,6 @@ export {
   articleHeroMetaVariants,
   articleHeroTitleVariants,
   articleHeroDescriptionVariants,
-  articleHeroImageVariants,
   featuredCardVariants,
 } from "./variants";
 

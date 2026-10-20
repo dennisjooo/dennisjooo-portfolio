@@ -98,12 +98,6 @@ export const articleHeroDescriptionVariants = {
   transition: { duration: 0.4, delay: 0.2 },
 };
 
-export const articleHeroImageVariants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  transition: { duration: 0.45, delay: 0.25 },
-};
-
 export const featuredCardVariants = {
   initial: { opacity: 0 },
   whileInView: { opacity: 1 },

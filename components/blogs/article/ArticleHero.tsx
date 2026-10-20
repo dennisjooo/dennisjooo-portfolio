@@ -6,14 +6,14 @@ import {
   articleHeroMetaVariants,
   articleHeroTitleVariants,
   articleHeroDescriptionVariants,
-  articleHeroImageVariants,
   useMotionSafeProps,
 } from "@/components/motion";
 import Image from "next/image";
 import { PhotoView } from "react-photo-view";
 import { BackToBlogsLink } from "@/components/blogs/article/BackToBlogsLink";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
+import { cn } from "@/lib/utils";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 
 interface ArticleHeroProps {
@@ -81,43 +81,39 @@ export const ArticleHero = ({
 };
 
 function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
-  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
-  const imageMotion = useMotionSafeProps(articleHeroImageVariants);
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    if (img.naturalWidth && img.naturalHeight) {
-      setAspectRatio(img.naturalWidth / img.naturalHeight);
-    }
-  };
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
 
   return (
     <PhotoView src={src}>
-      <m.figure {...imageMotion} className="cursor-zoom-in">
+      <figure className="cursor-zoom-in">
         <HoverImageFrame frameClassName="shadow-lg">
           <div
-            className="relative w-full"
-            style={
-              aspectRatio
-                ? {
-                    aspectRatio: `${aspectRatio}`,
-                    maxHeight: "70vh",
-                  }
-                : { minHeight: "300px", maxHeight: "70vh" }
-            }
+            className={cn(
+              "relative aspect-video w-full",
+              !loaded && "animate-pulse",
+            )}
           >
             <Image
+              ref={imgRef}
               src={src}
               alt={alt}
               fill
-              style={{ objectFit: "contain" }}
+              className={cn(
+                "object-contain transition-opacity duration-500",
+                loaded ? "opacity-100" : "opacity-0",
+              )}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
               priority
-              onLoad={handleImageLoad}
+              onLoad={() => setLoaded(true)}
             />
           </div>
         </HoverImageFrame>
-      </m.figure>
+      </figure>
     </PhotoView>
   );
 }
