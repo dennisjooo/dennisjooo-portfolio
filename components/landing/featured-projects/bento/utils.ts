@@ -9,6 +9,7 @@ export interface ProjectTileData {
   title: string;
   description: string;
   slug: string;
+  type: Blog["type"];
   date: string;
   imageUrl?: string;
   readTime?: string;
@@ -33,6 +34,7 @@ export function toProjectTileProps(
     title: project.title,
     description: project.description,
     slug: project.slug || createUrlSlug(project.title),
+    type: project.type,
     date: formatProjectDate(project.date, true),
     imageUrl: project.imageUrl ?? undefined,
     readTime: `${calculateReadTime(project.blogPost)} min`,

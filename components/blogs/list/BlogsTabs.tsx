@@ -53,6 +53,9 @@ export function BlogsTabs({
           activeTab={activeTab}
           onTabChange={setActiveTab}
           tabs={availableTabs}
+          meta={
+            initialPagination ? `${initialPagination.total} posts` : undefined
+          }
         />
       )}
 

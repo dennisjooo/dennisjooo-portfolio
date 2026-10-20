@@ -15,9 +15,9 @@ export default function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     <SectionShell id="projects">
       <SectionHeader
         number="04."
-        title="Projects"
-        subtitle="Selected Work"
-        description="Things I've built that mostly still work."
+        title="Blog"
+        subtitle="Writing & Work"
+        description="Some half-decent writing, some projects that mostly still work. All of it lives on the blog."
       />
       <ProjectBentoGrid projects={projects} />
       {hasProjects && <ViewAllButton />}

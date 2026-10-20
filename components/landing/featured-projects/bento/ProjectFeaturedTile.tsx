@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { m } from "@/components/motion";
-import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
 import type { ProjectTileProps } from "./utils";
 import { formatDisplayIndex } from "./utils";
 import {
@@ -14,12 +13,16 @@ import {
   ProjectTileTitle,
   useProjectTileMotion,
 } from "./ProjectTileParts";
-import { BlogLinkCardShell } from "@/components/shared/list/BlogLinkCard";
+import {
+  BlogLinkCardShell,
+  BlogLinkCardTypeBadge,
+} from "@/components/shared/list/BlogLinkCard";
 
 export function ProjectFeaturedTile({
   title,
   description,
   slug,
+  type,
   date,
   imageUrl,
   readTime,
@@ -49,9 +52,7 @@ export function ProjectFeaturedTile({
             />
             <ProjectTileIndex label={formatDisplayIndex(displayIndex)} />
             <div className="absolute left-3 top-3 z-20 lg:left-4 lg:top-4">
-              <span className="rounded border border-border bg-background/80 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground backdrop-blur-sm">
-                {getBlogTypeLabel("project")}
-              </span>
+              <BlogLinkCardTypeBadge type={type} />
             </div>
           </div>
 

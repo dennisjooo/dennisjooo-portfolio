@@ -71,12 +71,12 @@ export const getFeaturedProjects = unstable_cache(
       const projects = await db
         .select()
         .from(blogs)
-        .where(and(eq(blogs.type, "project"), visibleBlogsFilter()))
+        .where(visibleBlogsFilter())
         .orderBy(desc(blogs.date))
         .limit(3);
       return projects;
     } catch (error) {
-      console.error("Failed to fetch featured projects", error);
+      console.error("Failed to fetch featured posts", error);
       return [];
     }
   },

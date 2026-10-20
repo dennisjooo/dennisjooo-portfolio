@@ -13,12 +13,16 @@ import {
   ProjectTileTitle,
   useProjectTileMotion,
 } from "./ProjectTileParts";
-import { BlogLinkCardShell } from "@/components/shared/list/BlogLinkCard";
+import {
+  BlogLinkCardShell,
+  BlogLinkCardTypeBadge,
+} from "@/components/shared/list/BlogLinkCard";
 
 export function ProjectCompactTile({
   title,
   description,
   slug,
+  type,
   date,
   imageUrl,
   readTime,
@@ -44,6 +48,9 @@ export function ProjectCompactTile({
               sizes="(max-width: 1024px) 100vw, 20vw"
             />
             <ProjectTileIndex label={formatDisplayIndex(displayIndex)} />
+            <div className="absolute bottom-3 left-3 z-20">
+              <BlogLinkCardTypeBadge type={type} />
+            </div>
           </div>
 
           <div className="flex flex-1 flex-col gap-2 p-4 md:gap-3 md:p-5">

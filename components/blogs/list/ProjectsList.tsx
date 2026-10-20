@@ -47,7 +47,7 @@ export default function ProjectsList({
     type === "all"
       ? "No content found"
       : type === "blog"
-        ? "No articles found"
+        ? "No writing yet"
         : "No projects found";
 
   const featuredItem = paginatedList.items[0];

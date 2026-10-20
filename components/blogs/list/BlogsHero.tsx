@@ -12,7 +12,7 @@ const tabTitles: Record<"blog" | "certifications", string> = {
 };
 
 const tabCaptions: Record<"blog" | "certifications", string> = {
-  blog: "Things I've built and written about (mostly coherent).",
+  blog: "Crappy writing and half-decent projects, in roughly chronological order.",
   certifications: "Stuff that (supposedly) validates my expertise.",
 };
 

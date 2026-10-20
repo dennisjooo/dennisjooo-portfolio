@@ -9,6 +9,7 @@ interface TabSwitcherProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
   tabs: TabType[];
+  meta?: string;
 }
 
 const tabLabels: Record<TabType, string> = {
@@ -20,6 +21,7 @@ export default function TabSwitcher({
   activeTab,
   onTabChange,
   tabs,
+  meta,
 }: TabSwitcherProps) {
   return (
     <m.div
@@ -65,9 +67,11 @@ export default function TabSwitcher({
 
       {/* Decorative Line */}
       <div className="flex-1" />
-      <span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground md:block">
-        {tabs.length} Categories
-      </span>
+      {meta && (
+        <span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground md:block">
+          {meta}
+        </span>
+      )}
     </m.div>
   );
 }

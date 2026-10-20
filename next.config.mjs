@@ -71,6 +71,7 @@ const createConfig = (phase) => {
       root: import.meta.dirname,
     },
     images: {
+      unoptimized: process.env.NODE_ENV === "development",
       formats: ["image/avif", "image/webp"],
       qualities: [70, 75],
       remotePatterns: [

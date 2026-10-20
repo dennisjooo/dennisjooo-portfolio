@@ -9,7 +9,7 @@ export const ViewAllButton = () => {
         prefetch
         className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
       >
-        All Projects
+        Read the blog
         <ArrowRightIcon className="h-4 w-4" />
       </Link>
     </div>
