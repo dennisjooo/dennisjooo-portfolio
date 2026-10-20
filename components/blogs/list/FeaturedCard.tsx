@@ -51,7 +51,7 @@ export const FeaturedCard = ({
       <m.div
         {...heroMotion}
         className={cn(
-          "flex w-full flex-col gap-5",
+          "flex w-full flex-col gap-4",
           wide && "md:grid md:grid-cols-12 md:items-center md:gap-10",
         )}
       >
@@ -61,7 +61,7 @@ export const FeaturedCard = ({
           displayIndex={displayIndex}
           priority={priority}
           className={cn(
-            "aspect-[16/9]",
+            "aspect-[16/10]",
             wide
               ? "md:col-span-7 md:aspect-[16/10]"
               : "lg:aspect-auto lg:min-h-[340px] lg:flex-1",
@@ -71,18 +71,18 @@ export const FeaturedCard = ({
 
         <div
           className={cn(
-            "flex flex-col gap-3",
+            "flex flex-col gap-2 md:gap-3",
             wide && "md:col-span-5 md:gap-4",
           )}
         >
           <TileMeta parts={[type && getBlogTypeLabel(type), date, readTime]} />
-          <h3 className="font-caslon text-2xl italic leading-[1.1] tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl xl:text-4xl">
+          <h3 className="font-caslon text-2xl italic leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl md:leading-[1.1] xl:text-4xl">
             {title}
           </h3>
           <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-lg">
             {description}
           </p>
-          <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent">
+          <div className="hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent md:flex">
             <span>Read article</span>
             <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </div>

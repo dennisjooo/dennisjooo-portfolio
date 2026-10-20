@@ -59,7 +59,7 @@ export default function ProjectsList({
   return (
     <div className="w-full">
       {featuredItem && (
-        <div className="mb-12 md:mb-16">
+        <div className="mb-8 md:mb-16">
           <FeaturedCard
             wide
             title={featuredItem.title}
