@@ -53,14 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <div id="__ssr_cover" aria-hidden="true">
           <div id="__ssr_loader">
-            <div className="ssr-name">
-              <p>Dennis</p>
-              <p>Jonathan</p>
-            </div>
-            <div className="ssr-bar">
-              <div className="ssr-fill" />
-            </div>
-            <span className="ssr-pct">Loading</span>
+            <div className="ssr-mark">DJ</div>
           </div>
         </div>
         <Providers>{children}</Providers>
