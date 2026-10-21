@@ -1,33 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowPathIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { m } from "@/components/motion";
 import type { MotionValue } from "framer-motion";
+
+const actionClasses =
+  "group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground";
 
 interface NotFoundContentProps {
   x: MotionValue<number>;
   y: MotionValue<number>;
+  onRetry?: () => void;
 }
 
-export function NotFoundContent({ x, y }: NotFoundContentProps) {
+export function NotFoundContent({ x, y, onRetry }: NotFoundContentProps) {
   return (
     <m.div
       className="absolute bottom-12 left-6 z-10 max-w-xl md:bottom-24 md:left-24"
       style={{ x, y }}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:text-xs">
-            Page Not Found
-          </span>
-          <h2 className="text-display mb-4 font-caslon text-6xl italic leading-[0.85] tracking-tight md:text-7xl lg:text-8xl">
-            Lost
+          <h2 className="text-display font-caslon text-6xl italic leading-[0.85] tracking-tight md:text-7xl lg:text-8xl">
+            {onRetry ? "That" : "Nothing"}
             <br />
-            <span className="text-accent">Void</span>
+            <span className="text-accent">{onRetry ? "broke." : "here."}</span>
           </h2>
         </m.div>
 
@@ -35,11 +37,11 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="border-l-2 border-accent/30 pl-2"
         >
           <p className="max-w-sm font-sans text-base font-light leading-relaxed text-muted-foreground md:text-lg">
-            The page you are looking for has been moved, deleted, or consumed by
-            the void.
+            {onRetry
+              ? "Something failed on our side. Try again, or head back if it keeps happening."
+              : "This URL doesn't lead anywhere. It may have moved, or never existed."}
           </p>
         </m.div>
 
@@ -48,12 +50,18 @@ export function NotFoundContent({ x, y }: NotFoundContentProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background/85 px-10 py-4 font-sans text-sm font-medium text-muted-foreground backdrop-blur-md transition-[border-color,color,background-color] duration-200 ease-out hover:border-foreground hover:bg-foreground hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:text-base"
-          >
-            Return to Base
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            {onRetry && (
+              <button type="button" onClick={onRetry} className={actionClasses}>
+                Try again
+                <ArrowPathIcon className="h-4 w-4" />
+              </button>
+            )}
+            <Link href="/" className={actionClasses}>
+              Return to Base
+              <ArrowRightIcon className="h-4 w-4" />
+            </Link>
+          </div>
         </m.div>
       </div>
     </m.div>

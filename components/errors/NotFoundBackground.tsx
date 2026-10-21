@@ -6,9 +6,14 @@ import type { MotionValue } from "framer-motion";
 interface NotFoundBackgroundProps {
   x: MotionValue<number>;
   y: MotionValue<number>;
+  code?: string;
 }
 
-export function NotFoundBackground({ x, y }: NotFoundBackgroundProps) {
+export function NotFoundBackground({
+  x,
+  y,
+  code = "404",
+}: NotFoundBackgroundProps) {
   return (
     <>
       <div
@@ -26,7 +31,7 @@ export function NotFoundBackground({ x, y }: NotFoundBackgroundProps) {
       >
         <div className="relative whitespace-nowrap">
           <h1 className="select-none font-caslon text-[45vw] font-normal italic leading-none tracking-tight text-foreground/5 mix-blend-overlay dark:text-foreground/10 dark:mix-blend-screen">
-            404
+            {code}
           </h1>
           <div className="absolute left-1/2 top-1/2 h-[35vw] w-[35vw] -translate-x-1/2 -translate-y-1/2 rounded-full border-[1px] border-foreground/5" />
         </div>
