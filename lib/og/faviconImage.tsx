@@ -1,4 +1,4 @@
-import { caslonFontFamily } from "@/lib/og/caslonFont";
+import { serifFontFamily } from "@/lib/og/serifFont";
 
 const DISC = "#fafafa";
 const MARK = "#0a0a0a";
@@ -44,8 +44,7 @@ export function FaviconImage({ canvasSize }: FaviconImageProps) {
           borderRadius: "50%",
           backgroundColor: DISC,
           color: MARK,
-          fontFamily: caslonFontFamily,
-          fontStyle: "italic",
+          fontFamily: serifFontFamily,
           fontWeight: 400,
           fontSize,
           letterSpacing: "-0.05em",

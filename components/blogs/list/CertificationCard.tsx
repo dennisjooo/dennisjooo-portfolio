@@ -32,7 +32,7 @@ export const CertificationCard = ({
           <span className="shrink-0">{date}</span>
         </div>
 
-        <h3 className="font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-2xl">
+        <h3 className="font-serif text-xl leading-tight tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-2xl">
           {title}
         </h3>
 

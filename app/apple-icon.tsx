@@ -1,20 +1,20 @@
 import { ImageResponse } from "next/og";
-import { loadCaslonItalicFont, caslonFontFamily } from "@/lib/og/caslonFont";
+import { loadSerifFont, serifFontFamily } from "@/lib/og/serifFont";
 import { FaviconImage } from "@/lib/og/faviconImage";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
 export default async function AppleIcon() {
-  const caslon = await loadCaslonItalicFont();
+  const serif = await loadSerifFont();
 
   return new ImageResponse(<FaviconImage canvasSize={size.width} />, {
     ...size,
     fonts: [
       {
-        name: caslonFontFamily,
-        data: caslon,
-        style: "italic",
+        name: serifFontFamily,
+        data: serif,
+        style: "normal",
         weight: 400,
       },
     ],

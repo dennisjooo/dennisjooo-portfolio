@@ -33,7 +33,7 @@ function StaticSectionHeader({
         className,
       )}
     >
-      <span className="font-caslon text-3xl italic text-foreground md:text-4xl">
+      <span className="font-serif text-3xl text-foreground md:text-4xl">
         {number}
       </span>
       <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm">
@@ -64,7 +64,7 @@ function AnimatedSectionHeader({
     >
       <m.span
         variants={fadeUp}
-        className="font-caslon text-3xl italic text-foreground md:text-4xl"
+        className="font-serif text-3xl text-foreground md:text-4xl"
       >
         {number}
       </m.span>
@@ -116,7 +116,7 @@ export const SectionHeader = ({
       {(subtitle || description) && (
         <div className="relative w-full select-none pt-6">
           {subtitle && (
-            <h2 className="mb-4 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            <h2 className="mb-4 font-serif text-4xl leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl">
               {subtitle}
             </h2>
           )}

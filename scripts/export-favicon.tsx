@@ -2,7 +2,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import React from "react";
 import { ImageResponse } from "next/og";
-import { loadCaslonItalicFont, caslonFontFamily } from "../lib/og/caslonFont";
+import { loadSerifFont, serifFontFamily } from "../lib/og/serifFont";
 import { FaviconImage } from "../lib/og/faviconImage";
 
 const TARGETS = [
@@ -12,15 +12,15 @@ const TARGETS = [
 ] as const;
 
 async function exportIcon(path: string, size: number): Promise<void> {
-  const caslon = await loadCaslonItalicFont();
+  const serif = await loadSerifFont();
   const response = new ImageResponse(<FaviconImage canvasSize={size} />, {
     width: size,
     height: size,
     fonts: [
       {
-        name: caslonFontFamily,
-        data: caslon,
-        style: "italic",
+        name: serifFontFamily,
+        data: serif,
+        style: "normal",
         weight: 400,
       },
     ],

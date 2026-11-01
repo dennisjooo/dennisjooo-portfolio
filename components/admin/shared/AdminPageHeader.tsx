@@ -32,7 +32,7 @@ export function AdminPageHeader({
 
   const headerContent = (
     <div>
-      <h1 className="font-caslon text-3xl italic text-foreground md:text-4xl">
+      <h1 className="font-serif text-3xl text-foreground md:text-4xl">
         {title} {titleAccent}
       </h1>
       <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">

@@ -69,7 +69,7 @@ export function TileImage({
         <div className="bg-noise relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-secondary to-muted">
           <span
             aria-hidden
-            className="select-none font-caslon text-[10rem] italic leading-none text-foreground/10 transition-transform duration-500 group-hover:scale-110"
+            className="select-none font-serif text-[10rem] leading-none text-foreground/10 transition-transform duration-500 group-hover:scale-110"
           >
             {title.charAt(0)}
           </span>
@@ -130,7 +130,7 @@ export const ContentCard = ({
 
         <div className="mt-4 flex flex-col gap-2">
           <TileMeta parts={[type && getBlogTypeLabel(type), date, readTime]} />
-          <h3 className="font-caslon text-2xl italic leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl lg:text-2xl">
+          <h3 className="font-serif text-2xl leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl lg:text-2xl">
             {title}
           </h3>
           <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -178,7 +178,7 @@ export const CompactCard = ({
             ]}
             className="tracking-wider"
           />
-          <h3 className="line-clamp-3 font-caslon text-xl italic leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-2xl lg:text-3xl">
+          <h3 className="line-clamp-3 font-serif text-xl leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-2xl lg:text-3xl">
             {title}
           </h3>
           <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground">

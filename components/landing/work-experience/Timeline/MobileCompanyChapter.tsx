@@ -26,7 +26,7 @@ export const MobileCompanyChapter: React.FC<MobileCompanyChapterProps> = ({
   return (
     <article className="relative scroll-mt-28">
       <div className="mb-8 flex items-start justify-between gap-4">
-        <span className="font-caslon text-4xl italic text-foreground">
+        <span className="font-serif text-4xl text-foreground">
           {String(index + 1).padStart(2, "0")}.
         </span>
 
@@ -41,7 +41,7 @@ export const MobileCompanyChapter: React.FC<MobileCompanyChapterProps> = ({
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-display font-caslon text-5xl italic leading-tight">
+        <h3 className="text-display font-serif text-5xl leading-tight">
           {group.companyName}
         </h3>
 

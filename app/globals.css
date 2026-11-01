@@ -151,7 +151,7 @@
   }
 
   .site-toast--playful [data-description] {
-    @apply font-caslon text-base font-normal italic leading-snug;
+    @apply font-serif text-base font-normal leading-snug;
     color: hsl(var(--foreground)) !important;
   }
 
@@ -163,8 +163,7 @@
 
 .article-dropcap {
   float: left;
-  font-family: var(--font-caslon), serif;
-  font-style: italic;
+  font-family: var(--font-geist-serif), serif;
   font-weight: 400;
   line-height: 0.72;
   padding-top: 0.08em;

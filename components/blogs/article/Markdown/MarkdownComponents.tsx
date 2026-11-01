@@ -19,7 +19,7 @@ export const markdownComponents: Components = {
   ),
   h2: ({ children, ...props }) => (
     <h2
-      className="mb-4 mt-14 flex items-center gap-4 font-caslon text-2xl font-normal italic tracking-tight text-foreground md:text-3xl"
+      className="mb-4 mt-14 flex items-center gap-4 font-serif text-2xl font-normal tracking-tight text-foreground md:text-3xl"
       {...props}
     >
       {children}
@@ -75,7 +75,7 @@ export const markdownComponents: Components = {
     <em className="italic text-muted-foreground">{children}</em>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="relative mx-auto my-10 max-w-2xl border-none bg-transparent px-6 py-8 text-center md:px-10 [&>p]:mb-0 [&>p]:font-caslon [&>p]:text-lg [&>p]:italic [&>p]:leading-relaxed [&>p]:text-foreground [&>p]:before:content-none [&>p]:after:content-none [&>p]:md:text-xl">
+    <blockquote className="relative mx-auto my-10 max-w-2xl border-none bg-transparent px-6 py-8 text-center md:px-10 [&>p]:mb-0 [&>p]:font-serif [&>p]:text-lg [&>p]:leading-relaxed [&>p]:text-foreground [&>p]:before:content-none [&>p]:after:content-none [&>p]:md:text-xl">
       <div className="mx-auto mb-6 h-px w-8 bg-accent/60" />
       {children}
       <div className="mx-auto mt-6 h-px w-8 bg-accent/60" />

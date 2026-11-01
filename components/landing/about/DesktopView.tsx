@@ -35,7 +35,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
           className="absolute inset-x-16 top-1/2 flex -translate-y-1/2 flex-col justify-center"
         >
           <div className="about-title mb-8">
-            <h2 className="text-display pb-4 font-caslon text-7xl italic leading-tight xl:text-8xl">
+            <h2 className="text-display pb-4 font-serif text-7xl leading-tight xl:text-8xl">
               {section.title}
             </h2>
           </div>

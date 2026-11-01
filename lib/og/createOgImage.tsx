@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { caslonFontFamily } from "@/lib/og/caslonFont";
+import { serifFontFamily } from "@/lib/og/serifFont";
 
 export { OgBackground } from "./OgBackground";
 
@@ -19,7 +19,7 @@ export function OgDivider({ width = 64 }: { width?: number }) {
   );
 }
 
-export function OgCaslonTitle({
+export function OgSerifTitle({
   children,
   fontSize = 84,
 }: {
@@ -30,8 +30,7 @@ export function OgCaslonTitle({
     <div
       style={{
         display: "flex",
-        fontFamily: caslonFontFamily,
-        fontStyle: "italic",
+        fontFamily: serifFontFamily,
         fontSize,
         fontWeight: 400,
         color: "#fafafa",
