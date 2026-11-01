@@ -65,7 +65,7 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
           </div>
           {isComplete ? (
             <div className="flex w-full flex-col gap-1">
-              <p className="text-display font-caslon text-sm italic leading-snug">
+              <p className="text-display font-serif text-sm leading-snug">
                 Congratulations — you found them all.
               </p>
               <p className="font-mono text-[11px] leading-snug text-muted-foreground">

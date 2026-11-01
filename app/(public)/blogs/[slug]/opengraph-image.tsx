@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
 import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
 import { getSiteHostname, SITE_NAME } from "@/lib/constants/site";
-import { loadOgFonts } from "@/lib/og/caslonFont";
+import { loadOgFonts } from "@/lib/og/serifFont";
 import {
   OG_SIZE,
   OgBackground,
-  OgCaslonTitle,
+  OgSerifTitle,
   OgDivider,
   OgMonoLabel,
 } from "@/lib/og/createOgImage";
@@ -36,7 +36,7 @@ export default async function OgImage({
             zIndex: 1,
           }}
         >
-          <OgCaslonTitle fontSize={56}>Not Found</OgCaslonTitle>
+          <OgSerifTitle fontSize={56}>Not Found</OgSerifTitle>
           <div
             style={{
               display: "flex",
@@ -98,7 +98,7 @@ export default async function OgImage({
           }}
         >
           <OgDivider width={48} />
-          <OgCaslonTitle fontSize={titleFontSize}>{blog.title}</OgCaslonTitle>
+          <OgSerifTitle fontSize={titleFontSize}>{blog.title}</OgSerifTitle>
         </div>
 
         <div

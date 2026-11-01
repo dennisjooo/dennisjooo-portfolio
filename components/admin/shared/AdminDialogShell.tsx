@@ -29,7 +29,7 @@ export function AdminDialogShell({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="glass-panel max-w-md gap-0 rounded-2xl border-border/50 p-8">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="font-caslon text-2xl italic tracking-tight text-foreground">
+          <DialogTitle className="font-serif text-2xl tracking-tight text-foreground">
             {title}
           </DialogTitle>
           <DialogDescription className="max-w-[95%] text-base leading-relaxed text-muted-foreground/80">

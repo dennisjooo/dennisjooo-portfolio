@@ -9,7 +9,7 @@ export const SSR_CRITICAL_CSS = [
   "html.light #__ssr_cover{background:#fff!important}",
   "#__ssr_cover.hidden{opacity:0;pointer-events:none;visibility:hidden}",
   "#__ssr_loader{display:flex;align-items:center;justify-content:center}",
-  "#__ssr_loader .ssr-mark{color:#0a0a0a;font-family:var(--font-caslon),Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;font-size:3rem;letter-spacing:-.05em;line-height:1;animation:ssr-pulse 1.4s ease-in-out infinite}",
+  "#__ssr_loader .ssr-mark{color:#0a0a0a;font-family:var(--font-geist-serif),Georgia,'Times New Roman',serif;font-weight:400;font-size:3rem;letter-spacing:-.05em;line-height:1;animation:ssr-pulse 1.4s ease-in-out infinite}",
   "@media(min-width:768px){#__ssr_loader .ssr-mark{font-size:4rem}}",
   "@media(prefers-color-scheme:dark){#__ssr_loader .ssr-mark{color:#fafafa}}",
   "html.dark #__ssr_loader .ssr-mark{color:#fafafa!important}",

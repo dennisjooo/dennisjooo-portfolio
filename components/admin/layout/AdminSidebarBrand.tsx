@@ -12,14 +12,14 @@ export function AdminSidebarBrand({ isCollapsed }: AdminSidebarBrandProps) {
             : "pointer-events-none absolute inset-0 opacity-0"
         }`}
       >
-        <h1 className="font-caslon text-lg italic">DJ</h1>
+        <h1 className="font-serif text-lg">DJ</h1>
       </div>
       <div
         className={`pl-[22px] transition-opacity duration-200 ${
           isCollapsed ? "opacity-0" : "opacity-100"
         }`}
       >
-        <h1 className="whitespace-nowrap font-caslon text-lg italic">
+        <h1 className="whitespace-nowrap font-serif text-lg">
           Dennis Jonathan
         </h1>
         <p className="whitespace-nowrap font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">

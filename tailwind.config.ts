@@ -13,9 +13,14 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-roboto-mono)", "monospace"],
-        caslon: ["var(--font-caslon)", "serif"],
+        sans: [
+          "var(--font-geist-sans)",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: ["var(--font-geist-mono)", "monospace"],
+        serif: ["var(--font-geist-serif)", "serif"],
       },
       keyframes: {
         fadeIn: {

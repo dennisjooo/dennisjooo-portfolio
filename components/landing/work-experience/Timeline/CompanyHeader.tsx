@@ -35,7 +35,7 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
       </div>
 
       {/* Company Name */}
-      <h3 className="font-caslon text-4xl italic leading-[0.9] tracking-tight text-foreground md:text-right md:text-6xl lg:text-7xl">
+      <h3 className="font-serif text-4xl leading-[0.9] tracking-tight text-foreground md:text-right md:text-6xl lg:text-7xl">
         {companyName}
       </h3>
     </div>

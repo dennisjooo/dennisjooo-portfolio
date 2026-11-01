@@ -29,7 +29,7 @@ export function NavigationCard({
             <ArrowRightIcon className="mt-0.5 h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-accent" />
           </div>
 
-          <h2 className="mb-1.5 font-caslon text-xl font-medium italic transition-colors duration-300 group-hover:text-accent">
+          <h2 className="mb-1.5 font-serif text-xl font-medium transition-colors duration-300 group-hover:text-accent">
             {title}
           </h2>
 

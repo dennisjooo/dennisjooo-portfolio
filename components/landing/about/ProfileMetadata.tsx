@@ -14,7 +14,7 @@ export function ProfileMetadata({
       className={cn("animate-fade-in space-y-2 text-center", className)}
       style={{ animationDelay: "0.6s" }}
     >
-      <p className={cn("font-caslon italic text-foreground", nameClassName)}>
+      <p className={cn("font-serif text-foreground", nameClassName)}>
         Dennis Jonathan
       </p>
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">

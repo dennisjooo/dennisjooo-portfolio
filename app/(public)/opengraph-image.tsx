@@ -1,10 +1,10 @@
 import { ImageResponse } from "next/og";
 import { getSiteHostname, SITE_NAME, SITE_TAGLINE } from "@/lib/constants/site";
-import { loadOgFonts } from "@/lib/og/caslonFont";
+import { loadOgFonts } from "@/lib/og/serifFont";
 import {
   OG_SIZE,
   OgBackground,
-  OgCaslonTitle,
+  OgSerifTitle,
   OgMonoLabel,
 } from "@/lib/og/createOgImage";
 
@@ -52,9 +52,9 @@ export default async function OgImage() {
             flex: 1,
           }}
         >
-          <OgCaslonTitle fontSize={108}>{firstName}</OgCaslonTitle>
+          <OgSerifTitle fontSize={108}>{firstName}</OgSerifTitle>
           {lastName ? (
-            <OgCaslonTitle fontSize={108}>{lastName}</OgCaslonTitle>
+            <OgSerifTitle fontSize={108}>{lastName}</OgSerifTitle>
           ) : null}
         </div>
 

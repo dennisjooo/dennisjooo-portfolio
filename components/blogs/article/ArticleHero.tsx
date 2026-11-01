@@ -63,7 +63,7 @@ export const ArticleHero = ({
 
       <m.h1
         {...titleMotion}
-        className="mb-6 font-caslon text-4xl italic leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
+        className="mb-6 font-serif text-4xl leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl"
       >
         {title}
       </m.h1>

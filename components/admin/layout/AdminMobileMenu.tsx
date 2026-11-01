@@ -36,7 +36,7 @@ export function AdminMobileMenu() {
       >
         <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <h1 className="font-caslon text-lg italic">Dennis Jonathan</h1>
+            <h1 className="font-serif text-lg">Dennis Jonathan</h1>
             <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
               Mission Control
             </p>

@@ -38,7 +38,7 @@ export const BlogsHero = ({ activeTab, meta }: BlogsHeroProps) => {
           animate={{ opacity: 1 }}
           exit={titleExit}
           transition={titleInitial ? fadeTransition : { duration: 0 }}
-          className="mb-4 font-caslon text-6xl italic leading-[1] tracking-tight text-foreground md:text-8xl"
+          className="mb-4 font-serif text-6xl leading-[1] tracking-tight text-foreground md:text-8xl"
         >
           {tabTitles[activeTab]}
         </m.h1>

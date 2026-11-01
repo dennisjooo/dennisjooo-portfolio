@@ -26,7 +26,7 @@ export function NotFoundContent({ x, y, onRetry }: NotFoundContentProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h2 className="text-display font-caslon text-6xl italic leading-[0.85] tracking-tight md:text-7xl lg:text-8xl">
+          <h2 className="text-display font-serif text-6xl leading-[0.85] tracking-tight md:text-7xl lg:text-8xl">
             {onRetry ? "That" : "Nothing"}
             <br />
             <span className="text-accent">{onRetry ? "broke." : "here."}</span>

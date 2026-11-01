@@ -99,7 +99,7 @@ export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
       >
         <span
           className={cn(
-            "-ml-[3px] font-caslon text-xs italic leading-none transition-colors duration-200 ease-in-out",
+            "-ml-[3px] font-serif text-xs leading-none transition-colors duration-200 ease-in-out",
             showCircle ? "text-background" : "text-foreground",
           )}
         >

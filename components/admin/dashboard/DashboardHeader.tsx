@@ -50,7 +50,7 @@ export function DashboardHeader({
   return (
     <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
       <div className="space-y-3">
-        <h1 className="font-caslon text-4xl italic md:text-5xl lg:text-6xl">
+        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl">
           {greeting},{" "}
           <span className="text-display font-sans font-bold not-italic">
             {userName || "Admin"}.

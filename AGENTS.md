@@ -17,11 +17,11 @@ The typography relies on extreme contrast between Serif and Sans-Serif, and size
 
 ### Primary Pairing
 
-- **Name / Headlines:** _Libre Caslon Text_ (Italic, via `font-caslon`) vs **Urbanist** (Bold/Black, Weight: 700+).
-  - _Usage:_ The hero name lockup uses Caslon italic with mix-blend modes over the gradient background.
+- **Name / Headlines:** _Geist Serif_ (upright, via `font-serif`; it ships no italic, so never add `italic` to it) vs **Geist Sans** (Bold/Black, Weight: 700+).
+  - _Usage:_ The hero name lockup uses Geist Serif with mix-blend modes over the gradient background.
   - _Scale:_ Hero name uses `vw` units (`18vw` mobile, `8–9vw` desktop) for impact. Reserve `vw` typography for the hero only; all other display headings use rem-based scale (`text-4xl`–`text-6xl`).
-- **Body / UI:** _Urbanist_ (clean, geometric sans-serif).
-- **Metadata / Tech:** _Roboto Mono_ (technical, code-like).
+- **Body / UI:** _Geist Sans_ (via `font-sans`).
+- **Metadata / Tech:** _Geist Mono_ (via `font-mono`; technical, code-like).
   - _Usage:_ Copyright dates, locations, section titles, "Scroll to Explore" indicators.
 
 ### Styling Rules
@@ -75,7 +75,7 @@ The site uses a vertical stacking context to create depth.
 
 - **About:** Static header (`animated={false}`) — GSAP controls the section.
 - **All other landing sections:** Animated header (default `animated={true}`).
-- **Pattern:** Caslon italic number (left) + mono uppercase title (right) + gradient accent underline.
+- **Pattern:** Geist Serif number (left) + mono uppercase title (right) + gradient accent underline.
 
 ### Mobile Considerations
 
@@ -93,7 +93,7 @@ The site uses a vertical stacking context to create depth.
 - **Package / folder:** npm name `profile-page`, workspace folder `portfolio`
 - **Styling:** Tailwind CSS with semantic tokens (`bg-background`, `text-foreground`, etc.)
 - **Motion:** GSAP + Framer Motion + Lenis
-- **Fonts:** `next/font/google` (Urbanist, Roboto Mono, Libre Caslon Text)
+- **Fonts:** the `geist` package via `app/fonts.ts` (Geist Sans, Geist Mono, Geist Serif; Serif is not on Google Fonts). Tailwind maps `font-sans` / `font-mono` / `font-serif` to `--font-geist-sans` / `--font-geist-mono` / `--font-geist-serif`. The favicon, apple icon and OG images use Geist Serif too, from a TTF copy in `lib/og/fonts/` loaded by `lib/og/serifFont.ts` (next/og cannot read woff2)
 - **Auth / data:** Clerk, Neon Postgres, Drizzle ORM, Vercel Blob for media
 - **Blob paths:** `blog/{slug}/`
 - **Build pipeline:** `bump-version.mjs` → `generate-site-files` → `next build`; date-based versioning
@@ -146,7 +146,7 @@ The same content entity uses different names by layer. Use this table when namin
 - Only create git commits when explicitly asked
 - Keep code diffs minimal and focused; do not add unrelated changes
 - Easter eggs should be subtle and discoverable (console hints, command palette, hidden copy)—not flashy overlays or Konami effects
-- Toast editorial labels use Urbanist sans (semibold uppercase), not mono; body uses sans (Urbanist) or Caslon for playful; top-right placement with clear label/body hierarchy
+- Toast editorial labels use Geist Sans (semibold uppercase), not mono; body uses sans or Geist Serif for playful; top-right placement with clear label/body hierarchy
 - Command palette should keep stable height while typing/filtering; use light backdrop blur on overlay only, not stacked glass on panels
 - Suppress persistent focus rings on icon/pill buttons after click
 
@@ -156,6 +156,6 @@ The same content entity uses different names by layer. Use this table when namin
 - Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale glass editorial styling, no Sonner `richColors`
 - Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
 - Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
-- SSR loader critical CSS in `app/layout.tsx` must use `var(--font-caslon)` so the name matches hero Libre Caslon Text
+- SSR loader critical CSS in `app/ssrLoaderAssets.ts` must use `var(--font-geist-serif)` so the mark matches the hero's Geist Serif
 - About landing slides are CMS JSON on `site_config.about_sections` (not four named columns); public fallback is Hello / Craft / Play in `lib/content/aboutContent.ts`
 - Prettier uses `prettier-plugin-tailwindcss` and `prettier-plugin-packagejson` (see `.prettierrc`)
