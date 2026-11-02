@@ -27,7 +27,7 @@ export const markdownComponents: Components = {
   ),
   h3: ({ children, ...props }) => (
     <h3
-      className="mb-3 mt-8 font-sans text-xl font-bold tracking-tight text-foreground md:text-2xl"
+      className="mb-3 mt-8 font-serif text-xl font-normal text-foreground md:text-2xl"
       {...props}
     >
       {children}
@@ -35,7 +35,7 @@ export const markdownComponents: Components = {
   ),
   h4: ({ children, ...props }) => (
     <h4
-      className="mb-2 mt-6 font-sans text-lg font-bold tracking-tight text-foreground md:text-xl"
+      className="mb-2 mt-6 font-serif text-lg font-normal text-foreground md:text-xl"
       {...props}
     >
       {children}
