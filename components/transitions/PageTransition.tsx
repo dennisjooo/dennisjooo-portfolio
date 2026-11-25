@@ -50,7 +50,7 @@ export function PageTransition({ children }: PageTransitionProps) {
 
       requestAnimationFrame(() => {
         window.scrollTo(0, y);
-        window.lenis?.scrollTo(y, { immediate: true });
+        window.portfolioLenis?.scrollTo(y, { immediate: true });
       });
     };
 
@@ -67,7 +67,7 @@ export function PageTransition({ children }: PageTransitionProps) {
     if (prevPathRef.current !== pathname) {
       if (!isSectionNavigationPending()) {
         window.scrollTo(0, 0);
-        window.lenis?.scrollTo(0, { immediate: true });
+        window.portfolioLenis?.scrollTo(0, { immediate: true });
       }
       prevPathRef.current = pathname;
     }

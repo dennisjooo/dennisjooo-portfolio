@@ -80,8 +80,8 @@ export function scrollToCentered(
   );
   const scrollPosition = calculateCenteredScrollPosition(element);
 
-  if (window.lenis) {
-    window.lenis.scrollTo(scrollPosition, { immediate: !smooth });
+  if (window.portfolioLenis) {
+    window.portfolioLenis.scrollTo(scrollPosition, { immediate: !smooth });
   } else {
     window.scrollTo({
       top: scrollPosition,
@@ -94,15 +94,15 @@ export function scrollToTop(instant: boolean = false): void {
   beginProgrammaticScroll(
     instant ? INSTANT_SCROLL_LOCK_MS : SCROLL_ANIMATION_DURATION,
   );
-  if (window.lenis) {
+  if (window.portfolioLenis) {
     if (instant) {
-      window.lenis.stop();
+      window.portfolioLenis.stop();
       window.scrollTo(0, 0);
       requestAnimationFrame(() => {
-        window.lenis?.start();
+        window.portfolioLenis?.start();
       });
     } else {
-      window.lenis.scrollTo(0, { immediate: false });
+      window.portfolioLenis.scrollTo(0, { immediate: false });
     }
   } else {
     window.scrollTo({ top: 0, behavior: instant ? "instant" : "smooth" });
@@ -113,11 +113,11 @@ export function forceScrollToTop(): void {
   beginProgrammaticScroll(INSTANT_SCROLL_LOCK_MS);
   window.scrollTo(0, 0);
 
-  if (window.lenis) {
-    window.lenis.stop();
+  if (window.portfolioLenis) {
+    window.portfolioLenis.stop();
 
     requestAnimationFrame(() => {
-      window.lenis?.start();
+      window.portfolioLenis?.start();
     });
   }
 }
@@ -156,8 +156,8 @@ export function scrollToSection(sectionId: string, instant = true): void {
   );
   const top = getSectionScrollTop(el);
 
-  if (window.lenis) {
-    window.lenis.scrollTo(top, { immediate: instant });
+  if (window.portfolioLenis) {
+    window.portfolioLenis.scrollTo(top, { immediate: instant });
   } else {
     window.scrollTo({ top, behavior: instant ? "instant" : "smooth" });
   }
@@ -203,7 +203,7 @@ async function waitForContentRevealed(timeoutMs = 3000): Promise<void> {
 }
 
 async function waitForLenis(timeoutMs = 3000): Promise<void> {
-  if (window.lenis) return;
+  if (window.portfolioLenis) return;
 
   const isMobile = window.innerWidth < 768 || "ontouchstart" in window;
   const prefersReducedMotion = window.matchMedia(
@@ -214,7 +214,7 @@ async function waitForLenis(timeoutMs = 3000): Promise<void> {
   await waitForWindowEvent(LENIS_READY, timeoutMs);
 
   const start = performance.now();
-  while (!window.lenis && performance.now() - start < timeoutMs) {
+  while (!window.portfolioLenis && performance.now() - start < timeoutMs) {
     await new Promise((resolve) => setTimeout(resolve, 50));
   }
 }

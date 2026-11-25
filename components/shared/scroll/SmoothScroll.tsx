@@ -40,7 +40,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
         smoothWheel: true,
       });
 
-      window.lenis = lenis;
+      window.portfolioLenis = lenis;
       window.dispatchEvent(new Event("portfolio:lenis-ready"));
 
       gsap.registerPlugin(ScrollTrigger);
@@ -54,7 +54,7 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
 
       return () => {
         lenis.destroy();
-        delete window.lenis;
+        delete window.portfolioLenis;
         gsap.ticker.remove(lenis.raf);
       };
     };

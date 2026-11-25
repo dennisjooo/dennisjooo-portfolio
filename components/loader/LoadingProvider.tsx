@@ -83,13 +83,13 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
     htmlEl.style.overflow = "hidden";
     bodyEl.style.overflow = "hidden";
 
-    if (window.lenis) {
-      window.lenis.stop();
+    if (window.portfolioLenis) {
+      window.portfolioLenis.stop();
     }
 
     const handleLenisReady = () => {
-      if (window.lenis) {
-        window.lenis.stop();
+      if (window.portfolioLenis) {
+        window.portfolioLenis.stop();
       }
     };
 
@@ -99,8 +99,8 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
       htmlEl.style.overflow = originalHtmlOverflow;
       bodyEl.style.overflow = originalBodyOverflow;
       window.removeEventListener("portfolio:lenis-ready", handleLenisReady);
-      if (window.lenis) {
-        window.lenis.start();
+      if (window.portfolioLenis) {
+        window.portfolioLenis.start();
       }
     };
   }, [showInitialLoader]);

@@ -23,16 +23,16 @@ export function HomeEffects() {
 
     if (!isHashNav) {
       if (sectionId === "home" || window.location.hash === "#home") {
-        if (window.lenis) {
-          window.lenis.stop();
+        if (window.portfolioLenis) {
+          window.portfolioLenis.stop();
         }
         window.scrollTo(0, 0);
         requestAnimationFrame(() => {
           window.scrollTo(0, 0);
-          if (window.lenis) {
-            window.lenis.scrollTo(0, { immediate: true });
+          if (window.portfolioLenis) {
+            window.portfolioLenis.scrollTo(0, { immediate: true });
             requestAnimationFrame(() => {
-              window.lenis?.start();
+              window.portfolioLenis?.start();
             });
           }
         });

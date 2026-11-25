@@ -50,7 +50,8 @@ export const markdownComponents: Components = {
       return <div className="mb-5">{children}</div>;
     }
 
-    const leadClass = node?.properties?.className;
+    const leadClass = node?.properties?.className as
+      string | string[] | undefined;
     const isLead =
       (typeof leadClass === "string" &&
         leadClass.split(/\s+/).includes("article-lead")) ||
