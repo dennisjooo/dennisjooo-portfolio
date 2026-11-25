@@ -16,10 +16,10 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
   isActive = false,
 }) => {
   return (
-    <div className="flex w-full flex-col gap-4 transition-all duration-500 md:items-end md:gap-6">
+    <div className="flex w-full flex-col gap-4 transition-colors duration-500 md:items-end md:gap-6">
       <div
         className={cn(
-          "relative h-12 w-12 shrink-0 overflow-hidden transition-all duration-500 md:h-16 md:w-16",
+          "relative h-12 w-12 shrink-0 overflow-hidden transition-colors duration-500 md:h-16 md:w-16",
           isActive
             ? "scale-105 opacity-100 grayscale-0"
             : "opacity-100 grayscale-0 md:scale-100 md:opacity-40 md:grayscale",

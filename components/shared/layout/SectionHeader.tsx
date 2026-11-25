@@ -6,7 +6,6 @@ import {
   viewportSettings,
   headerStaggerContainer,
   fadeUpItem,
-  underlineReveal,
   useInViewReveal,
   useMotionSafe,
 } from "@/components/motion";
@@ -33,13 +32,10 @@ function StaticSectionHeader({
         className,
       )}
     >
-      <span className="font-serif text-3xl text-foreground md:text-4xl">
-        {number}
-      </span>
-      <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm">
+      <span className="font-mono text-sm text-muted-foreground">{number}</span>
+      <span className="font-serif text-2xl text-foreground md:text-3xl">
         {title}
       </span>
-      <div className="glow-line bg-gradient-accent absolute bottom-0 left-0 right-0 h-px" />
     </div>
   );
 }
@@ -51,7 +47,6 @@ function AnimatedSectionHeader({
 }: Pick<SectionHeaderProps, "number" | "title" | "className">) {
   const containerMotion = useInViewReveal(headerStaggerContainer);
   const fadeUp = useMotionSafe(fadeUpItem);
-  const underline = useMotionSafe(underlineReveal);
 
   return (
     <m.div
@@ -64,20 +59,16 @@ function AnimatedSectionHeader({
     >
       <m.span
         variants={fadeUp}
-        className="font-serif text-3xl text-foreground md:text-4xl"
+        className="font-mono text-sm text-muted-foreground"
       >
         {number}
       </m.span>
       <m.span
         variants={fadeUp}
-        className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-70 md:text-sm"
+        className="font-serif text-2xl text-foreground md:text-3xl"
       >
         {title}
       </m.span>
-      <m.div
-        variants={underline}
-        className="glow-line bg-gradient-accent absolute bottom-0 left-0 right-0 h-px origin-left"
-      />
     </m.div>
   );
 }

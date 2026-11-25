@@ -25,12 +25,12 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
     const initLenis = async () => {
       if (!isMounted.current) return () => {};
 
-      const [{ default: Lenis }, { default: gsap }, { ScrollTrigger }] =
-        await Promise.all([
-          import("lenis"),
-          import("gsap"),
-          import("gsap/ScrollTrigger"),
-        ]);
+      const [{ default: Lenis }, { gsap, ScrollTrigger }] = await Promise.all([
+        import("lenis"),
+        import("@/lib/motion/gsapBootstrap").then((m) =>
+          m.loadGsapWithScrollTrigger(),
+        ),
+      ]);
 
       const lenis = new Lenis({
         duration: 0.9,
@@ -42,8 +42,6 @@ export const SmoothScroll = ({ children }: SmoothScrollProps) => {
 
       window.portfolioLenis = lenis;
       window.dispatchEvent(new Event("portfolio:lenis-ready"));
-
-      gsap.registerPlugin(ScrollTrigger);
 
       lenis.on("scroll", ScrollTrigger.update);
 

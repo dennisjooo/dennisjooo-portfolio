@@ -13,8 +13,8 @@ interface MobileMenuProps {
 }
 
 const ITEM_BASE_CLASSES =
-  "block w-full rounded-2xl px-5 py-3 text-xs uppercase tracking-widest font-bold transition-colors duration-200 ease-in-out text-center";
-const HOVER_CLASSES = "hover:bg-black/5 dark:hover:bg-white/10";
+  "block w-full rounded-sm px-5 py-3 text-sm font-medium transition-colors duration-200 ease-out text-left";
+const HOVER_CLASSES = "hover:bg-secondary";
 
 const ITEM_ANIMATION_BASE =
   "transition-[opacity,transform] duration-200 ease-out will-change-transform";
@@ -89,7 +89,7 @@ export const MobileMenu = ({
                 : "-translate-y-2 opacity-0"
             }`}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <span className="font-mono text-xs text-muted-foreground">
               Theme
             </span>
             <ThemeToggle />

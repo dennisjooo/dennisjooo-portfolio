@@ -27,7 +27,7 @@ export function MarkdownEditorModeTabs({
           type="button"
           onClick={() => onEditorModeChange("write")}
           className={cn(
-            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
             editorMode === "write"
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground",
@@ -40,7 +40,7 @@ export function MarkdownEditorModeTabs({
           type="button"
           onClick={() => onEditorModeChange("preview")}
           className={cn(
-            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
             editorMode === "preview"
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground",
@@ -53,7 +53,7 @@ export function MarkdownEditorModeTabs({
           type="button"
           onClick={() => onEditorModeChange("split")}
           className={cn(
-            "hidden items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all md:flex",
+            "hidden items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors md:flex",
             editorMode === "split"
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground",

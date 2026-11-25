@@ -25,13 +25,13 @@ export function AdminSidebarFooter({
 
       <SignOutButton>
         <button
-          className={`flex w-full items-center rounded py-2 text-muted-foreground transition-all hover:bg-destructive/10 hover:text-destructive ${
+          className={`flex w-full items-center rounded py-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive ${
             isCollapsed ? "justify-center px-0" : "gap-3 pl-[10px] pr-3"
           }`}
         >
           <PowerIcon className="h-4 w-4 flex-shrink-0" />
           <span
-            className={`whitespace-nowrap font-mono text-xs uppercase tracking-widest transition-all duration-200 ${
+            className={`whitespace-nowrap font-mono text-xs transition-colors duration-200 ${
               isCollapsed ? "w-0 overflow-hidden opacity-0" : "opacity-100"
             }`}
           >
@@ -42,13 +42,13 @@ export function AdminSidebarFooter({
 
       <Link
         href="/"
-        className={`flex w-full items-center rounded py-2 text-muted-foreground transition-all hover:text-foreground ${
+        className={`flex w-full items-center rounded py-2 text-muted-foreground transition-colors hover:text-foreground ${
           isCollapsed ? "justify-center px-0" : "gap-3 pl-[10px] pr-3"
         }`}
       >
         <ArrowTopRightOnSquareIcon className="h-4 w-4 flex-shrink-0" />
         <span
-          className={`whitespace-nowrap font-mono text-xs uppercase tracking-widest transition-all duration-200 ${
+          className={`whitespace-nowrap font-mono text-xs transition-colors duration-200 ${
             isCollapsed ? "w-0 overflow-hidden opacity-0" : "opacity-100"
           }`}
         >
@@ -58,7 +58,7 @@ export function AdminSidebarFooter({
 
       <button
         onClick={onToggle}
-        className={`flex w-full items-center rounded py-1.5 text-muted-foreground/50 transition-all hover:text-muted-foreground ${
+        className={`flex w-full items-center rounded py-1.5 text-muted-foreground/50 transition-colors hover:text-muted-foreground ${
           isCollapsed ? "justify-center px-0" : "gap-3 pl-[10px] pr-3"
         }`}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -68,7 +68,7 @@ export function AdminSidebarFooter({
         ) : (
           <>
             <ChevronLeftIcon className="h-3.5 w-3.5 flex-shrink-0" />
-            <span className="whitespace-nowrap font-mono text-xs uppercase tracking-widest">
+            <span className="whitespace-nowrap font-mono text-xs">
               Collapse
             </span>
           </>

@@ -35,7 +35,7 @@ export function BlogCoverImageField({
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground/50">
               <PhotoIcon className="mb-2 h-12 w-12" />
-              <span className="text-xs uppercase tracking-widest">
+              <span className="text-xs">
                 {canUploadImages
                   ? "No Image Selected"
                   : "Add a title to upload images"}

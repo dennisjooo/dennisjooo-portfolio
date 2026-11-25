@@ -27,7 +27,7 @@ export const CertificationCard = ({
       viewport={{ once: true, margin: "-50px" }}
     >
       <article className="flex h-full flex-col gap-3 border-t border-border pt-5">
-        <div className="flex items-center justify-between gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <div className="flex items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
           <span className="truncate">{issuer}</span>
           <span className="shrink-0">{date}</span>
         </div>

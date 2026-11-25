@@ -45,17 +45,17 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
         transition={{ duration: 0.5, delay: 0.8 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`relative rounded-2xl p-3 transition-all duration-300 ${
+        className={`relative rounded-sm p-3 transition-colors duration-200 ${
           isHovered
             ? "w-[280px] border border-border bg-muted/80 shadow-lg backdrop-blur-md"
             : "border border-transparent bg-transparent"
         }`}
       >
         <m.span
-          className="absolute -top-8 left-0 pl-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground"
+          className="absolute -top-8 left-0 pl-3 font-mono text-xs text-muted-foreground"
           style={{
             opacity: isHovered ? 1 : 0,
-            transition: "opacity 0.3s ease",
+            transition: isHovered ? "opacity 0.1s ease 0.08s" : "none",
           }}
         >
           On this page
@@ -76,7 +76,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
             return (
               <li
                 key={heading.id}
-                className="relative flex items-center transition-all duration-300 ease-in-out"
+                className="relative flex items-center transition-colors duration-200 ease-in-out"
                 style={{
                   paddingLeft: `${indent}px`,
                   maxHeight: isVisible ? "40px" : "0px",
@@ -91,7 +91,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   className="group flex items-center gap-3"
                 >
                   <div
-                    className={`h-px transition-all duration-300 ease-in-out ${
+                    className={`h-px transition-colors duration-200 ease-in-out ${
                       isActive
                         ? "bg-accent"
                         : "bg-border group-hover:bg-muted-foreground"
@@ -102,7 +102,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   />
 
                   <span
-                    className={`truncate font-sans text-sm transition-all duration-300 ease-in-out ${
+                    className={`truncate font-sans text-sm transition-colors duration-200 ease-in-out ${
                       isActive
                         ? "font-medium text-accent"
                         : "text-muted-foreground group-hover:text-foreground"

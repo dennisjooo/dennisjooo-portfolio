@@ -1,0 +1,25 @@
+{
+  "scanned": "2026-11-25",
+  "findings": {
+    "fonts": "Geist Sans / Mono / Serif via app/fonts.ts (geist package)",
+    "palette": "HSL greyscale semantic tokens in app/styles/tokens.css (:root / .dark)",
+    "motion": "Lenis + GSAP peel/About pin, Framer Motion 11, CSS hero LCP keyframes, ogl Grainient",
+    "spacing": "Tailwind default 4pt scale; SectionShell py-24 md:py-32",
+    "framework": "Next.js 16 App Router, Tailwind 3, Clerk, Neon, Drizzle"
+  },
+  "preserve": [
+    "Geist faces",
+    "greyscale palette",
+    "Lenis + GSAP peel + About pin",
+    "command palette and easter-egg behavior",
+    "CMS content, routes, Clerk",
+    "blogs table and /blogs URLs"
+  ],
+  "introduce": [
+    "Hallmark Floor and design.md",
+    "rem-based hero type",
+    "hairline rules, no noise/glass/mix-blend/grainient/marquees",
+    "app-screen admin density",
+    "one toast/loader/shell contract"
+  ]
+}

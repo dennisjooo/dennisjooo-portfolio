@@ -40,11 +40,15 @@ export const useAboutAnimations = ({
       };
 
       requestAnimationFrame(() => {
-        void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-          ScrollTrigger.refresh();
-          setScrollAnimationsReady(true);
-          window.dispatchEvent(new Event("portfolio:scroll-animations-ready"));
-        });
+        void import("@/lib/motion/gsapBootstrap")
+          .then((m) => m.loadGsapWithScrollTrigger())
+          .then(({ ScrollTrigger }) => {
+            ScrollTrigger.refresh();
+            setScrollAnimationsReady(true);
+            window.dispatchEvent(
+              new Event("portfolio:scroll-animations-ready"),
+            );
+          });
       });
     };
 
@@ -71,9 +75,11 @@ export const useAboutAnimations = ({
     const onContentRevealed = () => {
       disconnectObserver?.();
       disconnectObserver = startObserving();
-      void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-        requestAnimationFrame(() => ScrollTrigger.refresh());
-      });
+      void import("@/lib/motion/gsapBootstrap")
+        .then((m) => m.loadGsapWithScrollTrigger())
+        .then(({ ScrollTrigger }) => {
+          requestAnimationFrame(() => ScrollTrigger.refresh());
+        });
     };
 
     const pendingSection = resolveSectionScrollTarget();

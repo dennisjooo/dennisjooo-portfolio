@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { CameraIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import { AdminPageHeader, LoadingSpinner } from "@/components/admin/shared";
@@ -17,7 +17,7 @@ export default function ProfileAdminPage() {
     filename: PROFILE_IMAGE_FILENAME,
     onSuccess: async (url) => {
       await updateConfig({ profileImageUrl: url });
-      toast.success("Profile updated!");
+      siteToast.success("Profile updated!");
     },
   });
 
@@ -39,7 +39,7 @@ export default function ProfileAdminPage() {
         subtitle="Global configuration & identity"
       />
 
-      <div className="glass-panel max-w-2xl rounded-2xl border border-border/50 p-8">
+      <div className="max-w-2xl rounded-2xl border border-border border-border/50 bg-background p-8">
         <div className="flex flex-col items-start gap-8 md:flex-row">
           <div className="group relative">
             <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-background shadow-xl">
@@ -83,7 +83,7 @@ export default function ProfileAdminPage() {
             </p>
 
             <div className="border-t border-border/50 pt-4">
-              <h4 className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              <h4 className="mb-3 font-mono text-xs text-muted-foreground">
                 Current Source
               </h4>
               <code className="block w-full break-all rounded-lg border border-border/50 bg-muted/50 p-3 font-mono text-xs text-muted-foreground">

@@ -34,22 +34,11 @@ export default function NavbarClient() {
     closeMenu: () => setIsMenuOpen(false),
   });
 
-  const { bgClass, navWidth, textColorClass } = useNavbarStyles({
+  const { bgClass, navWidth, textColorClass, showMarkFill } = useNavbarStyles({
     isHeroSection,
     scrolled,
     isMenuOpen,
   });
-
-  const isGlass = bgClass === "glass-panel";
-  const noiseClass = isGlass ? "bg-noise" : "";
-
-  const navbarContainerClasses = [
-    "relative flex flex-col",
-    bgClass,
-    noiseClass,
-    isMenuOpen ? "rounded-2xl" : "rounded-2xl md:rounded-full",
-    "transition-all duration-200 ease-in-out overflow-hidden",
-  ].join(" ");
 
   const visibilityClass = isNavbarVisible
     ? "translate-y-0 opacity-100"
@@ -57,15 +46,14 @@ export default function NavbarClient() {
 
   return (
     <nav
-      className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-all duration-200 ease-in-out ${navWidth} ${visibilityClass}`}
+      className={`fixed left-1/2 top-4 z-50 -translate-x-1/2 transform transition-[opacity,transform] duration-200 ease-out ${navWidth} ${visibilityClass}`}
     >
-      <div className={navbarContainerClasses}>
-        <div className="flex min-h-[3rem] items-center gap-2 px-4 py-3">
-          <NavLogo
-            onNavigate={handleNavigation}
-            showCircle={!isHeroSection || scrolled || isMenuOpen}
-          />
-          <div className="ml-auto flex items-center gap-2">
+      <div
+        className={`relative flex flex-col overflow-hidden rounded-sm border ${bgClass}`}
+      >
+        <div className="flex min-h-12 items-center gap-2 px-4 py-2">
+          <NavLogo onNavigate={handleNavigation} showCircle={showMarkFill} />
+          <div className="ml-auto flex items-center gap-1">
             <CommandMenuTrigger
               textColorClass={textColorClass}
               scrolled={scrolled}

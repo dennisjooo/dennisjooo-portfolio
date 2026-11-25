@@ -7,7 +7,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
 import { AdminPageHeader, LoadingSpinner } from "@/components/admin/shared";
 import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
@@ -63,11 +63,11 @@ export default function AboutAdminPage() {
       await updateConfig({ aboutSections: sections });
       reset(sections);
       setSaved(true);
-      toast.success("Changes saved successfully");
+      siteToast.success("Changes saved successfully");
       setTimeout(() => setSaved(false), 2000);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save");
+      siteToast.error("Failed to save");
     } finally {
       setSaving(false);
     }
@@ -109,7 +109,7 @@ export default function AboutAdminPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:text-accent/70 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 font-mono text-xs text-accent transition-colors hover:text-accent/70 disabled:opacity-50"
           >
             {saving ? (
               <ArrowPathIcon className="h-3.5 w-3.5 animate-spin" />
@@ -158,7 +158,7 @@ export default function AboutAdminPage() {
               onDrop={() => handleDrop(index)}
               onDragEnd={handleDragEnd}
               className={cn(
-                "glass-panel rounded-2xl border border-border/50 p-6 transition-all duration-200",
+                "rounded-2xl border border-border border-border/50 bg-background p-6 transition-colors duration-200",
                 isDragging && "opacity-50",
                 isDragOver && "ring-2 ring-primary",
               )}

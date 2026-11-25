@@ -12,7 +12,7 @@ interface UsePaginatedListFetchOptions<T> {
   resolveData?: (data: Record<string, unknown>) => T[];
   dataKey: string;
   paginationKey: string;
-  schedulePrefetch: (currentPage: number, hasMore: boolean) => void;
+  schedulePrefetch: (nextCursor: string | null, hasMore: boolean) => void;
   setItems: React.Dispatch<React.SetStateAction<T[]>>;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
   setLoading: (loading: boolean) => void;
@@ -35,7 +35,7 @@ export function usePaginatedListFetch<T>({
   const fetchAbortRef = useRef<AbortController | null>(null);
 
   const fetchItems = useCallback(
-    async (page: number, reset = false) => {
+    async (cursor: string | null, reset = false) => {
       if (fetchAbortRef.current) {
         fetchAbortRef.current.abort();
       }
@@ -43,7 +43,7 @@ export function usePaginatedListFetch<T>({
       const abortController = new AbortController();
       fetchAbortRef.current = abortController;
 
-      if (page === 1) {
+      if (!cursor) {
         setLoading(true);
       } else {
         setLoadingMore(true);
@@ -51,7 +51,7 @@ export function usePaginatedListFetch<T>({
 
       try {
         const res = await fetch(
-          buildPaginatedFetchUrl(endpoint, page, pageSize, stableQueryParams),
+          buildPaginatedFetchUrl(endpoint, cursor, pageSize, stableQueryParams),
           { signal: abortController.signal },
         );
         const data = await res.json();
@@ -66,7 +66,10 @@ export function usePaginatedListFetch<T>({
 
         if (parsed.pagination) {
           setPagination(parsed.pagination);
-          schedulePrefetch(parsed.pagination.page, parsed.pagination.hasMore);
+          schedulePrefetch(
+            parsed.pagination.nextCursor,
+            parsed.pagination.hasMore,
+          );
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name !== "AbortError") {

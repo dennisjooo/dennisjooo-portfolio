@@ -30,10 +30,9 @@ export function NotFoundBackground({
         style={{ x, y }}
       >
         <div className="relative whitespace-nowrap">
-          <h1 className="select-none font-serif text-[45vw] font-normal leading-none tracking-tight text-foreground/5 mix-blend-overlay dark:text-foreground/10 dark:mix-blend-screen">
+          <h1 className="select-none font-serif text-[10rem] font-normal leading-none tracking-tight text-foreground/10 md:text-[14rem]">
             {code}
           </h1>
-          <div className="absolute left-1/2 top-1/2 h-[35vw] w-[35vw] -translate-x-1/2 -translate-y-1/2 rounded-full border-[1px] border-foreground/5" />
         </div>
       </m.div>
     </>

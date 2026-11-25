@@ -53,7 +53,7 @@ function SearchOptionButton({
       onClick={onClick}
       title={title}
       className={cn(
-        "flex items-center gap-1.5 rounded-lg py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200",
+        "flex items-center gap-1.5 rounded-lg py-1 font-sans text-xs transition-colors duration-200",
         base,
         active
           ? activeStyle
@@ -101,7 +101,7 @@ export function SearchOptionsBar({
         <div className="h-4 w-px bg-border/50" />
 
         <div className="flex items-center gap-1.5">
-          <span className="mr-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/80">
+          <span className="mr-1 font-sans text-xs text-muted-foreground/80">
             Scope:
           </span>
           <SearchOptionButton

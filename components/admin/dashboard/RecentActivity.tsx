@@ -76,7 +76,7 @@ export function RecentActivity() {
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card">
-      <h3 className="border-b border-border/50 px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <h3 className="border-b border-border/50 px-6 py-4 font-mono text-xs text-muted-foreground">
         02 — Recent Activity
       </h3>
 

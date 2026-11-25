@@ -8,9 +8,9 @@ export interface UseAdminListOptions {
 }
 
 export interface PaginationData {
-  page: number;
-  totalPages: number;
   total: number;
+  limit: number;
+  nextCursor: string | null;
 }
 
 export interface DeleteDialogState {

@@ -84,13 +84,13 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
-      <div id="home-hero" className="sticky top-0 z-0 h-screen w-full">
+      <div id="home-hero" className="sticky top-0 z-0 min-h-dvh w-full">
         <Hero />
       </div>
 
       <div
         id="home-content"
-        className="relative z-10 bg-background shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+        className="relative z-10 border-t border-border bg-background"
       >
         <About profileImageUrl={profileImageUrl} aboutContent={aboutContent} />
         <WorkExperience workExperience={workExperience} />

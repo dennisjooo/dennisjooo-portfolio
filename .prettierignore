@@ -5,3 +5,4 @@ out
 coverage
 package-lock.json
 public
+.hallmark

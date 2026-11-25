@@ -18,7 +18,7 @@ export default function ProjectLinks({ links }: ProjectLinksProps) {
   return (
     <div>
       <div className="mb-6 flex items-center gap-4">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <span className="font-mono text-xs text-muted-foreground">
           Resources & Stuffs
         </span>
         <div className="h-px flex-1 bg-border" />
@@ -49,8 +49,8 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
       <div className="relative">
         <HoverGlow rounded="lg" />
 
-        <span className="relative inline-flex items-center gap-3 rounded-lg border border-border bg-card px-5 py-3">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-colors duration-300 group-hover:bg-accent/10">
+        <span className="relative inline-flex items-center gap-3 rounded-sm border border-border bg-card px-5 py-3">
+          <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-muted transition-colors duration-300 group-hover:bg-accent/10">
             {isGitHubLink ? (
               <BsGithub className="h-4 w-4 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
             ) : (
@@ -58,7 +58,7 @@ function ProjectLink({ url, text, index }: Link & { index: number }) {
             )}
           </span>
 
-          <span className="font-sans text-sm font-medium text-foreground transition-colors duration-300 group-hover:text-accent">
+          <span className="font-mono text-sm text-foreground transition-colors duration-300 group-hover:text-accent">
             {text}
           </span>
 

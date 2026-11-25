@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { buildUploadPayload } from "@/lib/utils/blobUpload";
 
 interface UseImageUploadOptions {
@@ -51,7 +51,7 @@ export function useImageUpload(
         return url;
       } catch (err) {
         const error = err instanceof Error ? err : new Error("Upload failed");
-        toast.error(error.message);
+        siteToast.error(error.message);
         onError?.(error);
         return null;
       } finally {

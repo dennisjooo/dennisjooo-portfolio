@@ -6,7 +6,7 @@ import { m } from "@/components/motion";
 import type { MotionValue } from "framer-motion";
 
 const actionClasses =
-  "group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground";
+  "group inline-flex items-center gap-2 font-mono text-xs  text-muted-foreground transition-colors hover:text-foreground";
 
 interface NotFoundContentProps {
   x: MotionValue<number>;

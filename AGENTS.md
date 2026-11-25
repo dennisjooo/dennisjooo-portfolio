@@ -2,33 +2,31 @@
 
 This document is the source of truth for design direction, technical patterns, and durable agent memory for the Dennis Jonathan Portfolio.
 
-## 1. Core Aesthetic: "The Hipster Designer"
+## 1. Core Aesthetic: Cool ink on paper
 
-The site embodies a high-end, editorial, and slightly "brutalist" design language. It moves away from standard "SaaS" layouts into something more tactile and poster-like.
+The site is austere editorial greyscale: type and hairlines on paper, not posters, glass, or shaders. Locked in [`design.md`](design.md) and [`app/styles/tokens.css`](app/styles/tokens.css).
 
-- **Keywords:** Editorial, Kinetic, Tactile, Bold, Contrast.
-- **Vibe:** "Available for Work, Based in The Internet" (Modern, Digital-Native but textured).
-- **Texture:** Subtle noise overlays (`bg-noise`) are used globally to prevent the site from feeling too "flat" or sterile.
-- **Direction:** Greyscale aesthetic targeting godly.website-level polish.
+- **Keywords:** Editorial, austere, greyscale, hairline, restrained.
+- **Vibe:** Cool ink on paper.
+- **Texture:** None. No noise overlays, grain, mix-blend, glow, or glass.
+- **Direction:** Geist on near-white paper; light-mode ink is true black (`#000`). Admin shares the same tokens at higher density.
 
 ## 2. Typography Strategy
 
-The typography relies on extreme contrast between Serif and Sans-Serif, and size variation.
+Contrast comes from size and face, not decoration.
 
 ### Primary Pairing
 
-- **Name / Headlines:** _Geist Serif_ (upright, via `font-serif`; it ships no italic, so never add `italic` to it) vs **Geist Sans** (Bold/Black, Weight: 700+).
-  - _Usage:_ The hero name lockup uses Geist Serif with mix-blend modes over the gradient background.
-  - _Scale:_ Hero name uses `vw` units (`18vw` mobile, `8–9vw` desktop) for impact. Reserve `vw` typography for the hero only; all other display headings use rem-based scale (`text-4xl`–`text-6xl`).
-- **Body / UI:** _Geist Sans_ (via `font-sans`).
-- **Metadata / Tech:** _Geist Mono_ (via `font-mono`; technical, code-like).
-  - _Usage:_ Copyright dates, locations, section titles, "Scroll to Explore" indicators.
+- **Name / Headlines:** _Geist Serif_ (upright, via `font-serif`; it ships no italic, so never add `italic` to it).
+  - _Usage:_ Hero name lockup and section titles. Solid `text-foreground`, no mix-blend.
+  - _Scale:_ Rem / clamp (`--text-display`, `text-4xl`–`text-6xl`). Never `vw` type.
+- **Body / UI / labels:** _Geist Sans_ (via `font-sans`). Labels are sentence case, untracked, one step smaller than body.
+- **Code / figures:** _Geist Mono_ (via `font-mono`). Section numbers, dates, place lines, kbd, skill names, and other figures. Not body copy or section titles.
 
 ### Styling Rules
 
-- **Mix Blend Modes:** Use `mix-blend-overlay` or `mix-blend-screen` on large hero typography to allow backgrounds (gradients/iridescence) to interact with the text.
 - **Display text utility:** Use `text-display` for emphasized headings (maps to `text-foreground`).
-- **Alignment:** Mix centered elements with extreme corner anchors (Bottom-Left for descriptions, Top-Right for metadata) to create a "Poster" composition.
+- **Alignment:** Edge-aligned type. Hero is settled: the name, then one sentence. No typing, marquee, or scroll cue.
 
 ## 3. Layout & Motion Patterns
 
@@ -37,9 +35,9 @@ The typography relies on extreme contrast between Serif and Sans-Serif, and size
 All landing sections (except About's scroll container) use `SectionShell` from `components/shared/layout/SectionShell.tsx`:
 
 - **Default spacing:** `py-24 md:py-32`
-- **Compact spacing:** `py-24` (Skills, Contact)
+- **Compact spacing:** `py-24` (Skills, Contact). Contact is a centered lockup with an icon row.
 - **Inner container:** `container mx-auto px-6 max-w-7xl`
-- **Full bleed:** Skills marquee rows break out via `fullBleed` + `SectionShellHeader`
+- **Full bleed:** Avoid. Skills is a typed list inside the container.
 
 About keeps its GSAP pin/scrub outer wrapper but uses the same inner container classes via `sectionInnerClasses`. Slides come from `site_config.about_sections` JSON (title + body, 1–6 items), edited at `/admin/about`.
 
@@ -59,7 +57,7 @@ The site uses a vertical stacking context to create depth.
 
 ### Animation Policy
 
-- **CSS keyframes:** Hero LCP animations only (`animate-fade-in`, `animate-letter-reveal`) — run before JS hydration.
+- **CSS keyframes:** Optional LCP fades (`animate-fade-in`). The hero itself stays still.
 - **Framer Motion:** Section entrances, card hovers, and micro-interactions. Shared variants live in `components/motion/variants.ts`.
 - **GSAP:** Scroll-driven effects only (hero peel, About pin/scrub). About scroll distance scales with CMS section count via `lib/constants/aboutScroll.ts`.
 - **Page transitions:** Smooth transitions; avoid wipe-up plus fade combinations.
@@ -68,19 +66,23 @@ The site uses a vertical stacking context to create depth.
 
 ### Navbar
 
-- **Floating Pill:** The navbar is a floating glass-morphism pill.
-- **Spacing:** Ensure `HeroContent` has significant top padding (`pt-36` mobile, `pt-32` desktop) or margins (`mt-28`) to prevent visual collision with the navbar.
+- **Floating paper bar:** Centered compact bar (`top-4`), DJ mark, command trigger, theme toggle. No glass, no noise, no section-link row (palette + mobile menu cover that).
+- **States:** Transparent on the hero; hairline + paper fill after scroll. DJ disc fills with ink when the bar is filled.
 
 ### Section Headers
 
 - **About:** Static header (`animated={false}`) — GSAP controls the section.
 - **All other landing sections:** Animated header (default `animated={true}`).
-- **Pattern:** Geist Serif number (left) + mono uppercase title (right) + gradient accent underline.
+- **Pattern:** Geist Serif title, sentence case. Quiet section number in mono. Hairline rule, not a gradient underline.
+
+### Footer
+
+- Centered, compact, sentence-case sans. Hairline on top. Keep the shift-click copyright easter egg.
 
 ### Mobile Considerations
 
-- **Alignment:** Text alignments often switch from `text-right` (desktop) to `text-left` (mobile) to accommodate reading patterns and prevent layout jitter during animations (e.g., typing effects).
-- **Scale:** Hero typography scale is aggressive on mobile (`18vw`) to ensure the design intention remains clear on small screens.
+- **Alignment:** Prefer left-aligned type on small screens.
+- **Scale:** Hero type stays on the rem/clamp scale; do not reintroduce `vw`.
 
 ### Scroll Components
 
@@ -104,14 +106,14 @@ The site uses a vertical stacking context to create depth.
 
 The same content entity uses different names by layer. Use this table when naming files, routes, or UI copy:
 
-| Layer            | Term                        | Notes                                                     |
-| ---------------- | --------------------------- | --------------------------------------------------------- |
-| Database / API   | `blogs`                     | Table name and REST endpoints                             |
-| Type field       | `type: "project" \| "blog"` | Discriminator on each row                                 |
-| Public URL       | `/blogs`, `/blogs/[slug]`   | Route path                                                |
-| Nav section id   | `"projects"`                | Homepage anchor for featured work                         |
-| Component prefix | `Project*`                  | Historical naming (`ProjectContent`, `ProjectPageClient`) |
-| Admin UI label   | "Blogs & Projects"          | Display copy only                                         |
+| Layer            | Term                        | Notes                                                         |
+| ---------------- | --------------------------- | ------------------------------------------------------------- |
+| Database / API   | `blogs`                     | Table name and REST endpoints                                 |
+| Type field       | `type: "project" \| "blog"` | Discriminator on each row                                     |
+| Public URL       | `/blogs`, `/blogs/[slug]`   | Route path                                                    |
+| Nav section id   | `"projects"`                | Homepage anchor for featured work                             |
+| Component prefix | `Article*`                  | Public article chrome (`ArticleContent`, `ArticlePageClient`) |
+| Admin UI label   | "Blogs & Projects"          | Display copy only                                             |
 
 **Rule:** DB entity is always `blogs`. Display label varies by `type` field. Do not rename the table or URL without a migration plan.
 
@@ -127,7 +129,7 @@ The same content entity uses different names by layer. Use this table when namin
 
 - `@heroicons/react` — Admin UI
 - `lucide-react` — Command palette, theme toggle, shared components
-- `react-icons` — Contact dock (via `lib/constants/contactIcons.ts`)
+- `react-icons` — Contact links (via `lib/constants/contactIcons.ts`)
 
 ## 9. Admin & Code Organization
 
@@ -146,16 +148,26 @@ The same content entity uses different names by layer. Use this table when namin
 - Only create git commits when explicitly asked
 - Keep code diffs minimal and focused; do not add unrelated changes
 - Easter eggs should be subtle and discoverable (console hints, command palette, hidden copy)—not flashy overlays or Konami effects
-- Toast editorial labels use Geist Sans (semibold uppercase), not mono; body uses sans or Geist Serif for playful; top-right placement with clear label/body hierarchy
-- Command palette should keep stable height while typing/filtering; use light backdrop blur on overlay only, not stacked glass on panels
-- Suppress persistent focus rings on icon/pill buttons after click
+- Toast editorial labels use Geist Sans semibold sentence case, not mono or tracked caps; body uses sans or Geist Serif for playful; top-right placement with clear label/body hierarchy
+- Command palette should keep stable height while typing/filtering; overlay may blur, panels stay solid paper
+- Use `:focus-visible` on controls; do not leave a persistent ring after mouse click (`:focus` without `:focus-visible`)
 
 ## Learned Workspace Facts
 
-- This file (`AGENTS.md`) is the single design and agent-memory reference for the project
-- Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale glass editorial styling, no Sonner `richColors`
+- `design.md` is the locked visual system; this file (`AGENTS.md`) holds agent memory and technical patterns
+- Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale paper, no Sonner `richColors`
 - Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
 - Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
 - SSR loader critical CSS in `app/ssrLoaderAssets.ts` must use `var(--font-geist-serif)` so the mark matches the hero's Geist Serif
 - About landing slides are CMS JSON on `site_config.about_sections` (not four named columns); public fallback is Hello / Craft / Play in `lib/content/aboutContent.ts`
 - Prettier uses `prettier-plugin-tailwindcss` and `prettier-plugin-packagejson` (see `.prettierrc`)
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

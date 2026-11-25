@@ -16,11 +16,11 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
 }) => (
   <div className="hidden h-full w-full md:flex">
     <div className="relative z-10 flex h-full w-[40%] flex-col items-center justify-center p-12">
-      <div className="absolute bottom-1/4 right-0 top-1/4 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
+      <div className="absolute inset-y-0 right-0 w-px bg-border" />
 
       <div className="flex w-full max-w-md flex-col items-center">
         <ProfileImage imageUrl={profileImageUrl} />
-        <ProfileMetadata className="mt-8" />
+        <ProfileMetadata className="mt-6" />
       </div>
     </div>
 
@@ -34,14 +34,14 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
           key={section.id}
           className="absolute inset-x-16 top-1/2 flex -translate-y-1/2 flex-col justify-center"
         >
-          <div className="about-title mb-8">
-            <h2 className="text-display pb-4 font-serif text-7xl leading-tight xl:text-8xl">
+          <div className="about-title mb-6">
+            <h2 className="text-display pb-2 font-serif text-6xl font-semibold leading-none tracking-tight xl:text-7xl">
               {section.title}
             </h2>
           </div>
 
-          <div className="about-body max-w-xl">
-            <p className="text-xl font-light leading-relaxed text-muted-foreground xl:text-2xl">
+          <div className="about-body max-w-2xl">
+            <p className="border-t border-border pt-6 text-lg leading-relaxed text-muted-foreground xl:text-xl">
               {section.body}
             </p>
           </div>

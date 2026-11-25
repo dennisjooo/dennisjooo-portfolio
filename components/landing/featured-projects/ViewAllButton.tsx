@@ -7,7 +7,7 @@ export const ViewAllButton = () => {
       <Link
         href="/blogs"
         prefetch
-        className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+        className="group inline-flex items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         Read the blog
         <ArrowRightIcon className="h-4 w-4" />

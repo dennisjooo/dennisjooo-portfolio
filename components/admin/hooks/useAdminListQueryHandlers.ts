@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 
 interface UseAdminListQueryHandlersOptions {
   fetchItems: (
@@ -107,11 +107,11 @@ export async function reorderAdminListItems<T>(
     });
 
     if (!res.ok) throw new Error("Failed to reorder");
-    toast.success("Order updated");
+    siteToast.success("Order updated");
     fetchItems(currentPage, false);
   } catch (error) {
     console.error(`Failed to reorder ${itemName}s:`, error);
-    toast.error("Failed to update order");
+    siteToast.error("Failed to update order");
     fetchItems(currentPage, false);
   }
 }

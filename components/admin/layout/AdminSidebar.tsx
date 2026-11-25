@@ -19,7 +19,7 @@ export function AdminSidebar({
 
   return (
     <aside
-      className={`fixed left-0 top-0 z-40 hidden h-screen flex-col overflow-hidden border-r border-border bg-background transition-[width] duration-300 ease-in-out lg:flex ${
+      className={`fixed left-0 top-0 z-40 hidden h-screen flex-col overflow-hidden border-r border-border bg-background lg:flex ${
         isCollapsed ? "w-16" : "w-56"
       }`}
     >

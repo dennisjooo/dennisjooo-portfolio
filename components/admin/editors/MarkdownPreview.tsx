@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import { PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
-const ProjectContent = dynamic(
-  () => import("@/components/blogs/article/ProjectContent"),
+const ArticleContent = dynamic(
+  () => import("@/components/blogs/article/ArticleContent"),
   { ssr: false },
 );
 
@@ -36,7 +36,7 @@ export function MarkdownPreview({
 
   return (
     <PhotoProvider>
-      <ProjectContent content={debouncedContent} />
+      <ArticleContent content={debouncedContent} />
     </PhotoProvider>
   );
 }

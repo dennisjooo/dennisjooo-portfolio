@@ -1,9 +1,10 @@
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
+import { buildPaginatedFetchUrl } from "@/lib/hooks/data/paginatedListUtils";
 import type { PaginationData } from "./adminListTypes";
 
 interface FetchAdminListParams {
   endpoint: string;
-  page: number;
+  cursor: string | null;
   pageSize: number;
   enableReorder: boolean;
   itemName: string;
@@ -22,7 +23,7 @@ interface FetchAdminListResult<T> {
 
 export async function fetchAdminListItems<T>({
   endpoint,
-  page,
+  cursor,
   pageSize,
   enableReorder,
   itemName,
@@ -33,26 +34,21 @@ export async function fetchAdminListItems<T>({
   sortBy,
   sortOrder,
 }: FetchAdminListParams): Promise<FetchAdminListResult<T> | null> {
-  const params = new URLSearchParams();
-  if (!enableReorder) {
-    params.set("page", String(page));
-    params.set("limit", String(pageSize));
-  }
   const q = query ?? searchQuery;
-  if (q) params.set("q", q);
-
-  if (sortBy) params.set("sortBy", sortBy);
-  if (sortOrder) params.set("sortOrder", sortOrder);
-
   const activeFilters = currentFilters ?? filters;
+  const extra: Record<string, string | number | boolean> = {};
+  if (q) extra.q = q;
+  if (sortBy) extra.sortBy = sortBy;
+  if (sortOrder) extra.sortOrder = sortOrder;
   Object.entries(activeFilters).forEach(([key, value]) => {
-    if (value) params.set(key, value);
+    if (value) extra[key] = value;
   });
 
-  const url =
-    enableReorder && !params.toString()
-      ? endpoint
-      : `${endpoint}?${params.toString()}`;
+  const url = enableReorder
+    ? Object.keys(extra).length
+      ? `${endpoint}?${new URLSearchParams(Object.entries(extra).map(([k, v]) => [k, String(v)]))}`
+      : endpoint
+    : buildPaginatedFetchUrl(endpoint, cursor, pageSize, extra);
 
   const res = await fetch(url, { cache: "no-store" });
 
@@ -66,7 +62,7 @@ export async function fetchAdminListItems<T>({
     } catch {
       errorMessage = `Failed to fetch ${itemName}s: ${res.status} ${res.statusText}`;
     }
-    toast.error(errorMessage);
+    siteToast.error(errorMessage);
     return null;
   }
 

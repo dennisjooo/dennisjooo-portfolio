@@ -14,7 +14,7 @@ export function ListFooter({
 
   return (
     <div className="flex w-full justify-center py-8">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <p className="font-mono text-xs text-muted-foreground">
         Showing all {total} {label}
       </p>
     </div>

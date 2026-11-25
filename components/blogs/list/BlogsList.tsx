@@ -11,7 +11,7 @@ import { useMemo } from "react";
 
 import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 
-interface ProjectsListProps {
+interface BlogsListProps {
   type?: "project" | "blog" | "all";
   initialData?: BlogListItem[];
   initialPagination?: PaginationResult;
@@ -21,11 +21,11 @@ function LoadMoreFallback() {
   return <InlineSpinner label="Loading more posts" />;
 }
 
-export default function ProjectsList({
+export default function BlogsList({
   type = "project",
   initialData,
   initialPagination,
-}: ProjectsListProps) {
+}: BlogsListProps) {
   const queryParams = useMemo(() => {
     const params: Record<string, string | number | boolean> = {};
     if (type !== "all") {

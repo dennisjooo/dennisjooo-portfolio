@@ -10,9 +10,9 @@ export type HoverImageFrameProps = {
 } & Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "className">;
 
 const roundedClasses = {
-  lg: "rounded-lg",
-  xl: "rounded-xl",
-  "2xl": "rounded-2xl",
+  lg: "rounded-sm",
+  xl: "rounded-sm",
+  "2xl": "rounded-sm",
 } as const;
 
 /** Hover frame with the shared hairline-and-bloom glow. */

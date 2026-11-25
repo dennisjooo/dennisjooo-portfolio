@@ -22,7 +22,7 @@ export function AdminSidebarBrand({ isCollapsed }: AdminSidebarBrandProps) {
         <h1 className="whitespace-nowrap font-serif text-lg">
           Dennis Jonathan
         </h1>
-        <p className="whitespace-nowrap font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
+        <p className="whitespace-nowrap font-sans text-xs text-muted-foreground/60">
           Mission Control
         </p>
       </div>

@@ -49,7 +49,7 @@ export const MermaidBlock = ({ children }: MermaidBlockProps) => {
   if (error) {
     return (
       <div className="not-prose my-6">
-        <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-4">
+        <div className="rounded-sm border border-destructive/50 bg-destructive/10 p-4">
           <p className="font-mono text-sm text-destructive">
             Mermaid Error: {error}
           </p>
@@ -63,7 +63,7 @@ export const MermaidBlock = ({ children }: MermaidBlockProps) => {
 
   return (
     <div className="not-prose my-6">
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="overflow-hidden rounded-sm border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
           <span className="font-mono text-xs text-muted-foreground">
             mermaid

@@ -27,25 +27,21 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-noise relative z-40 w-full overflow-hidden border-t border-border bg-background">
-      <div className="absolute inset-x-0 top-0 h-px bg-border opacity-50" />
-
-      <div className="relative mx-auto flex w-full max-w-7xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:text-sm">
-        <p className="font-mono text-[0.85em] uppercase tracking-widest text-foreground">
+    <footer className="relative z-40 w-full border-t border-border bg-background">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-2 px-6 py-8 text-center">
+        <p className="font-serif text-sm text-foreground">
           <a
             href="https://dennisjooo.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
-            className="cursor-pointer outline-none focus-visible:outline-none focus-visible:ring-0"
+            className="cursor-pointer outline-none transition-colors hover:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
             onClick={handleCopyrightClick}
           >
-            <span className="transition-colors duration-300 hover:text-accent">
-              © {currentYear} Dennis Jonathan
-            </span>
+            © {currentYear} Dennis Jonathan
           </a>
         </p>
-        <p className="font-mono text-[0.7em] uppercase tracking-widest text-muted-foreground">
-          Human Being · Jakarta
+        <p className="font-mono text-xs text-muted-foreground">
+          Human being · Jakarta
         </p>
       </div>
     </footer>

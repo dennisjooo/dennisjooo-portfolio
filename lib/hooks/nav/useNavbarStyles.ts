@@ -12,6 +12,7 @@ interface NavbarStyles {
   bgClass: string;
   navWidth: string;
   textColorClass: string;
+  showMarkFill: boolean;
 }
 
 export const useNavbarStyles = ({
@@ -20,15 +21,16 @@ export const useNavbarStyles = ({
   isMenuOpen,
 }: NavbarStylesParams): NavbarStyles =>
   useMemo(() => {
-    const bgClass =
-      !isHeroSection || scrolled || isMenuOpen
-        ? "glass-panel"
-        : "bg-transparent";
+    const filled = !isHeroSection || scrolled || isMenuOpen;
 
-    const navWidth = "w-11/12 md:w-auto md:min-w-[540px]";
-    const textColorClass = "text-foreground";
-
-    return { bgClass, navWidth, textColorClass };
+    return {
+      bgClass: filled
+        ? "border-border bg-background"
+        : "border-transparent bg-transparent",
+      navWidth: "w-11/12 md:w-auto md:min-w-[540px]",
+      textColorClass: "text-foreground",
+      showMarkFill: filled,
+    };
   }, [isHeroSection, isMenuOpen, scrolled]);
 
 export type { NavbarStyles };

@@ -60,14 +60,14 @@ export function AdminTableDesktop<T extends { id?: string | number }>({
                 </th>
               )}
               {enableReorder && (
-                <th className="px-4 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                <th className="px-4 py-4 font-mono text-xs text-muted-foreground">
                   Order
                 </th>
               )}
               {columns.map((col, idx) => (
                 <th
                   key={idx}
-                  className={`px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground ${col.className || ""} ${col.sortable ? "cursor-pointer hover:text-foreground" : ""}`}
+                  className={`px-6 py-4 font-mono text-xs text-muted-foreground ${col.className || ""} ${col.sortable ? "cursor-pointer hover:text-foreground" : ""}`}
                   onClick={() => {
                     if (col.sortable && col.accessorKey && onSortChange) {
                       onSortChange(col.accessorKey as string);
@@ -102,7 +102,7 @@ export function AdminTableDesktop<T extends { id?: string | number }>({
                 dragIndex !== null &&
                 dragIndex !== rowIdx;
 
-              let rowClass = "group transition-all duration-200 ";
+              let rowClass = "group transition-colors duration-200 ";
               if (isDragging) {
                 rowClass += "opacity-50 bg-muted/50 ";
               } else {

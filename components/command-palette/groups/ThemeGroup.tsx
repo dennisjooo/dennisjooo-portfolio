@@ -18,27 +18,21 @@ export function ThemeGroup({ onSelect }: ThemeGroupProps) {
         <Sun className="h-4 w-4" />
         <CommandItemLabel>Light</CommandItemLabel>
         {theme === "light" && (
-          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
-            Active
-          </span>
+          <span className="ml-auto font-sans text-xs text-accent">Active</span>
         )}
       </CommandItem>
       <CommandItem onSelect={() => onSelect(() => setTheme("dark"))}>
         <Moon className="h-4 w-4" />
         <CommandItemLabel>Dark</CommandItemLabel>
         {theme === "dark" && (
-          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
-            Active
-          </span>
+          <span className="ml-auto font-sans text-xs text-accent">Active</span>
         )}
       </CommandItem>
       <CommandItem onSelect={() => onSelect(() => setTheme("system"))}>
         <Laptop className="h-4 w-4" />
         <CommandItemLabel>System</CommandItemLabel>
         {theme === "system" && (
-          <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent">
-            Active
-          </span>
+          <span className="ml-auto font-sans text-xs text-accent">Active</span>
         )}
       </CommandItem>
     </CommandGroup>

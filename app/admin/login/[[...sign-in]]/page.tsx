@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { LoadingSpinner } from "@/components/admin/shared";
 
 const SignInLoadingCard = () => (
-  <div className="flex min-h-[28rem] w-full items-center justify-center rounded-2xl border border-border bg-card/80 shadow-2xl backdrop-blur-xl">
+  <div className="flex min-h-[28rem] w-full items-center justify-center rounded-sm border border-border bg-background">
     <LoadingSpinner className="h-12" />
   </div>
 );
@@ -19,7 +19,7 @@ const SignIn = dynamic(
 
 export default function AdminLoginPage() {
   return (
-    <div className="bg-noise relative flex min-h-screen items-center justify-center bg-background text-foreground">
+    <div className="relative flex min-h-screen items-center justify-center bg-background text-foreground">
       <div className="absolute inset-0 bg-muted/30" />
 
       <div className="relative z-10 mx-auto w-full max-w-md px-4">
@@ -27,8 +27,8 @@ export default function AdminLoginPage() {
           <h1 className="mb-2 font-serif text-3xl md:text-4xl">
             Mission Control
           </h1>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Admin Access Required
+          <p className="font-sans text-sm text-muted-foreground">
+            Admin access required
           </p>
         </div>
 
@@ -46,23 +46,22 @@ export default function AdminLoginPage() {
                   colorInputText: "hsl(var(--foreground))",
                   colorText: "hsl(var(--foreground))",
                   colorTextSecondary: "hsl(var(--muted-foreground))",
-                  borderRadius: "0.75rem",
+                  borderRadius: "2px",
                 },
                 elements: {
                   rootBox: "w-full",
-                  card: "bg-card/80 backdrop-blur-xl border border-border shadow-2xl rounded-2xl",
+                  card: "bg-background border border-border rounded-sm shadow-none",
                   header: "hidden",
                   socialButtonsBlockButton:
-                    "bg-secondary hover:bg-secondary/80 border-border text-foreground font-sans transition-all duration-300",
+                    "bg-secondary hover:bg-secondary/80 border-border text-foreground font-sans transition-colors duration-200",
                   socialButtonsBlockButtonText: "font-sans",
                   dividerLine: "bg-border",
-                  dividerText:
-                    "text-muted-foreground font-mono text-xs uppercase",
+                  dividerText: "text-muted-foreground font-sans text-xs",
                   formFieldLabel: "text-foreground font-sans",
                   formFieldInput:
                     "bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-accent focus:border-accent rounded-lg font-sans",
                   formButtonPrimary:
-                    "bg-primary hover:bg-primary/90 text-primary-foreground font-sans font-medium transition-all duration-300 rounded-lg",
+                    "bg-primary hover:bg-primary/90 text-primary-foreground font-sans font-medium transition-colors duration-200 rounded-lg",
                   footerActionLink:
                     "text-accent hover:text-accent/80 font-sans transition-colors",
                   identityPreviewText: "text-foreground font-sans",
@@ -89,7 +88,7 @@ export default function AdminLoginPage() {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-2 font-sans text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Site

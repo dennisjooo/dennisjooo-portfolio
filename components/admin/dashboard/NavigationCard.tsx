@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { m } from "@/components/motion";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { itemVariants } from "./constants";
+import { dashboardItemVariants as itemVariants } from "@/components/motion/variants";
 
 interface NavigationCardProps {
   title: string;
@@ -26,7 +26,7 @@ export function NavigationCard({
         <div className="relative flex h-full flex-col rounded-lg border border-border bg-card p-6 transition-colors duration-300 hover:border-accent/40">
           <div className="mb-4 flex items-start justify-between">
             <Icon className="h-5 w-5 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
-            <ArrowRightIcon className="mt-0.5 h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-accent" />
+            <ArrowRightIcon className="mt-0.5 h-4 w-4 text-muted-foreground transition-colors group-hover:translate-x-1 group-hover:text-accent" />
           </div>
 
           <h2 className="mb-1.5 font-serif text-xl font-medium transition-colors duration-300 group-hover:text-accent">
@@ -41,7 +41,7 @@ export function NavigationCard({
             {stat === undefined ? (
               <div className="h-3 w-16 animate-pulse rounded bg-muted/40" />
             ) : (
-              <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              <span className="font-mono text-xs text-muted-foreground">
                 {stat}
               </span>
             )}

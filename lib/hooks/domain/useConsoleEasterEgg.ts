@@ -23,7 +23,7 @@ export function useConsoleEasterEgg() {
     const onAllSecretsFound = () => {
       const total = getTotalSecretCount();
       siteToast.playful(`You found all ${total} secrets. Absolute legend.`, {
-        label: "COMPLETE",
+        label: "Complete",
         duration: 5000,
       });
     };

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import {
   m,
   featuredCardVariants,
@@ -32,7 +31,6 @@ export const FeaturedCard = ({
   slug,
   type,
   readTime,
-  displayIndex,
   priority = true,
   wide = false,
 }: FeaturedCardProps) => {
@@ -46,7 +44,7 @@ export const FeaturedCard = ({
   return (
     <Link
       href={`/blogs/${slug}`}
-      className="group flex w-full cursor-pointer rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+      className="group flex w-full cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
     >
       <m.div
         {...heroMotion}
@@ -58,7 +56,6 @@ export const FeaturedCard = ({
         <TileImage
           imageUrl={imageUrl}
           title={title}
-          displayIndex={displayIndex}
           priority={priority}
           className={cn(
             "aspect-[16/10]",
@@ -82,10 +79,6 @@ export const FeaturedCard = ({
           <p className="line-clamp-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-lg">
             {description}
           </p>
-          <div className="hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground transition-colors duration-300 group-hover:text-accent md:flex">
-            <span>Read article</span>
-            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </div>
         </div>
       </m.div>
     </Link>

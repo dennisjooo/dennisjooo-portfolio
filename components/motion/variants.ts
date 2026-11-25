@@ -33,7 +33,6 @@ export function createFadeUpItem(
 }
 
 export const staggerContainer = createStaggerContainer(0.06, 0.05);
-export const staggerContainerTight = createStaggerContainer(0.05, 0.06);
 export const headerStaggerContainer = createStaggerContainer(0.06, 0.03);
 export const fadeUpItem = createFadeUpItem(20);
 export const fadeUpItemLarge = createFadeUpItem(30);
@@ -56,15 +55,6 @@ export const dashboardContainerVariants = {
 export const dashboardItemVariants = {
   hidden: { opacity: 0 },
   show: { opacity: 1 },
-};
-
-export const underlineReveal = {
-  hidden: { scaleX: 0, opacity: 0 },
-  visible: {
-    scaleX: 1,
-    opacity: 1,
-    transition: { duration: 0.4, ease: fadeEase, delay: 0.3 },
-  },
 };
 
 export const tabContentVariants = {

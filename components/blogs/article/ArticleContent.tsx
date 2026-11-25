@@ -20,11 +20,11 @@ function preprocessImageSizes(markdown: string): string {
   );
 }
 
-interface ProjectContentProps {
+interface ArticleContentProps {
   content: string;
 }
 
-export default function ProjectContent({ content }: ProjectContentProps) {
+export default function ArticleContent({ content }: ArticleContentProps) {
   const processed = preprocessImageSizes(content);
 
   return (

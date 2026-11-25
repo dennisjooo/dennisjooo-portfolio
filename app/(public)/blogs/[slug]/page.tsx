@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BackToTop } from "@/components/shared";
-import ProjectPageClient from "@/components/blogs/article/ProjectPageClient";
-import ProjectContent from "@/components/blogs/article/ProjectContent";
+import ArticlePageClient from "@/components/blogs/article/ArticlePageClient";
+import ArticleContent from "@/components/blogs/article/ArticleContent";
 import { extractHeadings } from "@/lib/utils/markdownHelpers";
 import { findBlogBySlug, getPublishedBlogBySlug } from "@/lib/data/blogs";
 import { auth } from "@clerk/nextjs/server";
@@ -115,9 +115,9 @@ export default async function Page({ params, searchParams }: ProjectPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
       {isPreview && <PreviewBanner status={project.status} slug={slug} />}
-      <ProjectPageClient project={project} headings={headings}>
-        <ProjectContent content={project.blogPost} />
-      </ProjectPageClient>
+      <ArticlePageClient project={project} headings={headings}>
+        <ArticleContent content={project.blogPost} />
+      </ArticlePageClient>
       <BackToTop />
     </>
   );

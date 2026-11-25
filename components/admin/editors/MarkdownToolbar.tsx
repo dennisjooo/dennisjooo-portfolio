@@ -12,7 +12,7 @@ import {
 import { applyFormatting, type FormatType } from "./markdownFormatting";
 
 const toolbarBtnClass =
-  "px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-md transition-all hover:bg-background/50";
+  "px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-md transition-colors hover:bg-background/50";
 
 interface ToolbarButtonProps {
   type: FormatType;

@@ -33,15 +33,3 @@ export function isAuthError(
 ): result is NextResponse {
   return result instanceof NextResponse;
 }
-
-export function parsePagination(searchParams: URLSearchParams) {
-  const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "10");
-  const offset = (page - 1) * limit;
-  return { page, limit, offset };
-}
-
-export function buildPagination(total: number, page: number, limit: number) {
-  const totalPages = Math.ceil(total / limit);
-  return { total, page, limit, totalPages, hasMore: page < totalPages };
-}

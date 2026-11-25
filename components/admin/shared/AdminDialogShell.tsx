@@ -27,7 +27,7 @@ export function AdminDialogShell({
 }: AdminDialogShellProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="glass-panel max-w-md gap-0 rounded-2xl border-border/50 p-8">
+      <DialogContent className="max-w-md gap-0 rounded-2xl border border-border border-border/50 bg-background p-8">
         <DialogHeader className="space-y-3">
           <DialogTitle className="font-serif text-2xl tracking-tight text-foreground">
             {title}

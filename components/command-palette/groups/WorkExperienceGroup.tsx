@@ -33,7 +33,7 @@ export function WorkExperienceGroup({
       getValue={(work) => `${work.title} ${work.company}`}
       renderPrimary={(work) => work.title}
       renderSecondary={(work) => (
-        <span className="truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
+        <span className="truncate font-sans text-xs text-muted-foreground/80">
           {work.company} / {work.date}
         </span>
       )}

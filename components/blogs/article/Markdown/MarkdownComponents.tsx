@@ -11,7 +11,7 @@ import { wrapDropCap } from "./wrapDropCap";
 export const markdownComponents: Components = {
   h1: ({ children, ...props }) => (
     <h1
-      className="mb-6 border-b border-border pb-4 font-sans text-3xl font-black tracking-tight text-foreground md:text-4xl"
+      className="mb-6 border-b border-border pb-4 font-serif text-3xl font-normal tracking-tight text-foreground md:text-4xl"
       {...props}
     >
       {children}
@@ -110,7 +110,7 @@ export const markdownComponents: Components = {
 
     if (isInlineCode) {
       return (
-        <code className="rounded border border-border bg-muted px-2 py-1 font-mono text-sm text-accent">
+        <code className="rounded-sm border border-border bg-muted px-2 py-1 font-mono text-sm text-accent">
           {children}
         </code>
       );
@@ -122,7 +122,7 @@ export const markdownComponents: Components = {
 
   table: ({ children }) => (
     <div className="not-prose my-8">
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="overflow-hidden rounded-sm border border-border bg-card">
         <table className="min-w-full">{children}</table>
       </div>
     </div>
@@ -137,7 +137,7 @@ export const markdownComponents: Components = {
     <tr className="transition-colors hover:bg-muted/50">{children}</tr>
   ),
   th: ({ children }) => (
-    <th className="px-6 py-4 text-left font-sans text-sm font-bold uppercase tracking-wide text-foreground">
+    <th className="px-6 py-4 text-left font-sans text-sm font-bold text-foreground">
       {children}
     </th>
   ),
@@ -194,7 +194,7 @@ export const markdownComponents: Components = {
             </span>
           </HoverImageFrame>
           {title ? (
-            <span className="mt-3 block text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            <span className="mt-3 block text-center font-mono text-xs text-muted-foreground">
               {title}
             </span>
           ) : null}
@@ -221,7 +221,7 @@ export const markdownComponents: Components = {
 
     return (
       <figure className="my-8">
-        <div className="relative overflow-hidden rounded-xl border border-border">
+        <div className="relative overflow-hidden rounded-sm border border-border">
           <video
             className="w-full"
             controls={showControls}
@@ -236,7 +236,7 @@ export const markdownComponents: Components = {
           </video>
         </div>
         {title ? (
-          <figcaption className="mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <figcaption className="mt-3 text-center font-mono text-xs text-muted-foreground">
             {title}
           </figcaption>
         ) : null}
@@ -258,7 +258,7 @@ export const markdownComponents: Components = {
 
     return (
       <div className="my-8">
-        <div className="relative w-full overflow-hidden rounded-xl border border-border">
+        <div className="relative w-full overflow-hidden rounded-sm border border-border">
           <div className="aspect-video">
             <iframe
               src={src}
@@ -294,7 +294,7 @@ export const markdownComponents: Components = {
 
     return (
       <figure className="my-8">
-        <div className="rounded-xl border border-border bg-muted/30 p-4">
+        <div className="rounded-sm border border-border bg-muted/30 p-4">
           <audio
             className="w-full"
             controls={showControls}
@@ -308,7 +308,7 @@ export const markdownComponents: Components = {
           </audio>
         </div>
         {title ? (
-          <figcaption className="mt-3 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <figcaption className="mt-3 text-center font-mono text-xs text-muted-foreground">
             {title}
           </figcaption>
         ) : null}

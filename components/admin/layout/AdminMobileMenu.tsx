@@ -32,12 +32,12 @@ export function AdminMobileMenu() {
         onClick={closeMenu}
       />
       <div
-        className={`relative z-10 rounded-2xl border border-border bg-background transition-all duration-200 ease-in-out ${isOpen ? "rounded-b-none border-b-0" : ""}`}
+        className={`relative z-10 rounded-2xl border border-border bg-background transition-colors duration-200 ease-in-out ${isOpen ? "rounded-b-none border-b-0" : ""}`}
       >
         <div className="flex items-center justify-between px-4 py-4">
           <div>
             <h1 className="font-serif text-lg">Dennis Jonathan</h1>
-            <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
+            <p className="font-sans text-xs text-muted-foreground/60">
               Mission Control
             </p>
           </div>
@@ -49,10 +49,10 @@ export function AdminMobileMenu() {
           >
             <div className="relative h-5 w-5">
               <XMarkIcon
-                className={`absolute inset-0 h-5 w-5 transition-all duration-200 ${isOpen ? "rotate-0 opacity-100" : "rotate-90 opacity-0"}`}
+                className={`absolute inset-0 h-5 w-5 transition-colors duration-200 ${isOpen ? "rotate-0 opacity-100" : "rotate-90 opacity-0"}`}
               />
               <Bars3Icon
-                className={`absolute inset-0 h-5 w-5 transition-all duration-200 ${isOpen ? "-rotate-90 opacity-0" : "rotate-0 opacity-100"}`}
+                className={`absolute inset-0 h-5 w-5 transition-colors duration-200 ${isOpen ? "-rotate-90 opacity-0" : "rotate-0 opacity-100"}`}
               />
             </div>
           </button>
@@ -60,7 +60,7 @@ export function AdminMobileMenu() {
       </div>
 
       <div
-        className={`absolute left-0 right-0 top-full z-10 overflow-hidden rounded-b-2xl border border-t-0 border-border bg-background transition-all duration-200 ease-out ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"}`}
+        className={`absolute left-0 right-0 top-full z-10 overflow-hidden rounded-b-2xl border border-t-0 border-border bg-background transition-colors duration-200 ease-out ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"}`}
         aria-hidden={!isOpen}
       >
         <nav className="border-t border-border p-3">
@@ -69,7 +69,7 @@ export function AdminMobileMenu() {
             return (
               <div key={group.label ?? "dashboard"}>
                 {groupLabel && (
-                  <div className="px-4 pb-1 pt-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                  <div className="px-4 pb-1 pt-4 font-sans text-xs text-muted-foreground/60">
                     {groupLabel}
                   </div>
                 )}
@@ -101,7 +101,7 @@ export function AdminMobileMenu() {
           <div className="my-3 h-px bg-border" />
 
           <div className="flex items-center justify-between px-4 py-2">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <span className="font-sans text-xs text-muted-foreground/60">
               Theme
             </span>
             <ThemeToggle />
@@ -112,7 +112,7 @@ export function AdminMobileMenu() {
           <SignOutButton>
             <button
               onClick={closeMenu}
-              className="flex w-full items-center gap-2 rounded-2xl px-4 py-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+              className="flex w-full items-center gap-2 rounded-2xl px-4 py-2 font-mono text-xs text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             >
               <ArrowRightStartOnRectangleIcon className="h-4 w-4" />
               <span>Sign Out</span>
@@ -122,7 +122,7 @@ export function AdminMobileMenu() {
           <Link
             href="/"
             onClick={closeMenu}
-            className="flex items-center gap-2 rounded-2xl px-4 py-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10"
+            className="flex items-center gap-2 rounded-2xl px-4 py-2 font-mono text-xs text-muted-foreground transition-colors hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10"
           >
             <ArrowLeftStartOnRectangleIcon className="h-4 w-4" />
             <span>Exit to Site</span>

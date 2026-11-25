@@ -47,7 +47,7 @@ export function NavigationGroup({
               <Icon className="h-4 w-4" />
               <CommandItemLabel>{item.label}</CommandItemLabel>
               {item.href && (
-                <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
+                <span className="ml-auto font-sans text-xs text-muted-foreground/80">
                   {item.href}
                 </span>
               )}

@@ -23,12 +23,7 @@ const toCardProps = (project: BlogListItem) => ({
 export default function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   return (
     <SectionShell id="projects" spacing="compact">
-      <SectionHeader
-        number="04."
-        title="Blog"
-        subtitle="Writing & Work"
-        description="Some half-decent writing, some projects that mostly still work. All of it lives on the blog."
-      />
+      <SectionHeader number="04." title="Blog" className="mb-12" />
       {projects.length > 0 && (
         <>
           <PostsBento posts={projects.map(toCardProps)} priority={false} />

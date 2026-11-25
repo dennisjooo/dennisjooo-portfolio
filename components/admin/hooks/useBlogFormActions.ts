@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import type { Blog } from "@/lib/db/schema";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import {
   type PendingImage,
   processBlogContent,
@@ -28,7 +28,7 @@ export function useBlogFormActions({
 }: UseBlogFormActionsOptions) {
   const handlePreview = useCallback(async () => {
     if (!formData.title) {
-      toast.error("Add a title before previewing");
+      siteToast.error("Add a title before previewing");
       return;
     }
 
@@ -50,7 +50,7 @@ export function useBlogFormActions({
       window.open(`/blogs/${data.slug}?preview=true`, "_blank");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to create preview");
+      siteToast.error("Failed to create preview");
     } finally {
       setPreviewing(false);
     }
@@ -84,7 +84,7 @@ export function useBlogFormActions({
         await onSubmit(submitData);
       } catch (error) {
         console.error(error);
-        toast.error("Failed to save blog post");
+        siteToast.error("Failed to save blog post");
       } finally {
         setLoading(false);
       }

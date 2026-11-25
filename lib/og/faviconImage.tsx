@@ -1,7 +1,7 @@
 import { serifFontFamily } from "@/lib/og/serifFont";
 
 const DISC = "#fafafa";
-const MARK = "#0a0a0a";
+const MARK = "#000000";
 
 /** Keep the disc off the canvas edge so tab UIs do not clip it. */
 const DISC_INSET_RATIO = 0.12;

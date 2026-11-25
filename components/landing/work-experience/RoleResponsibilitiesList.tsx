@@ -19,7 +19,7 @@ const variantStyles = {
     bullet:
       "mr-4 mt-[0.7em] w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0",
     button:
-      "group flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors mt-3",
+      "group flex items-center gap-2 text-sm font-mono  text-muted-foreground hover:text-foreground transition-colors mt-3",
     expandLabel: { more: "Read More", less: "Read Less" },
   },
   mobile: {
@@ -27,7 +27,7 @@ const variantStyles = {
     item: "flex items-start text-base font-light text-muted-foreground leading-relaxed",
     bullet: "mr-3 mt-2 w-1 h-1 rounded-full bg-foreground/40 shrink-0",
     button:
-      "flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors pt-1",
+      "flex items-center gap-2 text-xs font-mono  text-muted-foreground hover:text-foreground transition-colors pt-1",
     expandLabel: { more: "Show More", less: "Show Less" },
   },
 } as const;

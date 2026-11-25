@@ -1,7 +1,7 @@
 "use client";
 
 import CertificationsList from "./CertificationsList";
-import ProjectsList from "./ProjectsList";
+import BlogsList from "./BlogsList";
 import TabSwitcher from "./TabSwitcher";
 import { tabContentVariants } from "@/components/motion";
 import { useTabState } from "@/lib/hooks/ui/useTabState";
@@ -42,7 +42,7 @@ export function BlogsTabs({
         <AnimatePresence mode="wait" initial={false}>
           {activeTab === "blog" ? (
             <m.div key="blog" {...tabContentVariants}>
-              <ProjectsList
+              <BlogsList
                 type="all"
                 initialData={initialProjects}
                 initialPagination={initialPagination}

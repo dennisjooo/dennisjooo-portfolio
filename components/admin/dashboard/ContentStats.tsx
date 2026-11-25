@@ -37,9 +37,7 @@ function StatPill({
           )}
         </span>
       </div>
-      <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        {label}
-      </span>
+      <span className="font-mono text-xs text-muted-foreground">{label}</span>
     </Link>
   );
 }
@@ -80,7 +78,7 @@ export function ContentStats() {
 
   return (
     <div className="space-y-3">
-      <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <h3 className="font-mono text-xs text-muted-foreground">
         01 — Content Pipeline
       </h3>
       <div className="flex flex-wrap items-center gap-6">

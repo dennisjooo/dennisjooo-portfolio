@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Dock } from "./Dock/Dock";
-import { DockIconLink } from "./Dock/DockIconLink";
+import Link from "next/link";
 import { SectionHeader } from "@/components/shared/layout/SectionHeader";
 import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
@@ -24,72 +23,68 @@ interface ContactsProps {
 
 const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
   const headingMotion = useInViewReveal(staggerContainer);
-  const dockMotion = useInViewReveal(staggerContainer);
+  const listMotion = useInViewReveal(staggerContainer);
   const fadeUp = useMotionSafe(fadeUpItem);
   const fadeUpLarge = useMotionSafe(fadeUpItemLarge);
 
-  const dockLinks = resolveContactLinks(contacts).map((contact) => {
+  const links = resolveContactLinks(contacts).map((contact) => {
     const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
     return {
       href: contact.href,
       ariaLabel: contact.ariaLabel,
-      icon: <Icon className="size-6" />,
+      icon: <Icon className="size-5" />,
     };
   });
 
   return (
-    <SectionShell id="contact" spacing="compact" minHeight overflowHidden>
-      <div className="mb-16 w-full md:mb-20">
-        <SectionHeader number="06." title="Contact" />
-      </div>
+    <SectionShell
+      id="contact"
+      spacing="compact"
+      className="flex min-h-[80vh] flex-col"
+      innerClassName="flex flex-1 flex-col"
+    >
+      <SectionHeader number="06." title="Contact" />
 
-      <div className="flex min-h-[50vh] w-full flex-1 flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center py-16">
         <m.div
           {...headingMotion}
           viewport={viewportSettings.onceDeep}
-          className="relative mb-12 flex flex-col items-center text-center"
+          className="flex max-w-xl flex-col items-center text-center"
         >
-          <m.span
-            variants={fadeUp}
-            className="mb-6 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:text-xs"
-          >
-            Get In Touch
-          </m.span>
-
           <m.h2
             variants={fadeUpLarge}
-            className="select-none font-serif text-6xl leading-tight text-foreground md:text-7xl lg:text-8xl"
+            className="font-serif text-5xl leading-tight text-foreground md:text-7xl"
           >
-            Let&apos;s Talk
+            Let&apos;s talk
           </m.h2>
-        </m.div>
-
-        <m.div
-          {...dockMotion}
-          viewport={viewportSettings.once}
-          className="flex flex-col items-center gap-8"
-        >
           <m.p
-            variants={fadeUpLarge}
-            className="max-w-md px-4 text-center font-sans text-base font-light text-muted-foreground md:text-xl"
+            variants={fadeUp}
+            className="mt-6 font-sans text-base leading-relaxed text-muted-foreground md:text-lg"
           >
             Have a cool idea? Want to geek out over AI, or just want to say hi?
             Drop a line.
           </m.p>
-
-          <m.div variants={fadeUpLarge}>
-            <Dock className="mx-auto">
-              {dockLinks.map(({ href, ariaLabel, icon }) => (
-                <DockIconLink
-                  key={ariaLabel}
-                  href={href}
-                  ariaLabel={ariaLabel}
-                  icon={icon}
-                />
-              ))}
-            </Dock>
-          </m.div>
         </m.div>
+
+        <m.ul
+          {...listMotion}
+          viewport={viewportSettings.once}
+          className="mt-12 flex items-center gap-2"
+        >
+          {links.map(({ href, ariaLabel, icon }) => (
+            <m.li key={ariaLabel} variants={fadeUpLarge}>
+              <Link
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ariaLabel}
+                className="flex size-11 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+              >
+                {icon}
+              </Link>
+            </m.li>
+          ))}
+        </m.ul>
       </div>
     </SectionShell>
   );

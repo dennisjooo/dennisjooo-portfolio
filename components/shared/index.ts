@@ -1,6 +1,5 @@
 export { default as BackToTop } from "./scroll/BackToTop";
 export { default as ReadingProgress } from "./scroll/ReadingProgress";
-export { BlinkingCursor } from "./BlinkingCursor";
 export { SmoothScroll } from "./scroll/SmoothScroll";
 export { ScrollToTop } from "./scroll/ScrollToTop";
 export * from "./layout/SectionHeader";

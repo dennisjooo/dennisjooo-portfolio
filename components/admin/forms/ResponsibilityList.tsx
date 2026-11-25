@@ -68,7 +68,7 @@ export function ResponsibilityList({
               key={index}
               data-responsibility-row
               className={cn(
-                "flex items-stretch gap-2 rounded-lg transition-all duration-200",
+                "flex items-stretch gap-2 rounded-lg transition-colors duration-200",
                 isDragging && "bg-muted/50 opacity-50",
                 isDragOver && "ring-2 ring-primary",
               )}

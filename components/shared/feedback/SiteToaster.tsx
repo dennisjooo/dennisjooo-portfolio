@@ -5,9 +5,7 @@ import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 
 const toastShell = cn(
-  "site-toast group relative w-[min(90vw,380px)] overflow-hidden rounded-xl border border-border/80",
-  "glass-panel bg-noise px-4 py-3",
-  "text-foreground ring-1 ring-inset ring-black/5 dark:ring-white/10",
+  "site-toast group relative w-[min(90vw,380px)] overflow-hidden rounded-sm border border-border bg-background px-4 py-3 text-foreground",
 );
 
 export function SiteToaster() {

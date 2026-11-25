@@ -35,9 +35,7 @@ export function AdminPageHeader({
       <h1 className="font-serif text-3xl text-foreground md:text-4xl">
         {title} {titleAccent}
       </h1>
-      <p className="mt-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        {subtitle}
-      </p>
+      <p className="mt-2 font-mono text-xs text-muted-foreground">{subtitle}</p>
     </div>
   );
 
@@ -46,7 +44,7 @@ export function AdminPageHeader({
     (actionHref ? (
       <Link
         href={actionHref}
-        className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:text-accent/70"
+        className="inline-flex items-center gap-1.5 font-mono text-xs text-accent transition-colors hover:text-accent/70"
       >
         <PlusIcon className="h-3.5 w-3.5" />
         {actionLabel}
@@ -61,7 +59,7 @@ export function AdminPageHeader({
             <button
               type="button"
               onClick={() => requestNavigation(() => router.back())}
-              className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-accent"
+              className="font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
               aria-label="Go back"
             >
               {backLabel}

@@ -12,7 +12,7 @@ export const BurgerButton = ({
   textColorClass,
 }: BurgerButtonProps) => (
   <button
-    className={`rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors duration-200 hover:bg-black/5 dark:hover:bg-white/10 md:hidden ${textColorClass}`}
+    className={`rounded-sm px-3 py-1.5 font-mono text-xs transition-colors duration-200 hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] md:hidden ${textColorClass}`}
     onClick={() => onToggle(!isMenuOpen)}
     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
     aria-expanded={isMenuOpen}

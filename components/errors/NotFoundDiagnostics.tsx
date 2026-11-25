@@ -9,7 +9,7 @@ interface NotFoundDiagnosticsProps {
 export function NotFoundDiagnostics({ rows }: NotFoundDiagnosticsProps) {
   return (
     <m.dl
-      className="absolute left-6 right-6 top-28 z-10 font-mono text-[10px] uppercase tracking-widest md:left-auto md:right-12 md:top-32 md:w-80 md:text-xs"
+      className="absolute left-6 right-6 top-28 z-10 font-sans text-xs md:left-auto md:right-12 md:top-32 md:w-80 md:text-xs"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 0.8 }}

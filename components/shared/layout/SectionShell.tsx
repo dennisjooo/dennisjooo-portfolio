@@ -9,9 +9,6 @@ interface SectionShellProps {
   id: string;
   children: ReactNode;
   spacing?: SectionSpacing;
-  fullBleed?: boolean;
-  minHeight?: boolean;
-  overflowHidden?: boolean;
   className?: string;
   innerClassName?: string;
 }
@@ -25,9 +22,6 @@ export function SectionShell({
   id,
   children,
   spacing = "default",
-  fullBleed = false,
-  minHeight = false,
-  overflowHidden = false,
   className,
   innerClassName,
 }: SectionShellProps) {
@@ -37,34 +31,10 @@ export function SectionShell({
       className={cn(
         spacingClasses[spacing],
         "w-full bg-background text-foreground",
-        minHeight && "relative flex min-h-[80vh] flex-col",
-        overflowHidden && "overflow-hidden",
         className,
       )}
     >
-      {fullBleed ? (
-        children
-      ) : (
-        <div className={cn(sectionInnerClasses, innerClassName)}>
-          {children}
-        </div>
-      )}
+      <div className={cn(sectionInnerClasses, innerClassName)}>{children}</div>
     </section>
-  );
-}
-
-interface SectionShellHeaderProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function SectionShellHeader({
-  children,
-  className,
-}: SectionShellHeaderProps) {
-  return (
-    <div className={cn(sectionInnerClasses, "mb-10", className)}>
-      {children}
-    </div>
   );
 }

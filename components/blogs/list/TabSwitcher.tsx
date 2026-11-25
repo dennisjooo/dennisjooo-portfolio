@@ -29,14 +29,14 @@ export default function TabSwitcher({
           onClick={() => onTabChange(tab)}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.15 }}
-          className="group relative"
+          className="group relative flex items-baseline gap-2"
         >
-          <span className="mb-1 block font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="font-mono text-xs text-muted-foreground">
             0{index + 1}.
           </span>
 
           <span
-            className={`font-mono text-sm uppercase tracking-widest transition-colors duration-300 md:text-base ${
+            className={`font-serif text-lg transition-colors duration-300 md:text-xl ${
               activeTab === tab
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"

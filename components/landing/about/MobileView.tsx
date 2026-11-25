@@ -18,7 +18,7 @@ export const MobileView: React.FC<MobileViewProps> = ({
       style={{ width: `${(contentSections.length + 1) * 100}%` }}
     >
       <div className="flex h-full w-screen flex-col items-center justify-center gap-6 px-8">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground opacity-50">
+        <span className="font-mono text-xs text-muted-foreground opacity-50">
           Swipe to Explore
         </span>
         <ProfileImage imageUrl={profileImageUrl} />
@@ -30,11 +30,11 @@ export const MobileView: React.FC<MobileViewProps> = ({
           key={section.id}
           className="flex h-full w-screen flex-col justify-center space-y-6 px-8"
         >
-          <h2 className="text-display pb-2 font-serif text-5xl leading-tight">
+          <h2 className="text-display pb-2 font-serif text-5xl font-semibold leading-none tracking-tight">
             {section.title}
           </h2>
-          <div className="h-px w-12 bg-current text-foreground opacity-20" />
-          <p className="text-lg font-light leading-relaxed text-muted-foreground">
+          <div className="h-px w-full bg-border" />
+          <p className="text-lg leading-relaxed text-muted-foreground">
             {section.body}
           </p>
         </div>

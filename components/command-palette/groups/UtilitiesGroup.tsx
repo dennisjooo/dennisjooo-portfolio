@@ -60,7 +60,7 @@ export function UtilitiesGroup({
             >
               <Icon className="h-4 w-4" />
               <CommandItemLabel>{file.label}</CommandItemLabel>
-              <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/80">
+              <span className="ml-auto flex items-center gap-1.5 font-sans text-xs text-muted-foreground/80">
                 {file.path}
               </span>
             </CommandItem>

@@ -10,10 +10,6 @@ export function CommandItemLabel({
   className,
 }: CommandItemLabelProps) {
   return (
-    <span
-      className={cn("text-xs font-normal uppercase tracking-wide", className)}
-    >
-      {children}
-    </span>
+    <span className={cn("text-xs font-normal", className)}>{children}</span>
   );
 }

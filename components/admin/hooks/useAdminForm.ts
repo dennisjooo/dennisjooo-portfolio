@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 
 interface UseAdminFormOptions<T> {
   endpoint: string;
@@ -53,7 +53,7 @@ export function useAdminForm<T>({
         setData(itemData);
       } catch (error) {
         console.error(error);
-        toast.error(
+        siteToast.error(
           `${itemName.charAt(0).toUpperCase() + itemName.slice(1)} not found`,
         );
         router.push(redirectTo);
@@ -94,7 +94,7 @@ export function useAdminForm<T>({
 
         const result = await res.json();
         const successMsg = `${itemName.charAt(0).toUpperCase() + itemName.slice(1)} ${isEditing ? "updated" : "created"} successfully`;
-        toast.success(successMsg);
+        siteToast.success(successMsg);
 
         if (onSuccess) {
           onSuccess(result.data ?? result);
@@ -104,7 +104,7 @@ export function useAdminForm<T>({
         router.refresh();
       } catch (error) {
         console.error("Error:", error);
-        toast.error(`Failed to save ${itemName}`);
+        siteToast.error(`Failed to save ${itemName}`);
       } finally {
         setSubmitting(false);
       }

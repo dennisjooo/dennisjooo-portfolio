@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { fetchAdminListItems } from "./fetchAdminListItems";
 import {
   useAdminListQueryHandlers,
@@ -31,6 +31,7 @@ export function useAdminListFetch<T>({
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
   const currentPageRef = useRef(currentPage);
+  const cursorsRef = useRef<(string | null)[]>([null]);
   const searchDebounceRef = useRef<NodeJS.Timeout>(undefined);
 
   useEffect(() => {
@@ -46,11 +47,12 @@ export function useAdminListFetch<T>({
       currentSortBy?: string | null,
       currentSortOrder?: "asc" | "desc" | null,
     ) => {
+      if (page === 1) cursorsRef.current = [null];
       if (showLoading) setLoading(true);
       try {
         const result = await fetchAdminListItems<T>({
           endpoint,
-          page,
+          cursor: cursorsRef.current[page - 1] ?? null,
           pageSize,
           enableReorder,
           itemName,
@@ -66,8 +68,11 @@ export function useAdminListFetch<T>({
         if (result) {
           setItems(result.items);
           if (result.pagination) {
-            setTotalPages(result.pagination.totalPages);
-            setCurrentPage(result.pagination.page);
+            cursorsRef.current[page] = result.pagination.nextCursor;
+            setTotalPages(
+              Math.max(1, Math.ceil(result.pagination.total / pageSize)),
+            );
+            setCurrentPage(page);
             setTotalItems(result.pagination.total ?? 0);
           } else {
             setCurrentPage(1);
@@ -77,7 +82,7 @@ export function useAdminListFetch<T>({
         }
       } catch (error) {
         console.error(`Failed to fetch ${itemName}s:`, error);
-        toast.error(`Failed to fetch ${itemName}s. Please try again.`);
+        siteToast.error(`Failed to fetch ${itemName}s. Please try again.`);
       } finally {
         if (showLoading) setLoading(false);
       }

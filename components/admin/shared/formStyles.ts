@@ -1,14 +1,14 @@
 export const formStyles = {
   input:
-    "w-full p-3 rounded-lg bg-background border border-border focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all outline-none",
+    "w-full rounded-sm border border-border bg-background p-3 outline-none transition-colors focus:border-foreground focus:ring-2 focus:ring-[var(--color-focus)]",
   searchInput:
-    "w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20",
+    "w-full rounded-sm border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none transition-colors focus:border-foreground focus:ring-2 focus:ring-[var(--color-focus)]",
   select:
-    "rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-accent/20",
-  label: "block text-sm font-medium text-muted-foreground mb-1.5",
-  panel: "rounded-lg border border-border bg-card p-8",
+    "rounded-sm border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:ring-2 focus:ring-[var(--color-focus)]",
+  label: "mb-1.5 block text-sm font-medium text-muted-foreground",
+  panel: "rounded-sm border border-border bg-background p-8",
   cancelButton:
-    "px-6 py-2.5 rounded-lg border border-border hover:bg-muted transition-colors font-medium text-sm",
+    "rounded-sm border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:bg-muted",
   submitButton:
-    "px-6 py-2.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 font-medium transition-all hover:scale-[1.02] active:scale-[0.98]",
+    "rounded-sm bg-primary px-6 py-2.5 font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50",
 };

@@ -47,7 +47,7 @@ export const MobileCompanyChapter: React.FC<MobileCompanyChapterProps> = ({
 
         <div className="h-px w-12 bg-foreground/20" />
 
-        <span className="block font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <span className="block font-mono text-xs text-muted-foreground">
           {dateRange}
         </span>
       </div>

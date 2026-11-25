@@ -9,7 +9,6 @@ interface CommandMenuTriggerProps {
 
 export const CommandMenuTrigger = ({
   textColorClass,
-  scrolled,
 }: CommandMenuTriggerProps) => {
   const [shortcut, setShortcut] = useState("⌘K");
 
@@ -27,13 +26,8 @@ export const CommandMenuTrigger = ({
   };
 
   const BASE_CLASSES =
-    "hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ease-in-out cursor-pointer group";
-  const HOVER_SCROLLED =
-    "hover:bg-black/5 dark:hover:bg-white/10 hover:shadow-sm";
-  const HOVER_DEFAULT =
-    "hover:bg-black/10 dark:hover:bg-white/10 hover:shadow-sm";
-
-  const hoverClass = scrolled ? HOVER_SCROLLED : HOVER_DEFAULT;
+    "hidden md:flex items-center gap-2 px-3 py-1.5 rounded-sm transition-colors duration-200 ease-out cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
+  const hoverClass = "hover:bg-secondary";
 
   return (
     <button
@@ -42,7 +36,7 @@ export const CommandMenuTrigger = ({
       aria-label={`Open command menu (${shortcut})`}
     >
       <Search className="h-4 w-4" />
-      <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 whitespace-nowrap rounded border bg-muted/30 px-1.5 font-mono text-[10px] font-medium text-muted-foreground lg:inline-flex">
+      <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 whitespace-nowrap rounded border bg-muted/30 px-1.5 font-mono text-xs font-medium text-muted-foreground lg:inline-flex">
         <span className="text-xs">{shortcut}</span>
       </kbd>
     </button>

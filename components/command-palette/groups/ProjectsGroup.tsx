@@ -33,7 +33,7 @@ export function ProjectsGroup({
       getValue={(project) => project.title}
       renderPrimary={(project) => project.title}
       renderBadge={(project) => (
-        <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground/80">
+        <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-sans text-xs text-muted-foreground/80">
           {project.type}
         </span>
       )}

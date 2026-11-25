@@ -15,7 +15,7 @@ export function SystemAnalytics({
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card">
       <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
-        <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <h3 className="font-mono text-xs text-muted-foreground">
           03 — System Status
         </h3>
         <div className="flex items-center gap-3">
@@ -25,7 +25,7 @@ export function SystemAnalytics({
             </span>
           )}
           {statusData?.cached && (
-            <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+            <span className="rounded bg-muted/50 px-1.5 py-0.5 font-sans text-xs text-muted-foreground">
               cached
             </span>
           )}

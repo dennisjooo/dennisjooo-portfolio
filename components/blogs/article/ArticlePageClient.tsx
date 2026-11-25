@@ -15,17 +15,17 @@ import { m } from "@/components/motion";
 import { PhotoProvider } from "react-photo-view";
 import { Heading } from "@/lib/utils/markdownHelpers";
 
-interface ProjectPageClientProps {
+interface ArticlePageClientProps {
   project: Blog;
   headings: Heading[];
   children: React.ReactNode;
 }
 
-export default function ProjectPageClient({
+export default function ArticlePageClient({
   project,
   headings,
   children,
-}: ProjectPageClientProps) {
+}: ArticlePageClientProps) {
   const wordCount = project.blogPost.split(/\s+/).length;
   const readTime = calculateReadTime(project.blogPost);
 

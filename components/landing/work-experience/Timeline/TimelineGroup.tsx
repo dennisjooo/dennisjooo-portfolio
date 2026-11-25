@@ -35,9 +35,9 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
             {/* Decorative Dot */}
             <div
               className={cn(
-                "absolute right-[-4.5rem] top-6 z-10 hidden h-4 w-4 rounded-full border-2 transition-all duration-500 lg:block",
+                "absolute right-[-4.5rem] top-6 z-10 hidden h-4 w-4 rounded-full border-2 transition-colors duration-500 lg:block",
                 isActive
-                  ? "glow-dot border-foreground bg-foreground"
+                  ? "border-foreground bg-foreground"
                   : "border-foreground/25 bg-background",
               )}
             />

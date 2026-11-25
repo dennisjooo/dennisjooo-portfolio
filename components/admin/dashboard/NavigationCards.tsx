@@ -2,7 +2,8 @@
 
 import { m } from "@/components/motion";
 import { NavigationCard } from "./NavigationCard";
-import { navigationCards, containerVariants } from "./constants";
+import { dashboardContainerVariants as containerVariants } from "@/components/motion/variants";
+import { adminDashboardCards as navigationCards } from "@/lib/constants/adminNav";
 
 interface NavigationCardsProps {
   counts?: Record<string, number>;

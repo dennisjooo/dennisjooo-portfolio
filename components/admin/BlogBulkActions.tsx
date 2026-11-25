@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface BlogBulkActionsProps {
@@ -24,11 +24,11 @@ export function BlogBulkActions({
   const handleBulkStatusUpdate = async () => {
     if (selectedIds.size === 0) return;
     if (!bulkStatus) {
-      toast.error("Select a status to apply");
+      siteToast.error("Select a status to apply");
       return;
     }
     if (bulkStatus === "scheduled" && !bulkPublishAt) {
-      toast.error("Pick a publish date for scheduled posts");
+      siteToast.error("Pick a publish date for scheduled posts");
       return;
     }
 
@@ -51,17 +51,17 @@ export function BlogBulkActions({
       const successCount = results.filter((r) => r.ok).length;
 
       if (successCount > 0) {
-        toast.success(
+        siteToast.success(
           `${successCount} blog${successCount > 1 ? "s" : ""} updated`,
         );
         await onComplete();
       }
       if (successCount < selectedIds.size) {
-        toast.error(`${selectedIds.size - successCount} failed to update`);
+        siteToast.error(`${selectedIds.size - successCount} failed to update`);
       }
     } catch (error) {
       console.error("Bulk status update error:", error);
-      toast.error("Something went wrong");
+      siteToast.error("Something went wrong");
     } finally {
       setBulkUpdating(false);
       setBulkStatus("");
@@ -79,7 +79,7 @@ export function BlogBulkActions({
         <select
           value={bulkStatus}
           onChange={(e) => setBulkStatus(e.target.value)}
-          className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-all focus:ring-2 focus:ring-accent/20"
+          className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-colors focus:ring-2 focus:ring-accent/20"
         >
           <option value="">Set status...</option>
           <option value="draft">Draft</option>
@@ -91,7 +91,7 @@ export function BlogBulkActions({
             type="datetime-local"
             value={bulkPublishAt}
             onChange={(e) => setBulkPublishAt(e.target.value)}
-            className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-all focus:ring-2 focus:ring-accent/20"
+            className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-colors focus:ring-2 focus:ring-accent/20"
           />
         )}
         <button

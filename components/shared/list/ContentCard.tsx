@@ -23,7 +23,6 @@ interface TileImageProps {
   imageUrl?: string;
   title: string;
   sizes: string;
-  displayIndex?: number;
   priority?: boolean;
   className?: string;
 }
@@ -32,7 +31,6 @@ export function TileImage({
   imageUrl,
   title,
   sizes,
-  displayIndex,
   priority,
   className,
 }: TileImageProps) {
@@ -46,7 +44,7 @@ export function TileImage({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-2xl bg-muted",
+        "relative w-full min-w-0 overflow-hidden rounded-sm bg-muted",
         className,
       )}
     >
@@ -60,13 +58,13 @@ export function TileImage({
           loading={priority ? undefined : "lazy"}
           onLoad={() => setLoaded(true)}
           className={cn(
-            "object-cover transition-[opacity,transform] duration-500 ease-out motion-safe:group-hover:scale-[1.04]",
+            "object-cover transition-opacity duration-500 ease-out",
             loaded ? "opacity-100" : "opacity-0",
           )}
           sizes={sizes}
         />
       ) : (
-        <div className="bg-noise relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-secondary to-muted">
+        <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-muted">
           <span
             aria-hidden
             className="select-none font-serif text-[10rem] leading-none text-foreground/10 transition-transform duration-500 group-hover:scale-110"
@@ -74,12 +72,6 @@ export function TileImage({
             {title.charAt(0)}
           </span>
         </div>
-      )}
-
-      {displayIndex !== undefined && (
-        <span className="absolute right-4 top-4 z-20 font-mono text-xs uppercase tracking-[0.25em] text-white/80 drop-shadow">
-          {String(displayIndex).padStart(2, "0")}
-        </span>
       )}
     </div>
   );
@@ -93,13 +85,8 @@ export function TileMeta({
   className?: string;
 }) {
   return (
-    <p
-      className={cn(
-        "font-mono text-xs uppercase tracking-widest text-muted-foreground",
-        className,
-      )}
-    >
-      {parts.filter(Boolean).join(" · ")}
+    <p className={cn("font-mono text-xs text-muted-foreground", className)}>
+      {parts.filter(Boolean).join(", ")}
     </p>
   );
 }
@@ -110,20 +97,18 @@ export const ContentCard = ({
   date,
   imageUrl,
   slug,
-  displayIndex,
   type,
   readTime,
 }: ContentCardProps) => {
   return (
     <Link
       href={`/blogs/${slug}`}
-      className="group block h-full w-full cursor-pointer rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+      className="group block h-full w-full cursor-pointer rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
     >
       <div>
         <TileImage
           imageUrl={imageUrl}
           title={title}
-          displayIndex={displayIndex}
           className="aspect-[16/10]"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
@@ -163,7 +148,7 @@ export const CompactCard = ({
         <TileImage
           imageUrl={imageUrl}
           title={title}
-          className="aspect-[16/10] w-32 shrink-0 self-start rounded-xl md:w-40 lg:w-[46%]"
+          className="aspect-[16/10] w-32 shrink-0 self-start rounded-sm md:w-40 lg:w-[46%]"
           sizes="176px"
         />
 

@@ -75,7 +75,7 @@ export default function AdminDashboard() {
             )}
             <Link
               href={action.href}
-              className="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-accent"
+              className="group inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
             >
               <PlusIcon className="h-3 w-3" />
               {action.label}

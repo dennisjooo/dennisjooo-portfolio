@@ -11,15 +11,14 @@ import {
   mutationResponse,
   NO_STORE_HEADERS,
   errorResponse,
-  parsePagination,
-  buildPagination,
 } from "@/lib/api/apiHelpers";
 import { db } from "@/lib/db";
+import { parseCursorParams } from "@/lib/api/cursor";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const { page, limit, offset } = parsePagination(searchParams);
+    const { limit, cursor } = parseCursorParams(searchParams);
     const typeParam = searchParams.get("type");
     const statusParam = searchParams.get("status");
     const searchQuery = searchParams.get("q");
@@ -40,7 +39,7 @@ export async function GET(request: Request) {
         : null;
 
     if (!userId && !adminStatus && !searchQuery) {
-      const result = await getBlogs(page, limit, type ?? "all");
+      const result = await getBlogs(cursor, limit, type ?? "all");
       return withCacheHeaders(
         NextResponse.json({
           success: true,
@@ -50,9 +49,9 @@ export async function GET(request: Request) {
     }
 
     const sortOrderParam = searchParams.get("sortOrder");
-    const { rows, total } = await queryBlogList({
+    const { rows, total, hasMore, nextCursor } = await queryBlogList({
       limit,
-      offset,
+      cursor,
       type,
       status: adminStatus,
       searchQuery,
@@ -70,7 +69,7 @@ export async function GET(request: Request) {
       {
         success: true,
         data: rows,
-        pagination: buildPagination(total, page, limit),
+        pagination: { total, limit, hasMore, nextCursor },
       },
       { headers: userId ? NO_STORE_HEADERS : undefined },
     );

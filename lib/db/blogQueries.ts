@@ -11,6 +11,7 @@ import {
   type SQL,
 } from "drizzle-orm";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
+import { keysetWhere, sliceCursorPage } from "@/lib/api/cursor";
 import { PREVIEW_SLUG_SUFFIX } from "@/lib/db/blogPreview";
 import { calculateReadTime } from "@/lib/utils/projectFormatting";
 import type { BlogListItem } from "@/lib/types/blogList";
@@ -19,7 +20,7 @@ export type BlogListVisibility = "public" | "admin-all" | "admin-status";
 
 export interface BlogListQueryParams {
   limit: number;
-  offset: number;
+  cursor?: string | null;
   type?: "blog" | "project" | "all" | null;
   status?: "draft" | "scheduled" | "published" | null;
   searchQuery?: string | null;
@@ -79,55 +80,57 @@ export function buildBlogWhereClause({
   return conditions.length > 0 ? and(...conditions) : undefined;
 }
 
-export function buildBlogOrderBy(
-  sortBy?: string | null,
-  sortOrder: "asc" | "desc" = "desc",
-) {
-  const sortFn = sortOrder === "asc" ? asc : desc;
-
-  if (sortBy === "title") return sortFn(blogs.title);
-  if (sortBy === "type") return sortFn(blogs.type);
-  if (sortBy === "status") return sortFn(blogs.status);
-  if (sortBy === "createdAt") return sortFn(blogs.createdAt);
-  if (sortBy === "updatedAt") return sortFn(blogs.updatedAt);
-
-  return desc(blogs.date);
-}
+const BLOG_SORT_COLUMNS = {
+  title: blogs.title,
+  type: blogs.type,
+  status: blogs.status,
+  createdAt: blogs.createdAt,
+  updatedAt: blogs.updatedAt,
+  date: blogs.date,
+} as const;
 
 export async function queryBlogList(params: BlogListQueryParams) {
+  const sortKey =
+    params.sortBy && params.sortBy in BLOG_SORT_COLUMNS
+      ? (params.sortBy as keyof typeof BLOG_SORT_COLUMNS)
+      : "date";
+  const dir = params.sortBy ? (params.sortOrder ?? "desc") : "desc";
+  const sortFn = dir === "asc" ? asc : desc;
+  const sortCol = BLOG_SORT_COLUMNS[sortKey];
+
   const whereClause = buildBlogWhereClause(params);
-  const orderByClause = buildBlogOrderBy(
-    params.sortBy,
-    params.sortOrder ?? "desc",
+  const pageWhere = and(
+    whereClause,
+    keysetWhere(sortCol, blogs.id, dir, params.cursor ?? null),
   );
 
-  const baseQuery = whereClause
-    ? db.select().from(blogs).where(whereClause)
-    : db.select().from(blogs);
-
-  const countQuery = whereClause
-    ? db.select({ count: count() }).from(blogs).where(whereClause)
-    : db.select({ count: count() }).from(blogs);
-
   const [rows, totalResult] = await Promise.all([
-    baseQuery.orderBy(orderByClause).offset(params.offset).limit(params.limit),
-    countQuery,
+    db
+      .select()
+      .from(blogs)
+      .where(pageWhere)
+      .orderBy(sortFn(sortCol), sortFn(blogs.id))
+      .limit(params.limit + 1),
+    db.select({ count: count() }).from(blogs).where(whereClause),
   ]);
 
+  const page = sliceCursorPage(rows, params.limit, sortKey);
   return {
-    rows: rows as Blog[],
+    rows: page.rows as Blog[],
     total: totalResult[0]?.count ?? 0,
+    hasMore: page.hasMore,
+    nextCursor: page.nextCursor,
   };
 }
 
 export async function queryPublicBlogListItems(
-  page: number,
+  cursor: string | null,
   limit: number,
   type?: "blog" | "project" | "all",
 ) {
-  const { rows, total } = await queryBlogList({
+  const { rows, ...rest } = await queryBlogList({
     limit,
-    offset: (page - 1) * limit,
+    cursor,
     type,
     visibility: "public",
   });
@@ -145,6 +148,6 @@ export async function queryPublicBlogListItems(
         blogPost: row.blogPost,
       }),
     ),
-    total,
+    ...rest,
   };
 }

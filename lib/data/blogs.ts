@@ -9,7 +9,6 @@ import {
 } from "@/lib/constants/blogsList";
 import { queryPublicBlogListItems, toBlogListItem } from "@/lib/db/blogQueries";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import { buildPagination } from "@/lib/api/apiHelpers";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
 import type { BlogListItem } from "@/lib/types/blogList";
 import type { PaginationResult } from "@/lib/types/pagination";
@@ -71,22 +70,23 @@ export const getFeaturedProjects = unstable_cache(
 
 export const getBlogs = unstable_cache(
   async (
-    page: number = 1,
+    cursor: string | null = null,
     limit: number = PUBLIC_LIST_PAGE_SIZE,
     type?: "blog" | "project" | "all",
   ): Promise<BlogsResult> => {
     try {
-      const { rows, total } = await queryPublicBlogListItems(page, limit, type);
+      const { rows, total, hasMore, nextCursor } =
+        await queryPublicBlogListItems(cursor, limit, type);
 
       return {
         data: rows,
-        pagination: buildPagination(total, page, limit),
+        pagination: { total, limit, hasMore, nextCursor },
       };
     } catch (error) {
       console.error("Failed to fetch blogs", error);
       return {
         data: [],
-        pagination: buildPagination(0, page, limit),
+        pagination: { total: 0, limit, hasMore: false, nextCursor: null },
       };
     }
   },

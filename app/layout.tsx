@@ -1,9 +1,7 @@
 import type { Viewport } from "next";
 import type { ReactNode } from "react";
-import "./styles/tokens.css";
 import "./globals.css";
 import "./styles/animations.css";
-import "./styles/marquee.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -28,7 +26,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={fontClassNames} suppressHydrationWarning>
       <head>
         <style
           dangerouslySetInnerHTML={{
@@ -47,10 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         />
         <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
       </head>
-      <body
-        className={`bg-background text-foreground ${fontClassNames}`}
-        suppressHydrationWarning
-      >
+      <body className="bg-background text-foreground" suppressHydrationWarning>
         <div id="__ssr_cover" aria-hidden="true">
           <div id="__ssr_loader">
             <div className="ssr-mark">DJ</div>

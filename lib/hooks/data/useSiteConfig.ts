@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 import type { SiteConfig } from "@/lib/db/schema";
 
 type SiteConfigData = Omit<SiteConfig, "id" | "createdAt" | "updatedAt">;
@@ -20,7 +20,7 @@ export function useSiteConfig() {
       })
       .catch((error) => {
         console.error("Failed to load site config:", error);
-        toast.error("Failed to load configuration");
+        siteToast.error("Failed to load configuration");
         setLoading(false);
       });
   }, []);

@@ -44,7 +44,7 @@ export function usePaginatedList<T>({
   const [loading, setLoading] = useState(!hasInitialData);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
-    page: initialPagination?.page ?? 1,
+    nextCursor: initialPagination?.nextCursor ?? null,
     hasMore: initialPagination?.hasMore ?? true,
     total: initialPagination?.total ?? 0,
   });
@@ -90,8 +90,8 @@ export function usePaginatedList<T>({
     initialDataKey.current = null;
 
     setItems([]);
-    setPagination({ page: 1, hasMore: true, total: 0 });
-    fetchItems(1, true);
+    setPagination({ nextCursor: null, hasMore: true, total: 0 });
+    fetchItems(null, true);
   }, [fetchItems, serializedParams]);
 
   useEffect(() => {
@@ -99,11 +99,12 @@ export function usePaginatedList<T>({
       return;
     }
 
-    void prefetchPage(2);
+    void prefetchPage(initialPagination.nextCursor);
   }, [
     prefetchNextPage,
     hasInitialData,
     initialPagination?.hasMore,
+    initialPagination?.nextCursor,
     prefetchPage,
     serializedParams,
   ]);
@@ -116,23 +117,22 @@ export function usePaginatedList<T>({
   }, [abortFetch, abortPrefetch]);
 
   const loadMore = useCallback(() => {
-    if (loadingMore || !pagination.hasMore) return;
+    if (loadingMore || !pagination.hasMore || !pagination.nextCursor) return;
 
-    const nextPage = pagination.page + 1;
-    const cached = consumePrefetchedPage(nextPage);
+    const cached = consumePrefetchedPage(pagination.nextCursor);
 
     if (cached) {
       setItems((prev) => [...prev, ...cached.items]);
       setPagination(cached.pagination);
-      schedulePrefetch(cached.pagination.page, cached.pagination.hasMore);
+      schedulePrefetch(cached.pagination.nextCursor, cached.pagination.hasMore);
       return;
     }
 
-    fetchItems(nextPage);
+    fetchItems(pagination.nextCursor);
   }, [
     loadingMore,
     pagination.hasMore,
-    pagination.page,
+    pagination.nextCursor,
     fetchItems,
     schedulePrefetch,
     consumePrefetchedPage,

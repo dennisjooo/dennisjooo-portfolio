@@ -58,7 +58,7 @@ export function DashboardHeader({
         </h1>
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest ${status.textClass}`}
+            className={`inline-flex items-center gap-1.5 font-mono text-xs ${status.textClass}`}
           >
             <span
               className={`h-1.5 w-1.5 rounded-full ${status.dotClass} ${isPending ? "animate-pulse" : ""}`}
@@ -66,7 +66,7 @@ export function DashboardHeader({
             {status.label}
           </span>
           <span className="text-border">|</span>
-          <kbd className="inline-flex items-center gap-1 rounded border border-border bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+          <kbd className="inline-flex items-center gap-1 rounded border border-border bg-muted/30 px-1.5 py-0.5 font-sans text-xs text-muted-foreground">
             Ctrl K
           </kbd>
         </div>

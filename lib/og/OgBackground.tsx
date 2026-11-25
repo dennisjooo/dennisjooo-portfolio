@@ -22,7 +22,7 @@ export function OgBackground({
         flexDirection: "column",
         width: "100%",
         height: "100%",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         position: "relative",
         overflow: "hidden",
       }}
@@ -68,10 +68,10 @@ export function OgBackground({
           right: 0,
           bottom: 0,
           background: backgroundImage
-            ? "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,26,26,0.9) 0%, rgba(10,10,10,0.95) 100%)"
+            ? "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,26,26,0.9) 0%, rgba(0,0,0,0.95) 100%)"
             : variant === "hero"
-              ? "linear-gradient(to bottom, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.35) 100%)"
-              : "radial-gradient(ellipse 80% 60% at 50% 40%, #1a1a1a 0%, #0a0a0a 100%)",
+              ? "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 100%)"
+              : "radial-gradient(ellipse 80% 60% at 50% 40%, #1a1a1a 0%, #000000 100%)",
         }}
       />
 

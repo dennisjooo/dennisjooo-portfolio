@@ -32,7 +32,7 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({
         <h4 className="text-display min-w-0 pb-1 font-serif text-3xl font-normal leading-none tracking-tight md:text-4xl">
           {role.title}
         </h4>
-        <span className="w-fit shrink-0 whitespace-nowrap rounded bg-foreground/5 px-3 py-1 font-mono text-xs uppercase tracking-widest text-muted-foreground md:text-sm">
+        <span className="w-fit shrink-0 whitespace-nowrap rounded bg-foreground/5 px-3 py-1 font-mono text-xs text-muted-foreground md:text-sm">
           {role.date}
         </span>
       </div>

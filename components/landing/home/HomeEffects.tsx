@@ -78,17 +78,13 @@ export function HomeEffects() {
 
     let dispose: (() => void) | undefined;
     const initAnimations = async () => {
-      const [gsap, { ScrollTrigger }] = await Promise.all([
-        import("gsap").then((m) => m.default),
-        import("gsap/ScrollTrigger"),
-      ]);
-
-      gsap.registerPlugin(ScrollTrigger);
+      const { gsap } = await import("@/lib/motion/gsapBootstrap").then((m) =>
+        m.loadGsapWithScrollTrigger(),
+      );
 
       const tween = gsap.to(heroElement, {
-        scale: 0.95,
-        opacity: 0.8,
-        filter: "blur(5px)",
+        scale: 0.98,
+        opacity: 0.88,
         ease: "none",
         scrollTrigger: {
           trigger: contentElement,

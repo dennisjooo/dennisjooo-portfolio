@@ -88,7 +88,7 @@ export function BlogForm({ initialData, onSubmit }: BlogFormProps) {
         <button
           type="submit"
           disabled={loading || uploading}
-          className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
+          className="rounded-lg bg-primary px-8 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:scale-[1.02] hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
         >
           {loading
             ? "Uploading & Saving..."

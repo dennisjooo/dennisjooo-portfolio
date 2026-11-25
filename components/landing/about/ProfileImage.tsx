@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
 import { DEFAULT_PROFILE_IMAGE } from "@/lib/constants/site";
 
 interface ProfileImageProps {
@@ -14,11 +13,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
     className="animate-fade-in aspect-square w-full max-w-[300px] flex-shrink-0"
     style={{ animationDelay: "0.4s" }}
   >
-    <HoverImageFrame
-      rounded="2xl"
-      className="h-full w-full shadow-lg"
-      frameClassName="relative w-full h-full"
-    >
+    <div className="relative h-full w-full overflow-hidden border border-border bg-muted">
       <Image
         src={imageUrl}
         alt="Profile picture"
@@ -28,6 +23,6 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         sizes="300px"
         quality={70}
       />
-    </HoverImageFrame>
+    </div>
   </div>
 );

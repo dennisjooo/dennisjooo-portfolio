@@ -40,7 +40,7 @@ export const CodeBlock = ({ children, className }: CodeProps) => {
 
   return (
     <div className="not-prose my-6">
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="overflow-hidden rounded-sm border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
           <span className="font-mono text-xs text-muted-foreground">
             {language || "code"}

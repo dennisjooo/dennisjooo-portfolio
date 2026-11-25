@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { toast } from "sonner";
+import { siteToast } from "@/lib/ui/siteToast";
 
 interface UseAdminListDeleteOptions {
   endpoint: string;
@@ -43,13 +43,13 @@ export function useAdminListDelete({
       const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
       if (res.ok) {
         fetchItems(currentPageRef.current);
-        toast.success(successMsg);
+        siteToast.success(successMsg);
       } else {
-        toast.error("Failed to delete");
+        siteToast.error("Failed to delete");
       }
     } catch (error) {
       console.error("Error deleting:", error);
-      toast.error("Something went wrong");
+      siteToast.error("Something went wrong");
     } finally {
       setDeleteDialog({ open: false, id: null, loading: false });
     }
@@ -86,17 +86,19 @@ export function useAdminListDelete({
         const successCount = results.filter((r) => r.ok).length;
 
         if (successCount > 0) {
-          toast.success(
+          siteToast.success(
             `${successCount} ${itemName}${successCount > 1 ? "s" : ""} deleted`,
           );
           fetchItems(currentPageRef.current);
         }
         if (successCount < selectedIds.size) {
-          toast.error(`${selectedIds.size - successCount} failed to delete`);
+          siteToast.error(
+            `${selectedIds.size - successCount} failed to delete`,
+          );
         }
       } catch (error) {
         console.error("Bulk delete error:", error);
-        toast.error("Something went wrong");
+        siteToast.error("Something went wrong");
       } finally {
         setDeleteDialog({ open: false, id: null, loading: false });
         setBulkDeleteMode(false);

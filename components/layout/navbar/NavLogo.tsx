@@ -51,7 +51,7 @@ export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
     const alreadyFound = getFoundSecretIds().includes(NAV_LOGO_SECRET_ID);
     if (!alreadyFound) {
       markSecretFound(NAV_LOGO_SECRET_ID);
-      siteToast.playful("All hail.", { label: "CROWNED" });
+      siteToast.playful("All hail.", { label: "Crowned" });
     }
     setHasCrown(true);
     setAnimateCrown(true);
@@ -93,13 +93,13 @@ export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
         onClick={handleClick}
         aria-label="Navigate to home"
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ease-in-out",
+          "grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors duration-200 ease-out",
           showCircle ? "bg-foreground" : "bg-transparent",
         )}
       >
         <span
           className={cn(
-            "-ml-[3px] font-serif text-xs leading-none transition-colors duration-200 ease-in-out",
+            "-translate-y-px font-serif text-xs leading-none tracking-tight transition-colors duration-200 ease-out",
             showCircle ? "text-background" : "text-foreground",
           )}
         >

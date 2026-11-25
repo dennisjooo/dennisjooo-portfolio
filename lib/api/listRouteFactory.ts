@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { count, SQL, asc, desc } from "drizzle-orm";
+import { and, count, SQL, asc, desc } from "drizzle-orm";
+import { keysetWhere, parseCursorParams, sliceCursorPage } from "./cursor";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import {
   requireAuth,
@@ -9,8 +10,6 @@ import {
   mutationResponse,
   NO_STORE_HEADERS,
   errorResponse,
-  parsePagination,
-  buildPagination,
 } from "./apiHelpers";
 
 interface ListRouteConfig {
@@ -19,6 +18,7 @@ interface ListRouteConfig {
   entityName: string;
   orderBy: SQL | SQL[];
   sortableColumns?: string[];
+  defaultSort?: { by: string; order: "asc" | "desc" };
   cache?: boolean;
   paginate?: boolean;
   onBeforeInsert?: (
@@ -31,6 +31,7 @@ export function createListRouteHandler({
   entityName,
   orderBy,
   sortableColumns = [],
+  defaultSort = { by: "createdAt", order: "desc" },
   cache = false,
   paginate = true,
   onBeforeInsert,
@@ -38,7 +39,7 @@ export function createListRouteHandler({
   async function GET(request: Request) {
     try {
       const { searchParams } = new URL(request.url);
-      const { page, limit, offset } = parsePagination(searchParams);
+      const { limit, cursor } = parseCursorParams(searchParams);
       const { userId } = await auth();
       const withCache = (response: NextResponse) => {
         if (userId) {
@@ -51,39 +52,57 @@ export function createListRouteHandler({
       };
 
       const sortByParam = searchParams.get("sortBy");
-      const sortOrderParam =
-        searchParams.get("sortOrder") === "asc" ? asc : desc;
-
-      let orderByClause = Array.isArray(orderBy) ? orderBy : [orderBy];
-
-      if (
+      const sortOrderParam = searchParams.get("sortOrder");
+      const validSort =
         sortByParam &&
         sortableColumns.includes(sortByParam) &&
         table[sortByParam]
-      ) {
-        orderByClause = [sortOrderParam(table[sortByParam])];
+          ? sortByParam
+          : null;
+      const sortFn = (dir: "asc" | "desc") => (dir === "asc" ? asc : desc);
+
+      if (paginate) {
+        const sortKey = validSort ?? defaultSort.by;
+        const dir = validSort
+          ? sortOrderParam === "asc"
+            ? "asc"
+            : "desc"
+          : defaultSort.order;
+        const fn = sortFn(dir);
+        const [rows, totalResult] = await Promise.all([
+          db
+            .select()
+            .from(table)
+            .where(and(keysetWhere(table[sortKey], table.id, dir, cursor)))
+            .orderBy(fn(table[sortKey]), fn(table.id))
+            .limit(limit + 1),
+          db.select({ count: count() }).from(table),
+        ]);
+
+        const page = sliceCursorPage(rows, limit, sortKey);
+        return withCache(
+          NextResponse.json({
+            success: true,
+            data: page.rows,
+            pagination: {
+              total: totalResult[0]?.count ?? 0,
+              limit,
+              hasMore: page.hasMore,
+              nextCursor: page.nextCursor,
+            },
+          }),
+        );
       }
 
+      const orderByClause = validSort
+        ? [sortFn(sortOrderParam === "asc" ? "asc" : "desc")(table[validSort])]
+        : Array.isArray(orderBy)
+          ? orderBy
+          : [orderBy];
       const query = db
         .select()
         .from(table)
         .orderBy(...orderByClause);
-
-      if (paginate) {
-        const [results, totalResult] = await Promise.all([
-          query.offset(offset).limit(limit),
-          db.select({ count: count() }).from(table),
-        ]);
-
-        const total = totalResult[0]?.count ?? 0;
-        const response = NextResponse.json({
-          success: true,
-          data: results,
-          pagination: buildPagination(total, page, limit),
-        });
-
-        return withCache(response);
-      }
 
       const results = await query;
       const response = NextResponse.json({

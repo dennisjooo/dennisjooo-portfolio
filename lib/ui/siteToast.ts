@@ -15,10 +15,10 @@ function editorialToast(
   const label =
     options?.label ??
     (variant === "success"
-      ? "SAVED"
+      ? "Saved"
       : variant === "error"
-        ? "FAILED"
-        : "NOTICE");
+        ? "Failed"
+        : "Notice");
 
   const className = [
     EDITORIAL_CLASS,
@@ -45,18 +45,18 @@ export const siteToast = {
     editorialToast(message, "default", options),
 
   success: (message: string, options?: SiteToastOptions) =>
-    editorialToast(message, "success", { label: "SAVED", ...options }),
+    editorialToast(message, "success", { label: "Saved", ...options }),
 
   error: (message: string, options?: SiteToastOptions) =>
-    editorialToast(message, "error", { label: "FAILED", ...options }),
+    editorialToast(message, "error", { label: "Failed", ...options }),
 
   playful: (message: string, options?: SiteToastOptions) =>
     editorialToast(message, "default", {
       playful: true,
-      label: options?.label ?? "NOTICE",
+      label: options?.label ?? "Notice",
       ...options,
     }),
 
   copied: (message: string, options?: SiteToastOptions) =>
-    editorialToast(message, "success", { label: "COPIED", ...options }),
+    editorialToast(message, "success", { label: "Copied", ...options }),
 };

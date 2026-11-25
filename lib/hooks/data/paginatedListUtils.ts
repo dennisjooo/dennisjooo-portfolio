@@ -1,7 +1,7 @@
 import type { PaginationResult } from "@/lib/types/pagination";
 
 export interface PaginationState {
-  page: number;
+  nextCursor: string | null;
   hasMore: boolean;
   total: number;
 }
@@ -13,7 +13,7 @@ export interface PrefetchedPage<T> {
 
 export function toPaginationState(data: PaginationResult): PaginationState {
   return {
-    page: data.page,
+    nextCursor: data.nextCursor,
     hasMore: data.hasMore,
     total: data.total,
   };
@@ -21,12 +21,12 @@ export function toPaginationState(data: PaginationResult): PaginationState {
 
 export function buildPaginatedFetchUrl(
   endpoint: string,
-  page: number,
+  cursor: string | null,
   pageSize: number,
   queryParams: Record<string, string | number | boolean>,
 ): string {
   const params = new URLSearchParams();
-  params.append("page", page.toString());
+  if (cursor) params.append("cursor", cursor);
   params.append("limit", pageSize.toString());
 
   Object.entries(queryParams).forEach(([key, value]) => {

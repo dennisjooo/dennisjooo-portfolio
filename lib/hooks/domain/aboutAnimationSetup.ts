@@ -112,12 +112,10 @@ export async function initAboutGsapAnimations(
   sectionRef: RefObject<HTMLDivElement | null>,
   contentSections: ContentSection[],
 ): Promise<() => void> {
-  const [gsap, { ScrollTrigger }] = await Promise.all([
-    import("gsap").then((m) => m.default),
-    import("gsap/ScrollTrigger"),
-  ]);
-
-  gsap.registerPlugin(ScrollTrigger);
+  const { gsap, ScrollTrigger } =
+    await import("@/lib/motion/gsapBootstrap").then((m) =>
+      m.loadGsapWithScrollTrigger(),
+    );
 
   const mm = gsap.matchMedia();
   let mobileCleanup: (() => void) | undefined;

@@ -40,7 +40,7 @@ export function LinkListItem({
     <div
       data-link-row
       className={cn(
-        "flex items-stretch gap-2 rounded-md border border-border/50 bg-background p-2 transition-all duration-200",
+        "flex items-stretch gap-2 rounded-md border border-border/50 bg-background p-2 transition-colors duration-200",
         isDragging && "bg-muted/50 opacity-50",
         isDragOver && "ring-2 ring-primary",
       )}

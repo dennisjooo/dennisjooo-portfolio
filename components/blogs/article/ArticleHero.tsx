@@ -48,11 +48,9 @@ export const ArticleHero = ({
 
       <m.div
         {...metaMotion}
-        className="mb-6 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted-foreground md:gap-4"
+        className="mb-6 flex flex-wrap items-center gap-3 font-mono text-xs text-muted-foreground md:gap-4"
       >
-        <span className="rounded border border-border px-2 py-1">
-          {getBlogTypeLabel(type)}
-        </span>
+        <span>{getBlogTypeLabel(type)}</span>
         <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
         <time dateTime={date}>{date}</time>
         <span className="h-1 w-1 rounded-full bg-muted-foreground/50" />
@@ -99,7 +97,7 @@ function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
   return (
     <PhotoView src={src}>
       <figure className="cursor-zoom-in">
-        <HoverImageFrame frameClassName="shadow-lg">
+        <HoverImageFrame>
           <div
             className={cn(
               "relative w-full transition-[aspect-ratio] duration-500 ease-out",

@@ -18,7 +18,7 @@ export default async function AdminDashboardLayout({
 
   return (
     <UnsavedChangesProvider>
-      <div className="bg-noise relative flex min-h-screen overflow-x-hidden bg-background text-foreground">
+      <div className="relative flex min-h-screen overflow-x-hidden bg-background text-foreground">
         <AdminCommandPalette />
         <SidebarLayout>
           <div className="animate-fade-in mx-auto w-full max-w-5xl space-y-8">

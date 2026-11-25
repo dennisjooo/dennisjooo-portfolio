@@ -41,7 +41,7 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
               ? () => {
                   resetFoundSecrets();
                   siteToast.playful("The hunt begins again.", {
-                    label: "RESET",
+                    label: "Reset",
                   });
                 }
               : undefined
@@ -55,7 +55,7 @@ export function EasterEggProgressGroup({ open }: EasterEggProgressGroupProps) {
           <div className="flex w-full items-center gap-2">
             <div className="relative h-1 min-w-0 flex-1 overflow-hidden rounded-full bg-border/60">
               <div
-                className="absolute inset-y-0 left-0 rounded-full bg-foreground/30 transition-all duration-500 ease-out"
+                className="absolute inset-y-0 left-0 rounded-full bg-foreground/30 transition-colors duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>

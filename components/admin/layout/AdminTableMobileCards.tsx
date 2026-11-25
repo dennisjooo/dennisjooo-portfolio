@@ -54,7 +54,7 @@ export function AdminTableMobileCards<T extends { id?: string | number }>({
             key={row.id || rowIdx}
             data-card
             className={cn(
-              "flex items-stretch gap-2 rounded-lg border border-border bg-card/30 p-4 transition-all duration-200",
+              "flex items-stretch gap-2 rounded-lg border border-border bg-card/30 p-4 transition-colors duration-200",
               isDragging && "bg-muted/50 opacity-50",
               isDragOver && "ring-2 ring-primary",
             )}
@@ -93,7 +93,7 @@ export function AdminTableMobileCards<T extends { id?: string | number }>({
                       key={colIdx}
                       className="flex items-center justify-between gap-4 text-sm"
                     >
-                      <span className="flex-shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                      <span className="flex-shrink-0 font-mono text-xs text-muted-foreground">
                         {col.header}
                       </span>
                       <div className="text-right font-sans text-foreground">

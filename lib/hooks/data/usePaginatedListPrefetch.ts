@@ -26,23 +26,23 @@ export function usePaginatedListPrefetch<T>({
   paginationKey,
 }: UsePaginatedListPrefetchOptions<T>) {
   const prefetchAbortRef = useRef<AbortController | null>(null);
-  const prefetchCacheRef = useRef<Map<number, PrefetchedPage<T>>>(new Map());
-  const prefetchInFlightRef = useRef<number | null>(null);
+  const prefetchCacheRef = useRef<Map<string, PrefetchedPage<T>>>(new Map());
+  const prefetchInFlightRef = useRef<string | null>(null);
 
   const prefetchPage = useCallback(
-    async (page: number) => {
-      if (!prefetchNextPage || page < 1) return;
-      if (prefetchCacheRef.current.has(page)) return;
-      if (prefetchInFlightRef.current === page) return;
+    async (cursor: string | null) => {
+      if (!prefetchNextPage || !cursor) return;
+      if (prefetchCacheRef.current.has(cursor)) return;
+      if (prefetchInFlightRef.current === cursor) return;
 
       prefetchAbortRef.current?.abort();
       const abortController = new AbortController();
       prefetchAbortRef.current = abortController;
-      prefetchInFlightRef.current = page;
+      prefetchInFlightRef.current = cursor;
 
       try {
         const res = await fetch(
-          buildPaginatedFetchUrl(endpoint, page, pageSize, stableQueryParams),
+          buildPaginatedFetchUrl(endpoint, cursor, pageSize, stableQueryParams),
           { signal: abortController.signal },
         );
         const data = await res.json();
@@ -58,20 +58,17 @@ export function usePaginatedListPrefetch<T>({
           parsed.pagination &&
           parsed.items.length > 0
         ) {
-          prefetchCacheRef.current.set(page, {
+          prefetchCacheRef.current.set(cursor, {
             items: parsed.items,
             pagination: parsed.pagination,
           });
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name !== "AbortError") {
-          console.error(
-            `Failed to prefetch page ${page} from ${endpoint}`,
-            error,
-          );
+          console.error(`Failed to prefetch ${endpoint}`, error);
         }
       } finally {
-        if (prefetchInFlightRef.current === page) {
+        if (prefetchInFlightRef.current === cursor) {
           prefetchInFlightRef.current = null;
         }
       }
@@ -88,9 +85,9 @@ export function usePaginatedListPrefetch<T>({
   );
 
   const schedulePrefetch = useCallback(
-    (currentPage: number, hasMore: boolean) => {
+    (nextCursor: string | null, hasMore: boolean) => {
       if (prefetchNextPage && hasMore) {
-        void prefetchPage(currentPage + 1);
+        void prefetchPage(nextCursor);
       }
     },
     [prefetchNextPage, prefetchPage],
@@ -103,10 +100,10 @@ export function usePaginatedListPrefetch<T>({
   }, []);
 
   const consumePrefetchedPage = useCallback(
-    (page: number): PrefetchedPage<T> | undefined => {
-      const cached = prefetchCacheRef.current.get(page);
-      if (cached) {
-        prefetchCacheRef.current.delete(page);
+    (cursor: string | null): PrefetchedPage<T> | undefined => {
+      const cached = cursor ? prefetchCacheRef.current.get(cursor) : undefined;
+      if (cursor && cached) {
+        prefetchCacheRef.current.delete(cursor);
       }
       return cached;
     },

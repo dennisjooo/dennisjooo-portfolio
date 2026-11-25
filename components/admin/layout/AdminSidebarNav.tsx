@@ -21,7 +21,7 @@ export function AdminSidebarNav({ isCollapsed }: AdminSidebarNavProps) {
                 <div className="absolute inset-x-4 top-2.5 border-t border-border/60" />
               )}
               <div
-                className={`overflow-hidden whitespace-nowrap px-4 pb-1.5 pt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60 transition-all duration-200 ${
+                className={`overflow-hidden whitespace-nowrap px-4 pb-1.5 pt-5 font-sans text-xs text-muted-foreground/60 transition-colors duration-200 ${
                   isCollapsed ? "h-0 py-0 opacity-0" : "opacity-100"
                 }`}
               >
@@ -39,7 +39,7 @@ export function AdminSidebarNav({ isCollapsed }: AdminSidebarNavProps) {
                 key={item.href}
                 href={item.href}
                 title={isCollapsed ? item.name : undefined}
-                className={`flex items-center py-2.5 transition-all hover:bg-accent/5 ${
+                className={`flex items-center py-2.5 transition-colors hover:bg-accent/5 ${
                   isCollapsed
                     ? "justify-center px-0"
                     : "gap-3 border-l-2 pl-[22px] pr-4"
@@ -51,7 +51,7 @@ export function AdminSidebarNav({ isCollapsed }: AdminSidebarNavProps) {
               >
                 <item.icon className="h-4 w-4 flex-shrink-0" />
                 <span
-                  className={`whitespace-nowrap font-sans text-sm font-medium transition-all duration-200 ${
+                  className={`whitespace-nowrap font-sans text-sm font-medium transition-colors duration-200 ${
                     isCollapsed
                       ? "w-0 overflow-hidden opacity-0"
                       : "opacity-100"

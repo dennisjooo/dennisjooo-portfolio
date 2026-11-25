@@ -209,7 +209,7 @@ export function buildLlmsTxt(
     [
       `- [Homepage](${SITE_URL}/): ${SITE_TAGLINE}`,
       `- [Projects & Certifications](${SITE_URL}/blogs): Full project list and certification cards`,
-      `- [Skills Section](${SITE_URL}/#skills): Interactive skills marquee`,
+      `- [Skills Section](${SITE_URL}/#skills): Skills listed by category`,
     ].join("\n"),
   ];
 
