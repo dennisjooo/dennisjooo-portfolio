@@ -5,6 +5,7 @@
 }
 
 html {
+  overflow-x: clip;
   scrollbar-gutter: stable;
   scrollbar-color: var(--color-muted) var(--color-paper);
   scroll-padding-top: var(--space-3xl);

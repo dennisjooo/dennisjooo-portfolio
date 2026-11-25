@@ -17,7 +17,7 @@ export const MobileView: React.FC<MobileViewProps> = ({
       className="mobile-scroll-container backface-hidden flex h-full transform-gpu"
       style={{ width: `${(contentSections.length + 1) * 100}%` }}
     >
-      <div className="flex h-full w-screen flex-col items-center justify-center gap-6 px-8">
+      <div className="flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-6 px-8">
         <span className="font-mono text-xs text-muted-foreground opacity-50">
           Swipe to Explore
         </span>
@@ -28,7 +28,7 @@ export const MobileView: React.FC<MobileViewProps> = ({
       {contentSections.map((section) => (
         <div
           key={section.id}
-          className="flex h-full w-screen flex-col justify-center space-y-6 px-8"
+          className="flex h-full min-w-0 flex-1 flex-col justify-center space-y-6 px-8"
         >
           <h2 className="text-display pb-2 font-serif text-5xl font-semibold leading-none tracking-tight">
             {section.title}

@@ -1,4 +1,4 @@
-const ABOUT_SCROLL_MOBILE_PER_SECTION = 375;
+const ABOUT_SCROLL_MOBILE_PER_SECTION = 600;
 const ABOUT_SCROLL_DESKTOP_PER_TRANSITION = 400;
 
 export function aboutMobileScrollDistance(sectionCount: number): number {

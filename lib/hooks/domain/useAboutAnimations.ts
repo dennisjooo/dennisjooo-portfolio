@@ -52,34 +52,8 @@ export const useAboutAnimations = ({
       });
     };
 
-    const startObserving = () => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            initAnimations();
-            observer.disconnect();
-          }
-        },
-        { rootMargin: "100px" },
-      );
-
-      if (sectionRef.current) {
-        observer.observe(sectionRef.current);
-      }
-
-      return () => observer.disconnect();
-    };
-
-    let disconnectObserver: (() => void) | undefined;
-
     const onContentRevealed = () => {
-      disconnectObserver?.();
-      disconnectObserver = startObserving();
-      void import("@/lib/motion/gsapBootstrap")
-        .then((m) => m.loadGsapWithScrollTrigger())
-        .then(({ ScrollTrigger }) => {
-          requestAnimationFrame(() => ScrollTrigger.refresh());
-        });
+      void initAnimations();
     };
 
     const pendingSection = resolveSectionScrollTarget();
@@ -88,7 +62,7 @@ export const useAboutAnimations = ({
     if (shouldEagerInit) {
       void initAnimations();
     } else if (document.querySelector('[data-content-ready="true"]')) {
-      disconnectObserver = startObserving();
+      void initAnimations();
     } else {
       window.addEventListener("portfolio:content-revealed", onContentRevealed, {
         once: true,
@@ -96,7 +70,6 @@ export const useAboutAnimations = ({
     }
 
     return () => {
-      disconnectObserver?.();
       window.removeEventListener(
         "portfolio:content-revealed",
         onContentRevealed,

@@ -27,6 +27,7 @@ export function setupAboutMobileAnimations(
       trigger: sectionRef.current,
       pin: true,
       pinSpacing: false,
+      anticipatePin: 1,
       scrub: 0.5,
       snap: {
         snapTo: 1 / lastIndex,
