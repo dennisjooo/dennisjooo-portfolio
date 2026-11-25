@@ -1,26 +1,23 @@
-import type { Blog } from "@/lib/db";
+import type { BlogListItem } from "@/lib/types/blogList";
 import { SectionHeader } from "@/components/shared/layout/SectionHeader";
 import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { PostsBento } from "@/components/blogs/list/PostsBento";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import {
-  calculateReadTime,
-  formatProjectDate,
-} from "@/lib/utils/projectFormatting";
+import { formatProjectDate } from "@/lib/utils/projectFormatting";
 import { ViewAllButton } from "./ViewAllButton";
 
 interface FeaturedProjectsProps {
-  projects: Blog[];
+  projects: BlogListItem[];
 }
 
-const toCardProps = (project: Blog) => ({
+const toCardProps = (project: BlogListItem) => ({
   title: project.title,
   description: project.description,
   slug: project.slug || createUrlSlug(project.title),
   date: formatProjectDate(project.date, true),
   imageUrl: project.imageUrl ?? undefined,
   type: project.type,
-  readTime: `${calculateReadTime(project.blogPost)} min`,
+  readTime: `${project.readTimeMinutes} min`,
 });
 
 export default function FeaturedProjects({ projects }: FeaturedProjectsProps) {

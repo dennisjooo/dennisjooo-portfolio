@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
+import { isPreviewSlug } from "@/lib/db/blogPreview";
 
 interface PreviewBannerProps {
   status: string;
@@ -10,7 +11,7 @@ interface PreviewBannerProps {
 }
 
 export function PreviewBanner({ status, slug }: PreviewBannerProps) {
-  const isTemporaryPreview = slug.endsWith("-preview");
+  const isTemporaryPreview = isPreviewSlug(slug);
 
   const deletePreview = useCallback(() => {
     if (!isTemporaryPreview) return;

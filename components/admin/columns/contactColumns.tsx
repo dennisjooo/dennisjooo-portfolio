@@ -1,5 +1,5 @@
 import { Column } from "@/components/admin/layout/AdminTable";
-import type { Contact } from "@/lib/db";
+import type { Contact } from "@/lib/db/schema";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import { Globe } from "lucide-react";
 import { createActionsColumn } from "./createActionsColumn";

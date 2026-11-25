@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import {
+  moveItem,
+  useDragReorder,
+} from "@/components/admin/hooks/useDragReorder";
 
 export function useAdminTableReorder<T>(
   data: T[],
@@ -6,53 +10,26 @@ export function useAdminTableReorder<T>(
   onReorder?: (rows: T[]) => void | Promise<void>,
 ) {
   const [localData, setLocalData] = useState<T[]>(data || []);
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const drag = useDragReorder("tr, [data-card]", enableReorder);
 
   useEffect(() => {
     setLocalData(data || []);
   }, [data]);
 
-  const handleDragStart = (event: React.DragEvent, index: number) => {
-    if (!enableReorder) return;
-    setDragIndex(index);
-
-    const row = (event.target as HTMLElement).closest("tr, [data-card]");
-    if (row && event.dataTransfer) {
-      event.dataTransfer.setDragImage(row, 0, 0);
-      event.dataTransfer.effectAllowed = "move";
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent, index: number) => {
-    if (!enableReorder || dragIndex === null) return;
-    event.preventDefault();
-    setDragOverIndex(index);
-  };
-
   const handleDrop = (index: number) => {
-    if (!enableReorder || dragIndex === null) return;
-    if (dragIndex === index) {
-      setDragIndex(null);
-      setDragOverIndex(null);
-      return;
-    }
-
-    const next = [...localData];
-    const [moved] = next.splice(dragIndex, 1);
-    next.splice(index, 0, moved);
+    const moved = drag.finishDrop(index);
+    if (!moved) return;
+    const next = moveItem(localData, moved.from, moved.to);
     setLocalData(next);
-    setDragIndex(null);
-    setDragOverIndex(null);
     onReorder?.(next);
   };
 
   return {
     localData,
-    dragIndex,
-    dragOverIndex,
-    handleDragStart,
-    handleDragOver,
+    dragIndex: drag.dragIndex,
+    dragOverIndex: drag.dragOverIndex,
+    handleDragStart: drag.handleDragStart,
+    handleDragOver: drag.handleDragOver,
     handleDrop,
   };
 }

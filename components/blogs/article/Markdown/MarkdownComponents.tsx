@@ -82,7 +82,6 @@ export const markdownComponents: Components = {
     </blockquote>
   ),
 
-  // Lists
   ul: ({ children }) => (
     <ul className="mb-5 list-inside list-disc space-y-2 leading-relaxed text-muted-foreground">
       {children}
@@ -95,7 +94,6 @@ export const markdownComponents: Components = {
   ),
   li: ({ children }) => <li className="text-muted-foreground">{children}</li>,
 
-  // Code
   code: ({ inline, children, className }: CodeProps) => {
     const codeString = String(children);
     const match = /language-(\w+)/.exec(className || "");
@@ -121,7 +119,6 @@ export const markdownComponents: Components = {
   },
   pre: ({ children }) => <>{children}</>,
 
-  // Tables - Editorial Style
   table: ({ children }) => (
     <div className="not-prose my-8">
       <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -147,7 +144,6 @@ export const markdownComponents: Components = {
     <td className="px-6 py-4 text-sm text-muted-foreground">{children}</td>
   ),
 
-  // Media - With Noise Overlay
   img: ({ src, alt, title, ...rest }: ComponentPropsWithoutRef<"img">) => {
     if (!src) {
       return null;

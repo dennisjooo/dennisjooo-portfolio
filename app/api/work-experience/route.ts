@@ -22,8 +22,8 @@ async function assignWorkExperienceOrder(body: Record<string, unknown>) {
 export const { GET, POST } = createListRouteHandler({
   table: workExperiences,
   entityName: "work experience",
-  orderBy: asc(workExperiences.order),
-  defaultOrderBy: [asc(workExperiences.order), desc(workExperiences.createdAt)],
+  orderBy: [asc(workExperiences.order), desc(workExperiences.createdAt)],
+  sortableColumns: ["title", "date", "createdAt", "updatedAt"],
   paginate: false,
   onBeforeInsert: assignWorkExperienceOrder,
 });

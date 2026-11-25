@@ -7,8 +7,8 @@ import {
   uuid,
   json,
 } from "drizzle-orm/pg-core";
+import { DEFAULT_PROFILE_IMAGE } from "@/lib/constants/site";
 
-// Enums
 export const blogTypeEnum = pgEnum("blog_type", ["project", "blog"]);
 export const blogStatusEnum = pgEnum("blog_status", [
   "draft",
@@ -25,7 +25,6 @@ export const contactIconEnum = pgEnum("contact_icon", [
   "website",
 ]);
 
-// Blog table
 export const blogs = pgTable("blogs", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: text("title").notNull(),
@@ -42,7 +41,6 @@ export const blogs = pgTable("blogs", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Contact table
 export const contacts = pgTable("contacts", {
   id: uuid("id").defaultRandom().primaryKey(),
   label: text("label").notNull(),
@@ -53,7 +51,6 @@ export const contacts = pgTable("contacts", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Work Experience table
 export const workExperiences = pgTable("work_experiences", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: text("title").notNull(),
@@ -66,7 +63,6 @@ export const workExperiences = pgTable("work_experiences", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Certification table
 export const certifications = pgTable("certifications", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: text("title").notNull(),
@@ -78,10 +74,9 @@ export const certifications = pgTable("certifications", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Site Config table (singleton)
 export const siteConfig = pgTable("site_config", {
   id: uuid("id").defaultRandom().primaryKey(),
-  profileImageUrl: text("profile_image_url").default("/images/profile.webp"),
+  profileImageUrl: text("profile_image_url").default(DEFAULT_PROFILE_IMAGE),
   aboutSections: json("about_sections")
     .$type<Array<{ id: string; title: string; body: string }>>()
     .default([]),
@@ -89,7 +84,6 @@ export const siteConfig = pgTable("site_config", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Type exports for use in application
 export type Blog = typeof blogs.$inferSelect;
 export type NewBlog = typeof blogs.$inferInsert;
 

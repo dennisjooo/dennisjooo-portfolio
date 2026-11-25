@@ -1,6 +1,6 @@
 "use client";
 
-import type { Contact } from "@/lib/db";
+import type { Contact } from "@/lib/db/schema";
 import { CONTACT_ICON_OPTIONS } from "@/lib/constants/contactIcons";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";

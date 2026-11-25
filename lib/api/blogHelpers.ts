@@ -2,34 +2,18 @@ import { db, blogs } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { errorResponse } from "@/lib/api/apiHelpers";
-
-const BLOB_IMG_REGEX = /!\[.*?\]\((https:\/\/[^)]+vercel-storage\.com[^)]+)\)/g;
-
-export function collectBlobUrls(
-  imageUrl: string | null,
-  blogPost: string | null,
-): string[] {
-  const urls: string[] = [];
-  if (imageUrl?.includes("vercel-storage.com")) {
-    urls.push(imageUrl);
-  }
-  let match;
-  while ((match = BLOB_IMG_REGEX.exec(blogPost || "")) !== null) {
-    urls.push(match[1]);
-  }
-  BLOB_IMG_REGEX.lastIndex = 0;
-  return urls;
-}
+import { extractBlobUrls } from "@/lib/utils/blobUrls";
+import { stripPreviewSlug } from "@/lib/db/blogPreview";
 
 export async function getPreviewExclusiveBlobUrls(
   previewImageUrl: string | null,
   previewBlogPost: string | null,
   previewSlug: string,
 ): Promise<string[]> {
-  const previewUrls = collectBlobUrls(previewImageUrl, previewBlogPost);
+  const previewUrls = extractBlobUrls(previewImageUrl, previewBlogPost);
   if (previewUrls.length === 0) return [];
 
-  const originalSlug = previewSlug.replace(/-preview$/, "");
+  const originalSlug = stripPreviewSlug(previewSlug);
   const [original] = await db
     .select({ imageUrl: blogs.imageUrl, blogPost: blogs.blogPost })
     .from(blogs)
@@ -38,7 +22,7 @@ export async function getPreviewExclusiveBlobUrls(
   if (!original) return previewUrls;
 
   const originalUrls = new Set(
-    collectBlobUrls(original.imageUrl, original.blogPost),
+    extractBlobUrls(original.imageUrl, original.blogPost),
   );
   return previewUrls.filter((url) => !originalUrls.has(url));
 }

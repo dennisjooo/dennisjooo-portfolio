@@ -58,10 +58,7 @@ export async function processBlogContent(
           );
 
           const filename = context.title
-            ? `${context.title
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, "-")
-                .replace(/(^-|-$)/g, "")}-${pendingImage.file.name}`
+            ? `${createUrlSlug(context.title)}-${pendingImage.file.name}`
             : pendingImage.file.name;
 
           const slug = context.slug || createUrlSlug(context.title || "");

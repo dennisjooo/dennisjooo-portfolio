@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useInfiniteScroll } from "@/lib/hooks/data/useInfiniteScroll";
-import type { PaginationResult } from "@/lib/data/blogs";
+import type { PaginationResult } from "@/lib/types/pagination";
 import { type PaginationState } from "./paginatedListUtils";
 import { usePaginatedListPrefetch } from "./usePaginatedListPrefetch";
 import { usePaginatedListFetch } from "./usePaginatedListFetch";

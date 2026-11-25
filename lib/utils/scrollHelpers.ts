@@ -163,6 +163,23 @@ export function scrollToSection(sectionId: string, instant = true): void {
   }
 }
 
+export function goToSection(
+  sectionId: string,
+  pathname: string,
+  router: { push: (href: string) => void },
+): void {
+  if (pathname === "/") {
+    if (sectionId === "home") {
+      scrollToTop(true);
+    } else {
+      scrollToSection(sectionId);
+    }
+    return;
+  }
+  setPendingSectionScroll(sectionId);
+  router.push(`/#${sectionId}`);
+}
+
 function waitForWindowEvent(
   eventName: string,
   timeoutMs: number,

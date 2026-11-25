@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
 import { getSessionItem, setSessionItem } from "@/lib/utils/storage";
 import { useMounted } from "@/lib/hooks/ui/useMounted";
-
-type TabType = "blog" | "certifications";
+import {
+  BLOGS_LIST_TAB_STORAGE_KEY,
+  type BlogsListTab,
+} from "@/lib/constants/blogsList";
 
 export function useTabState() {
-  const [activeTab, setActiveTab] = useState<TabType>("blog");
+  const [activeTab, setActiveTab] = useState<BlogsListTab>("blog");
   const mounted = useMounted();
 
   useEffect(() => {
-    const storedTab = getSessionItem("projectsActiveTab") as TabType | null;
-    if (storedTab && (storedTab === "blog" || storedTab === "certifications")) {
+    const storedTab = getSessionItem(
+      BLOGS_LIST_TAB_STORAGE_KEY,
+    ) as BlogsListTab | null;
+    if (storedTab === "blog" || storedTab === "certifications") {
       setActiveTab(storedTab);
     }
   }, []);
 
   useEffect(() => {
     if (mounted) {
-      setSessionItem("projectsActiveTab", activeTab);
+      setSessionItem(BLOGS_LIST_TAB_STORAGE_KEY, activeTab);
     }
   }, [activeTab, mounted]);
 

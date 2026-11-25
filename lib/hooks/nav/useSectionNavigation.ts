@@ -2,11 +2,7 @@
 
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import {
-  scrollToTop,
-  scrollToSection,
-  setPendingSectionScroll,
-} from "@/lib/utils/scrollHelpers";
+import { goToSection } from "@/lib/utils/scrollHelpers";
 
 interface UseSectionNavigationParams {
   isClientReady: boolean;
@@ -25,17 +21,7 @@ export const useSectionNavigation = ({
     (sectionId: string) => {
       if (!isClientReady) return;
 
-      if (pathname === "/") {
-        if (sectionId === "home") {
-          scrollToTop(true);
-        } else {
-          scrollToSection(sectionId);
-        }
-      } else {
-        setPendingSectionScroll(sectionId);
-        router.push(`/#${sectionId}`);
-      }
-
+      goToSection(sectionId, pathname, router);
       closeMenu();
     },
     [closeMenu, isClientReady, pathname, router],

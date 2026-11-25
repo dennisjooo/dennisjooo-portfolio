@@ -23,7 +23,6 @@ export default function AdminLoginPage() {
       <div className="absolute inset-0 bg-muted/30" />
 
       <div className="relative z-10 mx-auto w-full max-w-md px-4">
-        {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="mb-2 font-serif text-3xl md:text-4xl">
             Mission Control
@@ -33,7 +32,6 @@ export default function AdminLoginPage() {
           </p>
         </div>
 
-        {/* Clerk SignIn Component */}
         <div className="flex justify-center">
           <ClerkLoading>
             <SignInLoadingCard />
@@ -88,7 +86,6 @@ export default function AdminLoginPage() {
           </ClerkLoaded>
         </div>
 
-        {/* Back to site link */}
         <div className="mt-8 text-center">
           <Link
             href="/"

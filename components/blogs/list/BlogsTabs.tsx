@@ -8,9 +8,9 @@ import { useTabState } from "@/lib/hooks/ui/useTabState";
 import { AnimatePresence, m } from "@/components/motion";
 import { sectionInnerClasses } from "@/components/shared/layout/SectionShell";
 import { BlogsHero } from "./BlogsHero";
-import { TabType } from "./TabSwitcher";
-import { useMemo, useEffect } from "react";
-import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
+import type { BlogListItem } from "@/lib/types/blogList";
+import type { PaginationResult } from "@/lib/types/pagination";
+import { BLOGS_LIST_TABS } from "@/lib/constants/blogsList";
 
 interface BlogsTabsProps {
   initialProjects?: BlogListItem[];
@@ -21,26 +21,10 @@ export function BlogsTabs({
   initialProjects,
   initialPagination,
 }: BlogsTabsProps) {
-  const { activeTab, setActiveTab, mounted } = useTabState();
-
-  const availableTabs: TabType[] = useMemo(
-    () => ["blog", "certifications"],
-    [],
-  );
-
-  useEffect(() => {
-    if (
-      mounted &&
-      !availableTabs.includes(activeTab) &&
-      availableTabs.length > 0
-    ) {
-      setActiveTab(availableTabs[0]);
-    }
-  }, [mounted, activeTab, availableTabs, setActiveTab]);
+  const { activeTab, setActiveTab } = useTabState();
 
   return (
     <div className={`${sectionInnerClasses} pt-24 md:pt-20`}>
-      {/* Editorial Hero Section */}
       <BlogsHero
         activeTab={activeTab}
         meta={
@@ -48,35 +32,29 @@ export function BlogsTabs({
         }
       />
 
-      {/* Tab Navigation */}
-      {availableTabs.length > 0 && (
-        <TabSwitcher
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          tabs={availableTabs}
-        />
-      )}
+      <TabSwitcher
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        tabs={BLOGS_LIST_TABS}
+      />
 
-      {/* Content Grid */}
-      {availableTabs.length > 0 && (
-        <div className="mt-8 min-h-[50vh] w-full">
-          <AnimatePresence mode="wait" initial={false}>
-            {activeTab === "blog" ? (
-              <m.div key="blog" {...tabContentVariants}>
-                <ProjectsList
-                  type="all"
-                  initialData={initialProjects}
-                  initialPagination={initialPagination}
-                />
-              </m.div>
-            ) : (
-              <m.div key="certifications" {...tabContentVariants}>
-                <CertificationsList />
-              </m.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+      <div className="mt-8 min-h-[50vh] w-full">
+        <AnimatePresence mode="wait" initial={false}>
+          {activeTab === "blog" ? (
+            <m.div key="blog" {...tabContentVariants}>
+              <ProjectsList
+                type="all"
+                initialData={initialProjects}
+                initialPagination={initialPagination}
+              />
+            </m.div>
+          ) : (
+            <m.div key="certifications" {...tabContentVariants}>
+              <CertificationsList />
+            </m.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Certification } from "@/lib/db";
+import type { Certification } from "@/lib/db/schema";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
 import { FormField } from "@/components/admin/shared/FormField";

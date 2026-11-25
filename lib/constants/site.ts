@@ -8,6 +8,9 @@ export const SITE_TAGLINE = "Okay Developer & Human Being";
 export const SITE_DESCRIPTION =
   "AI enthusiast and problem solver with a background in math, stats, and machine learning. I build practical tools, explore weird ideas, and make complex stuff a little more approachable.";
 
+export const DEFAULT_PROFILE_IMAGE = "/images/profile.webp";
+export const PROFILE_IMAGE_FILENAME = "profile.webp";
+
 export function getSiteHostname(): string {
   return new URL(SITE_URL).hostname;
 }

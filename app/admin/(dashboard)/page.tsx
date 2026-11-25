@@ -11,35 +11,11 @@ import {
   ContentStats,
 } from "@/components/admin/dashboard";
 import { useStatusData } from "@/components/admin/hooks";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import {
-  PlusIcon,
-  DocumentTextIcon,
-  BriefcaseIcon,
-  AcademicCapIcon,
-  LinkIcon,
-} from "@heroicons/react/24/outline";
-
-const quickActions = [
-  { label: "New Post", href: "/admin/blogs/new", icon: DocumentTextIcon },
-  {
-    label: "New Experience",
-    href: "/admin/work-experience/new",
-    icon: BriefcaseIcon,
-  },
-  {
-    label: "New Certification",
-    href: "/admin/certifications/new",
-    icon: AcademicCapIcon,
-  },
-  { label: "New Contact", href: "/admin/contacts/new", icon: LinkIcon },
-];
-
-const countEndpoints = [
-  { key: "/admin/blogs", url: "/api/blogs?limit=1" },
-  { key: "/admin/certifications", url: "/api/certifications?limit=1" },
-  { key: "/admin/work-experience", url: "/api/work-experience?limit=1" },
-  { key: "/admin/contacts", url: "/api/contacts?limit=1" },
-];
+  adminCountEndpoints,
+  adminCreateActions,
+} from "@/lib/constants/adminNav";
 
 function extractCount(data: Record<string, unknown> | null): number {
   if (!data) return 0;
@@ -62,13 +38,13 @@ export default function AdminDashboard() {
     async function fetchCounts() {
       try {
         const responses = await Promise.all(
-          countEndpoints.map(({ url }) => fetch(url)),
+          adminCountEndpoints.map(({ url }) => fetch(url)),
         );
         const results = await Promise.all(
           responses.map((r) => (r.ok ? r.json() : null)),
         );
         const next: Record<string, number> = {};
-        countEndpoints.forEach(({ key }, i) => {
+        adminCountEndpoints.forEach(({ key }, i) => {
           next[key] = extractCount(results[i]);
         });
         setCounts(next);
@@ -92,7 +68,7 @@ export default function AdminDashboard() {
       <ContentStats />
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-8 md:gap-y-3">
-        {quickActions.map((action, i) => (
+        {adminCreateActions.map((action, i) => (
           <Fragment key={action.href}>
             {i > 0 && (
               <span className="hidden text-border sm:inline-block">·</span>

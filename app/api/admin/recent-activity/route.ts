@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, blogs, contacts, workExperiences, certifications } from "@/lib/db";
 import { desc, not, like } from "drizzle-orm";
+import { PREVIEW_SLUG_SUFFIX } from "@/lib/db/blogPreview";
 import { requireAuth, isAuthError } from "@/lib/api/apiHelpers";
 
 interface ActivityItem {
@@ -28,7 +29,7 @@ export async function GET() {
             updatedAt: blogs.updatedAt,
           })
           .from(blogs)
-          .where(not(like(blogs.slug, "%-preview")))
+          .where(not(like(blogs.slug, `%${PREVIEW_SLUG_SUFFIX}`)))
           .orderBy(desc(blogs.updatedAt))
           .limit(5),
         db

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { BackToTop } from "@/components/shared";
 import { BlogsTabs } from "@/components/blogs/list/BlogsTabs";
 import { getBlogs } from "@/lib/data/blogs";
+import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 import { SITE_URL } from "@/lib/constants/site";
 
-// Enable ISR for blogs listing
 export const revalidate = 60;
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsAndCertificationsPage() {
-  const initialBlogsData = await getBlogs(1, 9, "all");
+  const initialBlogsData = await getBlogs(1, PUBLIC_LIST_PAGE_SIZE, "all");
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

@@ -5,7 +5,7 @@ import { BackToBlogsLink } from "@/components/blogs/article/BackToBlogsLink";
 import TableOfContents from "@/components/blogs/article/TableOfContents";
 import { ReadingProgress } from "@/components/shared";
 import { ArticleHero } from "@/components/blogs/article/ArticleHero";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { PHOTO_VIEWER_CONFIG } from "@/lib/constants/photoViewer";
 import {
   formatProjectDate,

@@ -9,14 +9,12 @@ import { MobileMenu } from "./MobileMenu";
 import { ThemeToggle } from "@/components/theme";
 import { useReducedMotion } from "@/components/motion";
 import { navItems } from "@/lib/content/navbarContent";
-import {
-  useHeroSectionState,
-  useNavbarStyles,
-  useSectionNavigation,
-} from "@/lib/hooks/nav/useNavbar";
+import { useHeroSectionState } from "@/lib/hooks/nav/useHeroSectionState";
+import { useNavbarStyles } from "@/lib/hooks/nav/useNavbarStyles";
+import { useSectionNavigation } from "@/lib/hooks/nav/useSectionNavigation";
 import { useMounted } from "@/lib/hooks/ui/useMounted";
 
-export const NavbarClient = () => {
+export default function NavbarClient() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname() ?? "/";
   const isClientReady = useMounted();
@@ -94,4 +92,4 @@ export const NavbarClient = () => {
       </div>
     </nav>
   );
-};
+}

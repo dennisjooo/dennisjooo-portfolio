@@ -6,18 +6,22 @@ import { toast } from "sonner";
 import { useSiteConfig } from "@/lib/hooks/data/useSiteConfig";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import { AdminPageHeader, LoadingSpinner } from "@/components/admin/shared";
+import {
+  DEFAULT_PROFILE_IMAGE,
+  PROFILE_IMAGE_FILENAME,
+} from "@/lib/constants/site";
 
 export default function ProfileAdminPage() {
   const { config, loading, updateConfig } = useSiteConfig();
   const { uploading, upload } = useImageUpload({
-    filename: "profile.webp",
+    filename: PROFILE_IMAGE_FILENAME,
     onSuccess: async (url) => {
       await updateConfig({ profileImageUrl: url });
       toast.success("Profile updated!");
     },
   });
 
-  const imageUrl = config?.profileImageUrl || "/images/profile.webp";
+  const imageUrl = config?.profileImageUrl || DEFAULT_PROFILE_IMAGE;
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

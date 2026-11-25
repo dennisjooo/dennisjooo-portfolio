@@ -2,7 +2,7 @@
 
 import ContactForm from "@/components/admin/forms/ContactForm";
 import { createAdminNewPage } from "@/components/admin/factories";
-import type { Contact } from "@/lib/db";
+import type { Contact } from "@/lib/db/schema";
 
 export default createAdminNewPage<Contact>({
   endpoint: "/api/contacts",

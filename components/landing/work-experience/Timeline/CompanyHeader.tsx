@@ -17,7 +17,6 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
 }) => {
   return (
     <div className="flex w-full flex-col gap-4 transition-all duration-500 md:items-end md:gap-6">
-      {/* Logo */}
       <div
         className={cn(
           "relative h-12 w-12 shrink-0 overflow-hidden transition-all duration-500 md:h-16 md:w-16",
@@ -34,7 +33,6 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
         />
       </div>
 
-      {/* Company Name */}
       <h3 className="font-serif text-4xl leading-[0.9] tracking-tight text-foreground md:text-right md:text-6xl lg:text-7xl">
         {companyName}
       </h3>

@@ -6,19 +6,13 @@ import {
   processedWorkExperience,
   getContextSnippet,
   matchesSearch,
-  type ProcessedProject,
-  type ProcessedWorkExperience,
+  type FilteredProject,
+  type FilteredWorkExperience,
   type SearchOptions,
 } from "@/lib/command-palette/utils";
+
 export type SearchScope = "all" | "projects" | "work";
-
-export interface FilteredProject extends ProcessedProject {
-  context: string | null;
-}
-
-export interface FilteredWorkExperience extends ProcessedWorkExperience {
-  context: string | null;
-}
+export type { FilteredProject, FilteredWorkExperience };
 
 export function useCommandPaletteFiltering(
   search: string,

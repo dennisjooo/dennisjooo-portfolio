@@ -2,32 +2,17 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { db, blogs, type Blog } from "@/lib/db";
 import { eq, desc, and, type SQL } from "drizzle-orm";
-import { CACHE_CONFIG } from "@/lib/constants/cache";
+import { CACHE_CONFIG, CACHE_TAGS } from "@/lib/constants/cache";
+import {
+  FEATURED_POST_COUNT,
+  PUBLIC_LIST_PAGE_SIZE,
+} from "@/lib/constants/blogsList";
+import { queryPublicBlogListItems, toBlogListItem } from "@/lib/db/blogQueries";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { buildPagination } from "@/lib/api/apiHelpers";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
-import { queryPublicBlogListItems } from "@/lib/db/blogQueries";
-
-export { visibleBlogsFilter };
-
-export interface PaginationResult {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasMore: boolean;
-}
-
-export interface BlogListItem {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string | null;
-  date: string;
-  type: "project" | "blog";
-  slug: string | null;
-  readTimeMinutes: number;
-}
+import type { BlogListItem } from "@/lib/types/blogList";
+import type { PaginationResult } from "@/lib/types/pagination";
 
 export interface BlogsResult {
   data: BlogListItem[];
@@ -42,52 +27,52 @@ export async function findBlogBySlug(
     ? and(eq(blogs.slug, slug), filter)
     : eq(blogs.slug, slug);
 
-  const [project] = await db.select().from(blogs).where(whereClause);
-  if (project) return project;
+  const [match] = await db.select().from(blogs).where(whereClause);
+  if (match) return match;
 
   const allSlugs = await db
     .select({ id: blogs.id, title: blogs.title, slug: blogs.slug })
     .from(blogs)
     .where(filter);
 
-  const match = allSlugs.find(
-    (p) => createUrlSlug(p.title) === slug || p.slug === slug,
+  const fallback = allSlugs.find(
+    (row) => createUrlSlug(row.title) === slug || row.slug === slug,
   );
 
-  if (match) {
-    const [fullProject] = await db
+  if (fallback) {
+    const [fullRow] = await db
       .select()
       .from(blogs)
-      .where(eq(blogs.id, match.id));
-    return fullProject ?? null;
+      .where(eq(blogs.id, fallback.id));
+    return fullRow ?? null;
   }
 
   return null;
 }
 
 export const getFeaturedProjects = unstable_cache(
-  async (): Promise<Blog[]> => {
+  async (): Promise<BlogListItem[]> => {
     try {
-      const projects = await db
+      const rows = await db
         .select()
         .from(blogs)
         .where(visibleBlogsFilter())
         .orderBy(desc(blogs.date))
-        .limit(3);
-      return projects;
+        .limit(FEATURED_POST_COUNT);
+      return rows.map(toBlogListItem);
     } catch (error) {
       console.error("Failed to fetch featured posts", error);
       return [];
     }
   },
   ["featured-projects"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["projects", "blogs"] },
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.blogs] },
 );
 
 export const getBlogs = unstable_cache(
   async (
     page: number = 1,
-    limit: number = 9,
+    limit: number = PUBLIC_LIST_PAGE_SIZE,
     type?: "blog" | "project" | "all",
   ): Promise<BlogsResult> => {
     try {
@@ -101,16 +86,16 @@ export const getBlogs = unstable_cache(
       console.error("Failed to fetch blogs", error);
       return {
         data: [],
-        pagination: {
-          total: 0,
-          page: 1,
-          limit,
-          totalPages: 0,
-          hasMore: false,
-        },
+        pagination: buildPagination(0, page, limit),
       };
     }
   },
   ["blogs-list"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["blogs", "projects"] },
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.blogs] },
+);
+
+export const getPublishedBlogBySlug = unstable_cache(
+  (slug: string) => findBlogBySlug(slug, visibleBlogsFilter()),
+  ["blog-by-slug"],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.blogs] },
 );

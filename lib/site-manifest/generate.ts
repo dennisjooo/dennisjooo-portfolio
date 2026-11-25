@@ -1,5 +1,6 @@
 import packageJson from "@/package.json";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/constants/site";
+import { defaultContactLinks } from "@/lib/content/defaultContactLinks";
 import { resolveAboutContent } from "@/lib/content/aboutContent";
 import { skillCategories } from "@/lib/content/skillContent";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
@@ -177,10 +178,10 @@ function formatContact(data: SiteManifestData): string {
           (contact) => `- **${contact.label}:** ${contact.href}`,
         )
       : [
-          "- **Portfolio:** https://dennisjooo.vercel.app",
-          "- **Email:** mailto:dennisjonathan78@gmail.com",
-          "- **GitHub:** https://github.com/dennisjooo",
-          "- **LinkedIn:** https://linkedin.com/in/dennisjooo",
+          `- **Portfolio:** ${SITE_URL}`,
+          ...defaultContactLinks.map(
+            (contact) => `- **${contact.ariaLabel}:** ${contact.href}`,
+          ),
         ];
 
   return `## Contact

@@ -12,6 +12,7 @@ import {
   parseAboutSections,
   type AboutContent,
 } from "@/lib/content/aboutContent";
+import { DEFAULT_PROFILE_IMAGE } from "@/lib/constants/site";
 
 function hasAboutSections(
   sections: AboutContent | null | undefined,
@@ -27,7 +28,7 @@ export async function GET() {
       const [newConfig] = await db
         .insert(siteConfig)
         .values({
-          profileImageUrl: "/images/profile.webp",
+          profileImageUrl: DEFAULT_PROFILE_IMAGE,
           aboutSections: defaultAboutContent,
         })
         .returning();
@@ -100,7 +101,7 @@ export async function PUT(request: Request) {
         .insert(siteConfig)
         .values({
           profileImageUrl:
-            parsed.value.profileImageUrl ?? "/images/profile.webp",
+            parsed.value.profileImageUrl ?? DEFAULT_PROFILE_IMAGE,
           aboutSections: parsed.value.aboutSections ?? defaultAboutContent,
         })
         .returning();

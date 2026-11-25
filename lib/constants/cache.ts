@@ -6,6 +6,16 @@ export const CACHE_CONFIG = {
   REVALIDATE: 60,
 } as const;
 
+export const CACHE_TAGS = {
+  blogs: "blogs",
+  siteConfig: "site-config",
+  workExperience: "work-experience",
+  contacts: "contacts",
+  certifications: "certifications",
+} as const;
+
+export const ALL_CONTENT_CACHE_TAGS = Object.values(CACHE_TAGS);
+
 export const CACHE_CONTROL_HEADER = `public, s-maxage=${CACHE_CONFIG.MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.STALE_WHILE_REVALIDATE}`;
 
 export function withCacheHeaders<T>(

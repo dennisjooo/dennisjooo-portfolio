@@ -2,7 +2,7 @@
 
 import WorkExperienceForm from "@/components/admin/forms/WorkExperienceForm";
 import { createAdminEditPage } from "@/components/admin/factories";
-import type { WorkExperience } from "@/lib/db";
+import type { WorkExperience } from "@/lib/db/schema";
 
 export default createAdminEditPage<WorkExperience>({
   endpoint: "/api/work-experience",

@@ -1,6 +1,6 @@
 import { Column } from "@/components/admin/layout/AdminTable";
 import { BLOG_STATUS_STYLES } from "@/lib/constants/blogStatus";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { createActionsColumn } from "./createActionsColumn";
 import { createTimestampColumn } from "./createTimestampColumn";
 

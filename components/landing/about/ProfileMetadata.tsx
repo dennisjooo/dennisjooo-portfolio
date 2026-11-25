@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants/site";
 
 interface ProfileMetadataProps {
   className?: string;
@@ -15,10 +16,10 @@ export function ProfileMetadata({
       style={{ animationDelay: "0.6s" }}
     >
       <p className={cn("font-serif text-foreground", nameClassName)}>
-        Dennis Jonathan
+        {SITE_NAME}
       </p>
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        Okay Developer & Human Being
+        {SITE_TAGLINE}
       </p>
     </div>
   );

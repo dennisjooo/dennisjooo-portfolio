@@ -1,5 +1,6 @@
 import { asc, desc } from "drizzle-orm";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
+import * as schema from "@/lib/db/schema";
 import {
   blogs,
   certifications,
@@ -11,7 +12,7 @@ import {
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
 import type { SiteManifestData } from "./types";
 
-type Db = NeonHttpDatabase<Record<string, never>>;
+type SiteDb = NeonHttpDatabase<typeof schema>;
 
 function partitionVisibleBlogs(
   allBlogs: Blog[],
@@ -21,7 +22,7 @@ function partitionVisibleBlogs(
   return { projects, blogPosts };
 }
 
-export async function fetchSiteData(db: Db): Promise<SiteManifestData> {
+export async function fetchSiteData(db: SiteDb): Promise<SiteManifestData> {
   const [configRows, workRows, visibleBlogs, certificationRows, contactRows] =
     await Promise.all([
       db.select().from(siteConfig).limit(1),

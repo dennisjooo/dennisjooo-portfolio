@@ -2,7 +2,7 @@
 
 import { m } from "@/components/motion";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import type { Certification } from "@/lib/db";
+import type { Certification } from "@/lib/db/schema";
 
 interface CertificationCardProps {
   certification: Certification;

@@ -1,21 +1,21 @@
 "use client";
 
 import { CertificationCard } from "./CertificationCard";
-import type { Certification } from "@/lib/db";
+import type { Certification } from "@/lib/db/schema";
 import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { PaginatedList } from "@/components/shared";
 import { CertificationsListSkeleton } from "./skeletons";
 
-const PAGE_SIZE = 9;
+import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 
 export default function CertificationsList() {
   const paginatedList = usePaginatedList<Certification>({
     endpoint: "/api/certifications",
-    pageSize: PAGE_SIZE,
+    pageSize: PUBLIC_LIST_PAGE_SIZE,
   });
 
   if (paginatedList.loading) {
-    return <CertificationsListSkeleton count={PAGE_SIZE} />;
+    return <CertificationsListSkeleton count={PUBLIC_LIST_PAGE_SIZE} />;
   }
 
   return (

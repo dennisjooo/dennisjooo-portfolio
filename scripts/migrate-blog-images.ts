@@ -19,8 +19,8 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { eq } from "drizzle-orm";
 import * as dotenv from "dotenv";
 import { blogs } from "../lib/db/schema";
+import { extractBlobUrls } from "../lib/utils/blobUrls";
 import {
-  extractBlobUrls,
   extractBlobFilename,
   isUnderSlug,
   migrateAllBlogImages,

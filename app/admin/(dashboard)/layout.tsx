@@ -12,7 +12,6 @@ export default async function AdminDashboardLayout({
 }) {
   const { userId } = await auth();
 
-  // Redirect to login if not authenticated
   if (!userId) {
     redirect("/admin/login");
   }

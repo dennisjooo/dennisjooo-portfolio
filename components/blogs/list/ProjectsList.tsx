@@ -4,11 +4,12 @@ import { ContentCard, PaginatedList } from "@/components/shared";
 import { InlineSpinner } from "@/components/shared/feedback/InlineSpinner";
 import { FeaturedCard } from "./FeaturedCard";
 import { BlogsListSkeleton } from "./skeletons";
-import type { BlogListItem, PaginationResult } from "@/lib/data/blogs";
+import type { BlogListItem } from "@/lib/types/blogList";
+import type { PaginationResult } from "@/lib/types/pagination";
 import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { useMemo } from "react";
 
-const PAGE_SIZE = 9;
+import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 
 interface ProjectsListProps {
   type?: "project" | "blog" | "all";
@@ -35,7 +36,7 @@ export default function ProjectsList({
 
   const paginatedList = usePaginatedList<BlogListItem>({
     endpoint: "/api/blogs",
-    pageSize: PAGE_SIZE,
+    pageSize: PUBLIC_LIST_PAGE_SIZE,
     initialData,
     initialPagination,
     queryParams,
@@ -53,7 +54,7 @@ export default function ProjectsList({
   const [featuredItem, ...gridItems] = paginatedList.items;
 
   if (paginatedList.loading) {
-    return <BlogsListSkeleton gridCount={PAGE_SIZE - 1} />;
+    return <BlogsListSkeleton gridCount={PUBLIC_LIST_PAGE_SIZE - 1} />;
   }
 
   return (

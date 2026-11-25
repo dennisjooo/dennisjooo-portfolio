@@ -8,7 +8,7 @@ import {
   contacts,
   type SiteConfig,
 } from "@/lib/db";
-import { CACHE_CONFIG } from "@/lib/constants/cache";
+import { CACHE_CONFIG, CACHE_TAGS } from "@/lib/constants/cache";
 import type { TimelineItemData } from "@/lib/types/workExperience";
 import type { ContactLinkData } from "@/lib/types/contacts";
 import {
@@ -26,8 +26,8 @@ export const getSiteConfig = unstable_cache(
       return null;
     }
   },
-  ["site-config"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["site-config"] },
+  [CACHE_TAGS.siteConfig],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.siteConfig] },
 );
 
 export const getWorkExperience = unstable_cache(
@@ -48,8 +48,8 @@ export const getWorkExperience = unstable_cache(
       return [];
     }
   },
-  ["work-experience"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["work-experience"] },
+  [CACHE_TAGS.workExperience],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.workExperience] },
 );
 
 export const getContacts = unstable_cache(
@@ -70,8 +70,8 @@ export const getContacts = unstable_cache(
       return [];
     }
   },
-  ["contacts"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["contacts"] },
+  [CACHE_TAGS.contacts],
+  { revalidate: CACHE_CONFIG.REVALIDATE, tags: [CACHE_TAGS.contacts] },
 );
 
 export function buildAboutContent(config: SiteConfig | null): AboutContent {

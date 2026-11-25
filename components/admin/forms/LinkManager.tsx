@@ -2,7 +2,10 @@ import { useState } from "react";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { LinkInputRow } from "./LinkInputRow";
 import { LinkListItem } from "./LinkListItem";
-import { useLinkReorder } from "./useLinkReorder";
+import {
+  moveItem,
+  useDragReorder,
+} from "@/components/admin/hooks/useDragReorder";
 
 interface Link {
   text: string;
@@ -30,9 +33,15 @@ export function LinkManager({
     dragOverIndex,
     handleDragStart,
     handleDragOver,
-    handleDrop,
     handleDragEnd,
-  } = useLinkReorder(links, onReorder);
+    finishDrop,
+  } = useDragReorder("[data-link-row]");
+
+  const handleDrop = (index: number) => {
+    const moved = finishDrop(index);
+    if (!moved) return;
+    onReorder(moveItem(links, moved.from, moved.to));
+  };
 
   const addLink = () => {
     if (linkInput.text && linkInput.url) {

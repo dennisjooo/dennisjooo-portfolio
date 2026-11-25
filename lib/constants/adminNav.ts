@@ -16,6 +16,11 @@ export type AdminNavItem = {
   dashboardTitle?: string;
   description?: string;
   stat?: string;
+  create?: {
+    href: string;
+    label: string;
+  };
+  countApi?: string;
 };
 
 export type AdminNavGroup = {
@@ -38,6 +43,8 @@ export const adminNavGroups: AdminNavGroup[] = [
         dashboardTitle: "Editorial Content",
         description: "Posts, projects, and long-form writing.",
         stat: "Manage Posts",
+        countApi: "/api/blogs",
+        create: { href: "/admin/blogs/new", label: "New Post" },
       },
       {
         name: "Work Experience",
@@ -45,6 +52,11 @@ export const adminNavGroups: AdminNavGroup[] = [
         icon: BriefcaseIcon,
         description: "Career timeline and professional roles.",
         stat: "View All",
+        countApi: "/api/work-experience",
+        create: {
+          href: "/admin/work-experience/new",
+          label: "New Experience",
+        },
       },
       {
         name: "Certifications",
@@ -52,6 +64,11 @@ export const adminNavGroups: AdminNavGroup[] = [
         icon: AcademicCapIcon,
         description: "Licenses, credentials, and achievements.",
         stat: "View All",
+        countApi: "/api/certifications",
+        create: {
+          href: "/admin/certifications/new",
+          label: "New Certification",
+        },
       },
     ],
   },
@@ -64,6 +81,8 @@ export const adminNavGroups: AdminNavGroup[] = [
         icon: LinkIcon,
         description: "Social links and contact channels.",
         stat: "View All",
+        countApi: "/api/contacts",
+        create: { href: "/admin/contacts/new", label: "New Contact" },
       },
       {
         name: "About",
@@ -86,13 +105,23 @@ export const adminNavGroups: AdminNavGroup[] = [
 
 export function formatMobileNavGroupLabel(label: string | null): string | null {
   if (!label) return null;
-  if (label === "Content") return "01 — Content";
-  if (label === "Settings") return "02 — Settings";
-  return label;
+  const labeled = adminNavGroups.filter((group) => group.label);
+  const index = labeled.findIndex((group) => group.label === label);
+  if (index === -1) return label;
+  return `${String(index + 1).padStart(2, "0")} — ${label}`;
 }
 
-export const adminDashboardCards = adminNavGroups
-  .flatMap((group) => group.items)
+export const adminNavItems = adminNavGroups.flatMap((group) => group.items);
+
+export const adminCreateActions = adminNavItems.flatMap((item) =>
+  item.create ? [{ ...item.create, icon: item.icon }] : [],
+);
+
+export const adminCountEndpoints = adminNavItems.flatMap((item) =>
+  item.countApi ? [{ key: item.href, url: `${item.countApi}?limit=1` }] : [],
+);
+
+export const adminDashboardCards = adminNavItems
   .filter((item) => item.href !== "/admin")
   .map((item) => ({
     title: item.dashboardTitle ?? item.name,

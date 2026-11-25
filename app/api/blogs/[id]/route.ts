@@ -10,10 +10,8 @@ import {
   NO_STORE_HEADERS,
   errorResponse,
 } from "@/lib/api/apiHelpers";
-import {
-  validateAndPrepareBlogBody,
-  collectBlobUrls,
-} from "@/lib/api/blogHelpers";
+import { validateAndPrepareBlogBody } from "@/lib/api/blogHelpers";
+import { extractBlobUrls } from "@/lib/utils/blobUrls";
 
 export async function GET(
   request: Request,
@@ -149,7 +147,7 @@ export async function DELETE(
       return errorResponse("Blog not found", 404);
     }
 
-    const imagesToDelete = collectBlobUrls(blog.imageUrl, blog.blogPost);
+    const imagesToDelete = extractBlobUrls(blog.imageUrl, blog.blogPost);
 
     await db.delete(blogs).where(eq(blogs.id, id));
 

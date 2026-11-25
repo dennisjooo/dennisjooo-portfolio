@@ -6,4 +6,5 @@ export const { GET, POST } = createListRouteHandler({
   table: contacts,
   entityName: "contact",
   orderBy: [asc(contacts.order), desc(contacts.createdAt)],
+  paginate: false,
 });

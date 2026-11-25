@@ -51,7 +51,6 @@ export async function GET(request: Request) {
 
     const sortOrderParam = searchParams.get("sortOrder");
     const { rows, total } = await queryBlogList({
-      page,
       limit,
       offset,
       type,

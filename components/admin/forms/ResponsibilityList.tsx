@@ -5,7 +5,7 @@ import { formStyles } from "@/components/admin/shared/formStyles";
 import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea";
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { cn } from "@/lib/utils";
-import { useResponsibilityReorder } from "./useResponsibilityReorder";
+import { useDragReorder } from "@/components/admin/hooks/useDragReorder";
 
 interface ResponsibilityListProps {
   responsibilities: string[];
@@ -27,9 +27,15 @@ export function ResponsibilityList({
     dragOverIndex,
     handleDragStart,
     handleDragOver,
-    handleDrop,
     handleDragEnd,
-  } = useResponsibilityReorder(onReorder);
+    finishDrop,
+  } = useDragReorder("[data-responsibility-row]");
+
+  const handleDrop = (index: number) => {
+    const moved = finishDrop(index);
+    if (!moved) return;
+    onReorder(moved.from, moved.to);
+  };
 
   return (
     <div>

@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 import { asc, desc } from "drizzle-orm";
 import { db, blogs, workExperiences } from "@/lib/db";
 import { withCacheHeaders } from "@/lib/constants/cache";
-import { visibleBlogsFilter } from "@/lib/data/blogs";
+import { visibleBlogsFilter } from "@/lib/db/blogFilters";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
-
-const SEARCH_BODY_LIMIT = 1200;
+import { SEARCH_BODY_LIMIT } from "@/lib/command-palette/searchLimits";
 
 export async function GET() {
   try {

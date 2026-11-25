@@ -11,13 +11,13 @@ import {
   type SQL,
 } from "drizzle-orm";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
+import { PREVIEW_SLUG_SUFFIX } from "@/lib/db/blogPreview";
 import { calculateReadTime } from "@/lib/utils/projectFormatting";
+import type { BlogListItem } from "@/lib/types/blogList";
 
-export type BlogListVisibility =
-  "public" | "admin-all" | "admin-status" | "custom";
+export type BlogListVisibility = "public" | "admin-all" | "admin-status";
 
 export interface BlogListQueryParams {
-  page: number;
   limit: number;
   offset: number;
   type?: "blog" | "project" | "all" | null;
@@ -29,27 +29,16 @@ export interface BlogListQueryParams {
   isAuthenticated?: boolean;
 }
 
-export const blogListSelect = {
-  id: blogs.id,
-  title: blogs.title,
-  description: blogs.description,
-  imageUrl: blogs.imageUrl,
-  date: blogs.date,
-  type: blogs.type,
-  slug: blogs.slug,
-  blogPost: blogs.blogPost,
-};
-
 export function toBlogListItem(row: {
   id: string;
   title: string;
   description: string;
   imageUrl: string | null;
   date: string;
-  type: "project" | "blog";
+  type: BlogListItem["type"];
   slug: string | null;
   blogPost: string;
-}) {
+}): BlogListItem {
   const { blogPost, ...rest } = row;
   return {
     ...rest,
@@ -67,7 +56,7 @@ export function buildBlogWhereClause({
   BlogListQueryParams,
   "type" | "status" | "searchQuery" | "visibility" | "isAuthenticated"
 >): SQL | undefined {
-  const conditions: SQL[] = [not(like(blogs.slug, "%-preview"))];
+  const conditions: SQL[] = [not(like(blogs.slug, `%${PREVIEW_SLUG_SUFFIX}`))];
 
   const effectiveType = type === "all" ? null : type;
   if (effectiveType) {
@@ -136,22 +125,26 @@ export async function queryPublicBlogListItems(
   limit: number,
   type?: "blog" | "project" | "all",
 ) {
-  const offset = (page - 1) * limit;
-  const whereClause = buildBlogWhereClause({ type, visibility: "public" });
-
-  const baseQuery = db.select(blogListSelect).from(blogs).where(whereClause!);
-  const countQuery = db
-    .select({ count: count() })
-    .from(blogs)
-    .where(whereClause!);
-
-  const [rows, totalResult] = await Promise.all([
-    baseQuery.orderBy(desc(blogs.date)).offset(offset).limit(limit),
-    countQuery,
-  ]);
+  const { rows, total } = await queryBlogList({
+    limit,
+    offset: (page - 1) * limit,
+    type,
+    visibility: "public",
+  });
 
   return {
-    rows: rows.map(toBlogListItem),
-    total: totalResult[0]?.count ?? 0,
+    rows: rows.map((row) =>
+      toBlogListItem({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        imageUrl: row.imageUrl,
+        date: row.date,
+        type: row.type,
+        slug: row.slug,
+        blogPost: row.blogPost,
+      }),
+    ),
+    total,
   };
 }

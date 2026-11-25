@@ -2,6 +2,7 @@ import { put, del } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { requireAuth, isAuthError, errorResponse } from "@/lib/api/apiHelpers";
+import { PROFILE_IMAGE_FILENAME } from "@/lib/constants/site";
 
 export async function POST(request: Request) {
   const authResult = await requireAuth();
@@ -32,8 +33,8 @@ export async function POST(request: Request) {
       .toBuffer();
 
     let webpFilename;
-    if (originalFilename === "profile.webp") {
-      webpFilename = "profile.webp";
+    if (originalFilename === PROFILE_IMAGE_FILENAME) {
+      webpFilename = PROFILE_IMAGE_FILENAME;
     } else if (normalizedHash) {
       const baseName = originalFilename.replace(/\.[^.]+$/, "");
       webpFilename = `${baseName}-${normalizedHash}.webp`;
@@ -47,7 +48,8 @@ export async function POST(request: Request) {
 
     const blob = await put(pathname, optimizedBuffer, {
       access: "public",
-      addRandomSuffix: webpFilename !== "profile.webp" && !normalizedHash,
+      addRandomSuffix:
+        webpFilename !== PROFILE_IMAGE_FILENAME && !normalizedHash,
     });
 
     return NextResponse.json(blob);

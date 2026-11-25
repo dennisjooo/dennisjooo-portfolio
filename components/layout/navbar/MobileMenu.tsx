@@ -12,12 +12,10 @@ interface MobileMenuProps {
   textColorClass: string;
 }
 
-// Style constants
 const ITEM_BASE_CLASSES =
   "block w-full rounded-2xl px-5 py-3 text-xs uppercase tracking-widest font-bold transition-colors duration-200 ease-in-out text-center";
 const HOVER_CLASSES = "hover:bg-black/5 dark:hover:bg-white/10";
 
-// Animation constants
 const ITEM_ANIMATION_BASE =
   "transition-[opacity,transform] duration-200 ease-out will-change-transform";
 

@@ -1,13 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
+import { DEFAULT_PROFILE_IMAGE } from "@/lib/constants/site";
 
 interface ProfileImageProps {
   imageUrl?: string;
 }
 
 export const ProfileImage: React.FC<ProfileImageProps> = ({
-  imageUrl = "/images/profile.webp",
+  imageUrl = DEFAULT_PROFILE_IMAGE,
 }) => (
   <div
     className="animate-fade-in aspect-square w-full max-w-[300px] flex-shrink-0"

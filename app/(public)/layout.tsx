@@ -7,9 +7,12 @@ import { ReactNode } from "react";
 import { getContacts } from "@/lib/data/site";
 import { resolveContactLinks } from "@/lib/content/defaultContactLinks";
 
-const Navbar = dynamic(() => import("@/components/layout/navbar/Navbar"), {
-  ssr: true,
-});
+const Navbar = dynamic(
+  () => import("@/components/layout/navbar/NavbarClient"),
+  {
+    ssr: true,
+  },
+);
 
 const Footer = dynamic(() => import("@/components/layout/Footer"));
 const CommandPalette = dynamic(() =>

@@ -3,10 +3,8 @@ import { notFound } from "next/navigation";
 import { BackToTop } from "@/components/shared";
 import ProjectPageClient from "@/components/blogs/article/ProjectPageClient";
 import ProjectContent from "@/components/blogs/article/ProjectContent";
-import { unstable_cache } from "next/cache";
-import { CACHE_CONFIG } from "@/lib/constants/cache";
 import { extractHeadings } from "@/lib/utils/markdownHelpers";
-import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
+import { findBlogBySlug, getPublishedBlogBySlug } from "@/lib/data/blogs";
 import { auth } from "@clerk/nextjs/server";
 import { PreviewBanner } from "@/components/blogs/article/PreviewBanner";
 import { SITE_URL, SITE_NAME } from "@/lib/constants/site";
@@ -16,12 +14,7 @@ type ProjectPageProps = {
   searchParams: Promise<{ preview?: string }>;
 };
 
-const getProject = unstable_cache(
-  (slug: string) => findBlogBySlug(slug, visibleBlogsFilter()),
-  ["blog-by-slug"],
-  { revalidate: CACHE_CONFIG.REVALIDATE, tags: ["blogs"] },
-);
-
+const getProject = getPublishedBlogBySlug;
 const getProjectForPreview = (slug: string) => findBlogBySlug(slug);
 
 export async function generateMetadata({

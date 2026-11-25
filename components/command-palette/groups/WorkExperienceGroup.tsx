@@ -3,13 +3,9 @@
 import { Briefcase } from "lucide-react";
 import { SearchResultGroup } from "./SearchResultGroup";
 import {
-  type ProcessedWorkExperience,
+  type FilteredWorkExperience,
   type SearchOptions,
 } from "@/lib/command-palette/utils";
-
-interface FilteredWorkExperience extends ProcessedWorkExperience {
-  context: string | null;
-}
 
 interface WorkExperienceGroupProps {
   workExperience: FilteredWorkExperience[];

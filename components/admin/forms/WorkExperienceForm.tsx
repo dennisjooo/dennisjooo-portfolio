@@ -1,6 +1,6 @@
 "use client";
 
-import type { WorkExperience } from "@/lib/db";
+import type { WorkExperience } from "@/lib/db/schema";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormActions } from "@/components/admin/shared/FormActions";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";

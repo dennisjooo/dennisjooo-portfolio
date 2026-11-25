@@ -8,6 +8,7 @@ import {
   errorResponse,
 } from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
+import { isPreviewSlug } from "@/lib/db/blogPreview";
 
 export async function POST(request: Request) {
   const authResult = await requireAuth();
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     const text = await request.text();
     const { slug } = JSON.parse(text);
 
-    if (!slug || !slug.endsWith("-preview")) {
+    if (!slug || !isPreviewSlug(slug)) {
       return errorResponse("Invalid preview slug");
     }
 

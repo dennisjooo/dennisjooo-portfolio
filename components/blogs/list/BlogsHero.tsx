@@ -1,18 +1,19 @@
 "use client";
 
 import { AnimatePresence, m, useMotionSafe } from "@/components/motion";
+import type { BlogsListTab } from "@/lib/constants/blogsList";
 
 interface BlogsHeroProps {
-  activeTab: "blog" | "certifications";
+  activeTab: BlogsListTab;
   meta?: string;
 }
 
-const tabTitles: Record<"blog" | "certifications", string> = {
+const tabTitles: Record<BlogsListTab, string> = {
   blog: "Blogs",
   certifications: "Certifications",
 };
 
-const tabCaptions: Record<"blog" | "certifications", string> = {
+const tabCaptions: Record<BlogsListTab, string> = {
   blog: "Crappy writing and half-decent projects, in roughly chronological order.",
   certifications: "Stuff that (supposedly) validates my expertise.",
 };

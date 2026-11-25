@@ -1,4 +1,4 @@
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import type { RefObject } from "react";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
 

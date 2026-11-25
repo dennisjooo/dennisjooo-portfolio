@@ -21,8 +21,8 @@ import {
   siteConfig,
 } from "../lib/db/schema";
 import { defaultAboutContent } from "../lib/content/aboutContent";
+import { DEFAULT_PROFILE_IMAGE } from "../lib/constants/site";
 
-// Load environment variables
 dotenv.config({ path: ".env.local" });
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -38,7 +38,6 @@ if (!DATABASE_URL) {
   process.exit(1);
 }
 
-// Initialize Neon connection
 const sql = neon(DATABASE_URL);
 const db = drizzle(sql);
 
@@ -191,7 +190,7 @@ async function migrateSiteConfig(mongoDb: Db) {
 
   try {
     await db.insert(siteConfig).values({
-      profileImageUrl: mongoConfig.profileImageUrl || "/images/profile.webp",
+      profileImageUrl: mongoConfig.profileImageUrl || DEFAULT_PROFILE_IMAGE,
       aboutSections: Array.isArray(mongoConfig.aboutSections)
         ? mongoConfig.aboutSections
         : defaultAboutContent,
@@ -218,7 +217,6 @@ async function main() {
   console.log("MongoDB to Neon PostgreSQL Migration Script");
   console.log("===========================================\n");
 
-  // Connect to MongoDB
   console.log("Connecting to MongoDB...");
   const mongoClient = new MongoClient(MONGODB_URI!);
 
@@ -228,7 +226,6 @@ async function main() {
 
     const mongoDb = mongoClient.db();
 
-    // Run migrations
     await migrateBlogs(mongoDb);
     await migrateContacts(mongoDb);
     await migrateWorkExperiences(mongoDb);

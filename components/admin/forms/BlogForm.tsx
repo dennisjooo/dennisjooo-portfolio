@@ -1,6 +1,6 @@
 "use client";
 
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import { formStyles } from "@/components/admin/shared/formStyles";

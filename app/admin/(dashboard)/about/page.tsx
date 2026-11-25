@@ -14,7 +14,10 @@ import { AutoResizeTextarea } from "@/components/admin/shared/AutoResizeTextarea
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { useFormDirty } from "@/components/admin/hooks";
-import { useAboutSectionReorder } from "@/components/admin/forms/useAboutSectionReorder";
+import {
+  moveItem,
+  useDragReorder,
+} from "@/components/admin/hooks/useDragReorder";
 import { cn } from "@/lib/utils";
 import {
   ABOUT_BODY_SOFT_LIMIT,
@@ -37,9 +40,15 @@ export default function AboutAdminPage() {
     dragOverIndex,
     handleDragStart,
     handleDragOver,
-    handleDrop,
     handleDragEnd,
-  } = useAboutSectionReorder(sections, setSections);
+    finishDrop,
+  } = useDragReorder("[data-about-section-row]");
+
+  const handleDrop = (index: number) => {
+    const moved = finishDrop(index);
+    if (!moved) return;
+    setSections((current) => moveItem(current, moved.from, moved.to));
+  };
 
   useEffect(() => {
     if (!loading && config && !initialized) {

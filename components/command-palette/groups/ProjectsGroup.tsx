@@ -3,13 +3,9 @@
 import { FileText } from "lucide-react";
 import { SearchResultGroup } from "./SearchResultGroup";
 import {
-  type ProcessedProject,
+  type FilteredProject,
   type SearchOptions,
 } from "@/lib/command-palette/utils";
-
-interface FilteredProject extends ProcessedProject {
-  context: string | null;
-}
 
 interface ProjectsGroupProps {
   projects: FilteredProject[];

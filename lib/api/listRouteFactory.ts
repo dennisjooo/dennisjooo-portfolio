@@ -18,9 +18,9 @@ interface ListRouteConfig {
   table: any;
   entityName: string;
   orderBy: SQL | SQL[];
+  sortableColumns?: string[];
   cache?: boolean;
   paginate?: boolean;
-  defaultOrderBy?: SQL[];
   onBeforeInsert?: (
     body: Record<string, unknown>,
   ) => Promise<Record<string, unknown>> | Record<string, unknown>;
@@ -30,9 +30,9 @@ export function createListRouteHandler({
   table,
   entityName,
   orderBy,
+  sortableColumns = [],
   cache = false,
   paginate = true,
-  defaultOrderBy,
   onBeforeInsert,
 }: ListRouteConfig) {
   async function GET(request: Request) {
@@ -54,10 +54,13 @@ export function createListRouteHandler({
       const sortOrderParam =
         searchParams.get("sortOrder") === "asc" ? asc : desc;
 
-      let orderByClause =
-        defaultOrderBy ?? (Array.isArray(orderBy) ? orderBy : [orderBy]);
+      let orderByClause = Array.isArray(orderBy) ? orderBy : [orderBy];
 
-      if (sortByParam && table[sortByParam]) {
+      if (
+        sortByParam &&
+        sortableColumns.includes(sortByParam) &&
+        table[sortByParam]
+      ) {
         orderByClause = [sortOrderParam(table[sortByParam])];
       }
 

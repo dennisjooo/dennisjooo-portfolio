@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Column } from "@/components/admin/layout/AdminTable";
-import type { WorkExperience } from "@/lib/db";
+import type { WorkExperience } from "@/lib/db/schema";
 import { createActionsColumn } from "./createActionsColumn";
 import { createTimestampColumn } from "./createTimestampColumn";
 import { createMonoBadgeColumn } from "./createMonoBadgeColumn";

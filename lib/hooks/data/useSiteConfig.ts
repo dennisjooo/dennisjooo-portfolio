@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import type { SiteConfig } from "@/lib/db";
+import type { SiteConfig } from "@/lib/db/schema";
 
 type SiteConfigData = Omit<SiteConfig, "id" | "createdAt" | "updatedAt">;
 

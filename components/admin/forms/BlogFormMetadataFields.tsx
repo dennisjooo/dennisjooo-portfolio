@@ -1,4 +1,4 @@
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormField } from "@/components/admin/shared/FormField";
 

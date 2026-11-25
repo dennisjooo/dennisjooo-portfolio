@@ -13,6 +13,7 @@ import { writeFileSync } from "fs";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as dotenv from "dotenv";
+import * as schema from "../lib/db/schema";
 import packageJson from "../package.json";
 import { SITE_DESCRIPTION } from "../lib/constants/site";
 import { fetchSiteData } from "../lib/site-manifest/fetchSiteData";
@@ -37,7 +38,7 @@ const SITEMAP_PATH = "public/sitemap.xml";
 
 async function main() {
   const sql = neon(DATABASE_URL);
-  const db = drizzle(sql);
+  const db = drizzle(sql, { schema });
 
   console.log("Fetching site data...");
   const data = await fetchSiteData(db);

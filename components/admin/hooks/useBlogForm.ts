@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { toPreviewSlug } from "@/lib/db/blogPreview";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import { useFormDirty } from "@/components/admin/hooks/useUnsavedChanges";
 import type { EditorMode } from "@/components/admin/editors/MarkdownEditor";
@@ -66,7 +67,7 @@ export function useBlogForm({ initialData, onSubmit }: UseBlogFormOptions) {
 
   useEffect(() => {
     if (!effectiveSlug) return;
-    const previewSlug = `${effectiveSlug}-preview`;
+    const previewSlug = toPreviewSlug(effectiveSlug);
     fetch("/api/blogs/preview", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },

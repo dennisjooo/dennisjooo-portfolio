@@ -5,7 +5,6 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyButton } from "@/components/shared/CopyButton";
 
-// Languages
 import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
 import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
 import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
@@ -17,7 +16,6 @@ import markdown from "react-syntax-highlighter/dist/esm/languages/prism/markdown
 import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
 import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql";
 
-// Register languages
 SyntaxHighlighter.registerLanguage("typescript", typescript);
 SyntaxHighlighter.registerLanguage("javascript", javascript);
 SyntaxHighlighter.registerLanguage("tsx", tsx);

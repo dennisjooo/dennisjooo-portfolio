@@ -14,5 +14,4 @@ if (!DATABASE_URL) {
 const sql = neon(DATABASE_URL);
 export const db = drizzle(sql, { schema });
 
-// Export schema for convenience
 export * from "./schema";

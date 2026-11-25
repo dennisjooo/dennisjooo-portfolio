@@ -1,5 +1,5 @@
 import { Column } from "@/components/admin/layout/AdminTable";
-import type { Certification } from "@/lib/db";
+import type { Certification } from "@/lib/db/schema";
 import { createActionsColumn } from "./createActionsColumn";
 import { createMonoBadgeColumn } from "./createMonoBadgeColumn";
 

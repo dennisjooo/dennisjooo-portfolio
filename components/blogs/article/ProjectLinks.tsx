@@ -17,7 +17,6 @@ interface ProjectLinksProps {
 export default function ProjectLinks({ links }: ProjectLinksProps) {
   return (
     <div>
-      {/* Section Header */}
       <div className="mb-6 flex items-center gap-4">
         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Resources & Stuffs
@@ -25,7 +24,6 @@ export default function ProjectLinks({ links }: ProjectLinksProps) {
         <div className="h-px flex-1 bg-border" />
       </div>
 
-      {/* Links Grid */}
       <nav className="flex flex-wrap gap-4">
         {links.map((link, index) => (
           <ProjectLink key={index} index={index} {...link} />

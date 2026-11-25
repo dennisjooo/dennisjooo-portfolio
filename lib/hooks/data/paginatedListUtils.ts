@@ -1,4 +1,4 @@
-import type { PaginationResult } from "@/lib/data/blogs";
+import type { PaginationResult } from "@/lib/types/pagination";
 
 export interface PaginationState {
   page: number;

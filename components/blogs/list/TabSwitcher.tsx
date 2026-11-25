@@ -3,15 +3,15 @@
 import { m } from "@/components/motion";
 import React from "react";
 
-export type TabType = "blog" | "certifications";
+import { type BlogsListTab } from "@/lib/constants/blogsList";
 
 interface TabSwitcherProps {
-  activeTab: TabType;
-  onTabChange: (tab: TabType) => void;
-  tabs: TabType[];
+  activeTab: BlogsListTab;
+  onTabChange: (tab: BlogsListTab) => void;
+  tabs: BlogsListTab[];
 }
 
-const tabLabels: Record<TabType, string> = {
+const tabLabels: Record<BlogsListTab, string> = {
   blog: "Blogs",
   certifications: "Certifications",
 };
@@ -31,12 +31,10 @@ export default function TabSwitcher({
           transition={{ duration: 0.15 }}
           className="group relative"
         >
-          {/* Index Number */}
           <span className="mb-1 block font-mono text-xs uppercase tracking-wider text-muted-foreground">
             0{index + 1}.
           </span>
 
-          {/* Tab Label */}
           <span
             className={`font-mono text-sm uppercase tracking-widest transition-colors duration-300 md:text-base ${
               activeTab === tab
@@ -47,7 +45,6 @@ export default function TabSwitcher({
             {tabLabels[tab]}
           </span>
 
-          {/* Active Indicator */}
           {activeTab === tab && (
             <m.div
               layoutId="tab-indicator"

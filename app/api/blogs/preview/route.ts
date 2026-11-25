@@ -8,6 +8,8 @@ import {
   errorResponse,
 } from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
+import { isPreviewSlug, toPreviewSlug } from "@/lib/db/blogPreview";
+import { createUrlSlug } from "@/lib/utils/urlHelpers";
 
 export async function POST(request: Request) {
   const authResult = await requireAuth();
@@ -20,13 +22,8 @@ export async function POST(request: Request) {
       return errorResponse("Title is required for preview");
     }
 
-    const baseSlug =
-      body.slug ||
-      body.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-    const previewSlug = `${baseSlug}-preview`;
+    const baseSlug = body.slug || createUrlSlug(body.title);
+    const previewSlug = toPreviewSlug(baseSlug);
 
     const [existing] = await db
       .select({ id: blogs.id })
@@ -67,7 +64,7 @@ export async function DELETE(request: Request) {
   try {
     const { slug } = await request.json();
 
-    if (!slug || !slug.endsWith("-preview")) {
+    if (!slug || !isPreviewSlug(slug)) {
       return errorResponse("Invalid preview slug");
     }
 

@@ -4,7 +4,7 @@ import { createAdminListPage } from "@/components/admin/factories";
 import { createBlogColumns } from "@/components/admin/columns";
 import { BlogBulkActions } from "@/components/admin/BlogBulkActions";
 import { BlogListToolbar } from "@/components/admin/BlogListToolbar";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import {
   bulkDeleteDialogDescription,
   deleteDialogDescription,

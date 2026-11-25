@@ -1,4 +1,5 @@
 import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { SEARCH_BODY_LIMIT } from "@/lib/command-palette/searchLimits";
 import {
   Undo2,
   User,
@@ -32,13 +33,21 @@ export interface ProcessedWorkExperience {
   context?: string | null;
 }
 
+export interface FilteredProject extends ProcessedProject {
+  context: string | null;
+}
+
+export interface FilteredWorkExperience extends ProcessedWorkExperience {
+  context: string | null;
+}
+
 export let processedProjects: ProcessedProject[] = [];
 
 export function setProcessedProjects(projects: ProcessedProject[]) {
   processedProjects = projects.map((project) => {
     const slug = project.slug || createUrlSlug(project.title);
     const path = `/blogs/${slug}`;
-    const bodySnippet = (project.blogPost || "").slice(0, 1200);
+    const bodySnippet = (project.blogPost || "").slice(0, SEARCH_BODY_LIMIT);
     const rawContent = `${project.title} ${project.description} ${bodySnippet}`;
 
     return {

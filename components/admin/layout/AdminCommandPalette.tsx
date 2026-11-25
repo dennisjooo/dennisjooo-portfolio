@@ -12,49 +12,10 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import {
-  HomeIcon,
-  DocumentTextIcon,
-  AcademicCapIcon,
-  UserCircleIcon,
-  BriefcaseIcon,
-  IdentificationIcon,
-  LinkIcon,
   PlusIcon,
   ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
-
-const navItems = [
-  { name: "Dashboard", href: "/admin", icon: HomeIcon },
-  { name: "Blogs & Projects", href: "/admin/blogs", icon: DocumentTextIcon },
-  {
-    name: "Work Experience",
-    href: "/admin/work-experience",
-    icon: BriefcaseIcon,
-  },
-  {
-    name: "Certifications",
-    href: "/admin/certifications",
-    icon: AcademicCapIcon,
-  },
-  { name: "Contacts", href: "/admin/contacts", icon: LinkIcon },
-  { name: "About", href: "/admin/about", icon: IdentificationIcon },
-  { name: "Profile", href: "/admin/profile", icon: UserCircleIcon },
-];
-
-const quickActions = [
-  { name: "New Blog Post", href: "/admin/blogs/new", icon: PlusIcon },
-  { name: "New Contact", href: "/admin/contacts/new", icon: PlusIcon },
-  {
-    name: "New Work Experience",
-    href: "/admin/work-experience/new",
-    icon: PlusIcon,
-  },
-  {
-    name: "New Certification",
-    href: "/admin/certifications/new",
-    icon: PlusIcon,
-  },
-];
+import { adminCreateActions, adminNavItems } from "@/lib/constants/adminNav";
 
 export function AdminCommandPalette() {
   const [open, setOpen] = useState(false);
@@ -82,7 +43,7 @@ export function AdminCommandPalette() {
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Navigation">
-          {navItems.map((item) => (
+          {adminNavItems.map((item) => (
             <CommandItem
               key={item.href}
               onSelect={() => runCommand(() => router.push(item.href))}
@@ -94,13 +55,13 @@ export function AdminCommandPalette() {
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Quick Actions">
-          {quickActions.map((item) => (
+          {adminCreateActions.map((item) => (
             <CommandItem
               key={item.href}
               onSelect={() => runCommand(() => router.push(item.href))}
             >
-              <item.icon className="h-4 w-4" />
-              <span>{item.name}</span>
+              <PlusIcon className="h-4 w-4" />
+              <span>{item.label}</span>
             </CommandItem>
           ))}
         </CommandGroup>

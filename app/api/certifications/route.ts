@@ -6,5 +6,6 @@ export const { GET, POST } = createListRouteHandler({
   table: certifications,
   entityName: "certification",
   orderBy: desc(certifications.date),
+  sortableColumns: ["title", "issuer", "date"],
   cache: true,
 });

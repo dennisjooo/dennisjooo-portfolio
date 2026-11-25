@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { findBlogBySlug, visibleBlogsFilter } from "@/lib/data/blogs";
+import { getPublishedBlogBySlug } from "@/lib/data/blogs";
 import { getSiteHostname, SITE_NAME } from "@/lib/constants/site";
 import { loadOgFonts } from "@/lib/og/serifFont";
 import {
@@ -20,7 +20,7 @@ export default async function OgImage({
 }) {
   const fonts = await loadOgFonts();
   const { slug } = await params;
-  const blog = await findBlogBySlug(slug, visibleBlogsFilter());
+  const blog = await getPublishedBlogBySlug(slug);
 
   if (!blog) {
     return new ImageResponse(

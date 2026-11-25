@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { toast } from "sonner";
 import {
   type PendingImage,

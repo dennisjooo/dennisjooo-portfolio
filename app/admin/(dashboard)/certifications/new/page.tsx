@@ -2,7 +2,7 @@
 
 import CertificationForm from "@/components/admin/forms/CertificationForm";
 import { createAdminNewPage } from "@/components/admin/factories";
-import type { Certification } from "@/lib/db";
+import type { Certification } from "@/lib/db/schema";
 
 export default createAdminNewPage<Certification>({
   endpoint: "/api/certifications",

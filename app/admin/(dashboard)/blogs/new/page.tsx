@@ -2,7 +2,7 @@
 
 import { BlogForm } from "@/components/admin/forms/BlogForm";
 import { createAdminNewPage } from "@/components/admin/factories";
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 
 export default createAdminNewPage<Blog>({
   endpoint: "/api/blogs",

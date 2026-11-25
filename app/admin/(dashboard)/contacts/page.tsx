@@ -6,8 +6,8 @@ import { deleteDialogDescription } from "@/components/admin/shared/deleteDialogD
 
 export default createAdminListPage({
   endpoint: "/api/contacts",
-  pageSize: 10,
   enableReorder: true,
+  disablePagination: true,
   reorderEndpoint: "/api/contacts/reorder",
   itemName: "contact",
   deleteSuccessMessage: "Contact deleted successfully",

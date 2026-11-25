@@ -1,4 +1,4 @@
-import type { Blog } from "@/lib/db";
+import type { Blog } from "@/lib/db/schema";
 import { BlogFormMetadataFields } from "./BlogFormMetadataFields";
 import { BlogCoverImageField } from "./BlogCoverImageField";
 

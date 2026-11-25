@@ -32,26 +32,21 @@ const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
   return (
     <DialogPrimitive.Root onOpenChange={onOpenChange} {...props}>
       <DialogPrimitive.Portal>
-        {/* Custom overlay - using inset-0 and flex to center content */}
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
-        {/* Wrapper for positioning */}
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
           <DialogPrimitive.Content
             data-lenis-prevent
             className="glass-panel-xl bg-noise pointer-events-auto mx-4 w-full max-w-xl rounded-2xl border-0 p-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
           >
-            {/* Decorative top gradient highlight */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
-            {/* Inner ring for glass effect */}
             <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10" />
 
             <VisuallyHidden.Root asChild>
               <DialogPrimitive.Title>Command Palette</DialogPrimitive.Title>
             </VisuallyHidden.Root>
 
-            {/* Header with branding */}
             <div className="flex items-center justify-between px-4 pb-2 pt-4">
               <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
                 <CommandIcon className="h-3.5 w-3.5" />
@@ -70,7 +65,6 @@ const CommandDialog = ({ children, onOpenChange, ...props }: DialogProps) => {
               {children}
             </Command>
 
-            {/* Bottom decorative border */}
             <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
           </DialogPrimitive.Content>
         </div>
