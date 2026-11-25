@@ -34,7 +34,7 @@ export async function fetchSiteData(db: SiteDb): Promise<SiteManifestData> {
         .select()
         .from(blogs)
         .where(visibleBlogsFilter())
-        .orderBy(desc(blogs.date)),
+        .orderBy(desc(blogs.date), desc(blogs.id)),
       db.select().from(certifications).orderBy(desc(certifications.date)),
       db
         .select()

@@ -20,7 +20,7 @@ export async function GET() {
         })
         .from(blogs)
         .where(visibleBlogsFilter())
-        .orderBy(desc(blogs.date))
+        .orderBy(desc(blogs.date), desc(blogs.id))
         .limit(50),
       db
         .select({

@@ -56,7 +56,7 @@ export const getFeaturedProjects = unstable_cache(
         .select()
         .from(blogs)
         .where(visibleBlogsFilter())
-        .orderBy(desc(blogs.date))
+        .orderBy(desc(blogs.date), desc(blogs.id))
         .limit(FEATURED_POST_COUNT);
       return rows.map(toBlogListItem);
     } catch (error) {
