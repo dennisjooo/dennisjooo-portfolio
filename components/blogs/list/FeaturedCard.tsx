@@ -31,6 +31,7 @@ export const FeaturedCard = ({
   slug,
   type,
   readTime,
+  displayIndex,
   priority = true,
   wide = false,
 }: FeaturedCardProps) => {
@@ -72,7 +73,17 @@ export const FeaturedCard = ({
             wide && "md:col-span-5 md:gap-4",
           )}
         >
-          <TileMeta parts={[type && getBlogTypeLabel(type), date, readTime]} />
+          <TileMeta
+            parts={[
+              displayIndex !== undefined
+                ? String(displayIndex).padStart(2, "0")
+                : undefined,
+              type && getBlogTypeLabel(type),
+              date,
+              readTime,
+            ]}
+            className="tracking-wider"
+          />
           <h3 className="font-serif text-2xl leading-tight tracking-tight text-foreground transition-colors duration-200 group-hover:text-accent md:text-3xl md:leading-[1.1] xl:text-4xl">
             {title}
           </h3>
