@@ -31,9 +31,14 @@ const config: Config = {
           "0%": { transform: "scaleX(0)" },
           "100%": { transform: "scaleX(1)" },
         },
+        "skill-row-in": {
+          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "scale-x-in": "scale-x-in 0.8s ease-out forwards",
+        "skill-row-in": "skill-row-in 200ms ease-out both",
       },
       borderRadius: {
         lg: "var(--radius)",

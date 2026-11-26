@@ -7,20 +7,40 @@ import { SectionShell } from "@/components/shared/layout/SectionShell";
 import { cn } from "@/lib/utils";
 import { getIconSlug } from "./utils";
 
+function paddedCount(count: number) {
+  return String(count).padStart(2, "0");
+}
+
+function CategoryLabel({ title, count }: { title: string; count: number }) {
+  return (
+    <>
+      {title}
+      <span
+        aria-hidden="true"
+        className="ml-2 align-super font-mono text-[0.45em] leading-none text-muted-foreground"
+      >
+        {paddedCount(count)}
+      </span>
+      <span className="sr-only">{`, ${count} skills`}</span>
+    </>
+  );
+}
+
 function SkillList({ skills }: { skills: string[] }) {
   return (
     <ul className="grid grid-cols-1 content-start gap-x-8 md:grid-cols-2">
-      {skills.map((skill) => (
+      {skills.map((skill, index) => (
         <li
           key={skill}
-          className="flex items-center gap-3 border-t border-border py-4 font-mono text-sm text-foreground md:py-5"
+          style={{ animationDelay: `${index * 30}ms` }}
+          className="group flex animate-skill-row-in items-center gap-3 border-t border-border py-4 font-mono text-sm text-foreground transition-colors duration-200 hover:border-foreground/40 motion-reduce:animate-none md:py-5"
         >
-          <span className="relative size-4 shrink-0 opacity-60 grayscale">
+          <span className="relative size-4 shrink-0 opacity-60 grayscale transition duration-200 group-hover:opacity-100 group-hover:grayscale-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`https://cdn.simpleicons.org/${getIconSlug(skill)}`}
               alt=""
-              className="h-full w-full object-contain dark:invert"
+              className="h-full w-full object-contain transition-[filter] duration-200 dark:invert dark:group-hover:invert-0"
               loading="lazy"
               onError={(e) => {
                 e.currentTarget.style.display = "none";
@@ -37,6 +57,7 @@ function SkillList({ skills }: { skills: string[] }) {
 const Skills: React.FC = () => {
   const [active, setActive] = useState(0);
   const desktopActive = active < 0 ? 0 : active;
+  const desktopCategory = skillCategories[desktopActive];
 
   return (
     <SectionShell id="skills">
@@ -61,7 +82,10 @@ const Skills: React.FC = () => {
                     : "text-muted-foreground/50 hover:text-foreground",
                 )}
               >
-                {category.title}
+                <CategoryLabel
+                  title={category.title}
+                  count={category.skills.length}
+                />
               </button>
               <div
                 id={panelId}
@@ -71,7 +95,9 @@ const Skills: React.FC = () => {
                 )}
               >
                 <div className="overflow-hidden">
-                  <SkillList skills={category.skills} />
+                  {open ? (
+                    <SkillList key={category.title} skills={category.skills} />
+                  ) : null}
                 </div>
               </div>
             </li>
@@ -96,27 +122,20 @@ const Skills: React.FC = () => {
                     : "text-muted-foreground/50 hover:text-foreground",
                 )}
               >
-                {category.title}
+                <CategoryLabel
+                  title={category.title}
+                  count={category.skills.length}
+                />
               </button>
             </li>
           ))}
         </ul>
 
-        <div className="col-span-7 grid self-start">
-          {skillCategories.map((category, i) => (
-            <div
-              key={category.title}
-              aria-hidden={i !== desktopActive}
-              className={cn(
-                "col-start-1 row-start-1 transition-opacity duration-200",
-                i === desktopActive
-                  ? "opacity-100"
-                  : "pointer-events-none opacity-0",
-              )}
-            >
-              <SkillList skills={category.skills} />
-            </div>
-          ))}
+        <div className="col-span-7 self-start">
+          <SkillList
+            key={desktopCategory.title}
+            skills={desktopCategory.skills}
+          />
         </div>
       </div>
     </SectionShell>
