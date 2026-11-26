@@ -1,21 +1,64 @@
 "use client";
 
-import { ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
-import dynamic from "next/dynamic";
+import { ClerkLoaded, ClerkLoading, SignIn } from "@clerk/nextjs";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { LoadingSpinner } from "@/components/admin/shared";
 
-const SignInLoadingCard = () => (
-  <div className="flex min-h-[28rem] w-full items-center justify-center rounded-sm border border-border bg-background">
-    <LoadingSpinner className="h-12" />
-  </div>
-);
+const signInAppearance = {
+  variables: {
+    colorPrimary: "hsl(var(--primary))",
+    colorBackground: "hsl(var(--card))",
+    colorInputBackground: "hsl(var(--input))",
+    colorInputText: "hsl(var(--foreground))",
+    colorText: "hsl(var(--foreground))",
+    colorTextSecondary: "hsl(var(--muted-foreground))",
+    borderRadius: "2px",
+  },
+  elements: {
+    rootBox: "w-full [animation:none]",
+    cardBox: "w-full shadow-none [animation:none]",
+    card: "min-h-[28rem] bg-background border border-border rounded-sm shadow-none [animation:none]",
+    header: "hidden",
+    main: "[animation:none]",
+    footer: "[animation:none]",
+    socialButtonsBlockButton:
+      "bg-secondary hover:bg-secondary/80 border-border text-foreground font-sans transition-colors duration-200",
+    socialButtonsBlockButtonText: "font-sans",
+    dividerLine: "bg-border",
+    dividerText: "text-muted-foreground font-sans text-xs",
+    formFieldLabel: "text-foreground font-sans",
+    formFieldInput:
+      "bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-accent focus:border-accent rounded-lg font-sans",
+    formButtonPrimary:
+      "bg-primary hover:bg-primary/90 text-primary-foreground font-sans font-medium transition-colors duration-200 rounded-lg",
+    footerActionLink:
+      "text-accent hover:text-accent/80 font-sans transition-colors",
+    identityPreviewText: "text-foreground font-sans",
+    identityPreviewEditButton: "text-accent hover:text-accent/80",
+    formFieldInputShowPasswordButton:
+      "text-muted-foreground hover:text-foreground",
+    alert: "bg-destructive/10 border-destructive/20 text-destructive",
+    alertText: "text-destructive font-sans",
+  },
+  layout: {
+    socialButtonsPlacement: "bottom" as const,
+    socialButtonsVariant: "blockButton" as const,
+  },
+};
 
-const SignIn = dynamic(
-  () => import("@clerk/nextjs").then((mod) => mod.SignIn),
-  { loading: SignInLoadingCard },
-);
+function SignInSlot({ children }: { children?: ReactNode }) {
+  return (
+    <div className="relative min-h-[28rem] w-full">
+      {children ?? (
+        <div
+          className="min-h-[28rem] w-full rounded-sm border border-border bg-background"
+          aria-hidden="true"
+        />
+      )}
+    </div>
+  );
+}
 
 export default function AdminLoginPage() {
   return (
@@ -34,54 +77,20 @@ export default function AdminLoginPage() {
 
         <div className="flex justify-center">
           <ClerkLoading>
-            <SignInLoadingCard />
+            <SignInSlot />
           </ClerkLoading>
           <ClerkLoaded>
-            <SignIn
-              appearance={{
-                variables: {
-                  colorPrimary: "hsl(var(--primary))",
-                  colorBackground: "hsl(var(--card))",
-                  colorInputBackground: "hsl(var(--input))",
-                  colorInputText: "hsl(var(--foreground))",
-                  colorText: "hsl(var(--foreground))",
-                  colorTextSecondary: "hsl(var(--muted-foreground))",
-                  borderRadius: "2px",
-                },
-                elements: {
-                  rootBox: "w-full",
-                  card: "bg-background border border-border rounded-sm shadow-none",
-                  header: "hidden",
-                  socialButtonsBlockButton:
-                    "bg-secondary hover:bg-secondary/80 border-border text-foreground font-sans transition-colors duration-200",
-                  socialButtonsBlockButtonText: "font-sans",
-                  dividerLine: "bg-border",
-                  dividerText: "text-muted-foreground font-sans text-xs",
-                  formFieldLabel: "text-foreground font-sans",
-                  formFieldInput:
-                    "bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-accent focus:border-accent rounded-lg font-sans",
-                  formButtonPrimary:
-                    "bg-primary hover:bg-primary/90 text-primary-foreground font-sans font-medium transition-colors duration-200 rounded-lg",
-                  footerActionLink:
-                    "text-accent hover:text-accent/80 font-sans transition-colors",
-                  identityPreviewText: "text-foreground font-sans",
-                  identityPreviewEditButton: "text-accent hover:text-accent/80",
-                  formFieldInputShowPasswordButton:
-                    "text-muted-foreground hover:text-foreground",
-                  alert:
-                    "bg-destructive/10 border-destructive/20 text-destructive",
-                  alertText: "text-destructive font-sans",
-                },
-                layout: {
-                  socialButtonsPlacement: "bottom",
-                  socialButtonsVariant: "blockButton",
-                },
-              }}
-              routing="path"
-              path="/admin/login"
-              signUpUrl="/admin/login"
-              forceRedirectUrl="/admin"
-            />
+            <SignInSlot>
+              <div className="animate-fade-in [animation-duration:0.4s]">
+                <SignIn
+                  appearance={signInAppearance}
+                  routing="path"
+                  path="/admin/login"
+                  signUpUrl="/admin/login"
+                  forceRedirectUrl="/admin"
+                />
+              </div>
+            </SignInSlot>
           </ClerkLoaded>
         </div>
 
