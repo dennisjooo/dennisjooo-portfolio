@@ -1,7 +1,8 @@
 "use client";
 
-import { m, AnimatePresence } from "@/components/motion";
+import { AccordionPanel } from "@/components/shared/layout/AccordionPanel";
 import { useExpandableList } from "@/lib/hooks/data/useExpandableList";
+import { useAccordionAnchor } from "@/lib/hooks/ui/useAccordionAnchor";
 import { cn } from "@/lib/utils";
 
 interface RoleResponsibilitiesListProps {
@@ -42,39 +43,39 @@ export function RoleResponsibilitiesList({
   const styles = variantStyles[variant];
   const { isExpanded, toggle, initialItems, expandedItems, hasMore } =
     useExpandableList(responsibilities, initialCount);
+  const keepAnchor = useAccordionAnchor();
 
   const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onToggleClick?.(event);
-    toggle();
+    keepAnchor(event.currentTarget, () => {
+      onToggleClick?.(event);
+      toggle();
+    });
   };
+
+  const renderItem = (resp: string, key: string) => (
+    <li key={key} className={styles.item}>
+      <span className={styles.bullet} />
+      <span>{resp}</span>
+    </li>
+  );
 
   return (
     <>
       <ul className={styles.list}>
-        {initialItems.map((resp, idx) => (
-          <li key={`${itemKeyPrefix}-${idx}`} className={styles.item}>
-            <span className={styles.bullet} />
-            <span>{resp}</span>
-          </li>
-        ))}
-
-        <AnimatePresence>
-          {isExpanded &&
-            expandedItems.map((resp, idx) => (
-              <m.li
-                key={`${itemKeyPrefix}-expanded-${idx}`}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: variant === "mobile" ? 0.15 : 0.3 }}
-                className={cn(styles.item, "overflow-hidden")}
-              >
-                <span className={styles.bullet} />
-                <span>{resp}</span>
-              </m.li>
-            ))}
-        </AnimatePresence>
+        {initialItems.map((resp, idx) =>
+          renderItem(resp, `${itemKeyPrefix}-${idx}`),
+        )}
       </ul>
+
+      {hasMore ? (
+        <AccordionPanel open={isExpanded} innerClassName="pt-2">
+          <ul className={styles.list}>
+            {expandedItems.map((resp, idx) =>
+              renderItem(resp, `${itemKeyPrefix}-expanded-${idx}`),
+            )}
+          </ul>
+        </AccordionPanel>
+      ) : null}
 
       {hasMore && (
         <button type="button" onClick={handleToggle} className={styles.button}>
@@ -83,7 +84,7 @@ export function RoleResponsibilitiesList({
           </span>
           <span
             className={cn(
-              "transform transition-transform",
+              "transform transition-transform motion-reduce:transition-none",
               variant === "mobile" ? "duration-150" : "duration-300",
               isExpanded ? "rotate-180" : "rotate-0",
             )}

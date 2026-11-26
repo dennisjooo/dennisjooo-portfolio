@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { skillCategories } from "@/lib/content/skillContent";
 import { SectionHeader } from "@/components/shared/layout/SectionHeader";
 import { SectionShell } from "@/components/shared/layout/SectionShell";
+import { AccordionPanel } from "@/components/shared/layout/AccordionPanel";
+import { useAccordionAnchor } from "@/lib/hooks/ui/useAccordionAnchor";
 import { cn } from "@/lib/utils";
 import { getIconSlug } from "./utils";
 
@@ -26,14 +28,23 @@ function CategoryLabel({ title, count }: { title: string; count: number }) {
   );
 }
 
-function SkillList({ skills }: { skills: string[] }) {
+function SkillList({
+  skills,
+  animate = true,
+}: {
+  skills: string[];
+  animate?: boolean;
+}) {
   return (
     <ul className="grid grid-cols-1 content-start gap-x-8 md:grid-cols-2">
       {skills.map((skill, index) => (
         <li
           key={skill}
           style={{ animationDelay: `${index * 30}ms` }}
-          className="group flex animate-skill-row-in items-center gap-3 border-t border-border py-4 font-mono text-sm text-foreground transition-colors duration-200 hover:border-foreground/40 motion-reduce:animate-none md:py-5"
+          className={cn(
+            "group flex items-center gap-3 border-t border-border py-4 font-mono text-sm text-foreground transition-colors duration-200 hover:border-foreground/40 motion-reduce:animate-none md:py-5",
+            animate && "animate-skill-row-in",
+          )}
         >
           <span className="relative size-4 shrink-0 opacity-60 grayscale transition duration-200 group-hover:opacity-100 group-hover:grayscale-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -58,6 +69,7 @@ const Skills: React.FC = () => {
   const [active, setActive] = useState(0);
   const desktopActive = active < 0 ? 0 : active;
   const desktopCategory = skillCategories[desktopActive];
+  const keepAnchor = useAccordionAnchor();
 
   return (
     <SectionShell id="skills">
@@ -74,7 +86,11 @@ const Skills: React.FC = () => {
                 type="button"
                 aria-expanded={open}
                 aria-controls={panelId}
-                onClick={() => setActive(open ? -1 : i)}
+                onClick={(event) =>
+                  keepAnchor(event.currentTarget, () =>
+                    setActive(open ? -1 : i),
+                  )
+                }
                 className={cn(
                   "w-full py-5 text-left font-serif text-3xl leading-tight tracking-tight transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
                   open
@@ -87,19 +103,9 @@ const Skills: React.FC = () => {
                   count={category.skills.length}
                 />
               </button>
-              <div
-                id={panelId}
-                className={cn(
-                  "grid transition-[grid-template-rows] duration-200 ease-out",
-                  open ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]",
-                )}
-              >
-                <div className="overflow-hidden">
-                  {open ? (
-                    <SkillList key={category.title} skills={category.skills} />
-                  ) : null}
-                </div>
-              </div>
+              <AccordionPanel open={open} id={panelId} innerClassName="pb-6">
+                <SkillList skills={category.skills} animate={open} />
+              </AccordionPanel>
             </li>
           );
         })}
