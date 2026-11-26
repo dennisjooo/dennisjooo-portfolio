@@ -51,7 +51,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <div id="__ssr_cover" aria-hidden="true">
+        <div id="__ssr_cover" aria-hidden="true" suppressHydrationWarning>
           <div id="__ssr_loader">
             <div className="ssr-mark">{SITE_MARK}</div>
           </div>
