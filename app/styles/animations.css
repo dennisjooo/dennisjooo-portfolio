@@ -75,3 +75,9 @@
     transform: none !important;
   }
 }
+
+/* Stacked About slides share one box; hide extras until GSAP owns opacity. */
+.about-slide:not(:first-child) .about-title,
+.about-slide:not(:first-child) .about-body {
+  opacity: 0;
+}

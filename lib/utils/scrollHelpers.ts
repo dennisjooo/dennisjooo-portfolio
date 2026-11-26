@@ -31,6 +31,10 @@ export function setScrollAnimationsReady(ready: boolean): void {
   scrollAnimationsReady = ready;
 }
 
+export function isScrollAnimationsReady(): boolean {
+  return scrollAnimationsReady;
+}
+
 export function setPendingSectionScroll(sectionId: string): void {
   sessionStorage.setItem(PENDING_SECTION_KEY, sectionId);
 }

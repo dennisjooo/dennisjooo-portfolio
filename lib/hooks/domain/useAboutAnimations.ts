@@ -1,11 +1,8 @@
 "use client";
 
-import { RefObject, useEffect } from "react";
+import { RefObject, useLayoutEffect } from "react";
 import { ContentSection } from "@/lib/content/aboutContent";
-import {
-  resolveSectionScrollTarget,
-  setScrollAnimationsReady,
-} from "@/lib/utils/scrollHelpers";
+import { setScrollAnimationsReady } from "@/lib/utils/scrollHelpers";
 import { initAboutGsapAnimations } from "./aboutAnimationSetup";
 
 interface UseAboutAnimationsProps {
@@ -19,62 +16,58 @@ export const useAboutAnimations = ({
   containerRef,
   contentSections,
 }: UseAboutAnimationsProps) => {
-  useEffect(() => {
+  const sectionsKey = contentSections.map((section) => section.id).join();
+
+  useLayoutEffect(() => {
     if (!containerRef.current || !sectionRef.current) return;
 
+    let cancelled = false;
     let cleanup: (() => void) | undefined;
-    let gsapLoaded = false;
+
+    const refreshTriggers = (markReady = false) => {
+      void import("@/lib/motion/gsapBootstrap")
+        .then((m) => m.loadGsapWithScrollTrigger())
+        .then(({ ScrollTrigger }) => {
+          if (cancelled) return;
+          ScrollTrigger.refresh();
+          if (!markReady) return;
+          setScrollAnimationsReady(true);
+          window.dispatchEvent(new Event("portfolio:scroll-animations-ready"));
+        });
+    };
 
     const initAnimations = async () => {
-      if (gsapLoaded) return;
-      gsapLoaded = true;
-
       const gsapCleanup = await initAboutGsapAnimations(
         sectionRef,
+        containerRef,
         contentSections,
       );
+
+      if (cancelled) {
+        gsapCleanup();
+        return;
+      }
 
       cleanup = () => {
         gsapCleanup();
         setScrollAnimationsReady(false);
       };
 
-      requestAnimationFrame(() => {
-        void import("@/lib/motion/gsapBootstrap")
-          .then((m) => m.loadGsapWithScrollTrigger())
-          .then(({ ScrollTrigger }) => {
-            ScrollTrigger.refresh();
-            setScrollAnimationsReady(true);
-            window.dispatchEvent(
-              new Event("portfolio:scroll-animations-ready"),
-            );
-          });
-      });
+      requestAnimationFrame(() => refreshTriggers(true));
     };
 
-    const onContentRevealed = () => {
-      void initAnimations();
-    };
+    const onRefresh = () => refreshTriggers();
 
-    const pendingSection = resolveSectionScrollTarget();
-    const shouldEagerInit = pendingSection !== "" && pendingSection !== "home";
+    void initAnimations();
 
-    if (shouldEagerInit) {
-      void initAnimations();
-    } else if (document.querySelector('[data-content-ready="true"]')) {
-      void initAnimations();
-    } else {
-      window.addEventListener("portfolio:content-revealed", onContentRevealed, {
-        once: true,
-      });
-    }
+    window.addEventListener("portfolio:content-revealed", onRefresh);
+    window.addEventListener("portfolio:lenis-ready", onRefresh);
 
     return () => {
-      window.removeEventListener(
-        "portfolio:content-revealed",
-        onContentRevealed,
-      );
+      cancelled = true;
+      window.removeEventListener("portfolio:content-revealed", onRefresh);
+      window.removeEventListener("portfolio:lenis-ready", onRefresh);
       cleanup?.();
     };
-  }, [sectionRef, containerRef, contentSections]);
+  }, [sectionRef, containerRef, contentSections, sectionsKey]);
 };

@@ -32,7 +32,7 @@ export const DesktopView: React.FC<DesktopViewProps> = ({
       {contentSections.map((section) => (
         <div
           key={section.id}
-          className="absolute inset-x-16 top-1/2 flex -translate-y-1/2 flex-col justify-center"
+          className="about-slide absolute inset-x-16 top-1/2 flex -translate-y-1/2 flex-col justify-center"
         >
           <div className="about-title mb-6">
             <h2 className="text-display pb-2 font-serif text-6xl font-semibold leading-none tracking-tight xl:text-7xl">

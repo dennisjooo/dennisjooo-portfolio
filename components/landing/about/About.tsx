@@ -50,12 +50,12 @@ const About: React.FC<AboutProps> = ({ profileImageUrl, aboutContent }) => {
           "--about-scroll-desktop": `${desktopScroll}px`,
         } as React.CSSProperties
       }
-      className="relative min-h-[calc(100vh+var(--about-scroll-mobile))] overflow-hidden bg-background text-foreground md:min-h-[calc(100vh+var(--about-scroll-desktop))]"
+      className="relative min-h-[calc(100vh+var(--about-scroll-mobile))] bg-background text-foreground md:min-h-[calc(100vh+var(--about-scroll-desktop))]"
     >
       <div
         ref={containerRef}
         className={cn(
-          "flex h-screen w-full flex-col py-24 md:py-20",
+          "sticky top-0 flex h-screen w-full flex-col overflow-hidden py-24 md:py-20",
           sectionInnerClasses,
         )}
       >

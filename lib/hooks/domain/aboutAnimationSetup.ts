@@ -1,78 +1,86 @@
 import type { RefObject } from "react";
 import type { ContentSection } from "@/lib/content/aboutContent";
-import {
-  aboutDesktopScrollDistance,
-  aboutMobileScrollDistance,
-} from "@/lib/constants/aboutScroll";
 
 type GsapInstance = typeof import("gsap").default;
+type Timeline = ReturnType<GsapInstance["timeline"]>;
+type Tween = ReturnType<GsapInstance["to"]>;
+
+const gsapLoad = () =>
+  import("@/lib/motion/gsapBootstrap").then((m) =>
+    m.loadGsapWithScrollTrigger(),
+  );
+
+void gsapLoad();
+
+const aboutScrollTrigger = {
+  start: "top top",
+  end: "bottom bottom",
+  scrub: 0.5,
+  invalidateOnRefresh: true,
+} as const;
 
 export function setupAboutMobileAnimations(
   gsap: GsapInstance,
   sectionRef: RefObject<HTMLDivElement | null>,
   contentSectionCount: number,
-) {
+): (() => void) | undefined {
+  const section = sectionRef.current;
   const mobileContainer = document.querySelector(
     ".mobile-scroll-container",
-  ) as HTMLElement;
-  if (!mobileContainer) return;
+  ) as HTMLElement | null;
+  if (!section || !mobileContainer) return;
 
   const totalSections = 1 + Math.max(contentSectionCount, 1);
   const lastIndex = Math.max(totalSections - 1, 1);
 
-  const scrollTriggerInstance = gsap.to(mobileContainer, {
+  const tween: Tween = gsap.to(mobileContainer, {
     xPercent: -((100 * (totalSections - 1)) / totalSections),
     ease: "none",
     scrollTrigger: {
-      trigger: sectionRef.current,
-      pin: true,
-      pinSpacing: false,
-      anticipatePin: 1,
-      scrub: 0.5,
+      trigger: section,
+      ...aboutScrollTrigger,
       snap: {
         snapTo: 1 / lastIndex,
         duration: { min: 0.15, max: 0.3 },
         ease: "power2.out",
         inertia: false,
       },
-      end: `+=${aboutMobileScrollDistance(contentSectionCount)}`,
-      fastScrollEnd: true,
-      preventOverlaps: true,
-      invalidateOnRefresh: true,
     },
   });
 
   return () => {
-    scrollTriggerInstance.scrollTrigger?.kill();
+    tween.scrollTrigger?.kill();
+    tween.kill();
   };
 }
 
 export function setupAboutDesktopAnimations(
   gsap: GsapInstance,
   sectionRef: RefObject<HTMLDivElement | null>,
+  containerRef: RefObject<HTMLDivElement | null>,
   contentSections: ContentSection[],
-) {
-  const titles = gsap.utils.toArray<HTMLElement>(".about-title");
-  const bodies = gsap.utils.toArray<HTMLElement>(".about-body");
+): (() => void) | undefined {
+  const section = sectionRef.current;
+  const root = containerRef.current;
+  if (!section || !root) return;
+
+  const titles = Array.from(root.querySelectorAll<HTMLElement>(".about-title"));
+  const bodies = Array.from(root.querySelectorAll<HTMLElement>(".about-body"));
 
   titles.forEach((title, i) => {
-    if (i !== 0) gsap.set(title, { opacity: 0, y: -30 });
-    else gsap.set(title, { opacity: 1, y: 0 });
+    gsap.set(
+      title,
+      i === 0 ? { autoAlpha: 1, y: 0 } : { autoAlpha: 0, y: -30 },
+    );
   });
   bodies.forEach((body, i) => {
-    if (i !== 0) gsap.set(body, { opacity: 0, y: 20 });
-    else gsap.set(body, { opacity: 1, y: 0 });
+    gsap.set(body, i === 0 ? { autoAlpha: 1, y: 0 } : { autoAlpha: 0, y: 20 });
   });
 
-  const tl = gsap.timeline({
+  const tl: Timeline = gsap.timeline({
     scrollTrigger: {
-      trigger: sectionRef.current,
-      start: "top top",
-      end: `+=${aboutDesktopScrollDistance(contentSections.length)}`,
-      pin: true,
-      pinSpacing: false,
-      scrub: 0.5,
-      anticipatePin: 1,
+      trigger: section,
+      ...aboutScrollTrigger,
     },
   });
 
@@ -83,59 +91,63 @@ export function setupAboutDesktopAnimations(
     const nextTitle = titles[i + 1];
     const currentBody = bodies[i];
     const nextBody = bodies[i + 1];
+    if (!currentTitle || !nextTitle || !currentBody || !nextBody) return;
 
     tl.to(
       currentTitle,
-      { opacity: 0, y: -30, duration: 0.6, ease: "power2.in" },
+      { autoAlpha: 0, y: -30, duration: 0.6, ease: "power2.in" },
       `step-${i}`,
     )
       .to(
         currentBody,
-        { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" },
+        { autoAlpha: 0, y: -20, duration: 0.4, ease: "power2.in" },
         `step-${i}`,
       )
-      .to(
+      .fromTo(
         nextTitle,
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        { autoAlpha: 0, y: -30 },
+        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
         `step-${i}+=0.3`,
       )
-      .to(
+      .fromTo(
         nextBody,
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" },
         `step-${i}+=0.5`,
       );
 
     tl.to({}, { duration: 0.4 });
   });
+
+  return () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+  };
 }
 
 export async function initAboutGsapAnimations(
   sectionRef: RefObject<HTMLDivElement | null>,
+  containerRef: RefObject<HTMLDivElement | null>,
   contentSections: ContentSection[],
 ): Promise<() => void> {
-  const { gsap, ScrollTrigger } =
-    await import("@/lib/motion/gsapBootstrap").then((m) =>
-      m.loadGsapWithScrollTrigger(),
-    );
+  const { gsap } = await gsapLoad();
 
   const mm = gsap.matchMedia();
-  let mobileCleanup: (() => void) | undefined;
 
-  mm.add("(max-width: 767px)", () => {
-    mobileCleanup = setupAboutMobileAnimations(
+  mm.add("(max-width: 767px)", () =>
+    setupAboutMobileAnimations(gsap, sectionRef, contentSections.length),
+  );
+
+  mm.add("(min-width: 768px)", () =>
+    setupAboutDesktopAnimations(
       gsap,
       sectionRef,
-      contentSections.length,
-    );
-    return mobileCleanup;
-  });
-
-  mm.add("(min-width: 768px)", () => {
-    setupAboutDesktopAnimations(gsap, sectionRef, contentSections);
-  });
+      containerRef,
+      contentSections,
+    ),
+  );
 
   return () => {
     mm.revert();
-    ScrollTrigger.getAll().forEach((st) => st.kill());
   };
 }
