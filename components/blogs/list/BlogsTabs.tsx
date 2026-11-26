@@ -9,17 +9,35 @@ import { AnimatePresence, m } from "@/components/motion";
 import { sectionInnerClasses } from "@/components/shared/layout/SectionShell";
 import { BlogsHero } from "./BlogsHero";
 import type { BlogListItem } from "@/lib/types/blogList";
+import type { Certification } from "@/lib/db/schema";
 import type { PaginationResult } from "@/lib/types/pagination";
-import { BLOGS_LIST_TABS } from "@/lib/constants/blogsList";
+import { BLOGS_LIST_TABS, type BlogsListTab } from "@/lib/constants/blogsList";
 
 interface BlogsTabsProps {
   initialProjects?: BlogListItem[];
   initialPagination?: PaginationResult;
+  initialCertifications?: Certification[];
+  initialCertificationsPagination?: PaginationResult;
+}
+
+function tabMeta(
+  tab: BlogsListTab,
+  blogPagination?: PaginationResult,
+  certPagination?: PaginationResult,
+) {
+  if (tab === "certifications") {
+    return certPagination
+      ? `${certPagination.total} certifications`
+      : undefined;
+  }
+  return blogPagination ? `${blogPagination.total} posts` : undefined;
 }
 
 export function BlogsTabs({
   initialProjects,
   initialPagination,
+  initialCertifications,
+  initialCertificationsPagination,
 }: BlogsTabsProps) {
   const { activeTab, setActiveTab } = useTabState();
 
@@ -27,9 +45,11 @@ export function BlogsTabs({
     <div className={`${sectionInnerClasses} pt-24 md:pt-20`}>
       <BlogsHero
         activeTab={activeTab}
-        meta={
-          initialPagination ? `${initialPagination.total} posts` : undefined
-        }
+        meta={tabMeta(
+          activeTab,
+          initialPagination,
+          initialCertificationsPagination,
+        )}
       />
 
       <TabSwitcher
@@ -50,7 +70,10 @@ export function BlogsTabs({
             </m.div>
           ) : (
             <m.div key="certifications" {...tabContentVariants}>
-              <CertificationsList />
+              <CertificationsList
+                initialData={initialCertifications}
+                initialPagination={initialCertificationsPagination}
+              />
             </m.div>
           )}
         </AnimatePresence>

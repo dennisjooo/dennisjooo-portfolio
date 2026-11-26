@@ -5,13 +5,24 @@ import type { Certification } from "@/lib/db/schema";
 import { usePaginatedList } from "@/lib/hooks/data/usePaginatedList";
 import { PaginatedList } from "@/components/shared";
 import { CertificationsListSkeleton } from "./skeletons";
+import type { PaginationResult } from "@/lib/types/pagination";
 
 import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 
-export default function CertificationsList() {
+interface CertificationsListProps {
+  initialData?: Certification[];
+  initialPagination?: PaginationResult;
+}
+
+export default function CertificationsList({
+  initialData,
+  initialPagination,
+}: CertificationsListProps) {
   const paginatedList = usePaginatedList<Certification>({
     endpoint: "/api/certifications",
     pageSize: PUBLIC_LIST_PAGE_SIZE,
+    initialData,
+    initialPagination,
   });
 
   if (paginatedList.loading) {
