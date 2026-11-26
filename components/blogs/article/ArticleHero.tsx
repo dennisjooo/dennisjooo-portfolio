@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import { PhotoView } from "react-photo-view";
 import { BackToBlogsLink } from "@/components/blogs/article/BackToBlogsLink";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { HoverImageFrame } from "@/components/shared/HoverImageFrame";
 import { cn } from "@/lib/utils";
 import { getBlogTypeLabel } from "@/lib/utils/projectFormatting";
@@ -79,46 +79,38 @@ export const ArticleHero = ({
 };
 
 function ArticleHeroImage({ src, alt }: { src: string; alt: string }) {
-  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  const readRatio = (img: HTMLImageElement) => {
-    if (img.naturalWidth && img.naturalHeight) {
-      setAspectRatio(img.naturalWidth / img.naturalHeight);
+  useLayoutEffect(() => {
+    const img = imgRef.current;
+    if (img?.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    } else {
+      setLoaded(false);
     }
-  };
-
-  useEffect(() => {
-    if (imgRef.current?.complete) readRatio(imgRef.current);
-  }, []);
-
-  const loaded = aspectRatio !== null;
+  }, [src]);
 
   return (
     <PhotoView src={src}>
-      <figure className="cursor-zoom-in">
-        <HoverImageFrame>
-          <div
-            className={cn(
-              "relative w-full transition-[aspect-ratio] duration-500 ease-out",
-              !loaded && "aspect-video animate-pulse",
-            )}
-            style={
-              loaded ? { aspectRatio: `${aspectRatio}`, maxHeight: "70vh" } : {}
-            }
-          >
+      <figure
+        className={cn(
+          "cursor-zoom-in transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none",
+          loaded ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+        )}
+      >
+        <HoverImageFrame frameClassName="bg-transparent">
+          <div className="w-full">
             <Image
               ref={imgRef}
               src={src}
               alt={alt}
-              fill
-              className={cn(
-                "object-contain transition-opacity duration-500",
-                loaded ? "opacity-100" : "opacity-0",
-              )}
+              width={0}
+              height={0}
+              className="h-auto max-h-[70vh] w-full object-contain"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
               priority
-              onLoad={(e) => readRatio(e.currentTarget)}
+              onLoad={() => setLoaded(true)}
             />
           </div>
         </HoverImageFrame>
