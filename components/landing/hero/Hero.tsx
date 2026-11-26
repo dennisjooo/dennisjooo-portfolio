@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
           <span className="block">{rest.join(" ")}</span>
         </h1>
         <div className="mt-10 flex items-baseline justify-between gap-6 border-t border-border pt-4 text-sm text-muted-foreground md:mt-14 md:text-base">
-          <p className="font-serif">{SITE_TAGLINE}</p>
+          <p className="font-mono text-xs md:text-sm">{SITE_TAGLINE}</p>
           <p className="font-mono text-xs md:text-sm">Jakarta, Indonesia</p>
         </div>
       </div>

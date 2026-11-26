@@ -41,7 +41,7 @@ const Footer = () => {
           </a>
         </p>
         <p className="font-mono text-xs text-muted-foreground">
-          Human being · Jakarta
+          Human being · Jakarta, Indonesia
         </p>
       </div>
     </footer>
