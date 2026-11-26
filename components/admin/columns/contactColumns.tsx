@@ -1,4 +1,4 @@
-import { Column } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import type { Contact } from "@/lib/db/schema";
 import { CONTACT_ICON_MAP } from "@/lib/constants/contactIcons";
 import { Globe } from "lucide-react";

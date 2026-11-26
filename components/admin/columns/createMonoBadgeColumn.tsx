@@ -1,4 +1,4 @@
-import { Column } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 
 export function createMonoBadgeColumn<T extends Record<string, unknown>>(
   accessorKey: keyof T & string,

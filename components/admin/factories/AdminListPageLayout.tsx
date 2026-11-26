@@ -1,7 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { AdminTable, Column } from "@/components/admin/layout/AdminTable";
+import { AdminTable } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import {
   AdminPageHeader,
   AdminReorderHint,

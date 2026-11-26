@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { cn } from "@/lib/utils";
-import type { Column } from "./AdminTable";
+import type { Column } from "./adminTableTypes";
 
 interface AdminTableMobileCardsProps<T extends { id?: string | number }> {
   localData: T[];

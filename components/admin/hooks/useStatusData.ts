@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { StatusData } from "../dashboard/types";
 
-const POLLING_INTERVAL = 30000; // 30 seconds
+const POLLING_INTERVAL = 30000;
 
 export function useStatusData() {
   const [statusData, setStatusData] = useState<StatusData | null>(null);

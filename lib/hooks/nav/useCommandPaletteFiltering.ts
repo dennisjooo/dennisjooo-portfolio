@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {
-  processedProjects,
-  processedWorkExperience,
   getContextSnippet,
   matchesSearch,
   type FilteredProject,
   type FilteredWorkExperience,
+  type ProcessedProject,
+  type ProcessedWorkExperience,
   type SearchOptions,
 } from "@/lib/command-palette/utils";
 
@@ -18,13 +18,15 @@ export function useCommandPaletteFiltering(
   search: string,
   searchScope: SearchScope,
   searchOptions: SearchOptions,
+  projects: ProcessedProject[],
+  workExperience: ProcessedWorkExperience[],
 ) {
   const filteredProjects = React.useMemo((): FilteredProject[] => {
     if (!search.trim() || searchScope === "work") return [];
 
     const term = search.trim();
 
-    return processedProjects
+    return projects
       .map((project) => {
         if (!matchesSearch(project.rawContent, term, searchOptions))
           return null;
@@ -37,14 +39,14 @@ export function useCommandPaletteFiltering(
         return { ...project, context };
       })
       .filter((p): p is FilteredProject => p !== null);
-  }, [search, searchOptions, searchScope]);
+  }, [projects, search, searchOptions, searchScope]);
 
   const filteredWorkExperience = React.useMemo((): FilteredWorkExperience[] => {
     if (!search.trim() || searchScope === "projects") return [];
 
     const term = search.trim();
 
-    return processedWorkExperience
+    return workExperience
       .map((work) => {
         if (!matchesSearch(work.rawContent, term, searchOptions)) return null;
 
@@ -52,7 +54,7 @@ export function useCommandPaletteFiltering(
         return { ...work, context };
       })
       .filter((w): w is FilteredWorkExperience => w !== null);
-  }, [search, searchOptions, searchScope]);
+  }, [search, searchOptions, searchScope, workExperience]);
 
   return { filteredProjects, filteredWorkExperience };
 }

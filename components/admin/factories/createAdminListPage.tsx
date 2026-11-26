@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { AdminListPageLayout } from "./AdminListPageLayout";
-import { Column } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import { useAdminList } from "@/components/admin/hooks";
 import type { UseAdminListReturn } from "@/components/admin/hooks/adminListTypes";
 

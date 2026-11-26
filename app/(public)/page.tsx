@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import Hero from "@/components/landing/hero";
-import About from "@/components/landing/about";
-import WorkExperience from "@/components/landing/work-experience";
-import FeaturedProjects from "@/components/landing/featured-projects";
+import Hero from "@/components/landing/hero/Hero";
+import About from "@/components/landing/about/About";
+import WorkExperience from "@/components/landing/work-experience/WorkExperience";
+import FeaturedProjects from "@/components/landing/featured-projects/FeaturedProjects";
 import dynamic from "next/dynamic";
 import { HomeEffects } from "@/components/landing/home/HomeEffects";
 import { SectionSkeleton } from "@/components/shared/SectionSkeleton";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants/site";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_PORTFOLIO_NAME,
+} from "@/lib/constants/site";
 import {
   getSiteConfig,
   getWorkExperience,
@@ -23,12 +28,15 @@ export const metadata: Metadata = {
   },
 };
 
-const Skills = dynamic(() => import("@/components/landing/skills"), {
+const Skills = dynamic(() => import("@/components/landing/skills/Skills"), {
   loading: () => <SectionSkeleton height="min-h-[50vh]" />,
 });
-const Contacts = dynamic(() => import("@/components/landing/contacts"), {
-  loading: () => <SectionSkeleton height="min-h-[50vh]" />,
-});
+const Contacts = dynamic(
+  () => import("@/components/landing/contacts/Contacts"),
+  {
+    loading: () => <SectionSkeleton height="min-h-[50vh]" />,
+  },
+);
 
 const BackToTop = dynamic(() => import("@/components/shared/scroll/BackToTop"));
 
@@ -65,7 +73,7 @@ export default async function Home() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: `${SITE_NAME}'s Portfolio`,
+    name: SITE_PORTFOLIO_NAME,
     url: SITE_URL,
     description: SITE_DESCRIPTION,
     author: {

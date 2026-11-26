@@ -24,10 +24,8 @@ export const TimelineRole: React.FC<TimelineRoleProps> = ({
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      {/* Dot for mobile timeline */}
       <div className="absolute -left-[5px] top-6 h-2.5 w-2.5 rounded-full border border-foreground/30 bg-background md:hidden" />
 
-      {/* Role Header */}
       <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-baseline">
         <h4 className="text-display min-w-0 pb-1 font-serif text-3xl font-normal leading-none tracking-tight md:text-4xl">
           {role.title}

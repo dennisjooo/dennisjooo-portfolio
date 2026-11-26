@@ -21,9 +21,7 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
 
   return (
     <div ref={groupRef} className={`relative w-full ${!isLast ? "mb-0" : ""}`}>
-      {/* Desktop Layout: Grid */}
       <div className="hidden min-h-[50vh] md:grid md:grid-cols-12 md:gap-16">
-        {/* Left Column: Sticky Header */}
         <div className="relative col-span-5">
           <div className="sticky top-32 flex flex-col items-end pb-20 will-change-transform">
             <CompanyHeader
@@ -32,7 +30,6 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
               isActive={isActive}
             />
 
-            {/* Decorative Dot */}
             <div
               className={cn(
                 "absolute right-[-4.5rem] top-6 z-10 hidden h-4 w-4 rounded-full border-2 transition-colors duration-500 lg:block",
@@ -44,7 +41,6 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Content */}
         <div className="col-span-7 border-l border-foreground/10 pb-32 pl-16 pt-8">
           <div className="flex flex-col space-y-20">
             {group.roles.map((role, i) => (

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { DragGripHandle } from "@/components/admin/shared/DragGripHandle";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-import type { Column } from "./AdminTable";
+import type { Column } from "./adminTableTypes";
 
 interface AdminTableDesktopProps<T extends { id?: string | number }> {
   localData: T[];

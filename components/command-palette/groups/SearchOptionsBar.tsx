@@ -80,7 +80,6 @@ export function SearchOptionsBar({
   return (
     <div className="flex flex-col border-b border-border/50 bg-muted/20">
       <div className="flex flex-wrap items-center gap-3 px-4 py-2 text-xs text-muted-foreground">
-        {/* Match options */}
         <div className="flex items-center gap-1.5">
           <SearchOptionButton
             active={caseSensitive}

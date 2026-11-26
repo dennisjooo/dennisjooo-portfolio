@@ -1,4 +1,4 @@
-import { Column } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import type { Certification } from "@/lib/db/schema";
 import { createActionsColumn } from "./createActionsColumn";
 import { createMonoBadgeColumn } from "./createMonoBadgeColumn";

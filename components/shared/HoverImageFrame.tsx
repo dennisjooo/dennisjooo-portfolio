@@ -15,7 +15,6 @@ const roundedClasses = {
   "2xl": "rounded-sm",
 } as const;
 
-/** Hover frame with the shared hairline-and-bloom glow. */
 export const HoverImageFrame = forwardRef<HTMLDivElement, HoverImageFrameProps>(
   function HoverImageFrame(
     { children, className, frameClassName, rounded = "xl", ...frameProps },

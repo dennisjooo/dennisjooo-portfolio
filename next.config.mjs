@@ -43,7 +43,6 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const createConfig = (phase) => {
-  // Section redirects
   const sectionRedirects = [
     { source: "/about", destination: "/#about" },
     { source: "/work", destination: "/#work" },

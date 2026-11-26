@@ -1,4 +1,4 @@
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
 import { SEARCH_BODY_LIMIT } from "@/lib/command-palette/searchLimits";
 import {
   Undo2,
@@ -41,11 +41,17 @@ export interface FilteredWorkExperience extends ProcessedWorkExperience {
   context: string | null;
 }
 
-export let processedProjects: ProcessedProject[] = [];
-
-export function setProcessedProjects(projects: ProcessedProject[]) {
-  processedProjects = projects.map((project) => {
-    const slug = project.slug || createUrlSlug(project.title);
+export function processProjects(
+  projects: Array<{
+    title: string;
+    description: string;
+    slug?: string | null;
+    type: string;
+    blogPost?: string;
+  }>,
+): ProcessedProject[] {
+  return projects.map((project) => {
+    const slug = resolveBlogSlug(project.title, project.slug);
     const path = `/blogs/${slug}`;
     const bodySnippet = (project.blogPost || "").slice(0, SEARCH_BODY_LIMIT);
     const rawContent = `${project.title} ${project.description} ${bodySnippet}`;
@@ -67,12 +73,10 @@ export function setProcessedProjects(projects: ProcessedProject[]) {
   });
 }
 
-export let processedWorkExperience: ProcessedWorkExperience[] = [];
-
-export function setProcessedWorkExperience(
+export function processWorkExperience(
   experiences: ProcessedWorkExperience[],
-) {
-  processedWorkExperience = experiences.map((work) => {
+): ProcessedWorkExperience[] {
+  return experiences.map((work) => {
     const rawContent = `${work.title} ${work.company} ${work.responsibilities.join(" ")}`;
     return {
       id: work.id,

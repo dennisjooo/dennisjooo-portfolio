@@ -1,4 +1,4 @@
-import { Column } from "@/components/admin/layout/AdminTable";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import { AdminActionCell } from "@/components/admin/shared";
 
 export function createActionsColumn<T extends { id: string }>(

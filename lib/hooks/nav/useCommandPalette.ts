@@ -53,7 +53,7 @@ export function useCommandPalette(): UseCommandPaletteReturn {
   const router = useRouter();
   const { copied, copyToClipboard } = useCopyToClipboard();
 
-  useCommandPaletteSearchIndex(open);
+  const { projects, workExperience } = useCommandPaletteSearchIndex(open);
   useCommandPaletteShortcut(setOpen);
 
   const runCommand = React.useCallback((command: () => unknown) => {
@@ -109,7 +109,13 @@ export function useCommandPalette(): UseCommandPaletteReturn {
   );
 
   const { filteredProjects, filteredWorkExperience } =
-    useCommandPaletteFiltering(search, searchScope, searchOptions);
+    useCommandPaletteFiltering(
+      search,
+      searchScope,
+      searchOptions,
+      projects,
+      workExperience,
+    );
 
   return {
     open,

@@ -1,20 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
 import { AdminTablePagination } from "./AdminTablePagination";
 import { AdminTableMobileCards } from "./AdminTableMobileCards";
 import { AdminTableDesktop } from "./AdminTableDesktop";
 import { useAdminTableReorder } from "./useAdminTableReorder";
-
-export interface Column<T> {
-  header: string;
-  accessorKey?: keyof T;
-  cell?: (row: T) => ReactNode;
-  className?: string;
-  hideOnMobile?: boolean;
-  primary?: boolean;
-  sortable?: boolean;
-}
+import type { Column } from "./adminTableTypes";
 
 interface AdminTableProps<T> {
   columns: Column<T>[];
