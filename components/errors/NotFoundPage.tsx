@@ -1,46 +1,49 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useParallax } from "@/lib/hooks/scroll/useParallax";
-import { NotFoundBackground } from "./NotFoundBackground";
-import { NotFoundContent } from "./NotFoundContent";
-import { NotFoundDiagnostics } from "./NotFoundDiagnostics";
-import type { ContactLinkData } from "@/lib/types/contacts";
+import Link from "next/link";
 
 interface NotFoundPageProps {
-  contacts?: ContactLinkData[];
-  embedded?: boolean;
-  error?: { digest?: string; reset: () => void };
+  error?: { reset: () => void };
 }
 
-export function NotFoundPage({ error }: NotFoundPageProps) {
-  const pathname = usePathname();
-  const { mounted, foreground, background } = useParallax();
+const actionClasses =
+  "font-sans text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
 
-  if (!mounted) return null;
+export function NotFoundPage({ error }: NotFoundPageProps) {
+  const isError = Boolean(error);
 
   return (
-    <div className="relative min-h-dvh w-full overflow-hidden bg-background text-foreground">
-      <NotFoundBackground
-        x={background.x}
-        y={background.y}
-        code={error ? "500" : undefined}
-      />
-      <NotFoundContent
-        x={foreground.x}
-        y={foreground.y}
-        onRetry={error?.reset}
-      />
-      <NotFoundDiagnostics
-        rows={[
-          ["Status", error ? "500" : "404"],
-          ["Path", pathname],
-          ...(error
-            ? [["Ref", error.digest ?? "none"] as [string, string]]
-            : []),
-          ["Time", new Date().toISOString().slice(0, 19) + "Z"],
-        ]}
-      />
-    </div>
+    <section className="relative flex min-h-dvh w-full flex-col justify-end bg-background">
+      <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-24 md:pb-20">
+        <h1 className="max-w-none font-serif text-7xl font-semibold leading-[1] tracking-tight text-foreground sm:text-8xl md:text-9xl">
+          <span className="block">{isError ? "That" : "Nothing"}</span>
+          <span className="block">{isError ? "broke." : "here."}</span>
+        </h1>
+        <div className="mt-10 flex items-baseline justify-between gap-6 border-t border-border pt-4 text-sm text-muted-foreground md:mt-14 md:text-base">
+          <p className="font-serif">
+            {isError
+              ? "Something failed on our side. Try again, or head home if it keeps happening."
+              : "This URL doesn't lead anywhere. It may have moved, or never existed."}
+          </p>
+          <p className="shrink-0 font-mono text-xs md:text-sm">
+            {isError ? "500" : "404"}
+          </p>
+        </div>
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+          {error && (
+            <button
+              type="button"
+              onClick={error.reset}
+              className={actionClasses}
+            >
+              Try again
+            </button>
+          )}
+          <Link href="/" className={actionClasses}>
+            Home
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

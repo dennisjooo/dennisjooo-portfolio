@@ -14,5 +14,5 @@ export default function Error({
     console.error(error);
   }, [error]);
 
-  return <NotFoundPage embedded error={{ digest: error.digest, reset }} />;
+  return <NotFoundPage error={{ reset }} />;
 }

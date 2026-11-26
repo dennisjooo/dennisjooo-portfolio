@@ -16,7 +16,7 @@ export default async function NotFound() {
 
   return (
     <PublicShell contacts={contacts}>
-      <NotFoundPage embedded />
+      <NotFoundPage />
     </PublicShell>
   );
 }
