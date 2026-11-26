@@ -40,12 +40,12 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
     <SectionShell
       id="contact"
       spacing="compact"
-      className="flex min-h-[80vh] flex-col"
+      className="flex min-h-[80vh] flex-col pb-0"
       innerClassName="flex flex-1 flex-col"
     >
       <SectionHeader number="06." title="Contact" />
 
-      <div className="flex flex-1 flex-col items-center justify-center py-16">
+      <div className="flex flex-1 flex-col items-center justify-center py-12">
         <m.div
           {...headingMotion}
           viewport={viewportSettings.onceDeep}
