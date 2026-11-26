@@ -8,7 +8,7 @@ The site is austere editorial greyscale: type and hairlines on paper, not poster
 
 - **Keywords:** Editorial, austere, greyscale, hairline, restrained.
 - **Vibe:** Cool ink on paper.
-- **Texture:** None. No noise overlays, grain, mix-blend, glow, or glass.
+- **Texture:** None on the site. No noise overlays, grain, mix-blend, glow, or glass.
 - **Direction:** Geist on near-white paper; light-mode ink is true black (`#000`). Admin shares the same tokens at higher density.
 
 ## 2. Typography Strategy
@@ -18,15 +18,15 @@ Contrast comes from size and face, not decoration.
 ### Primary Pairing
 
 - **Name / Headlines:** _Geist Serif_ (upright, via `font-serif`; it ships no italic, so never add `italic` to it).
-  - _Usage:_ Hero name lockup and section titles. Solid `text-foreground`, no mix-blend.
-  - _Scale:_ Rem / clamp (`--text-display`, `text-4xl`–`text-6xl`). Never `vw` type.
+  - _Usage:_ Hero name lockup, section titles, nav mark, footer copyright. Solid `text-foreground`, no mix-blend.
+  - _Scale:_ Rem steps (`text-7xl`–`text-9xl` in the hero) or the clamp tokens (`--text-display`, `--text-section`). No raw `vw` font sizes outside those clamps.
 - **Body / UI / labels:** _Geist Sans_ (via `font-sans`). Labels are sentence case, untracked, one step smaller than body.
 - **Code / figures:** _Geist Mono_ (via `font-mono`). Section numbers, dates, place lines, kbd, skill names, and other figures. Not body copy or section titles.
 
 ### Styling Rules
 
 - **Display text utility:** Use `text-display` for emphasized headings (maps to `text-foreground`).
-- **Alignment:** Edge-aligned type. Hero is settled: the name, then one sentence. No typing, marquee, or scroll cue.
+- **Alignment:** Edge-aligned type. Hero is settled: the name on two lines, a hairline, then tagline and location in mono (from `lib/constants/site.ts`). No typing, marquee, or scroll cue.
 
 ## 3. Layout & Motion Patterns
 
@@ -35,11 +35,17 @@ Contrast comes from size and face, not decoration.
 All landing sections (except About's scroll container) use `SectionShell` from `components/shared/layout/SectionShell.tsx`:
 
 - **Default spacing:** `py-24 md:py-32`
-- **Compact spacing:** `py-24` (Skills, Contact). Contact is a centered lockup with an icon row.
+- **Compact spacing:** `py-24` (Blog, Contact). Contact is a centered lockup with an icon row.
 - **Inner container:** `container mx-auto px-6 max-w-7xl`
-- **Full bleed:** Avoid. Skills is a typed list inside the container.
+- **Full bleed:** Avoid.
 
-About keeps its GSAP pin/scrub outer wrapper but uses the same inner container classes via `sectionInnerClasses`. Slides come from `site_config.about_sections` JSON (title + body, 1–6 items), edited at `/admin/about`.
+About keeps its GSAP pin/scrub outer wrapper but uses the same inner container classes via `sectionInnerClasses`. Slides come from `site_config.about_sections` JSON (id + title + body, 1–6 items), edited at `/admin/about`.
+
+### Landing Order
+
+Hero → `02.` About (`#about`) → `03.` Work Experience (`#work`) → `04.` Blog (`#projects`) → `05.` Skills & Stacks (`#skills`) → `06.` Contact (`#contact`).
+
+Skills is a typed list: serif category names with mono skill rows. Desktop swaps the list on hover/focus; mobile is an accordion (`AccordionPanel` + `useAccordionAnchor`).
 
 ### The "Peel" Effect
 
@@ -48,26 +54,26 @@ The site uses a vertical stacking context to create depth.
 1. **Sticky Hero:** The Hero section is `position: sticky; top: 0; z-index: 0;`.
 2. **Content Stack:** The main content container is `relative; z-index: 10;` with `bg-background`.
 3. **The Reveal:** As users scroll, the content slides _over_ the Hero (like a card deck).
-4. **Parallax:** The Hero undergoes a subtle GSAP transformation (Scale Down + Blur) as it is covered.
+4. **Recede:** GSAP scrubs `#home-hero-foreground` to `scale: 0.98`, `opacity: 0.88` (no blur) in `components/landing/home/HomeEffects.tsx`. Skipped below 768px and under reduced motion.
 
 ### Smooth Scrolling
 
-- **Engine:** `Lenis` is used for momentum-based smooth scrolling.
+- **Engine:** `Lenis`, public pages only. Not started below 768px, on touch devices, or under reduced motion, so code must work without `window.portfolioLenis`.
 - **Integration:** GSAP `ScrollTrigger` is synced with Lenis to ensure animation frames match the scroll position perfectly.
 
 ### Animation Policy
 
-- **CSS keyframes:** Optional LCP fades (`animate-fade-in`). The hero itself stays still.
-- **Framer Motion:** Section entrances, card hovers, and micro-interactions. Shared variants live in `components/motion/variants.ts`.
+- **CSS keyframes:** Small fades (`animate-fade-in*` in `app/styles/animations.css`, `animate-skill-row-in` in Tailwind config). The hero itself stays still.
+- **Framer Motion:** Section entrances, card hovers, and micro-interactions. Import `m` and shared variants from `@/components/motion` (`LazyMotion`); use `useMotionSafe` / `useInViewReveal` so reduced motion is respected.
 - **GSAP:** Scroll-driven effects only (hero peel, About pin/scrub). About scroll distance scales with CMS section count via `lib/constants/aboutScroll.ts`.
-- **Page transitions:** Smooth transitions; avoid wipe-up plus fade combinations.
+- **Page transitions:** Opacity crossfade (`PageTransition`), off under reduced motion; avoid wipe-up plus fade combinations.
 
 ## 4. Component Guidelines
 
 ### Navbar
 
 - **Floating paper bar:** Centered compact bar (`top-4`), DJ mark, command trigger, theme toggle. No glass, no noise, no section-link row (palette + mobile menu cover that).
-- **States:** Transparent on the hero; hairline + paper fill after scroll. DJ disc fills with ink when the bar is filled.
+- **States:** Transparent on the hero; hairline + paper fill after scroll. DJ disc fills with ink when the bar is filled. Past the hero it hides on scroll down and returns on scroll up (`/` and `/blogs*`).
 
 ### Section Headers
 
@@ -77,12 +83,12 @@ The site uses a vertical stacking context to create depth.
 
 ### Footer
 
-- Centered, compact, sentence-case sans. Hairline on top. Keep the shift-click copyright easter egg.
+- Centered and compact: serif copyright over a mono place line. Hairline on top. Keep the shift-click copyright easter egg.
 
 ### Mobile Considerations
 
 - **Alignment:** Prefer left-aligned type on small screens.
-- **Scale:** Hero type stays on the rem/clamp scale; do not reintroduce `vw`.
+- **Scale:** Hero type stays on the rem scale; do not reintroduce `vw`.
 
 ### Scroll Components
 
@@ -97,9 +103,10 @@ The site uses a vertical stacking context to create depth.
 - **Motion:** GSAP + Framer Motion + Lenis
 - **Fonts:** the `geist` package via `app/fonts.ts` (Geist Sans, Geist Mono, Geist Serif; Serif is not on Google Fonts). Tailwind maps `font-sans` / `font-mono` / `font-serif` to `--font-geist-sans` / `--font-geist-mono` / `--font-geist-serif`. The favicon, apple icon and OG images use Geist Serif too, from a TTF copy in `lib/og/fonts/` loaded by `lib/og/serifFont.ts` (next/og cannot read woff2)
 - **Auth / data:** Clerk, Neon Postgres, Drizzle ORM, Vercel Blob for media
-- **Blob paths:** `blog/{slug}/`
+- **Blob paths:** blog media under `blog/{slug}/` (`lib/utils/blobPaths.ts`). Public Blob SVGs are proxied through `/api/blob-media` via `publicImageSrc`
+- **Auth boundary:** `proxy.ts` (Clerk) protects `/admin`; write API routes call `requireAuth`
 - **Build pipeline:** `bump-version.mjs` → `generate-site-files` → `next build`; date-based versioning
-- **Hygiene:** `npm run check` runs lint, format:check, and knip
+- **Hygiene:** `npm run check` runs lint, format:check, and knip. There is no test suite
 - **Analytics:** Vercel Analytics and Speed Insights gated on `VERCEL=1`
 
 ## 6. Domain Vocabulary
@@ -119,17 +126,20 @@ The same content entity uses different names by layer. Use this table when namin
 
 ## 7. Content & Data Layers
 
-| Directory        | Purpose                                                                       |
-| ---------------- | ----------------------------------------------------------------------------- |
-| `lib/content/`   | Static marketing fallbacks (hero, nav, skills, about defaults, contact links) |
-| `lib/constants/` | Infra config (cache, site URL, blog status, scroll tuning, icons)             |
-| `lib/data/`      | Server-only DB fetchers with caching (`blogs.ts`, `site.ts`)                  |
+| Directory        | Purpose                                                                          |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `lib/content/`   | Static content and fallbacks (nav, skills, about defaults, contact links)        |
+| `lib/constants/` | Site identity and copy (`site.ts`), cache, blog status, scroll tuning, icon maps |
+| `lib/data/`      | Server-only DB fetchers with caching (`blogs.ts`, `site.ts`)                     |
+| `lib/db/`        | Drizzle schema and queries                                                       |
+| `lib/api/`       | Route helpers and CRUD / list / reorder factories                                |
+| `lib/hooks/`     | Client hooks, grouped by `data`, `domain`, `nav`, `scroll`, `ui`                 |
 
 ## 8. Icon Libraries
 
-- `@heroicons/react` — Admin UI
-- `lucide-react` — Command palette, theme toggle, shared components
-- `react-icons` — Contact links (via `lib/constants/contactIcons.ts`)
+- `@heroicons/react` — Admin UI, plus a few public spots (certification card, preview banner)
+- `lucide-react` — Command palette, navbar, shared UI primitives, some admin table chrome
+- `react-icons` — Contact links (via `lib/constants/contactIcons.ts`), theme toggles, GitHub project link
 
 ## 9. Admin & Code Organization
 
@@ -155,6 +165,7 @@ The same content entity uses different names by layer. Use this table when namin
 ## Learned Workspace Facts
 
 - `design.md` is the locked visual system; this file (`AGENTS.md`) holds agent memory and technical patterns
+- Skill icons load from `cdn.simpleicons.org` (slugs in `components/landing/skills/utils.ts`)
 - Site toasts use `SiteToaster` + `siteToast` (`components/shared/feedback/SiteToaster.tsx`, `lib/ui/siteToast.ts`); greyscale paper, no Sonner `richColors`
 - Easter egg secrets live in `lib/easter-eggs/` registry with `localStorage` unlock tracking
 - Sonner `theme` must sync with next-themes `resolvedTheme`; avoid `::before`/`::after` on toast shells (use inset box-shadow, `expand={false}`)
