@@ -102,7 +102,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   />
 
                   <span
-                    className={`truncate font-sans text-sm transition-colors duration-200 ease-in-out ${
+                    className={`truncate font-serif text-sm transition-colors duration-200 ease-in-out ${
                       isActive
                         ? "font-medium text-accent"
                         : "text-muted-foreground group-hover:text-foreground"
