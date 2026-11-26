@@ -7,7 +7,11 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { fontClassNames } from "./fonts";
 import { rootMetadata } from "./rootMetadata";
-import { SSR_CRITICAL_CSS, SSR_THEME_SCRIPT } from "./ssrLoaderAssets";
+import {
+  SSR_CRITICAL_CSS,
+  SSR_SCROLL_LOCK_SCRIPT,
+  SSR_THEME_SCRIPT,
+} from "./ssrLoaderAssets";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -51,6 +55,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="ssr-mark">DJ</div>
           </div>
         </div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: SSR_SCROLL_LOCK_SCRIPT,
+          }}
+        />
         <Providers>{children}</Providers>
         {process.env.VERCEL === "1" && (
           <>

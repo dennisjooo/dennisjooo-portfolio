@@ -8,7 +8,8 @@ export const SSR_CRITICAL_CSS = [
   `@media(prefers-color-scheme:dark){html,body{background-color:${PAPER_DARK}}}`,
   `html.dark,html.dark body{background-color:${PAPER_DARK}!important}`,
   `html.light,html.light body{background-color:${PAPER_LIGHT}!important}`,
-  `#__ssr_cover{position:fixed;inset:0;z-index:99999;background:${PAPER_LIGHT};transition:opacity var(--dur-long,420ms) var(--ease-out,ease);display:flex;flex-direction:column;align-items:center;justify-content:center}`,
+  `html:has(#__ssr_cover:not(.hidden)),html:has(#__ssr_cover:not(.hidden)) body{overflow-y:hidden;overscroll-behavior:none}`,
+  `#__ssr_cover{position:fixed;inset:0;z-index:99999;background:${PAPER_LIGHT};transition:opacity var(--dur-long,420ms) var(--ease-out,ease);display:flex;flex-direction:column;align-items:center;justify-content:center;overscroll-behavior:none;touch-action:none}`,
   `@media(prefers-color-scheme:dark){#__ssr_cover{background:${PAPER_DARK}}}`,
   `html.dark #__ssr_cover{background:${PAPER_DARK}!important}`,
   `html.light #__ssr_cover{background:${PAPER_LIGHT}!important}`,
@@ -24,3 +25,5 @@ export const SSR_CRITICAL_CSS = [
 ].join("");
 
 export const SSR_THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme'),d=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches),c=d?'${PAPER_DARK}':'${PAPER_LIGHT}',h=document.documentElement;h.style.backgroundColor=c;h.style.colorScheme=d?'dark':'light';if(d)h.classList.add('dark');else h.classList.add('light');var v=document.getElementById('__ssr_cover');if(v){v.style.background=c;if(sessionStorage.getItem('portfolio-has-visited')==='true')v.classList.add('hidden')}}catch(e){}})()`;
+
+export const SSR_SCROLL_LOCK_SCRIPT = `(function(){try{var v=document.getElementById('__ssr_cover');if(!v)return;try{if(sessionStorage.getItem('portfolio-has-visited')==='true')v.classList.add('hidden')}catch(e){}function block(e){if(!v.classList.contains('hidden'))e.preventDefault()}document.addEventListener('wheel',block,{passive:false,capture:true});document.addEventListener('touchmove',block,{passive:false,capture:true});document.addEventListener('keydown',function(e){if(v.classList.contains('hidden'))return;var k=e.key;if(k==='ArrowUp'||k==='ArrowDown'||k==='PageUp'||k==='PageDown'||k==='Home'||k==='End'||k===' ')e.preventDefault()},true)}catch(e){}})()`;
