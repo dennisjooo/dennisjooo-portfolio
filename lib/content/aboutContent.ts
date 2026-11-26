@@ -1,10 +1,6 @@
-export interface ContentSection {
-  id: string;
-  title: string;
-  body: string;
-}
+import type { AboutContent, ContentSection } from "@/lib/types/about";
 
-export type AboutContent = ContentSection[];
+export type { AboutContent, ContentSection };
 
 export const ABOUT_SECTION_MIN = 1;
 export const ABOUT_SECTION_MAX = 6;

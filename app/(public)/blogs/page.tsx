@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { BackToTop } from "@/components/shared";
 import { BlogsTabs } from "@/components/blogs/list/BlogsTabs";
 import { getBlogs } from "@/lib/data/blogs";
@@ -6,15 +5,6 @@ import { PUBLIC_LIST_PAGE_SIZE } from "@/lib/constants/blogsList";
 import { SITE_URL } from "@/lib/constants/site";
 
 export const revalidate = 60;
-
-export const metadata: Metadata = {
-  title: "Blog & Certifications | Dennis' Portfolio",
-  description:
-    "Explore Dennis' projects, blog posts, and professional certifications.",
-  alternates: {
-    canonical: "/blogs",
-  },
-};
 
 export default async function ProjectsAndCertificationsPage() {
   const initialBlogsData = await getBlogs(null, PUBLIC_LIST_PAGE_SIZE, "all");

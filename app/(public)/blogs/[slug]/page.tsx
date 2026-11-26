@@ -31,12 +31,12 @@ export async function generateMetadata({
 
   if (!project) {
     return {
-      title: "Project Not Found | Dennis' Portfolio",
+      title: "Not found",
     };
   }
 
   return {
-    title: `${project.title} | Dennis' Portfolio`,
+    title: project.title,
     description: project.description,
     alternates: {
       canonical: `/blogs/${slug}`,

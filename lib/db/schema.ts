@@ -8,22 +8,13 @@ import {
   json,
 } from "drizzle-orm/pg-core";
 import { DEFAULT_PROFILE_IMAGE } from "@/lib/constants/site";
+import type { ContentSection } from "@/lib/types/about";
+import { BLOG_STATUSES, BLOG_TYPES } from "@/lib/types/blog";
+import { CONTACT_ICON_NAMES } from "@/lib/types/contacts";
 
-export const blogTypeEnum = pgEnum("blog_type", ["project", "blog"]);
-export const blogStatusEnum = pgEnum("blog_status", [
-  "draft",
-  "scheduled",
-  "published",
-]);
-export const contactIconEnum = pgEnum("contact_icon", [
-  "mail",
-  "github",
-  "linkedin",
-  "twitter",
-  "instagram",
-  "youtube",
-  "website",
-]);
+export const blogTypeEnum = pgEnum("blog_type", BLOG_TYPES);
+export const blogStatusEnum = pgEnum("blog_status", BLOG_STATUSES);
+export const contactIconEnum = pgEnum("contact_icon", CONTACT_ICON_NAMES);
 
 export const blogs = pgTable("blogs", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -77,9 +68,7 @@ export const certifications = pgTable("certifications", {
 export const siteConfig = pgTable("site_config", {
   id: uuid("id").defaultRandom().primaryKey(),
   profileImageUrl: text("profile_image_url").default(DEFAULT_PROFILE_IMAGE),
-  aboutSections: json("about_sections")
-    .$type<Array<{ id: string; title: string; body: string }>>()
-    .default([]),
+  aboutSections: json("about_sections").$type<ContentSection[]>().default([]),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

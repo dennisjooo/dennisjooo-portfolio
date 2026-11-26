@@ -10,6 +10,7 @@ import {
 import { getFoundSecretIds, markSecretFound } from "@/lib/easter-eggs/unlock";
 import { siteToast } from "@/lib/ui/siteToast";
 import { cn } from "@/lib/utils";
+import { SITE_MARK } from "@/lib/constants/site";
 
 interface NavLogoProps {
   onNavigate: (sectionId: string) => void;
@@ -103,7 +104,7 @@ export const NavLogo = ({ onNavigate, showCircle }: NavLogoProps) => {
             showCircle ? "text-background" : "text-foreground",
           )}
         >
-          DJ
+          {SITE_MARK}
         </span>
       </button>
     </div>

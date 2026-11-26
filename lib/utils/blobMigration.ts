@@ -1,5 +1,9 @@
 import { copy, del } from "@vercel/blob";
 import { extractBlobUrls } from "@/lib/utils/blobUrls";
+import {
+  blogBlobObjectPath,
+  blogBlobPathnamePrefix,
+} from "@/lib/utils/blobPaths";
 
 export function extractBlobFilename(blobUrl: string): string {
   const url = new URL(blobUrl);
@@ -9,7 +13,7 @@ export function extractBlobFilename(blobUrl: string): string {
 
 export function isUnderSlug(blobUrl: string, slug: string): boolean {
   const url = new URL(blobUrl);
-  const prefix = `/blog/${slug}/`;
+  const prefix = blogBlobPathnamePrefix(slug);
   if (!url.pathname.startsWith(prefix)) return false;
   const rest = url.pathname.slice(prefix.length);
   return !rest.includes("/");
@@ -20,7 +24,7 @@ async function copyBlobToSlug(
   newSlug: string,
 ): Promise<string> {
   const filename = extractBlobFilename(oldUrl);
-  const newPath = `blog/${newSlug}/${filename}`;
+  const newPath = blogBlobObjectPath(newSlug, filename);
 
   const newBlob = await copy(oldUrl, newPath, {
     access: "public",

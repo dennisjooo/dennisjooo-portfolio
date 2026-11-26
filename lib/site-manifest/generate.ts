@@ -1,34 +1,22 @@
 import packageJson from "@/package.json";
-import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/constants/site";
+import {
+  SITE_PORTFOLIO_NAME,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/constants/site";
 import { defaultContactLinks } from "@/lib/content/defaultContactLinks";
 import { resolveAboutContent } from "@/lib/content/aboutContent";
 import { skillCategories } from "@/lib/content/skillContent";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { normalizeResponsibilities } from "@/lib/db/siteQueries";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
 import type { SiteManifestData } from "./types";
 import type { SitemapEntry } from "./types";
-
-function blogSlug(title: string, slug: string | null): string {
-  return slug || createUrlSlug(title);
-}
-
-function formatDateForXml(date: Date): string {
-  return date.toISOString().split("T")[0]!;
-}
-
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
 
 export function buildSitemapEntries(data: SiteManifestData): SitemapEntry[] {
   const now = new Date();
   const blogPages: SitemapEntry[] = [...data.projects, ...data.blogPosts].map(
     (entry) => ({
-      url: `${SITE_URL}/blogs/${blogSlug(entry.title, entry.slug)}`,
+      url: `${SITE_URL}/blogs/${resolveBlogSlug(entry.title, entry.slug)}`,
       lastModified: new Date(entry.date),
       changeFrequency: "monthly",
       priority: entry.type === "project" ? 0.6 : 0.5,
@@ -59,26 +47,6 @@ export function buildSitemapEntries(data: SiteManifestData): SitemapEntry[] {
   return [...staticPages, ...blogPages];
 }
 
-export function buildSitemapXml(entries: SitemapEntry[]): string {
-  const urls = entries
-    .map(
-      (entry) => `  <url>
-    <loc>${escapeXml(entry.url)}</loc>
-    <lastmod>${formatDateForXml(entry.lastModified)}</lastmod>
-    <changefreq>${entry.changeFrequency}</changefreq>
-    <priority>${entry.priority.toFixed(1)}</priority>
-  </url>`,
-    )
-    .join("\n");
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<!-- Site build version: ${escapeXml(packageJson.version)} -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>
-`;
-}
-
 function aboutText(data: SiteManifestData): string {
   const sections = resolveAboutContent(data.siteConfig?.aboutSections);
   return sections
@@ -92,7 +60,7 @@ function formatProjectSection(data: SiteManifestData): string {
   }
 
   const sections = data.projects.map((project) => {
-    const slug = blogSlug(project.title, project.slug);
+    const slug = resolveBlogSlug(project.title, project.slug);
     const links =
       project.links && project.links.length > 0
         ? `\n**Links:**\n${project.links.map((link) => `- ${link.text}: ${link.url}`).join("\n")}`
@@ -114,7 +82,7 @@ function formatBlogSection(data: SiteManifestData): string {
   }
 
   const sections = data.blogPosts.map((post) => {
-    const slug = blogSlug(post.title, post.slug);
+    const slug = resolveBlogSlug(post.title, post.slug);
     return `### ${post.title}
 ${post.description}
 
@@ -132,7 +100,7 @@ function formatWorkExperience(data: SiteManifestData): string {
   }
 
   const sections = data.workExperiences.map((entry) => {
-    const items = entry.responsibilities ?? [];
+    const items = normalizeResponsibilities(entry.responsibilities);
     const responsibilities =
       items.length > 0
         ? `\n\n${items.map((item) => `- ${item}`).join("\n")}`
@@ -195,7 +163,7 @@ export function buildLlmsTxt(
 ): string {
   const about = aboutText(data);
   const sections = [
-    `# ${SITE_NAME}'s Portfolio`,
+    `# ${SITE_PORTFOLIO_NAME}`,
     `> ${siteDescription}`,
     `- **Build version:** v${packageJson.version}`,
     about,

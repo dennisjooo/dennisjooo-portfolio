@@ -1,4 +1,4 @@
-import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants/site";
+import { SITE_LOCATION, SITE_NAME, SITE_TAGLINE } from "@/lib/constants/site";
 
 const Hero: React.FC = () => {
   const [first, ...rest] = SITE_NAME.split(" ");
@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
         </h1>
         <div className="mt-10 flex items-baseline justify-between gap-6 border-t border-border pt-4 text-sm text-muted-foreground md:mt-14 md:text-base">
           <p className="font-mono text-xs md:text-sm">{SITE_TAGLINE}</p>
-          <p className="font-mono text-xs md:text-sm">Jakarta, Indonesia</p>
+          <p className="font-mono text-xs md:text-sm">{SITE_LOCATION}</p>
         </div>
       </div>
     </section>

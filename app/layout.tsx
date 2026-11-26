@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { fontClassNames } from "./fonts";
+import { SITE_MARK } from "@/lib/constants/site";
 import { rootMetadata } from "./rootMetadata";
 import {
   SSR_CRITICAL_CSS,
@@ -52,7 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="bg-background text-foreground" suppressHydrationWarning>
         <div id="__ssr_cover" aria-hidden="true">
           <div id="__ssr_loader">
-            <div className="ssr-mark">DJ</div>
+            <div className="ssr-mark">{SITE_MARK}</div>
           </div>
         </div>
         <script

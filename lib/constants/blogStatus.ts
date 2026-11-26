@@ -1,10 +1,12 @@
-export const BLOG_STATUS_LABELS: Record<string, string> = {
+import type { BlogStatus } from "@/lib/types/blog";
+
+export const BLOG_STATUS_LABELS: Record<BlogStatus, string> = {
   draft: "Draft",
   scheduled: "Scheduled",
   published: "Published",
 };
 
-export const BLOG_STATUS_STYLES: Record<string, string> = {
+export const BLOG_STATUS_STYLES: Record<BlogStatus, string> = {
   draft:
     "bg-muted/60 text-muted-foreground dark:bg-muted/30 dark:text-muted-foreground",
   scheduled:

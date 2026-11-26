@@ -2,6 +2,10 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://dennisjooo.vercel.app";
 
 export const SITE_NAME = "Dennis Jonathan";
+export const SITE_MARK = "DJ";
+export const SITE_TITLE = "Dennis' Portfolio";
+export const SITE_PORTFOLIO_NAME = `${SITE_NAME}'s Portfolio`;
+export const SITE_LOCATION = "Jakarta, Indonesia";
 
 export const SITE_TAGLINE = "Okay Developer & Human Being";
 

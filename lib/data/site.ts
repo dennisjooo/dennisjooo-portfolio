@@ -1,6 +1,5 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
-import { desc, asc } from "drizzle-orm";
 import {
   db,
   siteConfig,
@@ -11,6 +10,12 @@ import {
 import { CACHE_CONFIG, CACHE_TAGS } from "@/lib/constants/cache";
 import type { TimelineItemData } from "@/lib/types/workExperience";
 import type { ContactLinkData } from "@/lib/types/contacts";
+import {
+  contactsOrderBy,
+  toContactLink,
+  toTimelineItem,
+  workExperienceOrderBy,
+} from "@/lib/db/siteQueries";
 import {
   resolveAboutContent,
   type AboutContent,
@@ -36,13 +41,9 @@ export const getWorkExperience = unstable_cache(
       const experiences = await db
         .select()
         .from(workExperiences)
-        .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt));
+        .orderBy(...workExperienceOrderBy());
 
-      return experiences.map((exp) => ({
-        ...exp,
-        responsibilities: exp.responsibilities ?? [],
-        order: exp.order ?? undefined,
-      }));
+      return experiences.map(toTimelineItem);
     } catch (error) {
       console.error("Failed to fetch work experience", error);
       return [];
@@ -58,13 +59,9 @@ export const getContacts = unstable_cache(
       const contactItems = await db
         .select()
         .from(contacts)
-        .orderBy(asc(contacts.order), desc(contacts.createdAt));
+        .orderBy(...contactsOrderBy());
 
-      return contactItems.map((contact) => ({
-        href: contact.href,
-        ariaLabel: contact.label,
-        icon: contact.icon,
-      }));
+      return contactItems.map(toContactLink);
     } catch (error) {
       console.error("Failed to fetch contacts", error);
       return [];

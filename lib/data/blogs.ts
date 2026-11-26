@@ -8,8 +8,9 @@ import {
   PUBLIC_LIST_PAGE_SIZE,
 } from "@/lib/constants/blogsList";
 import { queryPublicBlogListItems, toBlogListItem } from "@/lib/db/blogQueries";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
+import type { BlogType } from "@/lib/types/blog";
 import type { BlogListItem } from "@/lib/types/blogList";
 import type { PaginationResult } from "@/lib/types/pagination";
 
@@ -35,7 +36,7 @@ export async function findBlogBySlug(
     .where(filter);
 
   const fallback = allSlugs.find(
-    (row) => createUrlSlug(row.title) === slug || row.slug === slug,
+    (row) => resolveBlogSlug(row.title, row.slug) === slug,
   );
 
   if (fallback) {
@@ -72,7 +73,7 @@ export const getBlogs = unstable_cache(
   async (
     cursor: string | null = null,
     limit: number = PUBLIC_LIST_PAGE_SIZE,
-    type?: "blog" | "project" | "all",
+    type?: BlogType | "all",
   ): Promise<BlogsResult> => {
     try {
       const { rows, total, hasMore, nextCursor } =

@@ -4,3 +4,7 @@ export const createUrlSlug = (title: string): string => {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 };
+
+export function resolveBlogSlug(title: string, slug?: string | null): string {
+  return slug || createUrlSlug(title);
+}

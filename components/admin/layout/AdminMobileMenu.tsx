@@ -12,9 +12,11 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
+  ADMIN_CONSOLE_LABEL,
   adminNavGroups,
   formatMobileNavGroupLabel,
 } from "@/lib/constants/adminNav";
+import { SITE_NAME } from "@/lib/constants/site";
 
 export function AdminMobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +38,9 @@ export function AdminMobileMenu() {
       >
         <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <h1 className="font-serif text-lg">Dennis Jonathan</h1>
+            <h1 className="font-serif text-lg">{SITE_NAME}</h1>
             <p className="font-sans text-xs text-muted-foreground/60">
-              Mission Control
+              {ADMIN_CONSOLE_LABEL}
             </p>
           </div>
           <button

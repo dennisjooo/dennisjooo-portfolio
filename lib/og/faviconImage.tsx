@@ -1,3 +1,4 @@
+import { SITE_MARK } from "@/lib/constants/site";
 import { serifFontFamily } from "@/lib/og/serifFont";
 
 const DISC = "#fafafa";
@@ -52,7 +53,7 @@ export function FaviconImage({ canvasSize }: FaviconImageProps) {
           paddingLeft: opticalShift,
         }}
       >
-        DJ
+        {SITE_MARK}
       </div>
     </div>
   );

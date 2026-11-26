@@ -9,6 +9,8 @@ import {
   LinkIcon,
 } from "@heroicons/react/24/outline";
 
+export const ADMIN_CONSOLE_LABEL = "Mission Control";
+
 export type AdminNavItem = {
   name: string;
   href: string;

@@ -1,4 +1,6 @@
-export type BlogListType = "project" | "blog";
+import type { BlogType } from "./blog";
+
+export type BlogListType = BlogType;
 
 export interface BlogListItem {
   id: string;
@@ -7,6 +9,6 @@ export interface BlogListItem {
   imageUrl: string | null;
   date: string;
   type: BlogListType;
-  slug: string | null;
+  slug: string;
   readTimeMinutes: number;
 }

@@ -1,5 +1,6 @@
 /**
- * Regenerates public/llms.txt and public/sitemap.xml from live database content.
+ * Regenerates public/llms.txt from live database content.
+ * Sitemap URLs come from app/sitemap.ts at request time.
  *
  * Usage:
  *   npx tsx scripts/generate-site-files.ts
@@ -17,11 +18,7 @@ import * as schema from "../lib/db/schema";
 import packageJson from "../package.json";
 import { SITE_DESCRIPTION } from "../lib/constants/site";
 import { fetchSiteData } from "../lib/site-manifest/fetchSiteData";
-import {
-  buildLlmsTxt,
-  buildSitemapEntries,
-  buildSitemapXml,
-} from "../lib/site-manifest/generate";
+import { buildLlmsTxt } from "../lib/site-manifest/generate";
 
 dotenv.config({ path: ".env.local" });
 
@@ -34,7 +31,6 @@ if (!DATABASE_URL) {
 }
 
 const LLMS_PATH = "public/llms.txt";
-const SITEMAP_PATH = "public/sitemap.xml";
 
 async function main() {
   const sql = neon(DATABASE_URL);
@@ -44,22 +40,16 @@ async function main() {
   const data = await fetchSiteData(db);
 
   const llmsTxt = buildLlmsTxt(data, SITE_DESCRIPTION);
-  const sitemapEntries = buildSitemapEntries(data);
-  const sitemapXml = buildSitemapXml(sitemapEntries);
-  const urlCount = sitemapEntries.length;
 
   if (dryRun) {
     console.log("\n--- Dry run: no files written ---");
     console.log(`Would write ${LLMS_PATH} (${llmsTxt.length} chars)`);
-    console.log(`Would write ${SITEMAP_PATH} (${urlCount} URLs)`);
     return;
   }
 
   writeFileSync(LLMS_PATH, llmsTxt, "utf8");
-  writeFileSync(SITEMAP_PATH, sitemapXml, "utf8");
 
   console.log(`Wrote ${LLMS_PATH}`);
-  console.log(`Wrote ${SITEMAP_PATH} (${urlCount} URLs)`);
   console.log(`  Build version: ${packageJson.version}`);
   console.log(`  Projects: ${data.projects.length}`);
   console.log(`  Blog posts: ${data.blogPosts.length}`);

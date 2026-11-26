@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import type { Blog } from "@/lib/db/schema";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { blogBlobFolder } from "@/lib/utils/blobPaths";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
 import { toPreviewSlug } from "@/lib/db/blogPreview";
 import { useImageUpload } from "@/lib/hooks/domain/useImageUpload";
 import { useFormDirty } from "@/components/admin/hooks/useUnsavedChanges";
@@ -41,9 +42,9 @@ export function useBlogForm({ initialData, onSubmit }: UseBlogFormOptions) {
 
   useFormDirty(formData);
 
-  const effectiveSlug = formData.slug || createUrlSlug(formData.title || "");
+  const effectiveSlug = resolveBlogSlug(formData.title || "", formData.slug);
   const canUploadImages = Boolean(effectiveSlug);
-  const imageFolder = effectiveSlug ? `blog/${effectiveSlug}` : undefined;
+  const imageFolder = effectiveSlug ? blogBlobFolder(effectiveSlug) : undefined;
 
   const { uploading, upload: uploadCoverImage } = useImageUpload({
     folder: imageFolder,

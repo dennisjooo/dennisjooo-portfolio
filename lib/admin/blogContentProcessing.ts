@@ -1,5 +1,6 @@
 import { buildUploadPayload } from "@/lib/utils/blobUpload";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { blogBlobFolder } from "@/lib/utils/blobPaths";
+import { createUrlSlug, resolveBlogSlug } from "@/lib/utils/urlHelpers";
 
 export interface PendingImage {
   id: string;
@@ -61,8 +62,8 @@ export async function processBlogContent(
             ? `${createUrlSlug(context.title)}-${pendingImage.file.name}`
             : pendingImage.file.name;
 
-          const slug = context.slug || createUrlSlug(context.title || "");
-          const folder = slug ? `blog/${slug}` : undefined;
+          const slug = resolveBlogSlug(context.title || "", context.slug);
+          const folder = slug ? blogBlobFolder(slug) : undefined;
           const params = new URLSearchParams({ filename, contentHash });
           if (folder) params.set("folder", folder);
 

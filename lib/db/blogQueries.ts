@@ -14,6 +14,8 @@ import { visibleBlogsFilter } from "@/lib/db/blogFilters";
 import { keysetWhere, sliceCursorPage } from "@/lib/api/cursor";
 import { PREVIEW_SLUG_SUFFIX } from "@/lib/db/blogPreview";
 import { calculateReadTime } from "@/lib/utils/projectFormatting";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
+import type { BlogType } from "@/lib/types/blog";
 import type { BlogListItem } from "@/lib/types/blogList";
 
 export type BlogListVisibility = "public" | "admin-all" | "admin-status";
@@ -21,7 +23,7 @@ export type BlogListVisibility = "public" | "admin-all" | "admin-status";
 export interface BlogListQueryParams {
   limit: number;
   cursor?: string | null;
-  type?: "blog" | "project" | "all" | null;
+  type?: BlogType | "all" | null;
   status?: "draft" | "scheduled" | "published" | null;
   searchQuery?: string | null;
   sortBy?: string | null;
@@ -43,6 +45,7 @@ export function toBlogListItem(row: {
   const { blogPost, ...rest } = row;
   return {
     ...rest,
+    slug: resolveBlogSlug(row.title, row.slug),
     readTimeMinutes: calculateReadTime(blogPost),
   };
 }
@@ -126,7 +129,7 @@ export async function queryBlogList(params: BlogListQueryParams) {
 export async function queryPublicBlogListItems(
   cursor: string | null,
   limit: number,
-  type?: "blog" | "project" | "all",
+  type?: BlogType | "all",
 ) {
   const { rows, ...rest } = await queryBlogList({
     limit,

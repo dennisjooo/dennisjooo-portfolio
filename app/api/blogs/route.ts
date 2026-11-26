@@ -14,6 +14,7 @@ import {
 } from "@/lib/api/apiHelpers";
 import { db } from "@/lib/db";
 import { parseCursorParams } from "@/lib/api/cursor";
+import { isBlogStatus, isBlogType } from "@/lib/types/blog";
 
 export async function GET(request: Request) {
   try {
@@ -23,20 +24,11 @@ export async function GET(request: Request) {
     const statusParam = searchParams.get("status");
     const searchQuery = searchParams.get("q");
 
-    const validTypes = ["blog", "project"] as const;
-    const type =
-      typeParam && validTypes.includes(typeParam as (typeof validTypes)[number])
-        ? (typeParam as "blog" | "project")
-        : null;
+    const type = isBlogType(typeParam) ? typeParam : null;
 
     const { userId } = await auth();
-    const validStatuses = ["draft", "scheduled", "published"] as const;
     const adminStatus =
-      userId &&
-      statusParam &&
-      validStatuses.includes(statusParam as (typeof validStatuses)[number])
-        ? (statusParam as "draft" | "scheduled" | "published")
-        : null;
+      userId && isBlogStatus(statusParam) ? statusParam : null;
 
     if (!userId && !adminStatus && !searchQuery) {
       const result = await getBlogs(cursor, limit, type ?? "all");

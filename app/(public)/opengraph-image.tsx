@@ -1,5 +1,10 @@
 import { ImageResponse } from "next/og";
-import { getSiteHostname, SITE_NAME, SITE_TAGLINE } from "@/lib/constants/site";
+import {
+  getSiteHostname,
+  SITE_LOCATION,
+  SITE_NAME,
+  SITE_TAGLINE,
+} from "@/lib/constants/site";
 import { loadOgFonts } from "@/lib/og/serifFont";
 import {
   OG_SIZE,
@@ -39,7 +44,7 @@ export default async function OgImage() {
           }}
         >
           <OgMonoLabel muted>A Portfolio</OgMonoLabel>
-          <OgMonoLabel muted>Jakarta, Indonesia</OgMonoLabel>
+          <OgMonoLabel muted>{SITE_LOCATION}</OgMonoLabel>
         </div>
 
         <div

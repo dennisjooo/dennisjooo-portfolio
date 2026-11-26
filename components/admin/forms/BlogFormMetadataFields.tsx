@@ -1,6 +1,8 @@
 import type { Blog } from "@/lib/db/schema";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormField } from "@/components/admin/shared/FormField";
+import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
+import { BLOG_STATUSES, BLOG_TYPES } from "@/lib/types/blog";
 
 interface BlogFormMetadataFieldsProps {
   formData: Partial<Blog>;
@@ -54,8 +56,11 @@ export function BlogFormMetadataFields({
             onChange={onChange}
             className={formStyles.input}
           >
-            <option value="blog">Blog Post</option>
-            <option value="project">Project</option>
+            {BLOG_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type === "project" ? "Project" : "Blog Post"}
+              </option>
+            ))}
           </select>
         </FormField>
 
@@ -66,9 +71,11 @@ export function BlogFormMetadataFields({
             onChange={onChange}
             className={formStyles.input}
           >
-            <option value="draft">Draft</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="published">Published</option>
+            {BLOG_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {BLOG_STATUS_LABELS[status]}
+              </option>
+            ))}
           </select>
         </FormField>
       </div>

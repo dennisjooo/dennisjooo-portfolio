@@ -1,1 +1,3 @@
 export const SEARCH_BODY_LIMIT = 1200;
+export const SEARCH_INDEX_BLOG_LIMIT = 50;
+export const SEARCH_INDEX_WORK_LIMIT = 40;

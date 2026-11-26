@@ -1,4 +1,3 @@
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
 import { formatProjectDate } from "@/lib/utils/projectFormatting";
 import { ContentCard, PaginatedList } from "@/components/shared";
 import { InlineSpinner } from "@/components/shared/feedback/InlineSpinner";
@@ -65,7 +64,7 @@ export default function BlogsList({
             wide
             title={featuredItem.title}
             description={featuredItem.description}
-            slug={featuredItem.slug || createUrlSlug(featuredItem.title)}
+            slug={featuredItem.slug}
             date={formatProjectDate(featuredItem.date, true)}
             imageUrl={featuredItem.imageUrl ?? undefined}
             displayIndex={1}
@@ -98,7 +97,7 @@ export default function BlogsList({
             <ContentCard
               title={title}
               description={description}
-              slug={slug || createUrlSlug(title)}
+              slug={slug}
               date={formatProjectDate(date, true)}
               imageUrl={imageUrl ?? undefined}
               index={index}

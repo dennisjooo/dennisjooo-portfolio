@@ -9,7 +9,7 @@ import {
 } from "@/lib/api/apiHelpers";
 import { getPreviewExclusiveBlobUrls } from "@/lib/api/blogHelpers";
 import { isPreviewSlug, toPreviewSlug } from "@/lib/db/blogPreview";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
 
 export async function POST(request: Request) {
   const authResult = await requireAuth();
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       return errorResponse("Title is required for preview");
     }
 
-    const baseSlug = body.slug || createUrlSlug(body.title);
+    const baseSlug = resolveBlogSlug(body.title, body.slug);
     const previewSlug = toPreviewSlug(baseSlug);
 
     const [existing] = await db

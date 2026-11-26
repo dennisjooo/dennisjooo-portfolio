@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { siteToast } from "@/lib/ui/siteToast";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
+import { BLOG_STATUSES } from "@/lib/types/blog";
 
 interface BlogBulkActionsProps {
   selectedIds: Set<string>;
@@ -82,9 +84,11 @@ export function BlogBulkActions({
           className="rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none transition-colors focus:ring-2 focus:ring-accent/20"
         >
           <option value="">Set status...</option>
-          <option value="draft">Draft</option>
-          <option value="scheduled">Scheduled</option>
-          <option value="published">Published</option>
+          {BLOG_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {BLOG_STATUS_LABELS[status]}
+            </option>
+          ))}
         </select>
         {bulkStatus === "scheduled" && (
           <input

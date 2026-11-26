@@ -1,10 +1,10 @@
 import { contacts } from "@/lib/db";
-import { asc, desc } from "drizzle-orm";
 import { createListRouteHandler } from "@/lib/api/listRouteFactory";
+import { contactsOrderBy } from "@/lib/db/siteQueries";
 
 export const { GET, POST } = createListRouteHandler({
   table: contacts,
   entityName: "contact",
-  orderBy: [asc(contacts.order), desc(contacts.createdAt)],
+  orderBy: [...contactsOrderBy()],
   paginate: false,
 });

@@ -1,6 +1,7 @@
 import { db, workExperiences } from "@/lib/db";
-import { asc, desc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { createListRouteHandler } from "@/lib/api/listRouteFactory";
+import { workExperienceOrderBy } from "@/lib/db/siteQueries";
 
 async function assignWorkExperienceOrder(body: Record<string, unknown>) {
   if (body.order !== undefined) {
@@ -22,7 +23,7 @@ async function assignWorkExperienceOrder(body: Record<string, unknown>) {
 export const { GET, POST } = createListRouteHandler({
   table: workExperiences,
   entityName: "work experience",
-  orderBy: [asc(workExperiences.order), desc(workExperiences.createdAt)],
+  orderBy: [...workExperienceOrderBy()],
   sortableColumns: ["title", "date", "createdAt", "updatedAt"],
   paginate: false,
   onBeforeInsert: assignWorkExperienceOrder,

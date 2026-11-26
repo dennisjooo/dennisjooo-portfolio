@@ -3,6 +3,7 @@
 import { siteToast } from "@/lib/ui/siteToast";
 import { FOOTER_SECRET_ID } from "@/lib/easter-eggs/constants";
 import { markSecretFound } from "@/lib/easter-eggs/unlock";
+import { SITE_LOCATION, SITE_NAME, SITE_URL } from "@/lib/constants/site";
 
 const FOOTER_COPY =
   "Built with curiosity. Found a secret? github.com/dennisjooo";
@@ -31,17 +32,17 @@ const Footer = () => {
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-2 px-6 py-8 text-center">
         <p className="font-serif text-sm text-foreground">
           <a
-            href="https://dennisjooo.vercel.app"
+            href={SITE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="cursor-pointer outline-none transition-colors hover:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
             onClick={handleCopyrightClick}
           >
-            © {currentYear} Dennis Jonathan
+            © {currentYear} {SITE_NAME}
           </a>
         </p>
         <p className="font-mono text-xs text-muted-foreground">
-          Human being · Jakarta, Indonesia
+          Human being · {SITE_LOCATION}
         </p>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-import { asc, desc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "@/lib/db/schema";
 import {
@@ -10,6 +10,7 @@ import {
   type Blog,
 } from "@/lib/db/schema";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
+import { contactsOrderBy, workExperienceOrderBy } from "@/lib/db/siteQueries";
 import type { SiteManifestData } from "./types";
 
 type SiteDb = NeonHttpDatabase<typeof schema>;
@@ -29,7 +30,7 @@ export async function fetchSiteData(db: SiteDb): Promise<SiteManifestData> {
       db
         .select()
         .from(workExperiences)
-        .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt)),
+        .orderBy(...workExperienceOrderBy()),
       db
         .select()
         .from(blogs)
@@ -39,17 +40,14 @@ export async function fetchSiteData(db: SiteDb): Promise<SiteManifestData> {
       db
         .select()
         .from(contacts)
-        .orderBy(asc(contacts.order), desc(contacts.createdAt)),
+        .orderBy(...contactsOrderBy()),
     ]);
 
   const { projects, blogPosts } = partitionVisibleBlogs(visibleBlogs);
 
   return {
     siteConfig: configRows[0] ?? null,
-    workExperiences: workRows.map((entry) => ({
-      ...entry,
-      responsibilities: entry.responsibilities ?? [],
-    })),
+    workExperiences: workRows,
     projects,
     blogPosts,
     certifications: certificationRows,

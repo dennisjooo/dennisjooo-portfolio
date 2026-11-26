@@ -4,6 +4,7 @@ import { useEffect, useCallback } from "react";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
 import { isPreviewSlug } from "@/lib/db/blogPreview";
+import { isBlogStatus } from "@/lib/types/blog";
 
 interface PreviewBannerProps {
   status: string;
@@ -36,8 +37,10 @@ export function PreviewBanner({ status, slug }: PreviewBannerProps) {
       <EyeIcon className="h-4 w-4" />
       <span>
         Preview mode — this post is currently{" "}
-        <strong>{BLOG_STATUS_LABELS[status] ?? status}</strong> and not visible
-        to the public.
+        <strong>
+          {isBlogStatus(status) ? BLOG_STATUS_LABELS[status] : status}
+        </strong>{" "}
+        and not visible to the public.
       </span>
     </div>
   );

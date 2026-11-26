@@ -2,6 +2,8 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { formStyles } from "@/components/admin/shared/formStyles";
+import { BLOG_STATUS_LABELS } from "@/lib/constants/blogStatus";
+import { BLOG_STATUSES, BLOG_TYPES } from "@/lib/types/blog";
 
 interface BlogListToolbarProps {
   searchQuery: string;
@@ -35,8 +37,11 @@ export function BlogListToolbar({
           className={formStyles.select}
         >
           <option value="">All Types</option>
-          <option value="blog">Blog</option>
-          <option value="project">Project</option>
+          {BLOG_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {type === "project" ? "Project" : "Blog"}
+            </option>
+          ))}
         </select>
         <select
           value={filters.status || ""}
@@ -44,9 +49,11 @@ export function BlogListToolbar({
           className={formStyles.select}
         >
           <option value="">All Statuses</option>
-          <option value="draft">Draft</option>
-          <option value="scheduled">Scheduled</option>
-          <option value="published">Published</option>
+          {BLOG_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {BLOG_STATUS_LABELS[status]}
+            </option>
+          ))}
         </select>
       </div>
     </div>

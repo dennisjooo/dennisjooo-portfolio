@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BLOG_STATUSES, type BlogStatus } from "@/lib/types/blog";
 
-interface BlogCounts {
-  draft: number;
-  scheduled: number;
-  published: number;
-}
+type BlogCounts = Record<BlogStatus, number>;
+
+const EMPTY_COUNTS = Object.fromEntries(
+  BLOG_STATUSES.map((status) => [status, 0]),
+) as BlogCounts;
 
 function StatPill({
   label,
@@ -43,31 +44,20 @@ function StatPill({
 }
 
 export function ContentStats() {
-  const [counts, setCounts] = useState<BlogCounts>({
-    draft: 0,
-    scheduled: 0,
-    published: 0,
-  });
+  const [counts, setCounts] = useState<BlogCounts>(EMPTY_COUNTS);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const [draftRes, scheduledRes, publishedRes] = await Promise.all([
-          fetch("/api/blogs?status=draft&limit=1"),
-          fetch("/api/blogs?status=scheduled&limit=1"),
-          fetch("/api/blogs?status=published&limit=1"),
-        ]);
-        const [draft, scheduled, published] = await Promise.all([
-          draftRes.ok ? draftRes.json() : null,
-          scheduledRes.ok ? scheduledRes.json() : null,
-          publishedRes.ok ? publishedRes.json() : null,
-        ]);
-        setCounts({
-          draft: draft?.pagination?.total ?? 0,
-          scheduled: scheduled?.pagination?.total ?? 0,
-          published: published?.pagination?.total ?? 0,
-        });
+        const results = await Promise.all(
+          BLOG_STATUSES.map(async (status) => {
+            const res = await fetch(`/api/blogs?status=${status}&limit=1`);
+            const json = res.ok ? await res.json() : null;
+            return [status, json?.pagination?.total ?? 0] as const;
+          }),
+        );
+        setCounts({ ...EMPTY_COUNTS, ...Object.fromEntries(results) });
       } catch {
       } finally {
         setLoading(false);

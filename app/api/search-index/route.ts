@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
-import { asc, desc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { db, blogs, workExperiences } from "@/lib/db";
 import { withCacheHeaders } from "@/lib/constants/cache";
 import { visibleBlogsFilter } from "@/lib/db/blogFilters";
-import { createUrlSlug } from "@/lib/utils/urlHelpers";
-import { SEARCH_BODY_LIMIT } from "@/lib/command-palette/searchLimits";
+import {
+  normalizeResponsibilities,
+  workExperienceOrderBy,
+} from "@/lib/db/siteQueries";
+import { resolveBlogSlug } from "@/lib/utils/urlHelpers";
+import {
+  SEARCH_BODY_LIMIT,
+  SEARCH_INDEX_BLOG_LIMIT,
+  SEARCH_INDEX_WORK_LIMIT,
+} from "@/lib/command-palette/searchLimits";
 
 export async function GET() {
   try {
@@ -21,7 +29,7 @@ export async function GET() {
         .from(blogs)
         .where(visibleBlogsFilter())
         .orderBy(desc(blogs.date), desc(blogs.id))
-        .limit(50),
+        .limit(SEARCH_INDEX_BLOG_LIMIT),
       db
         .select({
           id: workExperiences.id,
@@ -31,22 +39,19 @@ export async function GET() {
           responsibilities: workExperiences.responsibilities,
         })
         .from(workExperiences)
-        .orderBy(asc(workExperiences.order), desc(workExperiences.createdAt))
-        .limit(40),
+        .orderBy(...workExperienceOrderBy())
+        .limit(SEARCH_INDEX_WORK_LIMIT),
     ]);
 
-    const projects = projectRows.map((project) => {
-      const slug = project.slug || createUrlSlug(project.title);
-      return {
-        ...project,
-        blogPost: project.blogPost.slice(0, SEARCH_BODY_LIMIT),
-        slug,
-      };
-    });
+    const projects = projectRows.map((project) => ({
+      ...project,
+      blogPost: project.blogPost.slice(0, SEARCH_BODY_LIMIT),
+      slug: resolveBlogSlug(project.title, project.slug),
+    }));
 
     const workExperience = workRows.map((work) => ({
       ...work,
-      responsibilities: work.responsibilities ?? [],
+      responsibilities: normalizeResponsibilities(work.responsibilities),
     }));
 
     return withCacheHeaders(

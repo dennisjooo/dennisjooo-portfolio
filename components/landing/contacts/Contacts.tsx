@@ -28,7 +28,7 @@ const Contacts: React.FC<ContactsProps> = ({ contacts }) => {
   const fadeUpLarge = useMotionSafe(fadeUpItemLarge);
 
   const links = resolveContactLinks(contacts).map((contact) => {
-    const Icon = CONTACT_ICON_MAP[contact.icon] ?? CONTACT_ICON_MAP.website;
+    const Icon = CONTACT_ICON_MAP[contact.icon];
     return {
       href: contact.href,
       ariaLabel: contact.ariaLabel,

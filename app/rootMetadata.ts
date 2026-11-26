@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { SITE_URL } from "@/lib/constants/site";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_PORTFOLIO_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/constants/site";
 
 export const rootMetadata: Metadata = {
   title: {
-    default: "Dennis' Portfolio",
-    template: "%s | Dennis Jonathan",
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "AI enthusiast and problem solver with a background in math, stats, and machine learning. I build practical tools, explore weird ideas, and make complex stuff a little more approachable.",
-  authors: [{ name: "Dennis Jonathan", url: SITE_URL }],
-  creator: "Dennis Jonathan",
+  description: SITE_DESCRIPTION,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
@@ -18,16 +23,14 @@ export const rootMetadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    title: "Dennis' Portfolio",
-    description:
-      "AI enthusiast and problem solver with a background in math, stats, and machine learning.",
-    siteName: "Dennis Jonathan's Portfolio",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_PORTFOLIO_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dennis' Portfolio",
-    description:
-      "AI enthusiast and problem solver with a background in math, stats, and machine learning.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   robots: {
     index: true,

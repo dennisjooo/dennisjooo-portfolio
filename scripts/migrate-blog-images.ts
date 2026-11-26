@@ -25,7 +25,7 @@ import {
   isUnderSlug,
   migrateAllBlogImages,
 } from "../lib/utils/blobMigration";
-import { createUrlSlug } from "../lib/utils/urlHelpers";
+import { resolveBlogSlug } from "../lib/utils/urlHelpers";
 
 dotenv.config({ path: ".env.local" });
 
@@ -55,7 +55,7 @@ async function main() {
   let totalSkipped = 0;
 
   for (const blog of allBlogs) {
-    const slug = blog.slug || createUrlSlug(blog.title);
+    const slug = resolveBlogSlug(blog.title, blog.slug);
 
     if (!slug) {
       console.log(`Skipping "${blog.title}" -- no slug or title to derive one`);
