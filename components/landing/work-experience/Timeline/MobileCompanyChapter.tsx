@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { CompanyGroup } from "@/lib/utils/workExperience";
+import { CompanyLogo } from "@/components/shared/CompanyLogo";
 import { TimelineRole } from "./TimelineRole";
 
 interface MobileCompanyChapterProps {
@@ -31,10 +31,9 @@ export const MobileCompanyChapter: React.FC<MobileCompanyChapterProps> = ({
         </span>
 
         <div className="relative h-10 w-10 shrink-0 overflow-hidden">
-          <Image
+          <CompanyLogo
             src={group.logo}
             alt={group.companyName}
-            fill
             className="object-contain object-right"
           />
         </div>

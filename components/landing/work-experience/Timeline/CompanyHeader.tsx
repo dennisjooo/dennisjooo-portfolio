@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { CompanyLogo } from "@/components/shared/CompanyLogo";
 
 interface CompanyHeaderProps {
   companyName: string;
@@ -25,10 +25,9 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
             : "opacity-100 grayscale-0 md:scale-100 md:opacity-40 md:grayscale",
         )}
       >
-        <Image
+        <CompanyLogo
           src={logo}
           alt={companyName}
-          fill
           className="object-contain object-left md:object-right"
         />
       </div>

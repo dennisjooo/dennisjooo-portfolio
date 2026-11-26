@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { Column } from "@/components/admin/layout/AdminTable";
+import { CompanyLogo } from "@/components/shared/CompanyLogo";
+import type { Column } from "@/components/admin/layout/adminTableTypes";
 import type { WorkExperience } from "@/lib/db/schema";
 import { createActionsColumn } from "./createActionsColumn";
 import { createTimestampColumn } from "./createTimestampColumn";
@@ -14,12 +14,10 @@ export function createWorkExperienceColumns(
       cell: (row: WorkExperience) => (
         <div className="relative h-10 w-10 overflow-hidden rounded-lg border border-border/50 bg-muted/30">
           {row.imageSrc && (
-            <Image
+            <CompanyLogo
               src={row.imageSrc}
               alt={row.company}
-              fill
               className="object-contain p-1"
-              unoptimized={row.imageSrc.startsWith("http")}
             />
           )}
         </div>

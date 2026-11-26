@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CompanyLogo } from "@/components/shared/CompanyLogo";
 import { ArrowPathIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { formStyles } from "@/components/admin/shared/formStyles";
 import { FormField } from "@/components/admin/shared/FormField";
@@ -22,14 +22,12 @@ export function CompanyLogoField({
     <FormField label="Company Logo">
       <div className="flex items-start gap-6">
         <div className="group relative">
-          <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border bg-muted/30">
+          <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border bg-muted/30">
             {imageSrc ? (
-              <Image
+              <CompanyLogo
                 src={imageSrc}
                 alt="Company logo"
-                fill
                 className="object-contain p-2"
-                unoptimized={imageSrc.startsWith("http")}
               />
             ) : (
               <PhotoIcon className="h-8 w-8 text-muted-foreground" />
