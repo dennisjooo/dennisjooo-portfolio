@@ -59,6 +59,7 @@ const CommandDialog = ({
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
           <DialogPrimitive.Content
             data-lenis-prevent
+            onCloseAutoFocus={(event) => event.preventDefault()}
             className="pointer-events-auto mx-4 w-full max-w-xl rounded-sm border border-border bg-background p-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
           >
             <VisuallyHidden.Root asChild>

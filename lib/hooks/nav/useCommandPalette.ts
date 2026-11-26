@@ -58,7 +58,11 @@ export function useCommandPalette(): UseCommandPaletteReturn {
 
   const runCommand = React.useCallback((command: () => unknown) => {
     setOpen(false);
-    command();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        command();
+      });
+    });
   }, []);
 
   const clearPendingSecretsFocus = React.useCallback(() => {
